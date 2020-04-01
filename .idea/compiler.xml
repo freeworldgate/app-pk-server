@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="union-app-api" />
+        <module name="union-app-common" />
+        <module name="union-app-dao" />
+        <module name="union-app-domain" />
+        <module name="union-app-entity" />
+        <module name="union-app-plateform" />
+        <module name="union-app-service" />
+        <module name="union-app-start" />
+        <module name="union-app-util" />
+      </profile>
+    </annotationProcessing>
+  </component>
+</project>
