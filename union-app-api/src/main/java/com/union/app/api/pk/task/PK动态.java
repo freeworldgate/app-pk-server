@@ -20,6 +20,9 @@ import java.util.List;
 public class PK动态 {
 
 
+    /**
+     * hehe
+     */
     @Autowired
     DynamicService dynamicService;
 
