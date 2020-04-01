@@ -1,0 +1,1 @@
+[09:47:22:304]|[ERROR]|org.hibernate.engine.jdbc.spi.SqlExceptionHelper|logExceptions|Field '投诉数量' doesn't have a default value

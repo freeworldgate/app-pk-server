@@ -1,0 +1,2 @@
+[20:14:47:359]|[ERROR]|org.hibernate.engine.jdbc.spi.SqlExceptionHelper|logExceptions|Incorrect integer value: '审核中' for column 'fee_img_statu' at row 1
+[20:15:50:379]|[ERROR]|org.hibernate.engine.jdbc.spi.SqlExceptionHelper|logExceptions|Table 'meetfood.t_user_dynamic' doesn't exist

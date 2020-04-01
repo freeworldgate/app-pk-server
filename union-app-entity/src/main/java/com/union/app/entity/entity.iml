@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/OSS上传记录表" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/外部错误码映射表" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/应用信息表" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/标签" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/校验表" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/用户" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/配置表" isTestSource="false" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>

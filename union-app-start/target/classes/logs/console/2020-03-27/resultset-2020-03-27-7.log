@@ -1,0 +1,834 @@
+[23:54:34:817]|[INFO]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|8ab0c00d-9be4-4320-916e-8deafd0e7117|ACTION|queryEntities
+[23:54:34:884]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|8ab0c00d-9be4-4320-916e-8deafd0e7117|ACTION|get JPQL|JPQL=select p from PostImageEntity p  where p.postId=:postIdA8475497847808638516 and p.pkId=:pkId55976308915651232
+[23:54:34:886]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|8ab0c00d-9be4-4320-916e-8deafd0e7117|ACTION|SET-PARAM|paramName=pkId55976308915651232|paramValue=PK01
+[23:54:34:887]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|8ab0c00d-9be4-4320-916e-8deafd0e7117|ACTION|SET-PARAM|paramName=postIdA8475497847808638516|paramValue=Post10
+[23:54:34:889]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|48e74fcc-87fc-42da-9330-ea045762a20a|ACTION|new Filter Chain
+[23:54:34:889]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|48e74fcc-87fc-42da-9330-ea045762a20a|ACTION|add CompareFilter|colum=postId|symbol==|value=Post8
+[23:54:34:890]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|48e74fcc-87fc-42da-9330-ea045762a20a|ACTION|querySingleEntity
+[23:54:34:890]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|48e74fcc-87fc-42da-9330-ea045762a20a|ACTION|get JPQL|JPQL=select p from PostEntity p  where p.postId=:postId3655239864335617741
+[23:54:34:891]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|48e74fcc-87fc-42da-9330-ea045762a20a|ACTION|SET-PARAM|paramName=postId3655239864335617741|paramValue=Post8
+[23:54:34:893]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|1d1d7412-fe8f-4776-971b-b8b2ff06020a|ACTION|new Filter Chain
+[23:54:34:893]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|1d1d7412-fe8f-4776-971b-b8b2ff06020a|ACTION|add CompareFilter|colum=userId|symbol==|value=U9
+[23:54:34:893]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|1d1d7412-fe8f-4776-971b-b8b2ff06020a|ACTION|querySingleEntity
+[23:54:34:894]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|1d1d7412-fe8f-4776-971b-b8b2ff06020a|ACTION|get JPQL|JPQL=select p from UserEntity p  where p.userId=:userIdA4031459818803541845
+[23:54:34:895]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|1d1d7412-fe8f-4776-971b-b8b2ff06020a|ACTION|SET-PARAM|paramName=userIdA4031459818803541845|paramValue=U9
+[23:54:34:897]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|c7f117ca-395a-4960-b769-5008dde9effd|ACTION|new Filter Chain
+[23:54:34:898]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|c7f117ca-395a-4960-b769-5008dde9effd|ACTION|add CompareFilter|colum=postId|symbol==|value=Post8
+[23:54:34:898]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|c7f117ca-395a-4960-b769-5008dde9effd|add AndFilter
+[23:54:34:898]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|c7f117ca-395a-4960-b769-5008dde9effd|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:54:34:899]|[INFO]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|c7f117ca-395a-4960-b769-5008dde9effd|ACTION|queryEntities
+[23:54:34:899]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|c7f117ca-395a-4960-b769-5008dde9effd|ACTION|get JPQL|JPQL=select p from PostImageEntity p  where p.postId=:postIdA3948953229762082464 and p.pkId=:pkIdA2445327651862394944
+[23:54:34:901]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|c7f117ca-395a-4960-b769-5008dde9effd|ACTION|SET-PARAM|paramName=postIdA3948953229762082464|paramValue=Post8
+[23:54:34:901]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|c7f117ca-395a-4960-b769-5008dde9effd|ACTION|SET-PARAM|paramName=pkIdA2445327651862394944|paramValue=PK01
+[23:54:34:904]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|a40f8511-1e2b-466b-ae25-afc1d0d48b08|ACTION|new Filter Chain
+[23:54:34:904]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|a40f8511-1e2b-466b-ae25-afc1d0d48b08|ACTION|add CompareFilter|colum=postId|symbol==|value=14ab9a6a-1682-4212-b90b-cb44a8816c51
+[23:54:34:905]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|a40f8511-1e2b-466b-ae25-afc1d0d48b08|ACTION|querySingleEntity
+[23:54:34:905]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|a40f8511-1e2b-466b-ae25-afc1d0d48b08|ACTION|get JPQL|JPQL=select p from PostEntity p  where p.postId=:postId7520668148292603436
+[23:54:34:906]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|a40f8511-1e2b-466b-ae25-afc1d0d48b08|ACTION|SET-PARAM|paramName=postId7520668148292603436|paramValue=14ab9a6a-1682-4212-b90b-cb44a8816c51
+[23:54:34:908]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|b8bd81f7-77a7-4054-9137-ce1d3d4044a7|ACTION|new Filter Chain
+[23:54:34:908]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|b8bd81f7-77a7-4054-9137-ce1d3d4044a7|ACTION|add CompareFilter|colum=userId|symbol==|value=ozm2e4r6IgyVMlA6goFt7AbB3wVw
+[23:54:34:908]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|b8bd81f7-77a7-4054-9137-ce1d3d4044a7|ACTION|querySingleEntity
+[23:54:34:909]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|b8bd81f7-77a7-4054-9137-ce1d3d4044a7|ACTION|get JPQL|JPQL=select p from UserEntity p  where p.userId=:userIdA5977950323793638589
+[23:54:34:910]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|b8bd81f7-77a7-4054-9137-ce1d3d4044a7|ACTION|SET-PARAM|paramName=userIdA5977950323793638589|paramValue=ozm2e4r6IgyVMlA6goFt7AbB3wVw
+[23:54:34:912]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|835d2483-3948-4824-8611-1699e36e90f9|ACTION|new Filter Chain
+[23:54:34:912]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|835d2483-3948-4824-8611-1699e36e90f9|ACTION|add CompareFilter|colum=postId|symbol==|value=14ab9a6a-1682-4212-b90b-cb44a8816c51
+[23:54:34:912]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|835d2483-3948-4824-8611-1699e36e90f9|add AndFilter
+[23:54:34:913]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|835d2483-3948-4824-8611-1699e36e90f9|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:54:34:913]|[INFO]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|835d2483-3948-4824-8611-1699e36e90f9|ACTION|queryEntities
+[23:54:34:913]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|835d2483-3948-4824-8611-1699e36e90f9|ACTION|get JPQL|JPQL=select p from PostImageEntity p  where p.postId=:postId8979729717948270396 and p.pkId=:pkIdA8735429659603810106
+[23:54:34:914]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|835d2483-3948-4824-8611-1699e36e90f9|ACTION|SET-PARAM|paramName=postId8979729717948270396|paramValue=14ab9a6a-1682-4212-b90b-cb44a8816c51
+[23:54:34:915]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|835d2483-3948-4824-8611-1699e36e90f9|ACTION|SET-PARAM|paramName=pkIdA8735429659603810106|paramValue=PK01
+[23:54:34:917]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|e7d0bbf9-8ea1-4994-b651-1d323248a5aa|ACTION|new Filter Chain
+[23:54:34:917]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|e7d0bbf9-8ea1-4994-b651-1d323248a5aa|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:54:34:918]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|e7d0bbf9-8ea1-4994-b651-1d323248a5aa|add AndFilter
+[23:54:34:918]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|e7d0bbf9-8ea1-4994-b651-1d323248a5aa|ACTION|add CompareFilter|colum=userId|symbol==|value=ozm2e4r6IgyVMlA6goFt7AbB3wVw
+[23:54:34:919]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|e7d0bbf9-8ea1-4994-b651-1d323248a5aa|add AndFilter
+[23:54:34:919]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|inFilter|sqlUniqued|e7d0bbf9-8ea1-4994-b651-1d323248a5aa|ACTION|add InFilter|colum=postId|values=[Post9, Post11, Post2, Post1, Post3, Post14, Post6, Post7, Post5, Post12, Post4, Post13, Post10, Post8, 14ab9a6a-1682-4212-b90b-cb44a8816c51]
+[23:54:34:920]|[INFO]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|e7d0bbf9-8ea1-4994-b651-1d323248a5aa|ACTION|queryEntities
+[23:54:34:921]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|e7d0bbf9-8ea1-4994-b651-1d323248a5aa|ACTION|get JPQL|JPQL=select p from UserCollectionEntity p  where p.pkId=:pkIdA680390986384717790 and p.userId=:userIdA5188438775372560646 and p.postId in(:postIdA406380489071311153)
+[23:54:34:922]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|e7d0bbf9-8ea1-4994-b651-1d323248a5aa|ACTION|SET-PARAM|paramName=pkIdA680390986384717790|paramValue=PK01
+[23:54:34:922]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|e7d0bbf9-8ea1-4994-b651-1d323248a5aa|ACTION|SET-PARAM|paramName=userIdA5188438775372560646|paramValue=ozm2e4r6IgyVMlA6goFt7AbB3wVw
+[23:54:34:923]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|e7d0bbf9-8ea1-4994-b651-1d323248a5aa|ACTION|SET-PARAM|paramName=postIdA406380489071311153|paramValue=[Post9, Post11, Post2, Post1, Post3, Post14, Post6, Post7, Post5, Post12, Post4, Post13, Post10, Post8, 14ab9a6a-1682-4212-b90b-cb44a8816c51]
+[23:54:35:031]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|eb637423-8641-4618-a7a6-e6d14ab861d1|ACTION|new Filter Chain
+[23:54:35:031]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|eb637423-8641-4618-a7a6-e6d14ab861d1|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:54:35:031]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|eb637423-8641-4618-a7a6-e6d14ab861d1|add AndFilter
+[23:54:35:032]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|eb637423-8641-4618-a7a6-e6d14ab861d1|ACTION|add CompareFilter|colum=userId|symbol==|value=ozm2e4r6IgyVMlA6goFt7AbB3wVw
+[23:54:35:032]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|eb637423-8641-4618-a7a6-e6d14ab861d1|ACTION|querySingleEntity
+[23:54:35:033]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|eb637423-8641-4618-a7a6-e6d14ab861d1|ACTION|get JPQL|JPQL=select p from UserPostEntity p  where p.pkId=:pkIdA2301793563281175295 and p.userId=:userId1293914995007309282
+[23:54:35:034]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|eb637423-8641-4618-a7a6-e6d14ab861d1|ACTION|SET-PARAM|paramName=userId1293914995007309282|paramValue=ozm2e4r6IgyVMlA6goFt7AbB3wVw
+[23:54:35:034]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|eb637423-8641-4618-a7a6-e6d14ab861d1|ACTION|SET-PARAM|paramName=pkIdA2301793563281175295|paramValue=PK01
+[23:54:45:341]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|08da68be-4a16-4a96-97df-205ef005aaed|ACTION|new Filter Chain
+[23:54:45:342]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|08da68be-4a16-4a96-97df-205ef005aaed|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:54:45:342]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|08da68be-4a16-4a96-97df-205ef005aaed|add AndFilter
+[23:54:45:342]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|08da68be-4a16-4a96-97df-205ef005aaed|ACTION|add CompareFilter|colum=page|symbol==|value=PAGE-1
+[23:54:45:343]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|08da68be-4a16-4a96-97df-205ef005aaed|ACTION|querySingleEntity
+[23:54:45:343]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|08da68be-4a16-4a96-97df-205ef005aaed|ACTION|get JPQL|JPQL=select p from PkPageRefreshTimeEntity p  where p.pkId=:pkIdA8575590857631971632 and p.page=:pageA8197084862711248834
+[23:54:45:344]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|08da68be-4a16-4a96-97df-205ef005aaed|ACTION|SET-PARAM|paramName=pkIdA8575590857631971632|paramValue=PK01
+[23:54:45:345]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|08da68be-4a16-4a96-97df-205ef005aaed|ACTION|SET-PARAM|paramName=pageA8197084862711248834|paramValue=PAGE-1
+[23:54:45:347]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|770ecdb8-78da-49d7-9270-8bcdf0a50095|ACTION|new Filter Chain
+[23:54:45:347]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|770ecdb8-78da-49d7-9270-8bcdf0a50095|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:54:45:348]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|770ecdb8-78da-49d7-9270-8bcdf0a50095|add AndFilter
+[23:54:45:348]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|770ecdb8-78da-49d7-9270-8bcdf0a50095|ACTION|add CompareFilter|colum=userId|symbol==|value=ozm2e4r6IgyVMlA6goFt7AbB3wVw
+[23:54:45:349]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|770ecdb8-78da-49d7-9270-8bcdf0a50095|add AndFilter
+[23:54:45:350]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|inFilter|sqlUniqued|770ecdb8-78da-49d7-9270-8bcdf0a50095|ACTION|add InFilter|colum=postId|values=[Post9, Post11, Post2, Post1, Post3, Post14, Post6, Post7, Post5, Post12, Post4, Post13, Post10, Post8, 14ab9a6a-1682-4212-b90b-cb44a8816c51]
+[23:54:45:350]|[INFO]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|770ecdb8-78da-49d7-9270-8bcdf0a50095|ACTION|queryEntities
+[23:54:45:350]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|770ecdb8-78da-49d7-9270-8bcdf0a50095|ACTION|get JPQL|JPQL=select p from UserCollectionEntity p  where p.pkId=:pkIdA8409472967883274808 and p.userId=:userId1193507756988450250 and p.postId in(:postId3263343629231540405)
+[23:54:45:352]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|770ecdb8-78da-49d7-9270-8bcdf0a50095|ACTION|SET-PARAM|paramName=pkIdA8409472967883274808|paramValue=PK01
+[23:54:45:352]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|770ecdb8-78da-49d7-9270-8bcdf0a50095|ACTION|SET-PARAM|paramName=userId1193507756988450250|paramValue=ozm2e4r6IgyVMlA6goFt7AbB3wVw
+[23:54:45:352]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|770ecdb8-78da-49d7-9270-8bcdf0a50095|ACTION|SET-PARAM|paramName=postId3263343629231540405|paramValue=[Post9, Post11, Post2, Post1, Post3, Post14, Post6, Post7, Post5, Post12, Post4, Post13, Post10, Post8, 14ab9a6a-1682-4212-b90b-cb44a8816c51]
+[23:54:45:502]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|d6d22ab5-3220-4024-84cd-b70e5ec9af94|ACTION|new Filter Chain
+[23:54:45:503]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|d6d22ab5-3220-4024-84cd-b70e5ec9af94|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:54:45:503]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|d6d22ab5-3220-4024-84cd-b70e5ec9af94|add AndFilter
+[23:54:45:503]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|d6d22ab5-3220-4024-84cd-b70e5ec9af94|ACTION|add CompareFilter|colum=userId|symbol==|value=ozm2e4r6IgyVMlA6goFt7AbB3wVw
+[23:54:45:503]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|d6d22ab5-3220-4024-84cd-b70e5ec9af94|ACTION|querySingleEntity
+[23:54:45:504]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|d6d22ab5-3220-4024-84cd-b70e5ec9af94|ACTION|get JPQL|JPQL=select p from UserPostEntity p  where p.pkId=:pkIdA381114640557062343 and p.userId=:userIdA5363981621912911229
+[23:54:45:505]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|d6d22ab5-3220-4024-84cd-b70e5ec9af94|ACTION|SET-PARAM|paramName=pkIdA381114640557062343|paramValue=PK01
+[23:54:45:505]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|d6d22ab5-3220-4024-84cd-b70e5ec9af94|ACTION|SET-PARAM|paramName=userIdA5363981621912911229|paramValue=ozm2e4r6IgyVMlA6goFt7AbB3wVw
+[23:54:56:618]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|fa78f827-0cf5-49c9-b612-6fda0cedf811|ACTION|new Filter Chain
+[23:54:56:618]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|fa78f827-0cf5-49c9-b612-6fda0cedf811|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:54:56:619]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|fa78f827-0cf5-49c9-b612-6fda0cedf811|ACTION|querySingleEntity
+[23:54:56:619]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|fa78f827-0cf5-49c9-b612-6fda0cedf811|ACTION|get JPQL|JPQL=select p from PkEntity p  where p.pkId=:pkIdA4445063300495423745
+[23:54:56:621]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|fa78f827-0cf5-49c9-b612-6fda0cedf811|ACTION|SET-PARAM|paramName=pkIdA4445063300495423745|paramValue=PK01
+[23:55:19:676]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|aee7cbad-7dd6-480d-b5aa-f1b984c77137|ACTION|new Filter Chain
+[23:55:19:677]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|aee7cbad-7dd6-480d-b5aa-f1b984c77137|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:55:19:677]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|aee7cbad-7dd6-480d-b5aa-f1b984c77137|add AndFilter
+[23:55:19:678]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|aee7cbad-7dd6-480d-b5aa-f1b984c77137|ACTION|add CompareFilter|colum=page|symbol==|value=PAGE-1
+[23:55:19:678]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|aee7cbad-7dd6-480d-b5aa-f1b984c77137|ACTION|querySingleEntity
+[23:55:19:678]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|aee7cbad-7dd6-480d-b5aa-f1b984c77137|ACTION|get JPQL|JPQL=select p from PkPageRefreshTimeEntity p  where p.pkId=:pkId8391076261980620121 and p.page=:page7648869562528647342
+[23:55:19:679]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|aee7cbad-7dd6-480d-b5aa-f1b984c77137|ACTION|SET-PARAM|paramName=pkId8391076261980620121|paramValue=PK01
+[23:55:19:679]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|aee7cbad-7dd6-480d-b5aa-f1b984c77137|ACTION|SET-PARAM|paramName=page7648869562528647342|paramValue=PAGE-1
+[23:55:19:682]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|5d6f8664-beb6-4835-ba6a-b8937dff9f0e|ACTION|new Filter Chain
+[23:55:19:682]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|5d6f8664-beb6-4835-ba6a-b8937dff9f0e|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:55:19:682]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|5d6f8664-beb6-4835-ba6a-b8937dff9f0e|add AndFilter
+[23:55:19:683]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|5d6f8664-beb6-4835-ba6a-b8937dff9f0e|ACTION|add CompareFilter|colum=userId|symbol==|value=ozm2e4r6IgyVMlA6goFt7AbB3wVw
+[23:55:19:683]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|5d6f8664-beb6-4835-ba6a-b8937dff9f0e|add AndFilter
+[23:55:19:683]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|inFilter|sqlUniqued|5d6f8664-beb6-4835-ba6a-b8937dff9f0e|ACTION|add InFilter|colum=postId|values=[Post9, Post11, Post2, Post1, Post3, Post14, Post6, Post7, Post5, Post12, Post4, Post13, Post10, Post8, 14ab9a6a-1682-4212-b90b-cb44a8816c51]
+[23:55:19:683]|[INFO]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|5d6f8664-beb6-4835-ba6a-b8937dff9f0e|ACTION|queryEntities
+[23:55:19:684]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|5d6f8664-beb6-4835-ba6a-b8937dff9f0e|ACTION|get JPQL|JPQL=select p from UserCollectionEntity p  where p.pkId=:pkIdA2312571138335161622 and p.userId=:userIdA830865736521726506 and p.postId in(:postIdA4247023642449130414)
+[23:55:19:685]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|5d6f8664-beb6-4835-ba6a-b8937dff9f0e|ACTION|SET-PARAM|paramName=pkIdA2312571138335161622|paramValue=PK01
+[23:55:19:686]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|5d6f8664-beb6-4835-ba6a-b8937dff9f0e|ACTION|SET-PARAM|paramName=userIdA830865736521726506|paramValue=ozm2e4r6IgyVMlA6goFt7AbB3wVw
+[23:55:19:686]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|5d6f8664-beb6-4835-ba6a-b8937dff9f0e|ACTION|SET-PARAM|paramName=postIdA4247023642449130414|paramValue=[Post9, Post11, Post2, Post1, Post3, Post14, Post6, Post7, Post5, Post12, Post4, Post13, Post10, Post8, 14ab9a6a-1682-4212-b90b-cb44a8816c51]
+[23:55:20:898]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|7ffcd512-54aa-47b6-a906-931f5a6b4623|ACTION|new Filter Chain
+[23:55:20:899]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|7ffcd512-54aa-47b6-a906-931f5a6b4623|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:55:20:899]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|7ffcd512-54aa-47b6-a906-931f5a6b4623|add AndFilter
+[23:55:20:900]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|7ffcd512-54aa-47b6-a906-931f5a6b4623|ACTION|add CompareFilter|colum=userId|symbol==|value=ozm2e4r6IgyVMlA6goFt7AbB3wVw
+[23:55:20:900]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|7ffcd512-54aa-47b6-a906-931f5a6b4623|ACTION|querySingleEntity
+[23:55:20:900]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|7ffcd512-54aa-47b6-a906-931f5a6b4623|ACTION|get JPQL|JPQL=select p from UserPostEntity p  where p.pkId=:pkId9716354141931896 and p.userId=:userId5829343911905019308
+[23:55:20:902]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|7ffcd512-54aa-47b6-a906-931f5a6b4623|ACTION|SET-PARAM|paramName=pkId9716354141931896|paramValue=PK01
+[23:55:20:902]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|7ffcd512-54aa-47b6-a906-931f5a6b4623|ACTION|SET-PARAM|paramName=userId5829343911905019308|paramValue=ozm2e4r6IgyVMlA6goFt7AbB3wVw
+[23:56:05:890]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|be58f4a7-3db3-4ce5-b499-e1889ed35aa7|ACTION|new Filter Chain
+[23:56:05:891]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|be58f4a7-3db3-4ce5-b499-e1889ed35aa7|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:56:05:891]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|be58f4a7-3db3-4ce5-b499-e1889ed35aa7|add AndFilter
+[23:56:05:891]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|be58f4a7-3db3-4ce5-b499-e1889ed35aa7|ACTION|add CompareFilter|colum=page|symbol==|value=PAGE-1
+[23:56:05:892]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|be58f4a7-3db3-4ce5-b499-e1889ed35aa7|ACTION|querySingleEntity
+[23:56:05:892]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|be58f4a7-3db3-4ce5-b499-e1889ed35aa7|ACTION|get JPQL|JPQL=select p from PkPageRefreshTimeEntity p  where p.pkId=:pkId8126896069242929341 and p.page=:page1630113489764960330
+[23:56:05:894]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|be58f4a7-3db3-4ce5-b499-e1889ed35aa7|ACTION|SET-PARAM|paramName=pkId8126896069242929341|paramValue=PK01
+[23:56:05:894]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|be58f4a7-3db3-4ce5-b499-e1889ed35aa7|ACTION|SET-PARAM|paramName=page1630113489764960330|paramValue=PAGE-1
+[23:56:05:896]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|454d9725-5a82-4ca6-a4e0-283badb771c8|ACTION|new Filter Chain
+[23:56:05:896]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|454d9725-5a82-4ca6-a4e0-283badb771c8|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:56:05:897]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|454d9725-5a82-4ca6-a4e0-283badb771c8|add AndFilter
+[23:56:05:897]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|454d9725-5a82-4ca6-a4e0-283badb771c8|ACTION|add CompareFilter|colum=userId|symbol==|value=ozm2e4r6IgyVMlA6goFt7AbB3wVw
+[23:56:05:897]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|454d9725-5a82-4ca6-a4e0-283badb771c8|add AndFilter
+[23:56:05:897]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|inFilter|sqlUniqued|454d9725-5a82-4ca6-a4e0-283badb771c8|ACTION|add InFilter|colum=postId|values=[Post9, Post11, Post2, Post1, Post3, Post14, Post6, Post7, Post5, Post12, Post4, Post13, Post10, Post8, 14ab9a6a-1682-4212-b90b-cb44a8816c51]
+[23:56:05:898]|[INFO]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|454d9725-5a82-4ca6-a4e0-283badb771c8|ACTION|queryEntities
+[23:56:05:898]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|454d9725-5a82-4ca6-a4e0-283badb771c8|ACTION|get JPQL|JPQL=select p from UserCollectionEntity p  where p.pkId=:pkIdA5875936699400171824 and p.userId=:userIdA1183383158206477259 and p.postId in(:postId1280597450569761529)
+[23:56:05:899]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|454d9725-5a82-4ca6-a4e0-283badb771c8|ACTION|SET-PARAM|paramName=postId1280597450569761529|paramValue=[Post9, Post11, Post2, Post1, Post3, Post14, Post6, Post7, Post5, Post12, Post4, Post13, Post10, Post8, 14ab9a6a-1682-4212-b90b-cb44a8816c51]
+[23:56:05:900]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|454d9725-5a82-4ca6-a4e0-283badb771c8|ACTION|SET-PARAM|paramName=pkIdA5875936699400171824|paramValue=PK01
+[23:56:05:900]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|454d9725-5a82-4ca6-a4e0-283badb771c8|ACTION|SET-PARAM|paramName=userIdA1183383158206477259|paramValue=ozm2e4r6IgyVMlA6goFt7AbB3wVw
+[23:56:06:063]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|785a55a3-5944-49b3-b7db-8f6d3b2174ff|ACTION|new Filter Chain
+[23:56:06:063]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|785a55a3-5944-49b3-b7db-8f6d3b2174ff|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:56:06:064]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|785a55a3-5944-49b3-b7db-8f6d3b2174ff|add AndFilter
+[23:56:06:064]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|785a55a3-5944-49b3-b7db-8f6d3b2174ff|ACTION|add CompareFilter|colum=userId|symbol==|value=ozm2e4r6IgyVMlA6goFt7AbB3wVw
+[23:56:06:064]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|785a55a3-5944-49b3-b7db-8f6d3b2174ff|ACTION|querySingleEntity
+[23:56:06:064]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|785a55a3-5944-49b3-b7db-8f6d3b2174ff|ACTION|get JPQL|JPQL=select p from UserPostEntity p  where p.pkId=:pkIdA7930917070578956724 and p.userId=:userId4004117967171701664
+[23:56:06:065]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|785a55a3-5944-49b3-b7db-8f6d3b2174ff|ACTION|SET-PARAM|paramName=pkIdA7930917070578956724|paramValue=PK01
+[23:56:06:066]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|785a55a3-5944-49b3-b7db-8f6d3b2174ff|ACTION|SET-PARAM|paramName=userId4004117967171701664|paramValue=ozm2e4r6IgyVMlA6goFt7AbB3wVw
+[23:56:44:178]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|2105c8c7-8f2e-4e65-b9ba-a8e7a320e78f|ACTION|new Filter Chain
+[23:56:44:179]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|2105c8c7-8f2e-4e65-b9ba-a8e7a320e78f|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:56:44:179]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|2105c8c7-8f2e-4e65-b9ba-a8e7a320e78f|ACTION|querySingleEntity
+[23:56:44:179]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|2105c8c7-8f2e-4e65-b9ba-a8e7a320e78f|ACTION|get JPQL|JPQL=select p from PkEntity p  where p.pkId=:pkIdA3045008996294440948
+[23:56:44:180]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|2105c8c7-8f2e-4e65-b9ba-a8e7a320e78f|ACTION|SET-PARAM|paramName=pkIdA3045008996294440948|paramValue=PK01
+[23:56:54:888]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|9ef41fa8-c55d-4f77-ad7b-d1759016c489|ACTION|new Filter Chain
+[23:56:54:889]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|9ef41fa8-c55d-4f77-ad7b-d1759016c489|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:56:54:889]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|9ef41fa8-c55d-4f77-ad7b-d1759016c489|add AndFilter
+[23:56:54:889]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|9ef41fa8-c55d-4f77-ad7b-d1759016c489|ACTION|add CompareFilter|colum=page|symbol==|value=PAGE-1
+[23:56:54:889]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|9ef41fa8-c55d-4f77-ad7b-d1759016c489|ACTION|querySingleEntity
+[23:56:54:890]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|9ef41fa8-c55d-4f77-ad7b-d1759016c489|ACTION|get JPQL|JPQL=select p from PkPageRefreshTimeEntity p  where p.pkId=:pkIdA6775362231701845224 and p.page=:page2194545027696512829
+[23:56:54:891]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|9ef41fa8-c55d-4f77-ad7b-d1759016c489|ACTION|SET-PARAM|paramName=page2194545027696512829|paramValue=PAGE-1
+[23:56:54:891]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|9ef41fa8-c55d-4f77-ad7b-d1759016c489|ACTION|SET-PARAM|paramName=pkIdA6775362231701845224|paramValue=PK01
+[23:56:54:892]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|d05443a1-e6dc-4b5e-83be-c569443e2542|ACTION|new Filter Chain
+[23:56:54:893]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|d05443a1-e6dc-4b5e-83be-c569443e2542|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:56:54:893]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|d05443a1-e6dc-4b5e-83be-c569443e2542|add AndFilter
+[23:56:54:893]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|d05443a1-e6dc-4b5e-83be-c569443e2542|ACTION|add CompareFilter|colum=userId|symbol==|value=ozm2e4r6IgyVMlA6goFt7AbB3wVw
+[23:56:54:894]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|d05443a1-e6dc-4b5e-83be-c569443e2542|add AndFilter
+[23:56:54:894]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|inFilter|sqlUniqued|d05443a1-e6dc-4b5e-83be-c569443e2542|ACTION|add InFilter|colum=postId|values=[Post9, Post11, Post2, Post1, Post3, Post14, Post6, Post7, Post5, Post12, Post4, Post13, Post10, Post8, 14ab9a6a-1682-4212-b90b-cb44a8816c51]
+[23:56:54:894]|[INFO]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|d05443a1-e6dc-4b5e-83be-c569443e2542|ACTION|queryEntities
+[23:56:54:894]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|d05443a1-e6dc-4b5e-83be-c569443e2542|ACTION|get JPQL|JPQL=select p from UserCollectionEntity p  where p.pkId=:pkId5223874992855665865 and p.userId=:userId2492083784215971838 and p.postId in(:postIdA4612835991024220926)
+[23:56:54:895]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|d05443a1-e6dc-4b5e-83be-c569443e2542|ACTION|SET-PARAM|paramName=userId2492083784215971838|paramValue=ozm2e4r6IgyVMlA6goFt7AbB3wVw
+[23:56:54:896]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|d05443a1-e6dc-4b5e-83be-c569443e2542|ACTION|SET-PARAM|paramName=pkId5223874992855665865|paramValue=PK01
+[23:56:54:896]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|d05443a1-e6dc-4b5e-83be-c569443e2542|ACTION|SET-PARAM|paramName=postIdA4612835991024220926|paramValue=[Post9, Post11, Post2, Post1, Post3, Post14, Post6, Post7, Post5, Post12, Post4, Post13, Post10, Post8, 14ab9a6a-1682-4212-b90b-cb44a8816c51]
+[23:56:56:240]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|d63422ca-c551-476f-8a04-bc6f3036ad59|ACTION|new Filter Chain
+[23:56:56:240]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|d63422ca-c551-476f-8a04-bc6f3036ad59|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:56:56:240]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|d63422ca-c551-476f-8a04-bc6f3036ad59|add AndFilter
+[23:56:56:241]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|d63422ca-c551-476f-8a04-bc6f3036ad59|ACTION|add CompareFilter|colum=userId|symbol==|value=ozm2e4r6IgyVMlA6goFt7AbB3wVw
+[23:56:56:241]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|d63422ca-c551-476f-8a04-bc6f3036ad59|ACTION|querySingleEntity
+[23:56:56:241]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|d63422ca-c551-476f-8a04-bc6f3036ad59|ACTION|get JPQL|JPQL=select p from UserPostEntity p  where p.pkId=:pkId558128006351178315 and p.userId=:userIdA5776012447412435988
+[23:56:56:242]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|d63422ca-c551-476f-8a04-bc6f3036ad59|ACTION|SET-PARAM|paramName=pkId558128006351178315|paramValue=PK01
+[23:56:56:242]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|d63422ca-c551-476f-8a04-bc6f3036ad59|ACTION|SET-PARAM|paramName=userIdA5776012447412435988|paramValue=ozm2e4r6IgyVMlA6goFt7AbB3wVw
+[23:57:13:003]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|016bc8b8-efd1-4eb0-b725-a08dd50f0d76|ACTION|new Filter Chain
+[23:57:13:004]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|016bc8b8-efd1-4eb0-b725-a08dd50f0d76|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:57:13:004]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|016bc8b8-efd1-4eb0-b725-a08dd50f0d76|add AndFilter
+[23:57:13:004]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|016bc8b8-efd1-4eb0-b725-a08dd50f0d76|ACTION|add CompareFilter|colum=page|symbol==|value=PAGE-1
+[23:57:13:005]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|016bc8b8-efd1-4eb0-b725-a08dd50f0d76|ACTION|querySingleEntity
+[23:57:13:005]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|016bc8b8-efd1-4eb0-b725-a08dd50f0d76|ACTION|get JPQL|JPQL=select p from PkPageRefreshTimeEntity p  where p.pkId=:pkIdA8026173458726958636 and p.page=:pageA8398106185174004508
+[23:57:13:006]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|016bc8b8-efd1-4eb0-b725-a08dd50f0d76|ACTION|SET-PARAM|paramName=pageA8398106185174004508|paramValue=PAGE-1
+[23:57:13:007]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|016bc8b8-efd1-4eb0-b725-a08dd50f0d76|ACTION|SET-PARAM|paramName=pkIdA8026173458726958636|paramValue=PK01
+[23:57:13:008]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|c23854da-3d55-4d8b-b7a8-405dcbf12967|ACTION|new Filter Chain
+[23:57:13:008]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|c23854da-3d55-4d8b-b7a8-405dcbf12967|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:57:13:009]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|c23854da-3d55-4d8b-b7a8-405dcbf12967|add AndFilter
+[23:57:13:009]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|c23854da-3d55-4d8b-b7a8-405dcbf12967|ACTION|add CompareFilter|colum=userId|symbol==|value=ozm2e4r6IgyVMlA6goFt7AbB3wVw
+[23:57:13:009]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|c23854da-3d55-4d8b-b7a8-405dcbf12967|add AndFilter
+[23:57:13:009]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|inFilter|sqlUniqued|c23854da-3d55-4d8b-b7a8-405dcbf12967|ACTION|add InFilter|colum=postId|values=[Post9, Post11, Post2, Post1, Post3, Post14, Post6, Post7, Post5, Post12, Post4, Post13, Post10, Post8, 14ab9a6a-1682-4212-b90b-cb44a8816c51]
+[23:57:13:010]|[INFO]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|c23854da-3d55-4d8b-b7a8-405dcbf12967|ACTION|queryEntities
+[23:57:13:010]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|c23854da-3d55-4d8b-b7a8-405dcbf12967|ACTION|get JPQL|JPQL=select p from UserCollectionEntity p  where p.pkId=:pkIdA6915633218250914734 and p.userId=:userId3538404398808253217 and p.postId in(:postIdA715475807094946759)
+[23:57:13:012]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|c23854da-3d55-4d8b-b7a8-405dcbf12967|ACTION|SET-PARAM|paramName=postIdA715475807094946759|paramValue=[Post9, Post11, Post2, Post1, Post3, Post14, Post6, Post7, Post5, Post12, Post4, Post13, Post10, Post8, 14ab9a6a-1682-4212-b90b-cb44a8816c51]
+[23:57:13:012]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|c23854da-3d55-4d8b-b7a8-405dcbf12967|ACTION|SET-PARAM|paramName=pkIdA6915633218250914734|paramValue=PK01
+[23:57:13:012]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|c23854da-3d55-4d8b-b7a8-405dcbf12967|ACTION|SET-PARAM|paramName=userId3538404398808253217|paramValue=ozm2e4r6IgyVMlA6goFt7AbB3wVw
+[23:57:13:646]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|e577f0ce-e328-497d-a9df-23b5ea1b14ba|ACTION|new Filter Chain
+[23:57:13:647]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|e577f0ce-e328-497d-a9df-23b5ea1b14ba|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:57:13:647]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|e577f0ce-e328-497d-a9df-23b5ea1b14ba|add AndFilter
+[23:57:13:647]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|e577f0ce-e328-497d-a9df-23b5ea1b14ba|ACTION|add CompareFilter|colum=userId|symbol==|value=ozm2e4r6IgyVMlA6goFt7AbB3wVw
+[23:57:13:647]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|e577f0ce-e328-497d-a9df-23b5ea1b14ba|ACTION|querySingleEntity
+[23:57:13:648]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|e577f0ce-e328-497d-a9df-23b5ea1b14ba|ACTION|get JPQL|JPQL=select p from UserPostEntity p  where p.pkId=:pkIdA900255282203702604 and p.userId=:userId2234212173442862960
+[23:57:13:649]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|e577f0ce-e328-497d-a9df-23b5ea1b14ba|ACTION|SET-PARAM|paramName=userId2234212173442862960|paramValue=ozm2e4r6IgyVMlA6goFt7AbB3wVw
+[23:57:13:649]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|e577f0ce-e328-497d-a9df-23b5ea1b14ba|ACTION|SET-PARAM|paramName=pkIdA900255282203702604|paramValue=PK01
+[23:57:40:797]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|5f632319-1562-4c95-af55-579f2d655545|ACTION|new Filter Chain
+[23:57:40:797]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|5f632319-1562-4c95-af55-579f2d655545|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:57:40:798]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|5f632319-1562-4c95-af55-579f2d655545|add AndFilter
+[23:57:40:798]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|5f632319-1562-4c95-af55-579f2d655545|ACTION|add CompareFilter|colum=page|symbol==|value=PAGE-1
+[23:57:40:798]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|5f632319-1562-4c95-af55-579f2d655545|ACTION|querySingleEntity
+[23:57:40:798]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|5f632319-1562-4c95-af55-579f2d655545|ACTION|get JPQL|JPQL=select p from PkPageRefreshTimeEntity p  where p.pkId=:pkIdA1148097359822044340 and p.page=:page2890378451945081394
+[23:57:40:799]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|5f632319-1562-4c95-af55-579f2d655545|ACTION|SET-PARAM|paramName=page2890378451945081394|paramValue=PAGE-1
+[23:57:40:800]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|5f632319-1562-4c95-af55-579f2d655545|ACTION|SET-PARAM|paramName=pkIdA1148097359822044340|paramValue=PK01
+[23:57:40:801]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|836b02b0-f6da-461d-ab7b-5f186f84de67|ACTION|new Filter Chain
+[23:57:40:802]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|836b02b0-f6da-461d-ab7b-5f186f84de67|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:57:40:802]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|836b02b0-f6da-461d-ab7b-5f186f84de67|add AndFilter
+[23:57:40:802]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|836b02b0-f6da-461d-ab7b-5f186f84de67|ACTION|add CompareFilter|colum=userId|symbol==|value=ozm2e4r6IgyVMlA6goFt7AbB3wVw
+[23:57:40:803]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|836b02b0-f6da-461d-ab7b-5f186f84de67|add AndFilter
+[23:57:40:803]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|inFilter|sqlUniqued|836b02b0-f6da-461d-ab7b-5f186f84de67|ACTION|add InFilter|colum=postId|values=[Post9, Post11, Post2, Post1, Post3, Post14, Post6, Post7, Post5, Post12, Post4, Post13, Post10, Post8, 14ab9a6a-1682-4212-b90b-cb44a8816c51]
+[23:57:40:803]|[INFO]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|836b02b0-f6da-461d-ab7b-5f186f84de67|ACTION|queryEntities
+[23:57:40:804]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|836b02b0-f6da-461d-ab7b-5f186f84de67|ACTION|get JPQL|JPQL=select p from UserCollectionEntity p  where p.pkId=:pkId961901792467961391 and p.userId=:userIdA9141449153690318996 and p.postId in(:postIdA5440837749684744665)
+[23:57:40:805]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|836b02b0-f6da-461d-ab7b-5f186f84de67|ACTION|SET-PARAM|paramName=userIdA9141449153690318996|paramValue=ozm2e4r6IgyVMlA6goFt7AbB3wVw
+[23:57:40:806]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|836b02b0-f6da-461d-ab7b-5f186f84de67|ACTION|SET-PARAM|paramName=pkId961901792467961391|paramValue=PK01
+[23:57:40:806]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|836b02b0-f6da-461d-ab7b-5f186f84de67|ACTION|SET-PARAM|paramName=postIdA5440837749684744665|paramValue=[Post9, Post11, Post2, Post1, Post3, Post14, Post6, Post7, Post5, Post12, Post4, Post13, Post10, Post8, 14ab9a6a-1682-4212-b90b-cb44a8816c51]
+[23:57:40:957]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|858e53a6-c22a-48d6-9849-27721681cf0a|ACTION|new Filter Chain
+[23:57:40:958]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|858e53a6-c22a-48d6-9849-27721681cf0a|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:57:40:958]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|858e53a6-c22a-48d6-9849-27721681cf0a|add AndFilter
+[23:57:40:958]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|858e53a6-c22a-48d6-9849-27721681cf0a|ACTION|add CompareFilter|colum=userId|symbol==|value=ozm2e4r6IgyVMlA6goFt7AbB3wVw
+[23:57:40:958]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|858e53a6-c22a-48d6-9849-27721681cf0a|ACTION|querySingleEntity
+[23:57:40:959]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|858e53a6-c22a-48d6-9849-27721681cf0a|ACTION|get JPQL|JPQL=select p from UserPostEntity p  where p.pkId=:pkIdA583753067993021673 and p.userId=:userIdA4974116074082055676
+[23:57:40:960]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|858e53a6-c22a-48d6-9849-27721681cf0a|ACTION|SET-PARAM|paramName=pkIdA583753067993021673|paramValue=PK01
+[23:57:40:960]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|858e53a6-c22a-48d6-9849-27721681cf0a|ACTION|SET-PARAM|paramName=userIdA4974116074082055676|paramValue=ozm2e4r6IgyVMlA6goFt7AbB3wVw
+[23:57:47:223]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|084f922e-353a-40c8-bce1-7ed020502a70|ACTION|new Filter Chain
+[23:57:47:223]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|084f922e-353a-40c8-bce1-7ed020502a70|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:57:47:224]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|084f922e-353a-40c8-bce1-7ed020502a70|add AndFilter
+[23:57:47:224]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|084f922e-353a-40c8-bce1-7ed020502a70|ACTION|add CompareFilter|colum=page|symbol==|value=PAGE-2
+[23:57:47:224]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|084f922e-353a-40c8-bce1-7ed020502a70|ACTION|querySingleEntity
+[23:57:47:224]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|084f922e-353a-40c8-bce1-7ed020502a70|ACTION|get JPQL|JPQL=select p from PkPageRefreshTimeEntity p  where p.pkId=:pkIdA8203384133556878523 and p.page=:pageA5010724412347101504
+[23:57:47:225]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|084f922e-353a-40c8-bce1-7ed020502a70|ACTION|SET-PARAM|paramName=pkIdA8203384133556878523|paramValue=PK01
+[23:57:47:226]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|084f922e-353a-40c8-bce1-7ed020502a70|ACTION|SET-PARAM|paramName=pageA5010724412347101504|paramValue=PAGE-2
+[23:57:47:229]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|5ada9bde-bc65-4058-a606-edd9f46bb855|ACTION|new Filter Chain
+[23:57:47:230]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|5ada9bde-bc65-4058-a606-edd9f46bb855|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:57:47:230]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|5ada9bde-bc65-4058-a606-edd9f46bb855|add AndFilter
+[23:57:47:230]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|5ada9bde-bc65-4058-a606-edd9f46bb855|ACTION|add CompareFilter|colum=page|symbol==|value=PAGE-2
+[23:57:47:230]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|orderByFilter|sqlUniqued|5ada9bde-bc65-4058-a606-edd9f46bb855|ACTION|add OrderByFilter|colum=priority|orderby=ASC
+[23:57:47:231]|[INFO]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|5ada9bde-bc65-4058-a606-edd9f46bb855|ACTION|queryEntities
+[23:57:47:231]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|5ada9bde-bc65-4058-a606-edd9f46bb855|ACTION|get JPQL|JPQL=select p from PkPageCacheEntity p  where p.pkId=:pkId8990092200940749936 and p.page=:pageA4613276537279459406 order by p.priority asc
+[23:57:47:232]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|5ada9bde-bc65-4058-a606-edd9f46bb855|ACTION|SET-PARAM|paramName=pkId8990092200940749936|paramValue=PK01
+[23:57:47:232]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|5ada9bde-bc65-4058-a606-edd9f46bb855|ACTION|SET-PARAM|paramName=pageA4613276537279459406|paramValue=PAGE-2
+[23:57:47:235]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|ffb164ef-f99f-4e1c-b6f2-1991c3c20ec2|ACTION|new Filter Chain
+[23:57:47:235]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|68af3494-f118-43a9-8794-3a86fd346b8c|ACTION|new Filter Chain
+[23:57:47:236]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|68af3494-f118-43a9-8794-3a86fd346b8c|ACTION|add CompareFilter|colum=configName|symbol==|value=MAX-POST-EVERY-PAGE
+[23:57:47:272]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|68af3494-f118-43a9-8794-3a86fd346b8c|ACTION|querySingleEntity
+[23:57:47:272]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|68af3494-f118-43a9-8794-3a86fd346b8c|ACTION|get JPQL|JPQL=select p from ConfigEntity p  where p.configName=:configName3225090532625170967
+[23:57:47:273]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|68af3494-f118-43a9-8794-3a86fd346b8c|ACTION|SET-PARAM|paramName=configName3225090532625170967|paramValue=MAX-POST-EVERY-PAGE
+[23:57:47:275]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|pageLimitFilter|sqlUniqued|ffb164ef-f99f-4e1c-b6f2-1991c3c20ec2|ACTION|add PageLimitFilter|page=1|limit=50
+[23:57:47:275]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|orderByRandomFilter|sqlUniqued|ffb164ef-f99f-4e1c-b6f2-1991c3c20ec2|ACTION|add OrderByFilter|colum={}|orderby={}
+[23:57:47:275]|[INFO]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|ffb164ef-f99f-4e1c-b6f2-1991c3c20ec2|ACTION|queryEntities
+[23:57:47:276]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|ffb164ef-f99f-4e1c-b6f2-1991c3c20ec2|ACTION|get JPQL|JPQL=select p from PostEntity p  order by rand() 
+[23:57:47:282]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|9e72afeb-13d5-4259-b067-e8aa71ea9b0c|ACTION|new Filter Chain
+[23:57:47:282]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|9e72afeb-13d5-4259-b067-e8aa71ea9b0c|ACTION|add CompareFilter|colum=postId|symbol==|value=Post11
+[23:57:47:283]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|9e72afeb-13d5-4259-b067-e8aa71ea9b0c|ACTION|querySingleEntity
+[23:57:47:283]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|9e72afeb-13d5-4259-b067-e8aa71ea9b0c|ACTION|get JPQL|JPQL=select p from PostEntity p  where p.postId=:postIdA4605608577567928646
+[23:57:47:284]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|9e72afeb-13d5-4259-b067-e8aa71ea9b0c|ACTION|SET-PARAM|paramName=postIdA4605608577567928646|paramValue=Post11
+[23:57:47:287]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|c5f02bff-d524-4f22-9e20-6416873e068d|ACTION|new Filter Chain
+[23:57:47:287]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|c5f02bff-d524-4f22-9e20-6416873e068d|ACTION|add CompareFilter|colum=userId|symbol==|value=U12
+[23:57:47:287]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|c5f02bff-d524-4f22-9e20-6416873e068d|ACTION|querySingleEntity
+[23:57:47:288]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|c5f02bff-d524-4f22-9e20-6416873e068d|ACTION|get JPQL|JPQL=select p from UserEntity p  where p.userId=:userIdA2460097276883286880
+[23:57:47:289]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|c5f02bff-d524-4f22-9e20-6416873e068d|ACTION|SET-PARAM|paramName=userIdA2460097276883286880|paramValue=U12
+[23:57:47:292]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|dad15dad-1867-4a70-aef2-305fa87a57a9|ACTION|new Filter Chain
+[23:57:47:292]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|dad15dad-1867-4a70-aef2-305fa87a57a9|ACTION|add CompareFilter|colum=postId|symbol==|value=Post11
+[23:57:47:293]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|dad15dad-1867-4a70-aef2-305fa87a57a9|add AndFilter
+[23:57:47:293]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|dad15dad-1867-4a70-aef2-305fa87a57a9|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:57:47:293]|[INFO]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|dad15dad-1867-4a70-aef2-305fa87a57a9|ACTION|queryEntities
+[23:57:47:294]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|dad15dad-1867-4a70-aef2-305fa87a57a9|ACTION|get JPQL|JPQL=select p from PostImageEntity p  where p.postId=:postId5606600776951746274 and p.pkId=:pkId1445279082836806128
+[23:57:47:295]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|dad15dad-1867-4a70-aef2-305fa87a57a9|ACTION|SET-PARAM|paramName=pkId1445279082836806128|paramValue=PK01
+[23:57:47:295]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|dad15dad-1867-4a70-aef2-305fa87a57a9|ACTION|SET-PARAM|paramName=postId5606600776951746274|paramValue=Post11
+[23:57:47:303]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|a4f5cb52-a3df-4eda-9c50-47d6a65db3fb|ACTION|new Filter Chain
+[23:57:47:303]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|a4f5cb52-a3df-4eda-9c50-47d6a65db3fb|ACTION|add CompareFilter|colum=postId|symbol==|value=Post3
+[23:57:47:304]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|a4f5cb52-a3df-4eda-9c50-47d6a65db3fb|ACTION|querySingleEntity
+[23:57:47:304]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|a4f5cb52-a3df-4eda-9c50-47d6a65db3fb|ACTION|get JPQL|JPQL=select p from PostEntity p  where p.postId=:postIdA6424083369632772576
+[23:57:47:305]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|a4f5cb52-a3df-4eda-9c50-47d6a65db3fb|ACTION|SET-PARAM|paramName=postIdA6424083369632772576|paramValue=Post3
+[23:57:47:307]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|71503505-12f9-431f-944e-f0096d8f169b|ACTION|new Filter Chain
+[23:57:47:307]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|71503505-12f9-431f-944e-f0096d8f169b|ACTION|add CompareFilter|colum=userId|symbol==|value=U4
+[23:57:47:308]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|71503505-12f9-431f-944e-f0096d8f169b|ACTION|querySingleEntity
+[23:57:47:308]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|71503505-12f9-431f-944e-f0096d8f169b|ACTION|get JPQL|JPQL=select p from UserEntity p  where p.userId=:userIdA1655415261895439921
+[23:57:47:309]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|71503505-12f9-431f-944e-f0096d8f169b|ACTION|SET-PARAM|paramName=userIdA1655415261895439921|paramValue=U4
+[23:57:47:311]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|de72834a-9915-46b0-a422-fd914d658566|ACTION|new Filter Chain
+[23:57:47:312]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|de72834a-9915-46b0-a422-fd914d658566|ACTION|add CompareFilter|colum=postId|symbol==|value=Post3
+[23:57:47:312]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|de72834a-9915-46b0-a422-fd914d658566|add AndFilter
+[23:57:47:312]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|de72834a-9915-46b0-a422-fd914d658566|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:57:47:312]|[INFO]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|de72834a-9915-46b0-a422-fd914d658566|ACTION|queryEntities
+[23:57:47:313]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|de72834a-9915-46b0-a422-fd914d658566|ACTION|get JPQL|JPQL=select p from PostImageEntity p  where p.postId=:postIdA246309225710008856 and p.pkId=:pkIdA8429551653964592158
+[23:57:47:318]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|de72834a-9915-46b0-a422-fd914d658566|ACTION|SET-PARAM|paramName=pkIdA8429551653964592158|paramValue=PK01
+[23:57:47:319]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|de72834a-9915-46b0-a422-fd914d658566|ACTION|SET-PARAM|paramName=postIdA246309225710008856|paramValue=Post3
+[23:57:47:322]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|981983f2-33e3-4c3b-aa59-9c2174151446|ACTION|new Filter Chain
+[23:57:47:322]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|981983f2-33e3-4c3b-aa59-9c2174151446|ACTION|add CompareFilter|colum=postId|symbol==|value=Post4
+[23:57:47:322]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|981983f2-33e3-4c3b-aa59-9c2174151446|ACTION|querySingleEntity
+[23:57:47:323]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|981983f2-33e3-4c3b-aa59-9c2174151446|ACTION|get JPQL|JPQL=select p from PostEntity p  where p.postId=:postId1108639820833967707
+[23:57:47:324]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|981983f2-33e3-4c3b-aa59-9c2174151446|ACTION|SET-PARAM|paramName=postId1108639820833967707|paramValue=Post4
+[23:57:47:325]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|904f383f-9b64-4349-84be-cfe411c4bd0f|ACTION|new Filter Chain
+[23:57:47:326]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|904f383f-9b64-4349-84be-cfe411c4bd0f|ACTION|add CompareFilter|colum=userId|symbol==|value=U5
+[23:57:47:326]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|904f383f-9b64-4349-84be-cfe411c4bd0f|ACTION|querySingleEntity
+[23:57:47:326]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|904f383f-9b64-4349-84be-cfe411c4bd0f|ACTION|get JPQL|JPQL=select p from UserEntity p  where p.userId=:userIdA1709519225564674947
+[23:57:47:327]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|904f383f-9b64-4349-84be-cfe411c4bd0f|ACTION|SET-PARAM|paramName=userIdA1709519225564674947|paramValue=U5
+[23:57:47:329]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|b01dd5ad-358c-4d87-97fd-5b8f27b960b2|ACTION|new Filter Chain
+[23:57:47:330]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|b01dd5ad-358c-4d87-97fd-5b8f27b960b2|ACTION|add CompareFilter|colum=postId|symbol==|value=Post4
+[23:57:47:330]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|b01dd5ad-358c-4d87-97fd-5b8f27b960b2|add AndFilter
+[23:57:47:330]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|b01dd5ad-358c-4d87-97fd-5b8f27b960b2|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:57:47:379]|[INFO]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|b01dd5ad-358c-4d87-97fd-5b8f27b960b2|ACTION|queryEntities
+[23:57:47:380]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|b01dd5ad-358c-4d87-97fd-5b8f27b960b2|ACTION|get JPQL|JPQL=select p from PostImageEntity p  where p.postId=:postId4754031114589391927 and p.pkId=:pkIdA7200563011470866630
+[23:57:47:381]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|b01dd5ad-358c-4d87-97fd-5b8f27b960b2|ACTION|SET-PARAM|paramName=pkIdA7200563011470866630|paramValue=PK01
+[23:57:47:381]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|b01dd5ad-358c-4d87-97fd-5b8f27b960b2|ACTION|SET-PARAM|paramName=postId4754031114589391927|paramValue=Post4
+[23:57:47:384]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|787da5d1-c58b-46bd-aed0-edea81982c38|ACTION|new Filter Chain
+[23:57:47:384]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|787da5d1-c58b-46bd-aed0-edea81982c38|ACTION|add CompareFilter|colum=postId|symbol==|value=Post13
+[23:57:47:385]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|787da5d1-c58b-46bd-aed0-edea81982c38|ACTION|querySingleEntity
+[23:57:47:385]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|787da5d1-c58b-46bd-aed0-edea81982c38|ACTION|get JPQL|JPQL=select p from PostEntity p  where p.postId=:postIdA2437530835369637830
+[23:57:47:386]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|787da5d1-c58b-46bd-aed0-edea81982c38|ACTION|SET-PARAM|paramName=postIdA2437530835369637830|paramValue=Post13
+[23:57:47:388]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|a6ebf4d1-8a9e-4225-a096-6aafdd92b5bb|ACTION|new Filter Chain
+[23:57:47:389]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|a6ebf4d1-8a9e-4225-a096-6aafdd92b5bb|ACTION|add CompareFilter|colum=userId|symbol==|value=U14
+[23:57:47:389]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|a6ebf4d1-8a9e-4225-a096-6aafdd92b5bb|ACTION|querySingleEntity
+[23:57:47:389]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|a6ebf4d1-8a9e-4225-a096-6aafdd92b5bb|ACTION|get JPQL|JPQL=select p from UserEntity p  where p.userId=:userIdA202263250897189310
+[23:57:47:390]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|a6ebf4d1-8a9e-4225-a096-6aafdd92b5bb|ACTION|SET-PARAM|paramName=userIdA202263250897189310|paramValue=U14
+[23:57:47:392]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|6c714eea-a9ac-4e15-99cc-943c6a4765d5|ACTION|new Filter Chain
+[23:57:47:393]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|6c714eea-a9ac-4e15-99cc-943c6a4765d5|ACTION|add CompareFilter|colum=postId|symbol==|value=Post13
+[23:57:47:396]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|6c714eea-a9ac-4e15-99cc-943c6a4765d5|add AndFilter
+[23:57:47:396]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|6c714eea-a9ac-4e15-99cc-943c6a4765d5|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:57:47:397]|[INFO]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|6c714eea-a9ac-4e15-99cc-943c6a4765d5|ACTION|queryEntities
+[23:57:47:397]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|6c714eea-a9ac-4e15-99cc-943c6a4765d5|ACTION|get JPQL|JPQL=select p from PostImageEntity p  where p.postId=:postIdA8624653077870066008 and p.pkId=:pkId8448894138864976218
+[23:57:47:398]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|6c714eea-a9ac-4e15-99cc-943c6a4765d5|ACTION|SET-PARAM|paramName=pkId8448894138864976218|paramValue=PK01
+[23:57:47:399]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|6c714eea-a9ac-4e15-99cc-943c6a4765d5|ACTION|SET-PARAM|paramName=postIdA8624653077870066008|paramValue=Post13
+[23:57:47:401]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|d98238a9-be0f-4a28-8664-be00d44c0da8|ACTION|new Filter Chain
+[23:57:47:402]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|d98238a9-be0f-4a28-8664-be00d44c0da8|ACTION|add CompareFilter|colum=postId|symbol==|value=Post6
+[23:57:47:402]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|d98238a9-be0f-4a28-8664-be00d44c0da8|ACTION|querySingleEntity
+[23:57:47:403]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|d98238a9-be0f-4a28-8664-be00d44c0da8|ACTION|get JPQL|JPQL=select p from PostEntity p  where p.postId=:postId8826946568723710227
+[23:57:47:404]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|d98238a9-be0f-4a28-8664-be00d44c0da8|ACTION|SET-PARAM|paramName=postId8826946568723710227|paramValue=Post6
+[23:57:47:406]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|9b7b420f-c13d-4bc7-93f0-ffb8aaf5a2ba|ACTION|new Filter Chain
+[23:57:47:406]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|9b7b420f-c13d-4bc7-93f0-ffb8aaf5a2ba|ACTION|add CompareFilter|colum=userId|symbol==|value=U7
+[23:57:47:407]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|9b7b420f-c13d-4bc7-93f0-ffb8aaf5a2ba|ACTION|querySingleEntity
+[23:57:47:407]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|9b7b420f-c13d-4bc7-93f0-ffb8aaf5a2ba|ACTION|get JPQL|JPQL=select p from UserEntity p  where p.userId=:userIdA8643942859158697027
+[23:57:47:408]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|9b7b420f-c13d-4bc7-93f0-ffb8aaf5a2ba|ACTION|SET-PARAM|paramName=userIdA8643942859158697027|paramValue=U7
+[23:57:47:413]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|d4bb8573-a4e6-4b53-8696-c39c54b1e913|ACTION|new Filter Chain
+[23:57:47:413]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|d4bb8573-a4e6-4b53-8696-c39c54b1e913|ACTION|add CompareFilter|colum=postId|symbol==|value=Post6
+[23:57:47:414]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|d4bb8573-a4e6-4b53-8696-c39c54b1e913|add AndFilter
+[23:57:47:414]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|d4bb8573-a4e6-4b53-8696-c39c54b1e913|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:57:47:414]|[INFO]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|d4bb8573-a4e6-4b53-8696-c39c54b1e913|ACTION|queryEntities
+[23:57:47:415]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|d4bb8573-a4e6-4b53-8696-c39c54b1e913|ACTION|get JPQL|JPQL=select p from PostImageEntity p  where p.postId=:postIdA7749920340352940783 and p.pkId=:pkId3996222546154375410
+[23:57:47:416]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|d4bb8573-a4e6-4b53-8696-c39c54b1e913|ACTION|SET-PARAM|paramName=pkId3996222546154375410|paramValue=PK01
+[23:57:47:416]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|d4bb8573-a4e6-4b53-8696-c39c54b1e913|ACTION|SET-PARAM|paramName=postIdA7749920340352940783|paramValue=Post6
+[23:57:47:420]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|3652a4c4-c65b-4698-94f8-71b7efc13ab6|ACTION|new Filter Chain
+[23:57:47:420]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|3652a4c4-c65b-4698-94f8-71b7efc13ab6|ACTION|add CompareFilter|colum=postId|symbol==|value=14ab9a6a-1682-4212-b90b-cb44a8816c51
+[23:57:47:420]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|3652a4c4-c65b-4698-94f8-71b7efc13ab6|ACTION|querySingleEntity
+[23:57:47:421]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|3652a4c4-c65b-4698-94f8-71b7efc13ab6|ACTION|get JPQL|JPQL=select p from PostEntity p  where p.postId=:postId3276604498015961151
+[23:57:47:422]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|3652a4c4-c65b-4698-94f8-71b7efc13ab6|ACTION|SET-PARAM|paramName=postId3276604498015961151|paramValue=14ab9a6a-1682-4212-b90b-cb44a8816c51
+[23:57:47:423]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|0d772949-28a5-4209-a5a8-a6681b561898|ACTION|new Filter Chain
+[23:57:47:424]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|0d772949-28a5-4209-a5a8-a6681b561898|ACTION|add CompareFilter|colum=userId|symbol==|value=ozm2e4r6IgyVMlA6goFt7AbB3wVw
+[23:57:47:424]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|0d772949-28a5-4209-a5a8-a6681b561898|ACTION|querySingleEntity
+[23:57:47:424]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|0d772949-28a5-4209-a5a8-a6681b561898|ACTION|get JPQL|JPQL=select p from UserEntity p  where p.userId=:userId3643937635037368069
+[23:57:47:425]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|0d772949-28a5-4209-a5a8-a6681b561898|ACTION|SET-PARAM|paramName=userId3643937635037368069|paramValue=ozm2e4r6IgyVMlA6goFt7AbB3wVw
+[23:57:47:430]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|dd0f8aa0-7fff-4808-acc7-e087ee53ddba|ACTION|new Filter Chain
+[23:57:47:430]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|dd0f8aa0-7fff-4808-acc7-e087ee53ddba|ACTION|add CompareFilter|colum=postId|symbol==|value=14ab9a6a-1682-4212-b90b-cb44a8816c51
+[23:57:47:430]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|dd0f8aa0-7fff-4808-acc7-e087ee53ddba|add AndFilter
+[23:57:47:430]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|dd0f8aa0-7fff-4808-acc7-e087ee53ddba|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:57:47:431]|[INFO]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|dd0f8aa0-7fff-4808-acc7-e087ee53ddba|ACTION|queryEntities
+[23:57:47:431]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|dd0f8aa0-7fff-4808-acc7-e087ee53ddba|ACTION|get JPQL|JPQL=select p from PostImageEntity p  where p.postId=:postId414443292115225598 and p.pkId=:pkIdA5337431529577036356
+[23:57:47:432]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|dd0f8aa0-7fff-4808-acc7-e087ee53ddba|ACTION|SET-PARAM|paramName=postId414443292115225598|paramValue=14ab9a6a-1682-4212-b90b-cb44a8816c51
+[23:57:47:432]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|dd0f8aa0-7fff-4808-acc7-e087ee53ddba|ACTION|SET-PARAM|paramName=pkIdA5337431529577036356|paramValue=PK01
+[23:57:47:435]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|93b94259-4aea-4afc-af2d-38c71d3dab36|ACTION|new Filter Chain
+[23:57:47:435]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|93b94259-4aea-4afc-af2d-38c71d3dab36|ACTION|add CompareFilter|colum=postId|symbol==|value=Post9
+[23:57:47:436]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|93b94259-4aea-4afc-af2d-38c71d3dab36|ACTION|querySingleEntity
+[23:57:47:436]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|93b94259-4aea-4afc-af2d-38c71d3dab36|ACTION|get JPQL|JPQL=select p from PostEntity p  where p.postId=:postIdA3052641276264233318
+[23:57:47:437]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|93b94259-4aea-4afc-af2d-38c71d3dab36|ACTION|SET-PARAM|paramName=postIdA3052641276264233318|paramValue=Post9
+[23:57:47:439]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|265ad5f9-3b34-4806-8baa-0fed2e440c25|ACTION|new Filter Chain
+[23:57:47:439]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|265ad5f9-3b34-4806-8baa-0fed2e440c25|ACTION|add CompareFilter|colum=userId|symbol==|value=U10
+[23:57:47:440]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|265ad5f9-3b34-4806-8baa-0fed2e440c25|ACTION|querySingleEntity
+[23:57:47:440]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|265ad5f9-3b34-4806-8baa-0fed2e440c25|ACTION|get JPQL|JPQL=select p from UserEntity p  where p.userId=:userId4558186346653568688
+[23:57:47:441]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|265ad5f9-3b34-4806-8baa-0fed2e440c25|ACTION|SET-PARAM|paramName=userId4558186346653568688|paramValue=U10
+[23:57:47:457]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|f61fa562-06e7-461e-ac82-1d81830919d4|ACTION|new Filter Chain
+[23:57:47:458]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|f61fa562-06e7-461e-ac82-1d81830919d4|ACTION|add CompareFilter|colum=postId|symbol==|value=Post9
+[23:57:47:458]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|f61fa562-06e7-461e-ac82-1d81830919d4|add AndFilter
+[23:57:47:458]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|f61fa562-06e7-461e-ac82-1d81830919d4|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:57:47:459]|[INFO]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|f61fa562-06e7-461e-ac82-1d81830919d4|ACTION|queryEntities
+[23:57:47:459]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|f61fa562-06e7-461e-ac82-1d81830919d4|ACTION|get JPQL|JPQL=select p from PostImageEntity p  where p.postId=:postIdA4500047203566599951 and p.pkId=:pkIdA8095496032401600579
+[23:57:47:460]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|f61fa562-06e7-461e-ac82-1d81830919d4|ACTION|SET-PARAM|paramName=postIdA4500047203566599951|paramValue=Post9
+[23:57:47:461]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|f61fa562-06e7-461e-ac82-1d81830919d4|ACTION|SET-PARAM|paramName=pkIdA8095496032401600579|paramValue=PK01
+[23:57:47:463]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|df6c0fa0-6107-4e78-bde5-f9a5bdea3435|ACTION|new Filter Chain
+[23:57:47:463]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|df6c0fa0-6107-4e78-bde5-f9a5bdea3435|ACTION|add CompareFilter|colum=postId|symbol==|value=Post14
+[23:57:47:464]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|df6c0fa0-6107-4e78-bde5-f9a5bdea3435|ACTION|querySingleEntity
+[23:57:47:464]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|df6c0fa0-6107-4e78-bde5-f9a5bdea3435|ACTION|get JPQL|JPQL=select p from PostEntity p  where p.postId=:postId1089184069014212093
+[23:57:47:465]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|df6c0fa0-6107-4e78-bde5-f9a5bdea3435|ACTION|SET-PARAM|paramName=postId1089184069014212093|paramValue=Post14
+[23:57:47:467]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|073ef143-bb5c-45ad-80d5-66799bedd24a|ACTION|new Filter Chain
+[23:57:47:468]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|073ef143-bb5c-45ad-80d5-66799bedd24a|ACTION|add CompareFilter|colum=userId|symbol==|value=U1
+[23:57:47:468]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|073ef143-bb5c-45ad-80d5-66799bedd24a|ACTION|querySingleEntity
+[23:57:47:469]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|073ef143-bb5c-45ad-80d5-66799bedd24a|ACTION|get JPQL|JPQL=select p from UserEntity p  where p.userId=:userId3754371817275672828
+[23:57:47:470]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|073ef143-bb5c-45ad-80d5-66799bedd24a|ACTION|SET-PARAM|paramName=userId3754371817275672828|paramValue=U1
+[23:57:47:472]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|c7adc87c-e20d-4a26-97ae-57827ea309b2|ACTION|new Filter Chain
+[23:57:47:473]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|c7adc87c-e20d-4a26-97ae-57827ea309b2|ACTION|add CompareFilter|colum=postId|symbol==|value=Post14
+[23:57:47:474]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|c7adc87c-e20d-4a26-97ae-57827ea309b2|add AndFilter
+[23:57:47:474]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|c7adc87c-e20d-4a26-97ae-57827ea309b2|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:57:47:475]|[INFO]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|c7adc87c-e20d-4a26-97ae-57827ea309b2|ACTION|queryEntities
+[23:57:47:475]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|c7adc87c-e20d-4a26-97ae-57827ea309b2|ACTION|get JPQL|JPQL=select p from PostImageEntity p  where p.postId=:postId7211384682222143027 and p.pkId=:pkId3771112440283285323
+[23:57:47:476]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|c7adc87c-e20d-4a26-97ae-57827ea309b2|ACTION|SET-PARAM|paramName=pkId3771112440283285323|paramValue=PK01
+[23:57:47:476]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|c7adc87c-e20d-4a26-97ae-57827ea309b2|ACTION|SET-PARAM|paramName=postId7211384682222143027|paramValue=Post14
+[23:57:47:478]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|3dc7f680-fc6b-42fd-80e7-014fe23e912b|ACTION|new Filter Chain
+[23:57:47:479]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|3dc7f680-fc6b-42fd-80e7-014fe23e912b|ACTION|add CompareFilter|colum=postId|symbol==|value=Post10
+[23:57:47:479]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|3dc7f680-fc6b-42fd-80e7-014fe23e912b|ACTION|querySingleEntity
+[23:57:47:540]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|3dc7f680-fc6b-42fd-80e7-014fe23e912b|ACTION|get JPQL|JPQL=select p from PostEntity p  where p.postId=:postId648965447229982349
+[23:57:47:541]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|3dc7f680-fc6b-42fd-80e7-014fe23e912b|ACTION|SET-PARAM|paramName=postId648965447229982349|paramValue=Post10
+[23:57:47:543]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|3fa098a1-5f96-43ab-bf8b-e9edfd6fc03a|ACTION|new Filter Chain
+[23:57:47:543]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|3fa098a1-5f96-43ab-bf8b-e9edfd6fc03a|ACTION|add CompareFilter|colum=userId|symbol==|value=U11
+[23:57:47:543]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|3fa098a1-5f96-43ab-bf8b-e9edfd6fc03a|ACTION|querySingleEntity
+[23:57:47:544]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|3fa098a1-5f96-43ab-bf8b-e9edfd6fc03a|ACTION|get JPQL|JPQL=select p from UserEntity p  where p.userId=:userId5044833441643646324
+[23:57:47:545]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|3fa098a1-5f96-43ab-bf8b-e9edfd6fc03a|ACTION|SET-PARAM|paramName=userId5044833441643646324|paramValue=U11
+[23:57:47:548]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|16cbeb2c-9d81-426a-b9f1-6cc658633fed|ACTION|new Filter Chain
+[23:57:47:548]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|16cbeb2c-9d81-426a-b9f1-6cc658633fed|ACTION|add CompareFilter|colum=postId|symbol==|value=Post10
+[23:57:47:548]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|16cbeb2c-9d81-426a-b9f1-6cc658633fed|add AndFilter
+[23:57:47:549]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|16cbeb2c-9d81-426a-b9f1-6cc658633fed|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:57:47:550]|[INFO]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|16cbeb2c-9d81-426a-b9f1-6cc658633fed|ACTION|queryEntities
+[23:57:47:550]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|16cbeb2c-9d81-426a-b9f1-6cc658633fed|ACTION|get JPQL|JPQL=select p from PostImageEntity p  where p.postId=:postIdA2368986246840103672 and p.pkId=:pkId6180143850510173010
+[23:57:47:552]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|16cbeb2c-9d81-426a-b9f1-6cc658633fed|ACTION|SET-PARAM|paramName=pkId6180143850510173010|paramValue=PK01
+[23:57:47:552]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|16cbeb2c-9d81-426a-b9f1-6cc658633fed|ACTION|SET-PARAM|paramName=postIdA2368986246840103672|paramValue=Post10
+[23:57:47:555]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|2c46127f-d9d3-454b-af5a-745fd1065b58|ACTION|new Filter Chain
+[23:57:47:573]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|2c46127f-d9d3-454b-af5a-745fd1065b58|ACTION|add CompareFilter|colum=postId|symbol==|value=Post7
+[23:57:47:574]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|2c46127f-d9d3-454b-af5a-745fd1065b58|ACTION|querySingleEntity
+[23:57:47:574]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|2c46127f-d9d3-454b-af5a-745fd1065b58|ACTION|get JPQL|JPQL=select p from PostEntity p  where p.postId=:postIdA6231758916038671742
+[23:57:47:575]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|2c46127f-d9d3-454b-af5a-745fd1065b58|ACTION|SET-PARAM|paramName=postIdA6231758916038671742|paramValue=Post7
+[23:57:47:576]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|4b5eab6c-5d93-4e25-9515-59db4b97bafb|ACTION|new Filter Chain
+[23:57:47:577]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|4b5eab6c-5d93-4e25-9515-59db4b97bafb|ACTION|add CompareFilter|colum=userId|symbol==|value=U8
+[23:57:47:577]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|4b5eab6c-5d93-4e25-9515-59db4b97bafb|ACTION|querySingleEntity
+[23:57:47:578]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|4b5eab6c-5d93-4e25-9515-59db4b97bafb|ACTION|get JPQL|JPQL=select p from UserEntity p  where p.userId=:userId1785421888287359746
+[23:57:47:579]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|4b5eab6c-5d93-4e25-9515-59db4b97bafb|ACTION|SET-PARAM|paramName=userId1785421888287359746|paramValue=U8
+[23:57:47:581]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|c15f6a66-9f6c-4332-9179-0ac6fd3088e6|ACTION|new Filter Chain
+[23:57:47:581]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|c15f6a66-9f6c-4332-9179-0ac6fd3088e6|ACTION|add CompareFilter|colum=postId|symbol==|value=Post7
+[23:57:47:582]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|c15f6a66-9f6c-4332-9179-0ac6fd3088e6|add AndFilter
+[23:57:47:582]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|c15f6a66-9f6c-4332-9179-0ac6fd3088e6|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:57:47:583]|[INFO]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|c15f6a66-9f6c-4332-9179-0ac6fd3088e6|ACTION|queryEntities
+[23:57:47:584]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|c15f6a66-9f6c-4332-9179-0ac6fd3088e6|ACTION|get JPQL|JPQL=select p from PostImageEntity p  where p.postId=:postIdA505701897285909818 and p.pkId=:pkId1857033415218515209
+[23:57:47:586]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|c15f6a66-9f6c-4332-9179-0ac6fd3088e6|ACTION|SET-PARAM|paramName=pkId1857033415218515209|paramValue=PK01
+[23:57:47:586]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|c15f6a66-9f6c-4332-9179-0ac6fd3088e6|ACTION|SET-PARAM|paramName=postIdA505701897285909818|paramValue=Post7
+[23:57:47:608]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|0467ca55-70ba-4c40-a45e-e4a7050c7a02|ACTION|new Filter Chain
+[23:57:47:608]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|0467ca55-70ba-4c40-a45e-e4a7050c7a02|ACTION|add CompareFilter|colum=postId|symbol==|value=Post12
+[23:57:47:608]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|0467ca55-70ba-4c40-a45e-e4a7050c7a02|ACTION|querySingleEntity
+[23:57:47:609]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|0467ca55-70ba-4c40-a45e-e4a7050c7a02|ACTION|get JPQL|JPQL=select p from PostEntity p  where p.postId=:postIdA4306754117250954819
+[23:57:47:610]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|0467ca55-70ba-4c40-a45e-e4a7050c7a02|ACTION|SET-PARAM|paramName=postIdA4306754117250954819|paramValue=Post12
+[23:57:47:612]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|10c9b2a0-dcba-47b0-92ca-60f897a12b91|ACTION|new Filter Chain
+[23:57:47:612]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|10c9b2a0-dcba-47b0-92ca-60f897a12b91|ACTION|add CompareFilter|colum=userId|symbol==|value=U13
+[23:57:47:612]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|10c9b2a0-dcba-47b0-92ca-60f897a12b91|ACTION|querySingleEntity
+[23:57:47:613]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|10c9b2a0-dcba-47b0-92ca-60f897a12b91|ACTION|get JPQL|JPQL=select p from UserEntity p  where p.userId=:userId5096703625996487749
+[23:57:47:614]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|10c9b2a0-dcba-47b0-92ca-60f897a12b91|ACTION|SET-PARAM|paramName=userId5096703625996487749|paramValue=U13
+[23:57:47:618]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|3b11c1ce-83cf-44b5-9d37-b7073b47596f|ACTION|new Filter Chain
+[23:57:47:618]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|3b11c1ce-83cf-44b5-9d37-b7073b47596f|ACTION|add CompareFilter|colum=postId|symbol==|value=Post12
+[23:57:47:619]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|3b11c1ce-83cf-44b5-9d37-b7073b47596f|add AndFilter
+[23:57:47:619]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|3b11c1ce-83cf-44b5-9d37-b7073b47596f|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:57:47:619]|[INFO]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|3b11c1ce-83cf-44b5-9d37-b7073b47596f|ACTION|queryEntities
+[23:57:47:620]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|3b11c1ce-83cf-44b5-9d37-b7073b47596f|ACTION|get JPQL|JPQL=select p from PostImageEntity p  where p.postId=:postId7136731843950233256 and p.pkId=:pkIdA7945553916198958607
+[23:57:47:621]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|3b11c1ce-83cf-44b5-9d37-b7073b47596f|ACTION|SET-PARAM|paramName=postId7136731843950233256|paramValue=Post12
+[23:57:47:621]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|3b11c1ce-83cf-44b5-9d37-b7073b47596f|ACTION|SET-PARAM|paramName=pkIdA7945553916198958607|paramValue=PK01
+[23:57:47:623]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|063e92ce-391b-4268-bc95-e30b419b7f8e|ACTION|new Filter Chain
+[23:57:47:624]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|063e92ce-391b-4268-bc95-e30b419b7f8e|ACTION|add CompareFilter|colum=postId|symbol==|value=Post1
+[23:57:47:624]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|063e92ce-391b-4268-bc95-e30b419b7f8e|ACTION|querySingleEntity
+[23:57:47:624]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|063e92ce-391b-4268-bc95-e30b419b7f8e|ACTION|get JPQL|JPQL=select p from PostEntity p  where p.postId=:postId7634569561559682933
+[23:57:47:625]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|063e92ce-391b-4268-bc95-e30b419b7f8e|ACTION|SET-PARAM|paramName=postId7634569561559682933|paramValue=Post1
+[23:57:47:627]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|2cf68db8-ab02-4a13-a2fa-549b324b1112|ACTION|new Filter Chain
+[23:57:47:627]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|2cf68db8-ab02-4a13-a2fa-549b324b1112|ACTION|add CompareFilter|colum=userId|symbol==|value=U3
+[23:57:47:628]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|2cf68db8-ab02-4a13-a2fa-549b324b1112|ACTION|querySingleEntity
+[23:57:47:628]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|2cf68db8-ab02-4a13-a2fa-549b324b1112|ACTION|get JPQL|JPQL=select p from UserEntity p  where p.userId=:userIdA3937909068677364176
+[23:57:47:629]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|2cf68db8-ab02-4a13-a2fa-549b324b1112|ACTION|SET-PARAM|paramName=userIdA3937909068677364176|paramValue=U3
+[23:57:47:631]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|961294a3-4390-46aa-9184-9e671edfb45f|ACTION|new Filter Chain
+[23:57:47:631]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|961294a3-4390-46aa-9184-9e671edfb45f|ACTION|add CompareFilter|colum=postId|symbol==|value=Post1
+[23:57:47:631]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|961294a3-4390-46aa-9184-9e671edfb45f|add AndFilter
+[23:57:47:632]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|961294a3-4390-46aa-9184-9e671edfb45f|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:57:47:632]|[INFO]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|961294a3-4390-46aa-9184-9e671edfb45f|ACTION|queryEntities
+[23:57:47:632]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|961294a3-4390-46aa-9184-9e671edfb45f|ACTION|get JPQL|JPQL=select p from PostImageEntity p  where p.postId=:postIdA411670505645192506 and p.pkId=:pkIdA5891767893966894041
+[23:57:47:634]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|961294a3-4390-46aa-9184-9e671edfb45f|ACTION|SET-PARAM|paramName=pkIdA5891767893966894041|paramValue=PK01
+[23:57:47:634]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|961294a3-4390-46aa-9184-9e671edfb45f|ACTION|SET-PARAM|paramName=postIdA411670505645192506|paramValue=Post1
+[23:57:47:636]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|cd5bc054-afc9-4d24-bbe3-b3525c52124a|ACTION|new Filter Chain
+[23:57:47:637]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|cd5bc054-afc9-4d24-bbe3-b3525c52124a|ACTION|add CompareFilter|colum=postId|symbol==|value=Post2
+[23:57:47:637]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|cd5bc054-afc9-4d24-bbe3-b3525c52124a|ACTION|querySingleEntity
+[23:57:47:637]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|cd5bc054-afc9-4d24-bbe3-b3525c52124a|ACTION|get JPQL|JPQL=select p from PostEntity p  where p.postId=:postId4956869561516114441
+[23:57:47:638]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|cd5bc054-afc9-4d24-bbe3-b3525c52124a|ACTION|SET-PARAM|paramName=postId4956869561516114441|paramValue=Post2
+[23:57:47:640]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|ba52ed10-8ac3-4c27-aa44-a90f74387221|ACTION|new Filter Chain
+[23:57:47:640]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|ba52ed10-8ac3-4c27-aa44-a90f74387221|ACTION|add CompareFilter|colum=userId|symbol==|value=U2
+[23:57:47:640]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|ba52ed10-8ac3-4c27-aa44-a90f74387221|ACTION|querySingleEntity
+[23:57:47:641]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|ba52ed10-8ac3-4c27-aa44-a90f74387221|ACTION|get JPQL|JPQL=select p from UserEntity p  where p.userId=:userId3464333959943638728
+[23:57:47:642]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|ba52ed10-8ac3-4c27-aa44-a90f74387221|ACTION|SET-PARAM|paramName=userId3464333959943638728|paramValue=U2
+[23:57:47:647]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|34f1bda0-9dc4-4f32-893a-19d0faf6ff22|ACTION|new Filter Chain
+[23:57:47:647]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|34f1bda0-9dc4-4f32-893a-19d0faf6ff22|ACTION|add CompareFilter|colum=postId|symbol==|value=Post2
+[23:57:47:647]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|34f1bda0-9dc4-4f32-893a-19d0faf6ff22|add AndFilter
+[23:57:47:648]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|34f1bda0-9dc4-4f32-893a-19d0faf6ff22|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:57:47:648]|[INFO]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|34f1bda0-9dc4-4f32-893a-19d0faf6ff22|ACTION|queryEntities
+[23:57:47:648]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|34f1bda0-9dc4-4f32-893a-19d0faf6ff22|ACTION|get JPQL|JPQL=select p from PostImageEntity p  where p.postId=:postIdA6198821262591638092 and p.pkId=:pkId7441245700463675454
+[23:57:47:650]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|34f1bda0-9dc4-4f32-893a-19d0faf6ff22|ACTION|SET-PARAM|paramName=pkId7441245700463675454|paramValue=PK01
+[23:57:47:650]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|34f1bda0-9dc4-4f32-893a-19d0faf6ff22|ACTION|SET-PARAM|paramName=postIdA6198821262591638092|paramValue=Post2
+[23:57:47:652]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|25b54ba8-6229-451e-a15f-75d53a87aa32|ACTION|new Filter Chain
+[23:57:47:653]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|25b54ba8-6229-451e-a15f-75d53a87aa32|ACTION|add CompareFilter|colum=postId|symbol==|value=Post5
+[23:57:47:653]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|25b54ba8-6229-451e-a15f-75d53a87aa32|ACTION|querySingleEntity
+[23:57:47:653]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|25b54ba8-6229-451e-a15f-75d53a87aa32|ACTION|get JPQL|JPQL=select p from PostEntity p  where p.postId=:postId719575354119441649
+[23:57:47:654]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|25b54ba8-6229-451e-a15f-75d53a87aa32|ACTION|SET-PARAM|paramName=postId719575354119441649|paramValue=Post5
+[23:57:47:656]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|530f12b9-47d4-40c8-b745-118143f1e20c|ACTION|new Filter Chain
+[23:57:47:656]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|530f12b9-47d4-40c8-b745-118143f1e20c|ACTION|add CompareFilter|colum=userId|symbol==|value=U6
+[23:57:47:657]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|530f12b9-47d4-40c8-b745-118143f1e20c|ACTION|querySingleEntity
+[23:57:47:657]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|530f12b9-47d4-40c8-b745-118143f1e20c|ACTION|get JPQL|JPQL=select p from UserEntity p  where p.userId=:userId2242198001660217034
+[23:57:47:658]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|530f12b9-47d4-40c8-b745-118143f1e20c|ACTION|SET-PARAM|paramName=userId2242198001660217034|paramValue=U6
+[23:57:47:660]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|3546f444-99cc-48ea-a3c0-7a0ce1b16552|ACTION|new Filter Chain
+[23:57:47:661]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|3546f444-99cc-48ea-a3c0-7a0ce1b16552|ACTION|add CompareFilter|colum=postId|symbol==|value=Post5
+[23:57:47:661]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|3546f444-99cc-48ea-a3c0-7a0ce1b16552|add AndFilter
+[23:57:47:661]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|3546f444-99cc-48ea-a3c0-7a0ce1b16552|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:57:47:662]|[INFO]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|3546f444-99cc-48ea-a3c0-7a0ce1b16552|ACTION|queryEntities
+[23:57:47:662]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|3546f444-99cc-48ea-a3c0-7a0ce1b16552|ACTION|get JPQL|JPQL=select p from PostImageEntity p  where p.postId=:postId829920630684336621 and p.pkId=:pkIdA4161776630343906756
+[23:57:47:663]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|3546f444-99cc-48ea-a3c0-7a0ce1b16552|ACTION|SET-PARAM|paramName=postId829920630684336621|paramValue=Post5
+[23:57:47:663]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|3546f444-99cc-48ea-a3c0-7a0ce1b16552|ACTION|SET-PARAM|paramName=pkIdA4161776630343906756|paramValue=PK01
+[23:57:47:665]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|f911c498-4044-4f8e-ac9c-5c67bd5a8ac4|ACTION|new Filter Chain
+[23:57:47:665]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|f911c498-4044-4f8e-ac9c-5c67bd5a8ac4|ACTION|add CompareFilter|colum=postId|symbol==|value=Post8
+[23:57:47:665]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|f911c498-4044-4f8e-ac9c-5c67bd5a8ac4|ACTION|querySingleEntity
+[23:57:47:665]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|f911c498-4044-4f8e-ac9c-5c67bd5a8ac4|ACTION|get JPQL|JPQL=select p from PostEntity p  where p.postId=:postId1772985399974055534
+[23:57:47:667]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|f911c498-4044-4f8e-ac9c-5c67bd5a8ac4|ACTION|SET-PARAM|paramName=postId1772985399974055534|paramValue=Post8
+[23:57:47:668]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|dc974481-ce63-4b15-bae8-166b85157ad3|ACTION|new Filter Chain
+[23:57:47:669]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|dc974481-ce63-4b15-bae8-166b85157ad3|ACTION|add CompareFilter|colum=userId|symbol==|value=U9
+[23:57:47:669]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|dc974481-ce63-4b15-bae8-166b85157ad3|ACTION|querySingleEntity
+[23:57:47:669]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|dc974481-ce63-4b15-bae8-166b85157ad3|ACTION|get JPQL|JPQL=select p from UserEntity p  where p.userId=:userIdA8878354939165195991
+[23:57:47:670]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|dc974481-ce63-4b15-bae8-166b85157ad3|ACTION|SET-PARAM|paramName=userIdA8878354939165195991|paramValue=U9
+[23:57:47:672]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|7a96f003-a9cc-42b3-a591-1464dcb5c012|ACTION|new Filter Chain
+[23:57:47:672]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|7a96f003-a9cc-42b3-a591-1464dcb5c012|ACTION|add CompareFilter|colum=postId|symbol==|value=Post8
+[23:57:47:673]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|7a96f003-a9cc-42b3-a591-1464dcb5c012|add AndFilter
+[23:57:47:673]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|7a96f003-a9cc-42b3-a591-1464dcb5c012|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:57:47:673]|[INFO]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|7a96f003-a9cc-42b3-a591-1464dcb5c012|ACTION|queryEntities
+[23:57:47:673]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|7a96f003-a9cc-42b3-a591-1464dcb5c012|ACTION|get JPQL|JPQL=select p from PostImageEntity p  where p.postId=:postIdA8150879607214224535 and p.pkId=:pkId875365402270712781
+[23:57:47:675]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|7a96f003-a9cc-42b3-a591-1464dcb5c012|ACTION|SET-PARAM|paramName=pkId875365402270712781|paramValue=PK01
+[23:57:47:675]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|7a96f003-a9cc-42b3-a591-1464dcb5c012|ACTION|SET-PARAM|paramName=postIdA8150879607214224535|paramValue=Post8
+[23:57:47:677]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|c82de05f-7d20-460f-b948-d20467880404|ACTION|new Filter Chain
+[23:57:47:677]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|c82de05f-7d20-460f-b948-d20467880404|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:57:47:677]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|c82de05f-7d20-460f-b948-d20467880404|add AndFilter
+[23:57:47:678]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|c82de05f-7d20-460f-b948-d20467880404|ACTION|add CompareFilter|colum=userId|symbol==|value=ozm2e4r6IgyVMlA6goFt7AbB3wVw
+[23:57:47:678]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|c82de05f-7d20-460f-b948-d20467880404|add AndFilter
+[23:57:47:678]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|inFilter|sqlUniqued|c82de05f-7d20-460f-b948-d20467880404|ACTION|add InFilter|colum=postId|values=[Post11, Post3, Post4, Post13, Post6, 14ab9a6a-1682-4212-b90b-cb44a8816c51, Post9, Post14, Post10, Post7, Post12, Post1, Post2, Post5, Post8]
+[23:57:47:678]|[INFO]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|c82de05f-7d20-460f-b948-d20467880404|ACTION|queryEntities
+[23:57:47:679]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|c82de05f-7d20-460f-b948-d20467880404|ACTION|get JPQL|JPQL=select p from UserCollectionEntity p  where p.pkId=:pkId3039998270009854525 and p.userId=:userIdA5754940342796140441 and p.postId in(:postId7796368582708185382)
+[23:57:47:680]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|c82de05f-7d20-460f-b948-d20467880404|ACTION|SET-PARAM|paramName=pkId3039998270009854525|paramValue=PK01
+[23:57:47:680]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|c82de05f-7d20-460f-b948-d20467880404|ACTION|SET-PARAM|paramName=userIdA5754940342796140441|paramValue=ozm2e4r6IgyVMlA6goFt7AbB3wVw
+[23:57:47:680]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|c82de05f-7d20-460f-b948-d20467880404|ACTION|SET-PARAM|paramName=postId7796368582708185382|paramValue=[Post11, Post3, Post4, Post13, Post6, 14ab9a6a-1682-4212-b90b-cb44a8816c51, Post9, Post14, Post10, Post7, Post12, Post1, Post2, Post5, Post8]
+[23:57:48:903]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|37de9e43-f161-4871-b381-2269945e5f9f|ACTION|new Filter Chain
+[23:57:48:903]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|37de9e43-f161-4871-b381-2269945e5f9f|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:57:48:903]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|37de9e43-f161-4871-b381-2269945e5f9f|add AndFilter
+[23:57:48:903]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|37de9e43-f161-4871-b381-2269945e5f9f|ACTION|add CompareFilter|colum=statu|symbol==|value=打赏中
+[23:57:48:904]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|pageLimitFilter|sqlUniqued|37de9e43-f161-4871-b381-2269945e5f9f|ACTION|add PageLimitFilter|page=1|limit=1
+[23:57:48:904]|[INFO]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|37de9e43-f161-4871-b381-2269945e5f9f|ACTION|queryEntities
+[23:57:48:904]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|37de9e43-f161-4871-b381-2269945e5f9f|ACTION|get JPQL|JPQL=select p from PkTaskEntity p  where p.pkId=:pkId8912325756368473897 and p.statu=:statuA1697338209792801369
+[23:57:48:905]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|37de9e43-f161-4871-b381-2269945e5f9f|ACTION|SET-PARAM|paramName=pkId8912325756368473897|paramValue=PK01
+[23:57:48:906]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|37de9e43-f161-4871-b381-2269945e5f9f|ACTION|SET-PARAM|paramName=statuA1697338209792801369|paramValue=打赏中
+[23:57:54:984]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|647c841a-b998-4b3b-8aba-c87e56cf13be|ACTION|new Filter Chain
+[23:57:54:984]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|647c841a-b998-4b3b-8aba-c87e56cf13be|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:57:54:985]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|647c841a-b998-4b3b-8aba-c87e56cf13be|ACTION|querySingleEntity
+[23:57:54:985]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|647c841a-b998-4b3b-8aba-c87e56cf13be|ACTION|get JPQL|JPQL=select p from PkEntity p  where p.pkId=:pkIdA2687819664818356104
+[23:57:54:987]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|647c841a-b998-4b3b-8aba-c87e56cf13be|ACTION|SET-PARAM|paramName=pkIdA2687819664818356104|paramValue=PK01
+[23:58:04:810]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|ada63235-d0e7-43dc-b86b-7e8363d465c6|ACTION|new Filter Chain
+[23:58:04:811]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|ada63235-d0e7-43dc-b86b-7e8363d465c6|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:58:04:811]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|ada63235-d0e7-43dc-b86b-7e8363d465c6|add AndFilter
+[23:58:04:812]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|ada63235-d0e7-43dc-b86b-7e8363d465c6|ACTION|add CompareFilter|colum=page|symbol==|value=PAGE-1
+[23:58:04:812]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|ada63235-d0e7-43dc-b86b-7e8363d465c6|ACTION|querySingleEntity
+[23:58:04:812]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|ada63235-d0e7-43dc-b86b-7e8363d465c6|ACTION|get JPQL|JPQL=select p from PkPageRefreshTimeEntity p  where p.pkId=:pkId6024348630113668345 and p.page=:pageA6937196191895695695
+[23:58:04:815]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|ada63235-d0e7-43dc-b86b-7e8363d465c6|ACTION|SET-PARAM|paramName=pageA6937196191895695695|paramValue=PAGE-1
+[23:58:04:816]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|ada63235-d0e7-43dc-b86b-7e8363d465c6|ACTION|SET-PARAM|paramName=pkId6024348630113668345|paramValue=PK01
+[23:58:04:819]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|32b3f221-2191-4ef2-bfb3-c2a9be5550ae|ACTION|new Filter Chain
+[23:58:04:819]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|32b3f221-2191-4ef2-bfb3-c2a9be5550ae|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:58:04:819]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|32b3f221-2191-4ef2-bfb3-c2a9be5550ae|add AndFilter
+[23:58:04:820]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|32b3f221-2191-4ef2-bfb3-c2a9be5550ae|ACTION|add CompareFilter|colum=userId|symbol==|value=ozm2e4r6IgyVMlA6goFt7AbB3wVw
+[23:58:04:820]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|32b3f221-2191-4ef2-bfb3-c2a9be5550ae|add AndFilter
+[23:58:04:820]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|inFilter|sqlUniqued|32b3f221-2191-4ef2-bfb3-c2a9be5550ae|ACTION|add InFilter|colum=postId|values=[Post9, Post11, Post2, Post1, Post3, Post14, Post6, Post7, Post5, Post12, Post4, Post13, Post10, Post8, 14ab9a6a-1682-4212-b90b-cb44a8816c51]
+[23:58:04:820]|[INFO]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|32b3f221-2191-4ef2-bfb3-c2a9be5550ae|ACTION|queryEntities
+[23:58:04:821]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|32b3f221-2191-4ef2-bfb3-c2a9be5550ae|ACTION|get JPQL|JPQL=select p from UserCollectionEntity p  where p.pkId=:pkId4880963114426845503 and p.userId=:userId6355206389623900094 and p.postId in(:postId4851445409093275358)
+[23:58:04:822]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|32b3f221-2191-4ef2-bfb3-c2a9be5550ae|ACTION|SET-PARAM|paramName=userId6355206389623900094|paramValue=ozm2e4r6IgyVMlA6goFt7AbB3wVw
+[23:58:04:824]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|32b3f221-2191-4ef2-bfb3-c2a9be5550ae|ACTION|SET-PARAM|paramName=postId4851445409093275358|paramValue=[Post9, Post11, Post2, Post1, Post3, Post14, Post6, Post7, Post5, Post12, Post4, Post13, Post10, Post8, 14ab9a6a-1682-4212-b90b-cb44a8816c51]
+[23:58:04:824]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|32b3f221-2191-4ef2-bfb3-c2a9be5550ae|ACTION|SET-PARAM|paramName=pkId4880963114426845503|paramValue=PK01
+[23:58:05:437]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|3682863c-0750-4542-bdb3-13a9c5d3b5ef|ACTION|new Filter Chain
+[23:58:05:438]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|3682863c-0750-4542-bdb3-13a9c5d3b5ef|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:58:05:438]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|3682863c-0750-4542-bdb3-13a9c5d3b5ef|add AndFilter
+[23:58:05:438]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|3682863c-0750-4542-bdb3-13a9c5d3b5ef|ACTION|add CompareFilter|colum=userId|symbol==|value=ozm2e4r6IgyVMlA6goFt7AbB3wVw
+[23:58:05:438]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|3682863c-0750-4542-bdb3-13a9c5d3b5ef|ACTION|querySingleEntity
+[23:58:05:439]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|3682863c-0750-4542-bdb3-13a9c5d3b5ef|ACTION|get JPQL|JPQL=select p from UserPostEntity p  where p.pkId=:pkIdA8270966769433624211 and p.userId=:userIdA5676423608162891992
+[23:58:05:440]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|3682863c-0750-4542-bdb3-13a9c5d3b5ef|ACTION|SET-PARAM|paramName=pkIdA8270966769433624211|paramValue=PK01
+[23:58:05:440]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|3682863c-0750-4542-bdb3-13a9c5d3b5ef|ACTION|SET-PARAM|paramName=userIdA5676423608162891992|paramValue=ozm2e4r6IgyVMlA6goFt7AbB3wVw
+[23:58:15:745]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|34645572-f417-45a0-9098-e45690ba2766|ACTION|new Filter Chain
+[23:58:15:746]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|34645572-f417-45a0-9098-e45690ba2766|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:58:15:746]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|34645572-f417-45a0-9098-e45690ba2766|add AndFilter
+[23:58:15:746]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|34645572-f417-45a0-9098-e45690ba2766|ACTION|add CompareFilter|colum=page|symbol==|value=PAGE-1
+[23:58:15:746]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|34645572-f417-45a0-9098-e45690ba2766|ACTION|querySingleEntity
+[23:58:15:747]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|34645572-f417-45a0-9098-e45690ba2766|ACTION|get JPQL|JPQL=select p from PkPageRefreshTimeEntity p  where p.pkId=:pkId7847615680710134719 and p.page=:page3598024515767517329
+[23:58:15:748]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|34645572-f417-45a0-9098-e45690ba2766|ACTION|SET-PARAM|paramName=pkId7847615680710134719|paramValue=PK01
+[23:58:15:749]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|34645572-f417-45a0-9098-e45690ba2766|ACTION|SET-PARAM|paramName=page3598024515767517329|paramValue=PAGE-1
+[23:58:15:750]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|a4aee8af-c81c-4845-a64b-23831991f21a|ACTION|new Filter Chain
+[23:58:15:751]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|a4aee8af-c81c-4845-a64b-23831991f21a|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:58:15:751]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|a4aee8af-c81c-4845-a64b-23831991f21a|add AndFilter
+[23:58:15:751]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|a4aee8af-c81c-4845-a64b-23831991f21a|ACTION|add CompareFilter|colum=userId|symbol==|value=ozm2e4r6IgyVMlA6goFt7AbB3wVw
+[23:58:15:751]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|a4aee8af-c81c-4845-a64b-23831991f21a|add AndFilter
+[23:58:15:752]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|inFilter|sqlUniqued|a4aee8af-c81c-4845-a64b-23831991f21a|ACTION|add InFilter|colum=postId|values=[Post9, Post11, Post2, Post1, Post3, Post14, Post6, Post7, Post5, Post12, Post4, Post13, Post10, Post8, 14ab9a6a-1682-4212-b90b-cb44a8816c51]
+[23:58:15:752]|[INFO]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|a4aee8af-c81c-4845-a64b-23831991f21a|ACTION|queryEntities
+[23:58:15:752]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|a4aee8af-c81c-4845-a64b-23831991f21a|ACTION|get JPQL|JPQL=select p from UserCollectionEntity p  where p.pkId=:pkId6020485988721902347 and p.userId=:userId3869744157071787570 and p.postId in(:postIdA5466635402424795103)
+[23:58:15:753]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|a4aee8af-c81c-4845-a64b-23831991f21a|ACTION|SET-PARAM|paramName=pkId6020485988721902347|paramValue=PK01
+[23:58:15:754]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|a4aee8af-c81c-4845-a64b-23831991f21a|ACTION|SET-PARAM|paramName=postIdA5466635402424795103|paramValue=[Post9, Post11, Post2, Post1, Post3, Post14, Post6, Post7, Post5, Post12, Post4, Post13, Post10, Post8, 14ab9a6a-1682-4212-b90b-cb44a8816c51]
+[23:58:15:754]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|a4aee8af-c81c-4845-a64b-23831991f21a|ACTION|SET-PARAM|paramName=userId3869744157071787570|paramValue=ozm2e4r6IgyVMlA6goFt7AbB3wVw
+[23:58:15:855]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|4c561b5e-932e-4a28-8d15-83d0e8330eb5|ACTION|new Filter Chain
+[23:58:15:855]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|4c561b5e-932e-4a28-8d15-83d0e8330eb5|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:58:15:856]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|andFilter|sqlUniqued|4c561b5e-932e-4a28-8d15-83d0e8330eb5|add AndFilter
+[23:58:15:856]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|4c561b5e-932e-4a28-8d15-83d0e8330eb5|ACTION|add CompareFilter|colum=userId|symbol==|value=ozm2e4r6IgyVMlA6goFt7AbB3wVw
+[23:58:15:856]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|4c561b5e-932e-4a28-8d15-83d0e8330eb5|ACTION|querySingleEntity
+[23:58:15:856]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|4c561b5e-932e-4a28-8d15-83d0e8330eb5|ACTION|get JPQL|JPQL=select p from UserPostEntity p  where p.pkId=:pkId8562501160537050418 and p.userId=:userId9090801448252359107
+[23:58:15:857]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|4c561b5e-932e-4a28-8d15-83d0e8330eb5|ACTION|SET-PARAM|paramName=userId9090801448252359107|paramValue=ozm2e4r6IgyVMlA6goFt7AbB3wVw
+[23:58:15:858]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|4c561b5e-932e-4a28-8d15-83d0e8330eb5|ACTION|SET-PARAM|paramName=pkId8562501160537050418|paramValue=PK01
+[23:58:18:976]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|104a11ea-640e-4543-97a7-367bb6c5b9b6|ACTION|new Filter Chain
+[23:58:18:976]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|104a11ea-640e-4543-97a7-367bb6c5b9b6|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:58:18:977]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|104a11ea-640e-4543-97a7-367bb6c5b9b6|ACTION|querySingleEntity
+[23:58:18:977]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|104a11ea-640e-4543-97a7-367bb6c5b9b6|ACTION|get JPQL|JPQL=select p from PkEntity p  where p.pkId=:pkIdA8709400606748685735
+[23:58:18:978]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|104a11ea-640e-4543-97a7-367bb6c5b9b6|ACTION|SET-PARAM|paramName=pkIdA8709400606748685735|paramValue=PK01
+[23:58:20:343]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|b2126218-ac2d-46aa-b73f-1788cb0c08c4|ACTION|new Filter Chain
+[23:58:20:343]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|b2126218-ac2d-46aa-b73f-1788cb0c08c4|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:58:20:343]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|b2126218-ac2d-46aa-b73f-1788cb0c08c4|ACTION|querySingleEntity
+[23:58:20:343]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|b2126218-ac2d-46aa-b73f-1788cb0c08c4|ACTION|get JPQL|JPQL=select p from PkEntity p  where p.pkId=:pkId2917493714765696425
+[23:58:20:344]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|b2126218-ac2d-46aa-b73f-1788cb0c08c4|ACTION|SET-PARAM|paramName=pkId2917493714765696425|paramValue=PK01
+[23:58:20:774]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|3807174c-6dba-4aa8-9085-b91067bd18e2|ACTION|new Filter Chain
+[23:58:20:774]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|3807174c-6dba-4aa8-9085-b91067bd18e2|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:58:20:774]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|3807174c-6dba-4aa8-9085-b91067bd18e2|ACTION|querySingleEntity
+[23:58:20:774]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|3807174c-6dba-4aa8-9085-b91067bd18e2|ACTION|get JPQL|JPQL=select p from PkEntity p  where p.pkId=:pkId9207374763688281609
+[23:58:20:775]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|3807174c-6dba-4aa8-9085-b91067bd18e2|ACTION|SET-PARAM|paramName=pkId9207374763688281609|paramValue=PK01
+[23:58:21:163]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|c9d3cc84-5af2-4c98-a112-709d781ca2da|ACTION|new Filter Chain
+[23:58:21:163]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|c9d3cc84-5af2-4c98-a112-709d781ca2da|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:58:21:163]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|c9d3cc84-5af2-4c98-a112-709d781ca2da|ACTION|querySingleEntity
+[23:58:21:164]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|c9d3cc84-5af2-4c98-a112-709d781ca2da|ACTION|get JPQL|JPQL=select p from PkEntity p  where p.pkId=:pkId3208580851092507952
+[23:58:21:165]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|c9d3cc84-5af2-4c98-a112-709d781ca2da|ACTION|SET-PARAM|paramName=pkId3208580851092507952|paramValue=PK01
+[23:58:21:487]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|f5530be5-dfab-4cdf-a82e-9ee846a9985c|ACTION|new Filter Chain
+[23:58:21:487]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|f5530be5-dfab-4cdf-a82e-9ee846a9985c|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:58:21:487]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|f5530be5-dfab-4cdf-a82e-9ee846a9985c|ACTION|querySingleEntity
+[23:58:21:487]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|f5530be5-dfab-4cdf-a82e-9ee846a9985c|ACTION|get JPQL|JPQL=select p from PkEntity p  where p.pkId=:pkId5280895614096460848
+[23:58:21:488]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|f5530be5-dfab-4cdf-a82e-9ee846a9985c|ACTION|SET-PARAM|paramName=pkId5280895614096460848|paramValue=PK01
+[23:58:21:777]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|a13e1454-5b43-4a45-80e1-6da0145d29d7|ACTION|new Filter Chain
+[23:58:21:778]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|a13e1454-5b43-4a45-80e1-6da0145d29d7|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:58:21:778]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|a13e1454-5b43-4a45-80e1-6da0145d29d7|ACTION|querySingleEntity
+[23:58:21:778]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|a13e1454-5b43-4a45-80e1-6da0145d29d7|ACTION|get JPQL|JPQL=select p from PkEntity p  where p.pkId=:pkId6198604735217616777
+[23:58:21:779]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|a13e1454-5b43-4a45-80e1-6da0145d29d7|ACTION|SET-PARAM|paramName=pkId6198604735217616777|paramValue=PK01
+[23:59:06:739]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|f927c1f6-be17-4c8d-ad4f-3793ad0843e5|ACTION|new Filter Chain
+[23:59:06:742]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|f927c1f6-be17-4c8d-ad4f-3793ad0843e5|ACTION|add CompareFilter|colum=configName|symbol==|value=OSS-BASE-URL
+[23:59:06:770]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|f927c1f6-be17-4c8d-ad4f-3793ad0843e5|ACTION|querySingleEntity
+[23:59:06:771]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|f927c1f6-be17-4c8d-ad4f-3793ad0843e5|ACTION|get JPQL|JPQL=select p from ConfigEntity p  where p.configName=:configName8025938512194980050
+[23:59:06:800]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|f927c1f6-be17-4c8d-ad4f-3793ad0843e5|ACTION|SET-PARAM|paramName=configName8025938512194980050|paramValue=OSS-BASE-URL
+[23:59:06:841]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|8e53f79d-37fb-422d-ac16-5d16a4fcc34e|ACTION|new Filter Chain
+[23:59:06:842]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|8e53f79d-37fb-422d-ac16-5d16a4fcc34e|ACTION|add CompareFilter|colum=configName|symbol==|value=OSS-BUKET-NAME
+[23:59:06:842]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|8e53f79d-37fb-422d-ac16-5d16a4fcc34e|ACTION|querySingleEntity
+[23:59:06:842]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|8e53f79d-37fb-422d-ac16-5d16a4fcc34e|ACTION|get JPQL|JPQL=select p from ConfigEntity p  where p.configName=:configNameA2243023055724002556
+[23:59:06:843]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|8e53f79d-37fb-422d-ac16-5d16a4fcc34e|ACTION|SET-PARAM|paramName=configNameA2243023055724002556|paramValue=OSS-BUKET-NAME
+[23:59:08:505]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|16b65f33-d1b2-4098-b9ca-39d77e89df6a|ACTION|new Filter Chain
+[23:59:08:505]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|16b65f33-d1b2-4098-b9ca-39d77e89df6a|ACTION|add CompareFilter|colum=configName|symbol==|value=name1
+[23:59:08:506]|[INFO]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|16b65f33-d1b2-4098-b9ca-39d77e89df6a|ACTION|queryEntities
+[23:59:08:506]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|16b65f33-d1b2-4098-b9ca-39d77e89df6a|ACTION|get JPQL|JPQL=select p from ConfigEntity p  where p.configName=:configName603557519084833722
+[23:59:08:507]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|16b65f33-d1b2-4098-b9ca-39d77e89df6a|ACTION|SET-PARAM|paramName=configName603557519084833722|paramValue=name1
+[23:59:08:510]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|365a97eb-0f37-42b6-b95c-c8f006eacffd|ACTION|new Filter Chain
+[23:59:08:510]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|365a97eb-0f37-42b6-b95c-c8f006eacffd|ACTION|add CompareFilter|colum=configName|symbol==|value=name2
+[23:59:08:510]|[INFO]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|365a97eb-0f37-42b6-b95c-c8f006eacffd|ACTION|queryEntities
+[23:59:08:510]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|365a97eb-0f37-42b6-b95c-c8f006eacffd|ACTION|get JPQL|JPQL=select p from ConfigEntity p  where p.configName=:configNameA4503765606803158651
+[23:59:08:511]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|365a97eb-0f37-42b6-b95c-c8f006eacffd|ACTION|SET-PARAM|paramName=configNameA4503765606803158651|paramValue=name2
+[23:59:08:514]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|708989ef-be6e-4daf-8c4b-2d3caeb4c300|ACTION|new Filter Chain
+[23:59:08:514]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|708989ef-be6e-4daf-8c4b-2d3caeb4c300|ACTION|add CompareFilter|colum=configName|symbol==|value=name3
+[23:59:08:514]|[INFO]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|708989ef-be6e-4daf-8c4b-2d3caeb4c300|ACTION|queryEntities
+[23:59:08:514]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|708989ef-be6e-4daf-8c4b-2d3caeb4c300|ACTION|get JPQL|JPQL=select p from ConfigEntity p  where p.configName=:configNameA3902503407259466291
+[23:59:08:515]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|708989ef-be6e-4daf-8c4b-2d3caeb4c300|ACTION|SET-PARAM|paramName=configNameA3902503407259466291|paramValue=name3
+[23:59:08:518]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|9123fbed-060d-46cc-a46f-0f1082290d7d|ACTION|new Filter Chain
+[23:59:08:518]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|9123fbed-060d-46cc-a46f-0f1082290d7d|ACTION|add CompareFilter|colum=configName|symbol==|value=name4
+[23:59:08:518]|[INFO]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|9123fbed-060d-46cc-a46f-0f1082290d7d|ACTION|queryEntities
+[23:59:08:519]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|9123fbed-060d-46cc-a46f-0f1082290d7d|ACTION|get JPQL|JPQL=select p from ConfigEntity p  where p.configName=:configName5075032009701605713
+[23:59:08:519]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|9123fbed-060d-46cc-a46f-0f1082290d7d|ACTION|SET-PARAM|paramName=configName5075032009701605713|paramValue=name4
+[23:59:08:522]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|99108752-b332-4b5c-8fed-c69ce6917c9f|ACTION|new Filter Chain
+[23:59:08:522]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|99108752-b332-4b5c-8fed-c69ce6917c9f|ACTION|add CompareFilter|colum=configName|symbol==|value=name5
+[23:59:08:523]|[INFO]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|99108752-b332-4b5c-8fed-c69ce6917c9f|ACTION|queryEntities
+[23:59:08:523]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|99108752-b332-4b5c-8fed-c69ce6917c9f|ACTION|get JPQL|JPQL=select p from ConfigEntity p  where p.configName=:configNameA8714177298692026832
+[23:59:08:524]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|99108752-b332-4b5c-8fed-c69ce6917c9f|ACTION|SET-PARAM|paramName=configNameA8714177298692026832|paramValue=name5
+[23:59:08:526]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|28917416-2704-4a97-8120-1cab20d02031|ACTION|new Filter Chain
+[23:59:08:526]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|28917416-2704-4a97-8120-1cab20d02031|ACTION|add CompareFilter|colum=configName|symbol==|value=name6
+[23:59:08:527]|[INFO]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|28917416-2704-4a97-8120-1cab20d02031|ACTION|queryEntities
+[23:59:08:527]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|28917416-2704-4a97-8120-1cab20d02031|ACTION|get JPQL|JPQL=select p from ConfigEntity p  where p.configName=:configName929780335232567049
+[23:59:08:528]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|28917416-2704-4a97-8120-1cab20d02031|ACTION|SET-PARAM|paramName=configName929780335232567049|paramValue=name6
+[23:59:08:530]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|000f2ce4-da80-425a-b3ef-6be5b0e466c9|ACTION|new Filter Chain
+[23:59:08:530]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|000f2ce4-da80-425a-b3ef-6be5b0e466c9|ACTION|add CompareFilter|colum=configName|symbol==|value=name1
+[23:59:08:531]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|000f2ce4-da80-425a-b3ef-6be5b0e466c9|ACTION|querySingleEntity
+[23:59:08:531]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|000f2ce4-da80-425a-b3ef-6be5b0e466c9|ACTION|get JPQL|JPQL=select p from ConfigEntity p  where p.configName=:configNameA5495011535630939017
+[23:59:08:532]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|000f2ce4-da80-425a-b3ef-6be5b0e466c9|ACTION|SET-PARAM|paramName=configNameA5495011535630939017|paramValue=name1
+[23:59:08:534]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|32a7db25-e170-4c75-93f8-deaff9c9c8c4|ACTION|new Filter Chain
+[23:59:08:535]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|32a7db25-e170-4c75-93f8-deaff9c9c8c4|ACTION|add CompareFilter|colum=configName|symbol==|value=name2
+[23:59:08:535]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|32a7db25-e170-4c75-93f8-deaff9c9c8c4|ACTION|querySingleEntity
+[23:59:08:535]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|32a7db25-e170-4c75-93f8-deaff9c9c8c4|ACTION|get JPQL|JPQL=select p from ConfigEntity p  where p.configName=:configName429195603541770713
+[23:59:08:536]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|32a7db25-e170-4c75-93f8-deaff9c9c8c4|ACTION|SET-PARAM|paramName=configName429195603541770713|paramValue=name2
+[23:59:08:539]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|0bfe1b43-d3ab-4149-9f3b-beba4326b2be|ACTION|new Filter Chain
+[23:59:08:539]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|0bfe1b43-d3ab-4149-9f3b-beba4326b2be|ACTION|add CompareFilter|colum=configName|symbol==|value=name3
+[23:59:08:539]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|0bfe1b43-d3ab-4149-9f3b-beba4326b2be|ACTION|querySingleEntity
+[23:59:08:539]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|0bfe1b43-d3ab-4149-9f3b-beba4326b2be|ACTION|get JPQL|JPQL=select p from ConfigEntity p  where p.configName=:configNameA7896645690332001404
+[23:59:08:540]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|0bfe1b43-d3ab-4149-9f3b-beba4326b2be|ACTION|SET-PARAM|paramName=configNameA7896645690332001404|paramValue=name3
+[23:59:08:542]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|6e25e2d5-c03b-4eeb-ad7b-cadb73a81504|ACTION|new Filter Chain
+[23:59:08:543]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|6e25e2d5-c03b-4eeb-ad7b-cadb73a81504|ACTION|add CompareFilter|colum=configName|symbol==|value=name4
+[23:59:08:543]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|6e25e2d5-c03b-4eeb-ad7b-cadb73a81504|ACTION|querySingleEntity
+[23:59:08:543]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|6e25e2d5-c03b-4eeb-ad7b-cadb73a81504|ACTION|get JPQL|JPQL=select p from ConfigEntity p  where p.configName=:configName1697684734071423991
+[23:59:08:544]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|6e25e2d5-c03b-4eeb-ad7b-cadb73a81504|ACTION|SET-PARAM|paramName=configName1697684734071423991|paramValue=name4
+[23:59:08:546]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|127e43bb-04cc-4c2b-a32b-fe6b6de2407b|ACTION|new Filter Chain
+[23:59:08:547]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|127e43bb-04cc-4c2b-a32b-fe6b6de2407b|ACTION|add CompareFilter|colum=configName|symbol==|value=name5
+[23:59:08:547]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|127e43bb-04cc-4c2b-a32b-fe6b6de2407b|ACTION|querySingleEntity
+[23:59:08:547]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|127e43bb-04cc-4c2b-a32b-fe6b6de2407b|ACTION|get JPQL|JPQL=select p from ConfigEntity p  where p.configName=:configNameA2011274127365550650
+[23:59:08:548]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|127e43bb-04cc-4c2b-a32b-fe6b6de2407b|ACTION|SET-PARAM|paramName=configNameA2011274127365550650|paramValue=name5
+[23:59:08:550]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|7cb88868-029f-41c2-a27e-7eae9c2247bf|ACTION|new Filter Chain
+[23:59:08:551]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|7cb88868-029f-41c2-a27e-7eae9c2247bf|ACTION|add CompareFilter|colum=configName|symbol==|value=name6
+[23:59:08:551]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|7cb88868-029f-41c2-a27e-7eae9c2247bf|ACTION|querySingleEntity
+[23:59:08:551]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|7cb88868-029f-41c2-a27e-7eae9c2247bf|ACTION|get JPQL|JPQL=select p from ConfigEntity p  where p.configName=:configName5081815757020810921
+[23:59:08:552]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|7cb88868-029f-41c2-a27e-7eae9c2247bf|ACTION|SET-PARAM|paramName=configName5081815757020810921|paramValue=name6
+[23:59:35:179]|[ERROR]|org.springframework.boot.SpringApplication|reportFailure|Application run failed
+org.springframework.beans.factory.BeanDefinitionStoreException: Failed to parse configuration class [com.union.app.AppApplication]; nested exception is java.io.FileNotFoundException: class path resource [com/union/app/api/pk/定时刷新/刷新任务.class] cannot be opened because it does not exist
+	at org.springframework.context.annotation.ConfigurationClassParser.parse(ConfigurationClassParser.java:184) ~[spring-context-5.0.10.RELEASE.jar:5.0.10.RELEASE]
+	at org.springframework.context.annotation.ConfigurationClassPostProcessor.processConfigBeanDefinitions(ConfigurationClassPostProcessor.java:316) ~[spring-context-5.0.10.RELEASE.jar:5.0.10.RELEASE]
+	at org.springframework.context.annotation.ConfigurationClassPostProcessor.postProcessBeanDefinitionRegistry(ConfigurationClassPostProcessor.java:233) ~[spring-context-5.0.10.RELEASE.jar:5.0.10.RELEASE]
+	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanDefinitionRegistryPostProcessors(PostProcessorRegistrationDelegate.java:271) ~[spring-context-5.0.10.RELEASE.jar:5.0.10.RELEASE]
+	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(PostProcessorRegistrationDelegate.java:91) ~[spring-context-5.0.10.RELEASE.jar:5.0.10.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.invokeBeanFactoryPostProcessors(AbstractApplicationContext.java:692) ~[spring-context-5.0.10.RELEASE.jar:5.0.10.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:530) ~[spring-context-5.0.10.RELEASE.jar:5.0.10.RELEASE]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:140) ~[spring-boot-2.0.6.RELEASE.jar:2.0.6.RELEASE]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754) [spring-boot-2.0.6.RELEASE.jar:2.0.6.RELEASE]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:386) [spring-boot-2.0.6.RELEASE.jar:2.0.6.RELEASE]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:307) [spring-boot-2.0.6.RELEASE.jar:2.0.6.RELEASE]
+	at com.union.app.AppApplication.main(AppApplication.java:41) [classes/:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_161]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:1.8.0_161]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:1.8.0_161]
+	at java.lang.reflect.Method.invoke(Method.java:498) ~[?:1.8.0_161]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:49) [spring-boot-devtools-2.0.6.RELEASE.jar:2.0.6.RELEASE]
+Caused by: java.io.FileNotFoundException: class path resource [com/union/app/api/pk/定时刷新/刷新任务.class] cannot be opened because it does not exist
+	at org.springframework.core.io.ClassPathResource.getInputStream(ClassPathResource.java:180) ~[spring-core-5.0.10.RELEASE.jar:5.0.10.RELEASE]
+	at org.springframework.core.type.classreading.SimpleMetadataReader.<init>(SimpleMetadataReader.java:51) ~[spring-core-5.0.10.RELEASE.jar:5.0.10.RELEASE]
+	at org.springframework.core.type.classreading.SimpleMetadataReaderFactory.getMetadataReader(SimpleMetadataReaderFactory.java:103) ~[spring-core-5.0.10.RELEASE.jar:5.0.10.RELEASE]
+	at org.springframework.boot.type.classreading.ConcurrentReferenceCachingMetadataReaderFactory.createMetadataReader(ConcurrentReferenceCachingMetadataReaderFactory.java:88) ~[spring-boot-2.0.6.RELEASE.jar:2.0.6.RELEASE]
+	at org.springframework.boot.type.classreading.ConcurrentReferenceCachingMetadataReaderFactory.getMetadataReader(ConcurrentReferenceCachingMetadataReaderFactory.java:75) ~[spring-boot-2.0.6.RELEASE.jar:2.0.6.RELEASE]
+	at org.springframework.core.type.classreading.SimpleMetadataReaderFactory.getMetadataReader(SimpleMetadataReaderFactory.java:81) ~[spring-core-5.0.10.RELEASE.jar:5.0.10.RELEASE]
+	at org.springframework.context.annotation.ConfigurationClassParser.parse(ConfigurationClassParser.java:193) ~[spring-context-5.0.10.RELEASE.jar:5.0.10.RELEASE]
+	at org.springframework.context.annotation.ConfigurationClassParser.doProcessConfigurationClass(ConfigurationClassParser.java:296) ~[spring-context-5.0.10.RELEASE.jar:5.0.10.RELEASE]
+	at org.springframework.context.annotation.ConfigurationClassParser.processConfigurationClass(ConfigurationClassParser.java:245) ~[spring-context-5.0.10.RELEASE.jar:5.0.10.RELEASE]
+	at org.springframework.context.annotation.ConfigurationClassParser.parse(ConfigurationClassParser.java:202) ~[spring-context-5.0.10.RELEASE.jar:5.0.10.RELEASE]
+	at org.springframework.context.annotation.ConfigurationClassParser.parse(ConfigurationClassParser.java:170) ~[spring-context-5.0.10.RELEASE.jar:5.0.10.RELEASE]
+	... 16 more
+[23:59:53:860]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|80069b59-6d42-4ffa-9074-318de6be92a6|ACTION|new Filter Chain
+[23:59:53:861]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|80069b59-6d42-4ffa-9074-318de6be92a6|ACTION|add CompareFilter|colum=configName|symbol==|value=OSS-BASE-URL
+[23:59:53:862]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|80069b59-6d42-4ffa-9074-318de6be92a6|ACTION|querySingleEntity
+[23:59:53:864]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|80069b59-6d42-4ffa-9074-318de6be92a6|ACTION|get JPQL|JPQL=select p from ConfigEntity p  where p.configName=:configNameA8069902461760290387
+[23:59:53:885]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|80069b59-6d42-4ffa-9074-318de6be92a6|ACTION|SET-PARAM|paramName=configNameA8069902461760290387|paramValue=OSS-BASE-URL
+[23:59:53:890]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|3b2109be-dc05-445d-b581-ff3a7b6b7c9f|ACTION|new Filter Chain
+[23:59:53:890]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|3b2109be-dc05-445d-b581-ff3a7b6b7c9f|ACTION|add CompareFilter|colum=configName|symbol==|value=OSS-BUKET-NAME
+[23:59:53:890]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|3b2109be-dc05-445d-b581-ff3a7b6b7c9f|ACTION|querySingleEntity
+[23:59:53:890]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|3b2109be-dc05-445d-b581-ff3a7b6b7c9f|ACTION|get JPQL|JPQL=select p from ConfigEntity p  where p.configName=:configName183742481320395919
+[23:59:53:891]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|3b2109be-dc05-445d-b581-ff3a7b6b7c9f|ACTION|SET-PARAM|paramName=configName183742481320395919|paramValue=OSS-BUKET-NAME
+[23:59:54:833]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|36656669-a81e-4c9c-8e4e-3ba278e14400|ACTION|new Filter Chain
+[23:59:54:833]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|36656669-a81e-4c9c-8e4e-3ba278e14400|ACTION|add CompareFilter|colum=configName|symbol==|value=name1
+[23:59:54:833]|[INFO]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|36656669-a81e-4c9c-8e4e-3ba278e14400|ACTION|queryEntities
+[23:59:54:834]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|36656669-a81e-4c9c-8e4e-3ba278e14400|ACTION|get JPQL|JPQL=select p from ConfigEntity p  where p.configName=:configNameA7817803837266901291
+[23:59:54:835]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|36656669-a81e-4c9c-8e4e-3ba278e14400|ACTION|SET-PARAM|paramName=configNameA7817803837266901291|paramValue=name1
+[23:59:54:837]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|6fccdca7-cd2c-44b1-857f-f7f2bb4ef54a|ACTION|new Filter Chain
+[23:59:54:837]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|6fccdca7-cd2c-44b1-857f-f7f2bb4ef54a|ACTION|add CompareFilter|colum=configName|symbol==|value=name2
+[23:59:54:837]|[INFO]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|6fccdca7-cd2c-44b1-857f-f7f2bb4ef54a|ACTION|queryEntities
+[23:59:54:838]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|6fccdca7-cd2c-44b1-857f-f7f2bb4ef54a|ACTION|get JPQL|JPQL=select p from ConfigEntity p  where p.configName=:configNameA5268667676694787763
+[23:59:54:838]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|6fccdca7-cd2c-44b1-857f-f7f2bb4ef54a|ACTION|SET-PARAM|paramName=configNameA5268667676694787763|paramValue=name2
+[23:59:54:840]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|79299dae-0d24-410f-97d0-d5e629ac0ad9|ACTION|new Filter Chain
+[23:59:54:840]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|79299dae-0d24-410f-97d0-d5e629ac0ad9|ACTION|add CompareFilter|colum=configName|symbol==|value=name3
+[23:59:54:840]|[INFO]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|79299dae-0d24-410f-97d0-d5e629ac0ad9|ACTION|queryEntities
+[23:59:54:840]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|79299dae-0d24-410f-97d0-d5e629ac0ad9|ACTION|get JPQL|JPQL=select p from ConfigEntity p  where p.configName=:configName569763054034177715
+[23:59:54:841]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|79299dae-0d24-410f-97d0-d5e629ac0ad9|ACTION|SET-PARAM|paramName=configName569763054034177715|paramValue=name3
+[23:59:54:843]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|a00ba70e-75fe-4e00-94aa-abc5591a16bd|ACTION|new Filter Chain
+[23:59:54:844]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|a00ba70e-75fe-4e00-94aa-abc5591a16bd|ACTION|add CompareFilter|colum=configName|symbol==|value=name4
+[23:59:54:844]|[INFO]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|a00ba70e-75fe-4e00-94aa-abc5591a16bd|ACTION|queryEntities
+[23:59:54:844]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|a00ba70e-75fe-4e00-94aa-abc5591a16bd|ACTION|get JPQL|JPQL=select p from ConfigEntity p  where p.configName=:configName694155354563167907
+[23:59:54:845]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|a00ba70e-75fe-4e00-94aa-abc5591a16bd|ACTION|SET-PARAM|paramName=configName694155354563167907|paramValue=name4
+[23:59:54:847]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|b85ba024-571b-48bc-9041-fb70eecd4824|ACTION|new Filter Chain
+[23:59:54:848]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|b85ba024-571b-48bc-9041-fb70eecd4824|ACTION|add CompareFilter|colum=configName|symbol==|value=name5
+[23:59:54:848]|[INFO]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|b85ba024-571b-48bc-9041-fb70eecd4824|ACTION|queryEntities
+[23:59:54:848]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|b85ba024-571b-48bc-9041-fb70eecd4824|ACTION|get JPQL|JPQL=select p from ConfigEntity p  where p.configName=:configNameA2212289703862907744
+[23:59:54:849]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|b85ba024-571b-48bc-9041-fb70eecd4824|ACTION|SET-PARAM|paramName=configNameA2212289703862907744|paramValue=name5
+[23:59:54:851]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|a52a7884-fbc6-46ae-af40-76df8014db03|ACTION|new Filter Chain
+[23:59:54:851]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|a52a7884-fbc6-46ae-af40-76df8014db03|ACTION|add CompareFilter|colum=configName|symbol==|value=name6
+[23:59:54:851]|[INFO]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|a52a7884-fbc6-46ae-af40-76df8014db03|ACTION|queryEntities
+[23:59:54:851]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|a52a7884-fbc6-46ae-af40-76df8014db03|ACTION|get JPQL|JPQL=select p from ConfigEntity p  where p.configName=:configNameA8118442752526299849
+[23:59:54:852]|[DEBUG]|com.union.app.dao.spi.AppDaoService|queryEntities|sqlUniqued|a52a7884-fbc6-46ae-af40-76df8014db03|ACTION|SET-PARAM|paramName=configNameA8118442752526299849|paramValue=name6
+[23:59:54:854]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|69c81053-818e-450d-809a-f983cc65f522|ACTION|new Filter Chain
+[23:59:54:854]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|69c81053-818e-450d-809a-f983cc65f522|ACTION|add CompareFilter|colum=configName|symbol==|value=name1
+[23:59:54:855]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|69c81053-818e-450d-809a-f983cc65f522|ACTION|querySingleEntity
+[23:59:54:855]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|69c81053-818e-450d-809a-f983cc65f522|ACTION|get JPQL|JPQL=select p from ConfigEntity p  where p.configName=:configName1518620350643652780
+[23:59:54:856]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|69c81053-818e-450d-809a-f983cc65f522|ACTION|SET-PARAM|paramName=configName1518620350643652780|paramValue=name1
+[23:59:54:858]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|6a4966f5-b7af-42c2-b718-09e4dc43a5d2|ACTION|new Filter Chain
+[23:59:54:858]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|6a4966f5-b7af-42c2-b718-09e4dc43a5d2|ACTION|add CompareFilter|colum=configName|symbol==|value=name2
+[23:59:54:858]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|6a4966f5-b7af-42c2-b718-09e4dc43a5d2|ACTION|querySingleEntity
+[23:59:54:858]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|6a4966f5-b7af-42c2-b718-09e4dc43a5d2|ACTION|get JPQL|JPQL=select p from ConfigEntity p  where p.configName=:configName1044552833667124482
+[23:59:54:859]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|6a4966f5-b7af-42c2-b718-09e4dc43a5d2|ACTION|SET-PARAM|paramName=configName1044552833667124482|paramValue=name2
+[23:59:54:861]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|a362ccc3-53e3-41c4-9011-d8ecfebf0ee7|ACTION|new Filter Chain
+[23:59:54:861]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|a362ccc3-53e3-41c4-9011-d8ecfebf0ee7|ACTION|add CompareFilter|colum=configName|symbol==|value=name3
+[23:59:54:861]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|a362ccc3-53e3-41c4-9011-d8ecfebf0ee7|ACTION|querySingleEntity
+[23:59:54:861]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|a362ccc3-53e3-41c4-9011-d8ecfebf0ee7|ACTION|get JPQL|JPQL=select p from ConfigEntity p  where p.configName=:configNameA7743743995928296544
+[23:59:54:862]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|a362ccc3-53e3-41c4-9011-d8ecfebf0ee7|ACTION|SET-PARAM|paramName=configNameA7743743995928296544|paramValue=name3
+[23:59:54:864]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|57d2e85f-d0a9-42ed-ad95-ab158535e169|ACTION|new Filter Chain
+[23:59:54:865]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|57d2e85f-d0a9-42ed-ad95-ab158535e169|ACTION|add CompareFilter|colum=configName|symbol==|value=name4
+[23:59:54:865]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|57d2e85f-d0a9-42ed-ad95-ab158535e169|ACTION|querySingleEntity
+[23:59:54:865]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|57d2e85f-d0a9-42ed-ad95-ab158535e169|ACTION|get JPQL|JPQL=select p from ConfigEntity p  where p.configName=:configNameA4207460486343995936
+[23:59:54:866]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|57d2e85f-d0a9-42ed-ad95-ab158535e169|ACTION|SET-PARAM|paramName=configNameA4207460486343995936|paramValue=name4
+[23:59:54:868]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|9d8540c2-1ede-49d2-a729-9a6eac84bac9|ACTION|new Filter Chain
+[23:59:54:868]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|9d8540c2-1ede-49d2-a729-9a6eac84bac9|ACTION|add CompareFilter|colum=configName|symbol==|value=name5
+[23:59:54:868]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|9d8540c2-1ede-49d2-a729-9a6eac84bac9|ACTION|querySingleEntity
+[23:59:54:868]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|9d8540c2-1ede-49d2-a729-9a6eac84bac9|ACTION|get JPQL|JPQL=select p from ConfigEntity p  where p.configName=:configNameA7182548877289241260
+[23:59:54:869]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|9d8540c2-1ede-49d2-a729-9a6eac84bac9|ACTION|SET-PARAM|paramName=configNameA7182548877289241260|paramValue=name5
+[23:59:54:871]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|cf93309e-25e0-4b53-bc19-e87de1205b59|ACTION|new Filter Chain
+[23:59:54:871]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|cf93309e-25e0-4b53-bc19-e87de1205b59|ACTION|add CompareFilter|colum=configName|symbol==|value=name6
+[23:59:54:871]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|cf93309e-25e0-4b53-bc19-e87de1205b59|ACTION|querySingleEntity
+[23:59:54:871]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|cf93309e-25e0-4b53-bc19-e87de1205b59|ACTION|get JPQL|JPQL=select p from ConfigEntity p  where p.configName=:configName4470270633566489587
+[23:59:54:872]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|cf93309e-25e0-4b53-bc19-e87de1205b59|ACTION|SET-PARAM|paramName=configName4470270633566489587|paramValue=name6
+[23:59:56:421]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|c039bd3a-61b3-40cc-a9a9-17c3b9d9df08|ACTION|new Filter Chain
+[23:59:56:422]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|c039bd3a-61b3-40cc-a9a9-17c3b9d9df08|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:59:56:422]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|c039bd3a-61b3-40cc-a9a9-17c3b9d9df08|ACTION|querySingleEntity
+[23:59:56:422]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|c039bd3a-61b3-40cc-a9a9-17c3b9d9df08|ACTION|get JPQL|JPQL=select p from PkEntity p  where p.pkId=:pkId1373520191448501710
+[23:59:56:423]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|c039bd3a-61b3-40cc-a9a9-17c3b9d9df08|ACTION|SET-PARAM|paramName=pkId1373520191448501710|paramValue=PK01
+[23:59:57:616]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|b607e28e-9d15-42d7-8dec-3ab6f2dae763|ACTION|new Filter Chain
+[23:59:57:617]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|b607e28e-9d15-42d7-8dec-3ab6f2dae763|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:59:57:617]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|b607e28e-9d15-42d7-8dec-3ab6f2dae763|ACTION|querySingleEntity
+[23:59:57:617]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|b607e28e-9d15-42d7-8dec-3ab6f2dae763|ACTION|get JPQL|JPQL=select p from PkEntity p  where p.pkId=:pkIdA4175494555978150401
+[23:59:57:619]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|b607e28e-9d15-42d7-8dec-3ab6f2dae763|ACTION|SET-PARAM|paramName=pkIdA4175494555978150401|paramValue=PK01
+[23:59:58:118]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|82f02b44-4df7-413c-8b0d-481d64691d7e|ACTION|new Filter Chain
+[23:59:58:118]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|82f02b44-4df7-413c-8b0d-481d64691d7e|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:59:58:118]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|82f02b44-4df7-413c-8b0d-481d64691d7e|ACTION|querySingleEntity
+[23:59:58:119]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|82f02b44-4df7-413c-8b0d-481d64691d7e|ACTION|get JPQL|JPQL=select p from PkEntity p  where p.pkId=:pkIdA3169750017896264657
+[23:59:58:119]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|82f02b44-4df7-413c-8b0d-481d64691d7e|ACTION|SET-PARAM|paramName=pkIdA3169750017896264657|paramValue=PK01
+[23:59:58:588]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|3b0c6795-8ac4-4784-91f6-e9b05597df42|ACTION|new Filter Chain
+[23:59:58:589]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|3b0c6795-8ac4-4784-91f6-e9b05597df42|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:59:58:589]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|3b0c6795-8ac4-4784-91f6-e9b05597df42|ACTION|querySingleEntity
+[23:59:58:589]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|3b0c6795-8ac4-4784-91f6-e9b05597df42|ACTION|get JPQL|JPQL=select p from PkEntity p  where p.pkId=:pkIdA7261633025101119482
+[23:59:58:591]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|3b0c6795-8ac4-4784-91f6-e9b05597df42|ACTION|SET-PARAM|paramName=pkIdA7261633025101119482|paramValue=PK01
+[23:59:59:070]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|<init>|sqlUniqued|aa73e755-81f6-4318-a990-78167be044ce|ACTION|new Filter Chain
+[23:59:59:070]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|compareFilter|sqlUniqued|aa73e755-81f6-4318-a990-78167be044ce|ACTION|add CompareFilter|colum=pkId|symbol==|value=PK01
+[23:59:59:071]|[INFO]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|aa73e755-81f6-4318-a990-78167be044ce|ACTION|querySingleEntity
+[23:59:59:071]|[DEBUG]|com.union.app.dao.spi.filter.EntityFilterChain|getQuery|sqlUniqued|aa73e755-81f6-4318-a990-78167be044ce|ACTION|get JPQL|JPQL=select p from PkEntity p  where p.pkId=:pkId3336026151138904044
+[23:59:59:072]|[DEBUG]|com.union.app.dao.spi.AppDaoService|querySingleEntity|sqlUniqued|aa73e755-81f6-4318-a990-78167be044ce|ACTION|SET-PARAM|paramName=pkId3336026151138904044|paramValue=PK01

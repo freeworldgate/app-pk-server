@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>boot-archetype</artifactId>
+        <groupId>union-app</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>union-app-start</artifactId>
+
+    <dependencies>
+
+        <!--Util-->
+        <dependency>
+            <groupId>union-app</groupId>
+            <artifactId>union-app-util</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!--Service-->
+        <dependency>
+            <groupId>union-app</groupId>
+            <artifactId>union-app-service</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!--Dao-->
+        <dependency>
+            <groupId>union-app</groupId>
+            <artifactId>union-app-dao</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!--Common-->
+        <dependency>
+            <groupId>union-app</groupId>
+            <artifactId>union-app-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!--API-->
+        <dependency>
+            <groupId>union-app</groupId>
+            <artifactId>union-app-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!--Domain-->
+        <dependency>
+            <groupId>union-app</groupId>
+            <artifactId>union-app-domain</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+
+
+        <dependency>
+            <groupId>union-app</groupId>
+            <artifactId>union-app-plateform</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+
+
+</project>
