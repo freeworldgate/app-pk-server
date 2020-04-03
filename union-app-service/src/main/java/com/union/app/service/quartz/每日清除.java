@@ -28,6 +28,9 @@ public class 每日清除 {
     @Scheduled(cron = "0 0 0 */1 * ?") // 每分钟执行一次  刷新整个PKID的所有PAGE
     public void work() throws Exception {
 
+        //TODO 每日清除排名信息，和 分享信息
+
+
 
 //        //查询所有PK   循环删除
 //        int page = 0;

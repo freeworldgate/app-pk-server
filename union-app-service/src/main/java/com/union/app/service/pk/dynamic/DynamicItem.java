@@ -2,13 +2,19 @@ package com.union.app.service.pk.dynamic;
 
 public enum DynamicItem {
 
+    等待变更模式的PK列表(DynamicLevel.ALL,"WAITING-LIST-CHANGE-PK-MODE"),
+
+    PK模式(DynamicLevel.ALL,"PK-MODE"),
+
+
+
     PK状态(DynamicLevel.PK,"STATU"),
 
     PK总人数(DynamicLevel.PK,"TOTAL-USERS"),
 
-    PK已收款审核订单次数(DynamicLevel.PK,"FINISH-VERIFY-ORDERS"),
+    PK完成审核订单次数(DynamicLevel.PK,"FINISH-VERIFY-ORDERS"),
 
-    PK已打赏确认收款订单次数(DynamicLevel.PK,"FINISH-FEE-ORDERS"),
+    PK完成打赏订单次数(DynamicLevel.PK,"FINISH-FEE-ORDERS"),
 
 
 
@@ -29,6 +35,7 @@ public enum DynamicItem {
 
     PKUSER今日分享次数(DynamicLevel.PK_USER,"USER-TODAY-SHARE"),
 
+    PKUSER确认收款次数(DynamicLevel.PK_USER,"USER-CONFIRM-MONEY"),
 
 
 
@@ -39,16 +46,6 @@ public enum DynamicItem {
     PK当前任务(DynamicLevel.PK,"CUREENT-FEE-TASTS"),
 
     PK当前操作动态(DynamicLevel.PK,"CUREENT-OPER-INFOS"),
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -83,4 +80,6 @@ public enum DynamicItem {
     public void setRedisKeySuffix(String redisKeySuffix) {
         this.redisKeySuffix = redisKeySuffix;
     }
+
+
 }

@@ -20,7 +20,14 @@ public class DynamicKeyName {
 
     public static String getSetKey_Value_Name(DynamicItem item,String setName) {return item.getLevel().getName().toUpperCase() + "-" + setName.toUpperCase() + "-" + item.getRedisKeySuffix().toUpperCase(); }
 
+    public static String getAll_Value_Name(DynamicItem item) {return item.getLevel().getName().toUpperCase();}
+
     public static String getTaskId(String userId, String cashierId) {
         return new StringBuffer().append(userId).append("-").append(cashierId).toString();
     }
+
+
+
+
+
 }

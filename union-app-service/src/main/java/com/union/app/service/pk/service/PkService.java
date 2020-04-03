@@ -8,6 +8,8 @@ import com.union.app.dao.spi.AppDaoService;
 import com.union.app.dao.spi.filter.CompareTag;
 import com.union.app.dao.spi.filter.EntityFilterChain;
 import com.union.app.domain.pk.*;
+import com.union.app.domain.pk.PkDynamic.FactualInfo;
+import com.union.app.domain.pk.PkDynamic.FeeTask;
 import com.union.app.domain.pk.apply.KeyNameValue;
 import com.union.app.domain.user.User;
 import com.union.app.entity.pk.*;
@@ -22,9 +24,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class PkService {
@@ -62,6 +66,13 @@ public class PkService {
 
     @Autowired
     PostCacheService postCacheService;
+
+
+    public static Map<String,List<FeeTask>> taskCache = new ConcurrentHashMap<>();
+
+    public static Map<String,List<FactualInfo>> factualCache = new ConcurrentHashMap<>();
+
+
 
     public List<Post> queryPkPost(String userId,String pkId,int page) throws IOException {
         List<Post> posts = postCacheService.getPostPage(userId,pkId,page);
@@ -145,5 +156,11 @@ public class PkService {
 
     public int 查询PK购买价格(String pkId) {
         return 100;
+    }
+
+
+    public boolean isPkCreator(String pkId, String userId) {
+        User creator = this.queryPkCreator(pkId);
+        return org.apache.commons.lang.StringUtils.equals(userId,creator.getUserId())? Boolean.TRUE:Boolean.FALSE;
     }
 }

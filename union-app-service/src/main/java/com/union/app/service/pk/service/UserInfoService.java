@@ -286,29 +286,34 @@ public class UserInfoService {
         PayOrderEntity order = this.获取OrderEntityById(orderId);
         //操作者必须为收款人
         if(!StringUtils.equals(order.getCashierId(),userId)){throw AppException.buildException(PageAction.消息级别提示框(Level.错误消息,"非法操作"));}
-        if(ObjectUtils.equals(order.getOrderStatu(),OrderStatu.订单确认中)){
-            order.setOrderStatu(OrderStatu.已收款);
-            daoService.updateEntity(order);
-            //用户收到的钱次数+1
-            User creator = pkService.queryPkCreator(order.getPkId());
-            if(!StringUtils.equals(creator.getUserId(),order.getCashierId()))
-            {
-                //收款人不是榜主
-                dynamicService.valueIncr(DynamicItem.PK已打赏确认收款订单次数,order.getPkId());
-            }
-            else
-            {
-                //收款人是榜主
-                dynamicService.valueIncr(DynamicItem.PK已收款审核订单次数,order.getPkId());
-            }
+        if(!ObjectUtils.equals(order.getOrderStatu(),OrderStatu.订单确认中)){throw AppException.buildException(PageAction.消息级别提示框(Level.错误消息,"订单已锁定"));}
 
 
+        order.setOrderStatu(OrderStatu.已收款);
+        daoService.updateEntity(order);
+        //用户收到的钱次数+1
+        dynamicService.mapValueIncr(DynamicItem.PKUSER确认收款次数,order.getPkId(),order.getCashierId());
 
+
+        User creator = pkService.queryPkCreator(order.getPkId());
+        if(!StringUtils.equals(creator.getUserId(),order.getCashierId()))
+        {
+            //收款人不是榜主
+            dynamicService.valueIncr(DynamicItem.PK完成打赏订单次数,order.getPkId());
         }
-        if(order.getOrderType() == OrderType.审核订单){
-            //对审核订单的处理
-            String payerId = order.getPayerId();
-            String pkId = order.getPkId();
+        else {
+            //收款人是榜主
+            dynamicService.valueIncr(DynamicItem.PK完成审核订单次数,order.getPkId());
+            this.设置收款码状态(order.getPkId(),order.getPayerId(),ImgStatu.审核中);
+        }
+
+
+
+
+    }
+
+    private void 设置收款码状态(String pkId, String payerId, ImgStatu statu) {
+
             EntityFilterChain filter = EntityFilterChain.newFilterChain(UserDynamicEntity.class)
                     .compareFilter("pkId",CompareTag.Equal,pkId)
                     .andFilter()
@@ -316,10 +321,8 @@ public class UserInfoService {
             UserDynamicEntity userDynamicEntity = daoService.querySingleEntity(UserDynamicEntity.class,filter);
             userDynamicEntity.setFeeImgStatu(ImgStatu.审核中);
             daoService.updateEntity(userDynamicEntity);
-        }
 
     }
-
 
 
     public void 确认未收款(String orderId, String userId) {
@@ -333,11 +336,9 @@ public class UserInfoService {
     public ApplyOrder 查询订单ById(String orderId) {
         PayOrderEntity order = this.获取OrderEntityById(orderId);
 
-
-
         ApplyOrder applyOrder = translate(order);
 
-        dynamicService.修改任务状态(order);
+        dynamicService.同步任务状态(order);
 
         return applyOrder;
     }
@@ -491,13 +492,13 @@ public class UserInfoService {
     }
 
 
-    public PayOrderEntity 查询可用订单Entity(String pkId, String userId,String cashierId){
+    public PayOrderEntity 查询可用订单Entity(String pkId, String payerId,String cashierId){
 
         String creatorId = pkService.querySinglePkEntity(pkId).getUserId();
-        PayOrderEntity applyOrderEntity = this.获取ApplyOrderEntity(pkId,userId,cashierId);
+        PayOrderEntity applyOrderEntity = this.获取ApplyOrderEntity(pkId,payerId,cashierId);
 
         if(org.springframework.util.ObjectUtils.isEmpty(applyOrderEntity)){
-            applyOrderEntity = this.创建可用订单(pkId,userId,cashierId);
+            applyOrderEntity = this.创建可用订单(pkId,payerId,cashierId);
         }
         return applyOrderEntity;
 
@@ -630,6 +631,15 @@ public class UserInfoService {
         if(org.springframework.util.ObjectUtils.isEmpty(userDynamicEntity)){return Boolean.FALSE;}
         if(userDynamicEntity.getFeeImgStatu() != ImgStatu.审核通过){return Boolean.FALSE;}
         return Boolean.TRUE;
+
+    }
+
+    public KeyNameValue 查询当前打赏订单状态(String pkId, String payerId, String cashierId) {
+
+        PayOrderEntity payOrderEntity = this.查询可用订单Entity(pkId,payerId,cashierId);
+
+        return new KeyNameValue(payOrderEntity.getOrderStatu().getStatu(),payOrderEntity.getOrderStatu().getStatuStr());
+
 
     }
 }

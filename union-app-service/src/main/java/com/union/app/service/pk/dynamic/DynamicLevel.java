@@ -2,6 +2,8 @@ package com.union.app.service.pk.dynamic;
 
 public enum DynamicLevel {
 
+    ALL("ALL"),
+
     APP("APP"),
 
     PK("PK"),

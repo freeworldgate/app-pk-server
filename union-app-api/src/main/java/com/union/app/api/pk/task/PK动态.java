@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.List;
 
@@ -30,11 +31,12 @@ public class PK动态 {
 
 
     @RequestMapping(path="/queryPkStatu",method = RequestMethod.GET)
+    @Transactional(rollbackOn = Exception.class)
     public AppResponse PK动态(@RequestParam("pkId") String pkId) throws AppException, IOException {
 
-        if(dynamicService.isInTask(pkId))
+//        if(dynamicService.getPK模式(pkId) === 1)
+        if(2>1)
         {
-            dynamicService.生成PK打赏任务(pkId);
             List<FeeTask> task = dynamicService.获取PK打赏任务(pkId);
             return AppResponse.buildResponse(PageAction.执行处理器("tasks",task));
         }

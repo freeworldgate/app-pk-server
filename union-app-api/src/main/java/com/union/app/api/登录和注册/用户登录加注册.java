@@ -16,6 +16,7 @@ import com.union.app.service.app.AppService;
 import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,7 +54,8 @@ public class 用户登录加注册 {
 
         UserEntity userEntity = appDaoService.querySingleEntity(UserEntity.class,entityFilterChain);
 
-        if(userEntity == null)
+
+        if(ObjectUtils.isEmpty(userEntity))
         {
             userEntity = new UserEntity();
 
@@ -68,13 +70,23 @@ public class 用户登录加注册 {
             appDaoService.insertEntity(userEntity);
 
         }
+        else
+        {
+            String name = new String(userEntity.getNickName(),"UTF-8");
+            if(!org.apache.commons.lang.StringUtils.equals(name,userInfo.getNickName())){
+                userEntity.setNickName(userInfo.getNickName().getBytes("UTF-8"));
+                appDaoService.updateEntity(userEntity);
+            }
+
+
+        }
 
         UserBasicInfo userBasicInfo = new UserBasicInfo();
         userBasicInfo.setUserType(userEntity.getUserType().getType());
         userBasicInfo.setFromUser(userEntity.getFromUser());
         userBasicInfo.setUserId(userEntity.getUserId());
         userBasicInfo.setImgUrl(userEntity.getAvatarUrl());
-        userBasicInfo.setUserName(RandomUtil.getRandomName());
+        userBasicInfo.setUserName(new String(userEntity.getNickName(),"UTF-8"));
 
 
         return ApiResponse.buildSuccessResponse(userBasicInfo);
