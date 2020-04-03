@@ -35,7 +35,7 @@ public enum DynamicItem {
 
     PKUSER今日分享次数(DynamicLevel.PK_USER,"USER-TODAY-SHARE"),
 
-    PKUSER确认收款次数(DynamicLevel.PK_USER,"USER-CONFIRM-MONEY"),
+    PKUSER收款次数(DynamicLevel.PK_USER,"USER-CONFIRM-MONEY"),
 
 
 

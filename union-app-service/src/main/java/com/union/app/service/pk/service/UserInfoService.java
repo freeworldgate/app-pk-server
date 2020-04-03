@@ -278,9 +278,32 @@ public class UserInfoService {
 
         return applyOrder;
 
+    }
 
+
+
+    public ApplyOrder 查询打赏订单(String pkId, String userId) throws AppException {
+        User creator = pkService.queryPkCreator(pkId);
+        int feeNum = pkService.查询Pk打赏金额(pkId);
+        ApplyOrder applyOrder = new ApplyOrder();
+        applyOrder.setFeeNum(feeNum);
+        applyOrder.setPkId(pkId);
+        applyOrder.setCashier(userService.queryUser(userId));
+        PayOrderEntity orderEntity = this.查询可用订单Entity(pkId,userId,creator.getUserId());
+
+        applyOrder.setOrderId(orderEntity.getOrderId());
+        applyOrder.setStatu(new KeyNameValue(orderEntity.getOrderStatu().getStatu(), orderEntity.getOrderStatu().getStatuStr()));
+        applyOrder.setType(new KeyNameValue(orderEntity.getOrderType().getType(),orderEntity.getOrderType().getTitle()));
+        applyOrder.setComplain(orderEntity.isComplain());
+        applyOrder.setPayer(userService.queryUser(orderEntity.getPayerId()));
+        applyOrder.setOrderCut(orderEntity.getOrderCut());
+        applyOrder.setRewardTimes(dynamicService.getMapKeyValue(DynamicItem.PKUSER收款次数,pkId,userId));
+        return applyOrder;
 
     }
+
+
+
 
     public void 确认已收款(String orderId, String userId) throws AppException {
         PayOrderEntity order = this.获取OrderEntityById(orderId);
@@ -290,9 +313,10 @@ public class UserInfoService {
 
 
         order.setOrderStatu(OrderStatu.已收款);
+        order.setConfirmTime(System.currentTimeMillis());
         daoService.updateEntity(order);
         //用户收到的钱次数+1
-        dynamicService.mapValueIncr(DynamicItem.PKUSER确认收款次数,order.getPkId(),order.getCashierId());
+        dynamicService.mapValueIncr(DynamicItem.PKUSER收款次数,order.getPkId(),order.getCashierId());
 
 
         User creator = pkService.queryPkCreator(order.getPkId());
@@ -494,7 +518,6 @@ public class UserInfoService {
 
     public PayOrderEntity 查询可用订单Entity(String pkId, String payerId,String cashierId){
 
-        String creatorId = pkService.querySinglePkEntity(pkId).getUserId();
         PayOrderEntity applyOrderEntity = this.获取ApplyOrderEntity(pkId,payerId,cashierId);
 
         if(org.springframework.util.ObjectUtils.isEmpty(applyOrderEntity)){

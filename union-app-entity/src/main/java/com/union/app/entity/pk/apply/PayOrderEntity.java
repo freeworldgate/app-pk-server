@@ -35,7 +35,7 @@ public class PayOrderEntity {
 
     private boolean complain;
 
-
+    private long confirmTime;
 
 
 

@@ -37,7 +37,7 @@ public class ApplyOrder {
 
     private boolean complain;
 
-
+    private int rewardTimes;
 
 
 }
