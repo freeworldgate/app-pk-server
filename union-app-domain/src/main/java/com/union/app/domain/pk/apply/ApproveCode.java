@@ -24,4 +24,9 @@ public class ApproveCode {
 
     private String phone;
 
+
+    private int approving;
+    private int approved;
+    private int unapproved;
+
 }

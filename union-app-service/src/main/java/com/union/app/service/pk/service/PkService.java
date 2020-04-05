@@ -119,6 +119,8 @@ public class PkService {
                 .compareFilter("pkId",CompareTag.Equal,pkId);
         PkDynamicEntity pkDynamicEntity = daoService.querySingleEntity(PkDynamicEntity.class,filter);
 
+
+
         return pkDynamicEntity;
     }
 

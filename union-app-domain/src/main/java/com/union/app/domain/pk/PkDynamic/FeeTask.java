@@ -13,6 +13,8 @@ public class FeeTask
 {
     private String taskId;
 
+    private String orderId;
+
     private String pkId;
 
     private User creator;

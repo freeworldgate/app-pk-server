@@ -188,6 +188,8 @@ public class UserInfoService {
 
         PayOrderEntity applyOrderEntity = daoService.querySingleEntity(PayOrderEntity.class,filter);
 
+        this.订单是否过期(applyOrderEntity);
+
         return applyOrderEntity;
     }
 
@@ -198,39 +200,11 @@ public class UserInfoService {
                 ;
         PayOrderEntity applyOrderEntity = daoService.querySingleEntity(PayOrderEntity.class,filter);
 
+
+        this.订单是否过期(applyOrderEntity);
+
+
         return applyOrderEntity;
-    }
-
-    public ApplyOrder 查询审核订单(String pkId,String userId,String cashierId){
-
-        int feeNum = pkService.查询Pk打赏金额(pkId);
-        String creatorId = pkService.querySinglePkEntity(pkId).getUserId();
-        UserCode userCode = this.查询收款码信息(pkId,creatorId);
-        ApplyOrder applyOrder = new ApplyOrder();
-        applyOrder.setType(new KeyNameValue(OrderType.审核订单.getType(),OrderType.审核订单.getTitle()));
-        applyOrder.setFeeNum(feeNum);
-        applyOrder.setPkId(pkId);
-        applyOrder.setCashier(userService.queryUser(creatorId));
-        applyOrder.setFeeCodeUrl(org.springframework.util.ObjectUtils.isEmpty(userCode)?"":userCode.getUrl());
-        PayOrderEntity applyOrderEntity = this.获取ApplyOrderEntity(pkId,userId,creatorId);
-        if(!org.springframework.util.ObjectUtils.isEmpty(applyOrderEntity)){
-            applyOrder.setOrderId(applyOrderEntity.getOrderId());
-            applyOrder.setPayer(userService.queryUser(applyOrderEntity.getPayerId()));
-            applyOrder.setComplain(applyOrderEntity.isComplain());
-            applyOrder.setOrderCut(applyOrderEntity.getOrderCut());
-            applyOrder.setStatu(new KeyNameValue(applyOrderEntity.getOrderStatu().getStatu(), applyOrderEntity.getOrderStatu().getStatuStr()));
-
-
-        }
-        else
-        {
-            applyOrder.setStatu(new KeyNameValue(OrderStatu.无订单.getStatu(),OrderStatu.无订单.getStatuStr()));
-        }
-
-        return applyOrder;
-
-
-
     }
 
     public void 设置订单截图(String orderId, String userId, String url) throws AppException {
@@ -253,56 +227,111 @@ public class UserInfoService {
         if(!StringUtils.equals(userId,payOrderEntity.getPayerId())){throw AppException.buildException(PageAction.消息级别提示框(Level.错误消息,"非支付用户"));}
         if(!ObjectUtils.equals(payOrderEntity.getOrderStatu(),OrderStatu.无订单)){throw AppException.buildException(PageAction.消息级别提示框(Level.错误消息,"订单已锁定"));}
         payOrderEntity.setOrderStatu(OrderStatu.订单确认中);
+        //订单开始时间，计时5分钟
+        payOrderEntity.setStartTime(System.currentTimeMillis());
         daoService.updateEntity(payOrderEntity);
     }
 
-    public ApplyOrder 查询收款类型订单(String pkId, String userId,int type,int page) throws AppException {
-        int feeNum = pkService.查询Pk打赏金额(pkId);
+
+    public ApplyOrder 查询审核支付订单(String pkId, String userId) throws AppException {
+
         ApplyOrder applyOrder = new ApplyOrder();
-        applyOrder.setFeeNum(feeNum);
-        applyOrder.setPkId(pkId);
-        applyOrder.setCashier(userService.queryUser(userId));
-        PayOrderEntity orderEntity = this.获取收款类型订单Entity(pkId,userId,type,page);
-        if(!org.springframework.util.ObjectUtils.isEmpty(orderEntity)){
-            applyOrder.setOrderId(orderEntity.getOrderId());
-            applyOrder.setType(new KeyNameValue(orderEntity.getOrderType().getType(),orderEntity.getOrderType().getTitle()));
-            applyOrder.setStatu(new KeyNameValue(orderEntity.getOrderStatu().getStatu(), orderEntity.getOrderStatu().getStatuStr()));
-            applyOrder.setPayer(userService.queryUser(orderEntity.getPayerId()));
-            applyOrder.setComplain(orderEntity.isComplain());
-            applyOrder.setOrderCut(orderEntity.getOrderCut());
+
+        PayOrderEntity orderEntity = this.查询榜主收款订单(pkId,userId);
+
+        if(org.springframework.util.ObjectUtils.isEmpty(orderEntity))
+        {
+            applyOrder.setFeeNum(pkService.查询Pk打赏金额(pkId));
+            applyOrder.setPkId(pkId);
+            applyOrder.setCashier(userService.queryUser(userId));
+            applyOrder.setStatu(new KeyNameValue(OrderStatu.无订单.getStatu(), OrderStatu.无订单.getStatuStr()));
+            applyOrder.setRewardTimes(dynamicService.getMapKeyValue(DynamicItem.PKUSER收款次数,pkId,userId));
+
         }
         else
         {
-            applyOrder.setStatu(new KeyNameValue(OrderStatu.无订单.getStatu(), OrderStatu.无订单.getStatuStr()));
+            applyOrder = this.translate(orderEntity);
         }
 
         return applyOrder;
 
     }
 
+    private PayOrderEntity 查询榜主收款订单(String pkId, String userId) {
+
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(PayOrderEntity.class)
+                    .compareFilter("pkId",CompareTag.Equal,pkId)
+                    .andFilter()
+                    .compareFilter("cashierId",CompareTag.Equal, userId)
+                    .andFilter()
+                    .compareFilter("orderStatu",CompareTag.Equal, OrderStatu.订单确认中);
+        PayOrderEntity orderEntity = daoService.querySingleEntity(PayOrderEntity.class,filter);
+
+        this.订单是否过期(orderEntity);
+
+        return orderEntity;
+
+    }
+    private PayOrderEntity 查询用户打赏订单(String pkId, String payerId, String cashierId) {
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(PayOrderEntity.class)
+                .compareFilter("pkId",CompareTag.Equal,pkId)
+                .andFilter()
+                .compareFilter("payerId",CompareTag.Equal, payerId)
+                .andFilter()
+                .compareFilter("cashierId",CompareTag.Equal, cashierId);
+
+        PayOrderEntity orderEntity = daoService.querySingleEntity(PayOrderEntity.class,filter);
+
+        this.订单是否过期(orderEntity);
+
+        return orderEntity;
+
+
+    }
 
 
     public ApplyOrder 查询打赏订单(String pkId, String userId) throws AppException {
-        User creator = pkService.queryPkCreator(pkId);
-        int feeNum = pkService.查询Pk打赏金额(pkId);
         ApplyOrder applyOrder = new ApplyOrder();
-        applyOrder.setFeeNum(feeNum);
-        applyOrder.setPkId(pkId);
-        applyOrder.setCashier(userService.queryUser(userId));
-        PayOrderEntity orderEntity = this.查询可用订单Entity(pkId,userId,creator.getUserId());
 
-        applyOrder.setOrderId(orderEntity.getOrderId());
-        applyOrder.setStatu(new KeyNameValue(orderEntity.getOrderStatu().getStatu(), orderEntity.getOrderStatu().getStatuStr()));
-        applyOrder.setType(new KeyNameValue(orderEntity.getOrderType().getType(),orderEntity.getOrderType().getTitle()));
-        applyOrder.setComplain(orderEntity.isComplain());
-        applyOrder.setPayer(userService.queryUser(orderEntity.getPayerId()));
-        applyOrder.setOrderCut(orderEntity.getOrderCut());
-        applyOrder.setRewardTimes(dynamicService.getMapKeyValue(DynamicItem.PKUSER收款次数,pkId,userId));
+        User creator = pkService.queryPkCreator(pkId);
+
+        PayOrderEntity orderEntity = this.查询用户打赏订单(pkId,creator.getUserId(),userId);
+
+        if(org.springframework.util.ObjectUtils.isEmpty(orderEntity))
+        {
+            applyOrder.setPkId(pkId);
+            applyOrder.setFeeNum(pkService.查询Pk打赏金额(pkId));
+            applyOrder.setCashier(userService.queryUser(userId));
+            applyOrder.setStatu(new KeyNameValue(OrderStatu.无订单.getStatu(), OrderStatu.无订单.getStatuStr()));
+            applyOrder.setRewardTimes(dynamicService.getMapKeyValue(DynamicItem.PKUSER收款次数,pkId,userId));
+        }
+        else
+        {
+            applyOrder = this.translate(orderEntity);
+        }
+
+
+
+
+
+
+
+
         return applyOrder;
 
     }
 
 
+    private void 订单是否过期(PayOrderEntity orderEntity) {
+        if(!org.springframework.util.ObjectUtils.isEmpty(orderEntity) && ObjectUtils.equals(orderEntity.getOrderStatu(),OrderStatu.订单确认中)){
+            int seconds = this.获取订单剩余时间(orderEntity);
+            if(seconds == 0)
+            {
+                dynamicService.添加过期订单(orderEntity.getOrderId());
+            }
+        }
+
+    }
 
 
     public void 确认已收款(String orderId, String userId) throws AppException {
@@ -318,52 +347,51 @@ public class UserInfoService {
         //用户收到的钱次数+1
         dynamicService.mapValueIncr(DynamicItem.PKUSER收款次数,order.getPkId(),order.getCashierId());
 
+        dynamicService.确认收款(order);
 
-        User creator = pkService.queryPkCreator(order.getPkId());
-        if(!StringUtils.equals(creator.getUserId(),order.getCashierId()))
-        {
-            //收款人不是榜主
-            dynamicService.valueIncr(DynamicItem.PK完成打赏订单次数,order.getPkId());
-        }
-        else {
-            //收款人是榜主
-            dynamicService.valueIncr(DynamicItem.PK完成审核订单次数,order.getPkId());
-            this.设置收款码状态(order.getPkId(),order.getPayerId(),ImgStatu.审核中);
-        }
-
-
+        this.设置收款码状态(order);
 
 
     }
 
-    private void 设置收款码状态(String pkId, String payerId, ImgStatu statu) {
+    private void 设置收款码状态(PayOrderEntity order) {
 
+        User creator = pkService.queryPkCreator(order.getPkId());
+
+        if(StringUtils.equals(creator.getUserId(),order.getCashierId()))
+        {
             EntityFilterChain filter = EntityFilterChain.newFilterChain(UserDynamicEntity.class)
-                    .compareFilter("pkId",CompareTag.Equal,pkId)
+                    .compareFilter("pkId",CompareTag.Equal,order.getPkId())
                     .andFilter()
-                    .compareFilter("userId",CompareTag.Equal,payerId);
+                    .compareFilter("userId",CompareTag.Equal,order.getPayerId());
             UserDynamicEntity userDynamicEntity = daoService.querySingleEntity(UserDynamicEntity.class,filter);
             userDynamicEntity.setFeeImgStatu(ImgStatu.审核中);
             daoService.updateEntity(userDynamicEntity);
+        }
+        dynamicService.valueIncr(DynamicItem.PK审核中收款码数量,order.getPkId());
+
+
+
 
     }
 
-
-    public void 确认未收款(String orderId, String userId) {
+    public void 确认未收款(String orderId, String userId) throws AppException {
         PayOrderEntity order = this.获取OrderEntityById(orderId);
         if(ObjectUtils.equals(order.getOrderStatu(),OrderStatu.订单确认中)){
             order.setOrderStatu(OrderStatu.未收款);
             daoService.updateEntity(order);
         }
+        else
+        {
+            throw AppException.buildException(PageAction.消息级别提示框(Level.错误消息,"订单已锁定"));
+        }
     }
 
-    public ApplyOrder 查询订单ById(String orderId) {
+    public ApplyOrder 查询订单ById(String orderId) throws AppException {
+        if(StringUtils.isBlank(orderId)){ throw AppException.buildException(PageAction.消息级别提示框(Level.错误消息,"不存在订单"));}
         PayOrderEntity order = this.获取OrderEntityById(orderId);
-
         ApplyOrder applyOrder = translate(order);
-
         dynamicService.同步任务状态(order);
-
         return applyOrder;
     }
 
@@ -382,109 +410,10 @@ public class UserInfoService {
         payOrder.setOrderCut(order.getOrderCut());
         payOrder.setStatu(new KeyNameValue(order.getOrderStatu().getStatu(), order.getOrderStatu().getStatuStr()));
         payOrder.setType(new KeyNameValue(order.getOrderType().getType(),order.getOrderType().getTitle()));
+        payOrder.setLeftTimes(获取订单剩余时间(order));
+        payOrder.setRewardTimes(dynamicService.getMapKeyValue(DynamicItem.PKUSER收款次数,order.getPkId(),order.getCashierId()));
         return payOrder;
     }
-
-
-    public ApplyOrder 查询支付类型订单(String pkId, String userId, int type, int page) {
-        int feeNum = pkService.查询Pk打赏金额(pkId);
-        ApplyOrder applyOrder = new ApplyOrder();
-        applyOrder.setFeeNum(feeNum);
-        applyOrder.setPkId(pkId);
-        applyOrder.setPayer(userService.queryUser(userId));
-
-        PayOrderEntity orderEntity = this.获取支付类型订单Entity(pkId,userId,type,page);
-
-        if(!org.springframework.util.ObjectUtils.isEmpty(orderEntity)){
-            applyOrder.setOrderId(orderEntity.getOrderId());
-            applyOrder.setStatu(new KeyNameValue(orderEntity.getOrderStatu().getStatu(), orderEntity.getOrderStatu().getStatuStr()));
-            applyOrder.setCashier(userService.queryUser(orderEntity.getCashierId()));
-            applyOrder.setComplain(orderEntity.isComplain());
-            applyOrder.setOrderCut(orderEntity.getOrderCut());
-            UserCode userCode = this.查询收款码信息(pkId,orderEntity.getCashierId());
-            applyOrder.setFeeCodeUrl(org.springframework.util.ObjectUtils.isEmpty(userCode)?"":userCode.getUrl());
-        }
-        else
-        {
-            applyOrder.setStatu(new KeyNameValue(OrderStatu.无订单.getStatu(), OrderStatu.无订单.getStatuStr()));
-        }
-        return applyOrder;
-    }
-
-    private PayOrderEntity 获取支付类型订单Entity(String pkId, String userId, int type, int page) {
-        EntityFilterChain filter = null;
-        if(type == OrderStatu.已收款.getStatu()){
-            filter = EntityFilterChain.newFilterChain(PayOrderEntity.class)
-                    .compareFilter("pkId",CompareTag.Equal,pkId)
-                    .andFilter()
-                    .compareFilter("payerId",CompareTag.Equal, userId)
-                    .andFilter()
-                    .compareFilter("orderStatu",CompareTag.Equal, OrderStatu.已收款)
-                    .pageLimitFilter(page,1);
-        }
-        else if(type == OrderStatu.未收款.getStatu()){
-            filter = EntityFilterChain.newFilterChain(PayOrderEntity.class)
-                    .compareFilter("pkId",CompareTag.Equal,pkId)
-                    .andFilter()
-                    .compareFilter("payerId",CompareTag.Equal, userId)
-                    .andFilter()
-                    .compareFilter("orderStatu",CompareTag.Equal, OrderStatu.未收款)
-                    .pageLimitFilter(page,1);;
-        }
-        else
-        {
-            filter = EntityFilterChain.newFilterChain(PayOrderEntity.class)
-                    .compareFilter("pkId",CompareTag.Equal,pkId)
-                    .andFilter()
-                    .compareFilter("payerId",CompareTag.Equal, userId)
-                    .andFilter()
-                    .compareFilter("orderStatu",CompareTag.Equal, OrderStatu.订单确认中)
-                    .pageLimitFilter(page,1);;
-        }
-
-        List<PayOrderEntity> payOrderEntities = daoService.queryEntities(PayOrderEntity.class,filter);
-
-        return CollectionUtils.isEmpty(payOrderEntities)?null:payOrderEntities.get(0);
-    }
-
-
-    private PayOrderEntity 获取收款类型订单Entity(String pkId, String userId, int type,int page) {
-        EntityFilterChain filter = null;
-        if(type == OrderStatu.已收款.getStatu()){
-            filter = EntityFilterChain.newFilterChain(PayOrderEntity.class)
-                    .compareFilter("pkId",CompareTag.Equal,pkId)
-                    .andFilter()
-                    .compareFilter("cashierId",CompareTag.Equal, userId)
-                    .andFilter()
-                    .compareFilter("orderStatu",CompareTag.Equal, OrderStatu.已收款)
-                    .pageLimitFilter(page,1);
-        }
-        else if(type == OrderStatu.未收款.getStatu()){
-            filter = EntityFilterChain.newFilterChain(PayOrderEntity.class)
-                    .compareFilter("pkId",CompareTag.Equal,pkId)
-                    .andFilter()
-                    .compareFilter("cashierId",CompareTag.Equal, userId)
-                    .andFilter()
-                    .compareFilter("orderStatu",CompareTag.Equal, OrderStatu.未收款)
-                    .pageLimitFilter(page,1);;
-        }
-        else
-        {
-            filter = EntityFilterChain.newFilterChain(PayOrderEntity.class)
-                    .compareFilter("pkId",CompareTag.Equal,pkId)
-                    .andFilter()
-                    .compareFilter("cashierId",CompareTag.Equal, userId)
-                    .andFilter()
-                    .compareFilter("orderStatu",CompareTag.Equal, OrderStatu.订单确认中)
-                    .pageLimitFilter(page,1);;
-        }
-
-        List<PayOrderEntity> payOrderEntities = daoService.queryEntities(PayOrderEntity.class,filter);
-
-        return CollectionUtils.isEmpty(payOrderEntities)?null:payOrderEntities.get(0);
-    }
-
-
 
     public ApplyOrder 查询或创建订单(String pkId, String userId,String cashierId){
 
@@ -528,17 +457,19 @@ public class UserInfoService {
     }
 
 
-    public ApproveCode 查询不同类型用户收款码(String pkId, String userId, int type, int page) throws AppException {
+
+    public ApproveCode 查询不同类型用户收款码(String pkId, String userId) throws AppException {
         int feeNum = pkService.查询Pk打赏金额(pkId);
         String creator = pkService.querySinglePkEntity(pkId).getUserId();
         if(!StringUtils.equals(userId,creator)){throw AppException.buildException(PageAction.消息级别提示框(Level.错误消息,"非法操作"));}
 
 
         ApproveCode approveCode = new ApproveCode();
+        this.审核动态(pkId,approveCode);
         approveCode.setFeeNum(feeNum);
         approveCode.setPkId(pkId);
 
-        UserDynamicEntity userDynamicEntity = this.查询下一个UserDynamicEntity(pkId,type,page);
+        UserDynamicEntity userDynamicEntity = this.查询下一个UserDynamicEntity(pkId);
         if(org.springframework.util.ObjectUtils.isEmpty(userDynamicEntity))
         {
             approveCode.setStatu(new KeyNameValue(ImgStatu.无内容.getKey(), ImgStatu.无内容.getValue()));
@@ -559,32 +490,25 @@ public class UserInfoService {
 
     }
 
-    private UserDynamicEntity 查询下一个UserDynamicEntity(String pkId, int type, int page) {
-        EntityFilterChain filter = null;
-        if(type == ImgStatu.审核中.getKey()){
-            filter = EntityFilterChain.newFilterChain(UserDynamicEntity.class)
+    private void 审核动态(String pkId,ApproveCode approveCode) {
+
+        approveCode.setApproved(dynamicService.getKeyValue(DynamicItem.PK审核通过收款码数量,pkId));
+        approveCode.setApproving(dynamicService.getKeyValue(DynamicItem.PK审核中收款码数量,pkId));
+        approveCode.setUnapproved(dynamicService.getKeyValue(DynamicItem.PK审核不通过收款码数量,pkId));
+
+    }
+
+    private UserDynamicEntity 查询下一个UserDynamicEntity(String pkId) {
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(UserDynamicEntity.class)
                     .compareFilter("pkId",CompareTag.Equal,pkId)
                     .andFilter()
-                    .compareFilter("feeImgStatu",CompareTag.Equal, ImgStatu.审核中)
-                    .pageLimitFilter(page,1);
-        }
-        else if(type == ImgStatu.审核通过.getKey()){
-            filter = EntityFilterChain.newFilterChain(UserDynamicEntity.class)
-                    .compareFilter("pkId",CompareTag.Equal,pkId)
-                    .andFilter()
-                    .compareFilter("feeImgStatu",CompareTag.Equal, ImgStatu.审核通过)
-                    .pageLimitFilter(page,1);;
-        }
-        else
-        {
-            filter = EntityFilterChain.newFilterChain(UserDynamicEntity.class)
-                    .compareFilter("pkId",CompareTag.Equal,pkId)
-                    .andFilter()
-                    .compareFilter("feeImgStatu",CompareTag.Equal, ImgStatu.审核不通过)
-                    .pageLimitFilter(page,1);
-        }
-        List<UserDynamicEntity> userDynamicEntities = daoService.queryEntities(UserDynamicEntity.class,filter);
-        return CollectionUtils.isEmpty(userDynamicEntities)?null:userDynamicEntities.get(0);
+                    .compareFilter("feeImgStatu",CompareTag.Equal, ImgStatu.审核中);
+
+
+        UserDynamicEntity userDynamicEntity = daoService.querySingleEntity(UserDynamicEntity.class,filter);
+
+
+        return userDynamicEntity;
 
     }
 
@@ -602,6 +526,10 @@ public class UserInfoService {
         userDynamicEntity.setFeeImgStatu(ImgStatu.审核通过);
         daoService.insertEntity(userDynamicEntity);
 
+        dynamicService.valueDecr(DynamicItem.PK审核中收款码数量,userDynamicEntity.getPkId());
+        dynamicService.valueIncr(DynamicItem.PK审核通过收款码数量,userDynamicEntity.getPkId());
+
+
 
     }
 
@@ -614,6 +542,10 @@ public class UserInfoService {
 
         userDynamicEntity.setFeeImgStatu(ImgStatu.审核不通过);
         daoService.insertEntity(userDynamicEntity);
+
+        dynamicService.valueDecr(DynamicItem.PK审核中收款码数量,userDynamicEntity.getPkId());
+        dynamicService.valueIncr(DynamicItem.PK审核不通过收款码数量,userDynamicEntity.getPkId());
+
 
     }
 
@@ -631,10 +563,8 @@ public class UserInfoService {
     public ApproveCode 查询ApproveCodeById(String dynamicId) {
 
         ApproveCode approveCode = new ApproveCode();
-
-
         UserDynamicEntity userDynamicEntity = this.查询UserDynamicEntityById(dynamicId);
-
+        this.审核动态(userDynamicEntity.getPkId(),approveCode);
         approveCode.setDynamicId(userDynamicEntity.getDynamicId());
         approveCode.setPkId(userDynamicEntity.getPkId());
         approveCode.setFeeNum(pkService.查询Pk打赏金额(userDynamicEntity.getPkId()));
@@ -657,12 +587,22 @@ public class UserInfoService {
 
     }
 
-    public KeyNameValue 查询当前打赏订单状态(String pkId, String payerId, String cashierId) {
-
-        PayOrderEntity payOrderEntity = this.查询可用订单Entity(pkId,payerId,cashierId);
-
-        return new KeyNameValue(payOrderEntity.getOrderStatu().getStatu(),payOrderEntity.getOrderStatu().getStatuStr());
 
 
+    public void 订单超时(String orderId) throws AppException {
+        PayOrderEntity orderEntity = this.获取OrderEntityById(orderId);
+        int leftTime = this.获取订单剩余时间(orderEntity);
+        if(leftTime == 0){
+            this.确认已收款(orderId,orderEntity.getCashierId());
+        }
+
+
+    }
+
+    public int 获取订单剩余时间(PayOrderEntity orderEntity) {
+        long leftMiniSeconds = System.currentTimeMillis() - orderEntity.getStartTime();
+        int leftSeconds = (new Long(leftMiniSeconds).intValue()/1000);
+        int seconds = AppConfigService.getConfigAsInteger(常量值.单个订单的超时时间,5 * 60) - leftSeconds;
+        return seconds < 0?0:seconds;
     }
 }

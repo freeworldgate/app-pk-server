@@ -58,25 +58,6 @@ public class 查询当前打赏 {
         return AppResponse.buildResponse(PageAction.执行处理器("success",applyOrder));
     }
 
-//
-//    @RequestMapping(path="/cashierOrderConfirm1",method = RequestMethod.GET)
-//    @Transactional(rollbackOn = Exception.class)
-//    public AppResponse cashierOrderConfirm1(@RequestParam("orderId") String orderId,@RequestParam("userId") String userId) throws AppException, IOException {
-//
-//
-//        userInfoService.确认已收款(orderId,userId);
-//        ApplyOrder applyOrder = userInfoService.查询订单ById(orderId);
-//        return AppResponse.buildResponse(PageAction.执行处理器("success",applyOrder));
-//    }
-//
-//    @RequestMapping(path="/cashierOrderConfirm2",method = RequestMethod.GET)
-//    @Transactional(rollbackOn = Exception.class)
-//    public AppResponse cashierOrderConfirm2(@RequestParam("orderId") String orderId,@RequestParam("userId") String userId) throws AppException, IOException {
-//
-//        userInfoService.确认未收款(orderId,userId);
-//        ApplyOrder applyOrder = userInfoService.查询订单ById(orderId);
-//        return AppResponse.buildResponse(PageAction.执行处理器("success",applyOrder));
-//    }
 
 
 

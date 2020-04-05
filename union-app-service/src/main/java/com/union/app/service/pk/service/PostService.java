@@ -98,10 +98,10 @@ public class PostService {
 
         daoService.insertEntity(postEntity);
 
-        PkDynamicEntity pkDynamicEntity = pkService.查询PK动态表(pkId);
-        pkDynamicEntity.setPostNum(pkDynamicEntity.getPostNum() + 1);
+//        PkDynamicEntity pkDynamicEntity = pkService.查询PK动态表(pkId);
+//        pkDynamicEntity.setPostNum(pkDynamicEntity.getPostNum() + 1);
 
-        daoService.updateEntity(pkDynamicEntity);
+//        daoService.updateEntity(pkDynamicEntity);
 
 
         return postId;

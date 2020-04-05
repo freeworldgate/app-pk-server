@@ -2,6 +2,7 @@ package com.union.app.api.pk.task;
 
 import com.union.app.domain.pk.PkDynamic.FactualInfo;
 import com.union.app.domain.pk.PkDynamic.FeeTask;
+import com.union.app.domain.pk.PkMode;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.PageAction;
@@ -34,8 +35,7 @@ public class PK动态 {
     @Transactional(rollbackOn = Exception.class)
     public AppResponse PK动态(@RequestParam("pkId") String pkId) throws AppException, IOException {
 
-//        if(dynamicService.getPK模式(pkId) === 1)
-        if(2>1)
+        if(dynamicService.getPK模式(pkId) == PkMode.打赏模式)
         {
             List<FeeTask> task = dynamicService.获取PK打赏任务(pkId);
             return AppResponse.buildResponse(PageAction.执行处理器("tasks",task));

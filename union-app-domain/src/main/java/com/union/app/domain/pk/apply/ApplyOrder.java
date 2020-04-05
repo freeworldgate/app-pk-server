@@ -39,7 +39,7 @@ public class ApplyOrder {
 
     private int rewardTimes;
 
-
+    private int leftTimes;
 }
 
 

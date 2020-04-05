@@ -50,10 +50,10 @@ public class 榜主审核收款码 {
 
 
     @RequestMapping(path="/approveUserCode",method = RequestMethod.GET)
-    public AppResponse getApplyOrder(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId,@RequestParam("type") int type,@RequestParam("page") int page) throws AppException, IOException {
+    public AppResponse getApplyOrder(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId) throws AppException, IOException {
 
 
-        ApproveCode approveCode = userInfoService.查询不同类型用户收款码(pkId,userId,type,page);
+        ApproveCode approveCode = userInfoService.查询不同类型用户收款码(pkId,userId);
 
         return AppResponse.buildResponse(PageAction.执行处理器("success",approveCode));
     }

@@ -5,6 +5,7 @@ import com.union.app.common.config.AppConfigService;
 import com.union.app.dao.spi.AppDaoService;
 import com.union.app.domain.pk.OperType;
 import com.union.app.domain.pk.PkDynamic.*;
+import com.union.app.domain.pk.PkMode;
 import com.union.app.domain.pk.UserCode;
 import com.union.app.domain.pk.apply.KeyNameValue;
 import com.union.app.domain.user.User;
@@ -120,17 +121,6 @@ public class DynamicService {
 
 
 
-    public String 获取需要变更模式的PKID(){
-        String keyName = DynamicKeyName.getAll_Value_Name(DynamicItem.等待变更模式的PK列表);
-        String pkId = redisTemplate.opsForList().rightPop(keyName);;
-        return pkId;
-    }
-    public void 新增变更模式的PK(String pkId){
-        String keyName = DynamicKeyName.getAll_Value_Name(DynamicItem.等待变更模式的PK列表);
-        redisTemplate.opsForList().leftPush(keyName,pkId);;
-    }
-
-
     public int 获取收藏积分(String pkId,String userId){
         int follow = getMapKeyValue(DynamicItem.PKUSER榜帖被收藏的次数,pkId,userId);
         return follow * AppConfigService.getConfigAsInteger(常量值.收藏一次的积分,100);
@@ -176,7 +166,7 @@ public class DynamicService {
 
     }
     public void 生成PK打赏任务(String pkId){
-        List<FeeTask> feeTasks = new ArrayList<>();
+
         User creator = pkService.queryPkCreator(pkId);
         String keyName = DynamicKeyName.getSetKey_Value_Name(DynamicItem.PK今日排名,pkId);
         Set<ZSetOperations.TypedTuple<String>> tasks = redisTemplate.opsForZSet().reverseRangeWithScores(keyName,0,49);
@@ -193,17 +183,18 @@ public class DynamicService {
             feeTask.setIndex(index);
             feeTask.setIntegral(score);
             feeTask.setStatu(new KeyNameValue(OrderStatu.无订单.getStatu(),OrderStatu.无订单.getStatuStr()));
-            feeTasks.add(feeTask);
+
 
             //初始化打赏订单
             PayOrderEntity payOrderEntity =  userInfoService.查询可用订单Entity(feeTask.getPkId(),feeTask.getCreator().getUserId(),feeTask.getCashier().getUserId());
+            feeTask.setOrderId(payOrderEntity.getOrderId());
             if(!org.apache.commons.lang.ObjectUtils.equals(payOrderEntity.getOrderStatu(),OrderStatu.无订单))
             {
-                payOrderEntity.setOrderStatu(OrderStatu.无订单);
-                daoService.updateEntity(payOrderEntity);
+                daoService.deleteEntity(payOrderEntity);
             }
 
             redisTemplate.opsForHash().put(DynamicKeyName.getMapKey_Value_Name(DynamicItem.PK当前任务,pkId),taskId,JSON.toJSONString(feeTask));
+
         }
 
     }
@@ -232,13 +223,7 @@ public class DynamicService {
             feeTask.getPkId();
             PayOrderEntity payOrderEntity =  userInfoService.查询可用订单Entity(feeTask.getPkId(),feeTask.getCreator().getUserId(),feeTask.getCashier().getUserId());
 
-            if(!org.apache.commons.lang.ObjectUtils.equals(payOrderEntity.getOrderStatu(),OrderStatu.无订单))
-            {
-                payOrderEntity.setOrderStatu(OrderStatu.无订单);
-                daoService.updateEntity(payOrderEntity);
-            }
-
-
+            daoService.deleteEntity(payOrderEntity);
         }
         redisTemplate.delete(DynamicKeyName.getMapKey_Value_Name(DynamicItem.PK当前任务,pkId));
     }
@@ -251,6 +236,7 @@ public class DynamicService {
         String taskId = DynamicKeyName.getTaskId(order.getPayerId(),order.getCashierId());
         String feeTaskStr = (String)redisTemplate.opsForHash().get(DynamicKeyName.getMapKey_Value_Name(DynamicItem.PK当前任务,order.getPkId()),taskId);
         FeeTask feeTask = JSON.parseObject(feeTaskStr,FeeTask.class);
+        if(ObjectUtils.isEmpty(feeTask)){return;}
         feeTask.setStatu(new KeyNameValue(order.getOrderStatu().getStatu(),order.getOrderStatu().getStatuStr()));
         redisTemplate.opsForHash().put(DynamicKeyName.getMapKey_Value_Name(DynamicItem.PK当前任务,order.getPkId()),taskId,JSON.toJSONString(feeTask));
 
@@ -258,7 +244,7 @@ public class DynamicService {
         if(org.apache.commons.lang.ObjectUtils.equals(order.getOrderStatu(),OrderStatu.已收款)){
             this.收款用户积分清零(order.getPkId(),order.getCashierId());
             //发消息 -  检查是否完成任务。
-            this.新增变更模式的PK(order.getPkId());
+
         }
     }
 
@@ -267,37 +253,9 @@ public class DynamicService {
         this.delMapKeyValue(DynamicItem.PKUSER今日分享次数,pkId,cashierId);
         this.更新今日用户排名(pkId,cashierId);
     }
-    public boolean isInTask(String pkId){
-
-//        boolean hasTasks = redisTemplate.hasKey(DynamicKeyName.getMapKey_Value_Name(DynamicItem.PK当前任务,pkId));
-//        if(hasTasks){ return Boolean.TRUE; }
 
 
-        int pk成本 =  pkService.查询PK购买价格(pkId)/(pkService.查询Pk打赏金额(pkId));
 
-        //减去成本
-        int 减去成本的营业额 = this.getKeyValue(DynamicItem.PK完成审核订单次数,pkId) - pk成本;
-
-        //是否已经收回成本
-        if(减去成本的营业额 <= 0){return Boolean.FALSE;}
-
-        //打赏出去的次数
-        int 榜主打赏次数 = this.getKeyValue(DynamicItem.PK完成打赏订单次数,pkId);
-
-
-        double rpercent =  ((榜主打赏次数 + AppConfigService.getConfigAsInteger(常量值.单次打赏用户数量,5)) * 1.0D)/减去成本的营业额;
-
-        int 分成比例 = AppConfigService.getConfigAsInteger(常量值.分成比例,8);
-
-        if(new Double(rpercent).intValue() < 分成比例)
-        {
-            return Boolean.TRUE;
-        }
-        else
-        {
-            return Boolean.FALSE;
-        }
-    }
     public List<FactualInfo> 获取当前PK操作动态(String pkId) {
         List<FactualInfo> factualInfos = new ArrayList<>();
         String keyName = DynamicKeyName.getSetKey_Value_Name(DynamicItem.PK当前操作动态,pkId);
@@ -350,7 +308,97 @@ public class DynamicService {
     public void 修改PK模式(String pkId, int i) {
         setKeyValue(DynamicItem.PK模式,pkId,i);
     }
-    public int getPK模式(String pkId) {
-        return getKeyValue(DynamicItem.PK模式,pkId);
+
+    public PkMode getPK模式(String pkId) {
+        int mode = getKeyValue(DynamicItem.PK模式,pkId);
+        if(mode == PkMode.打赏模式.getKey()){return PkMode.打赏模式;}
+        else {return PkMode.推广模式;}
     }
+
+
+
+
+    public String 获取过期订单() {
+        String keyName = DynamicItem.PK订单过期时间列表.getRedisKeySuffix();
+        return redisTemplate.opsForSet().pop(keyName);
+    }
+
+    public void 添加过期订单(String orderId) {
+        String keyName = DynamicItem.PK订单过期时间列表.getRedisKeySuffix();
+        redisTemplate.opsForSet().add(keyName,orderId);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public void 确认收款(PayOrderEntity order) {
+
+        User creator = pkService.queryPkCreator(order.getPkId());
+        if(StringUtils.equals(creator.getUserId(),order.getCashierId()))
+        {
+            //推广模式
+            this.valueIncr(DynamicItem.PK总推广次数,order.getPkId());
+            int pkTimes = this.valueIncr(DynamicItem.PK本次周期推广次数,order.getPkId());
+
+
+            //一轮推广次数
+            int times = this.getKeyValue(DynamicItem.配置,"SINGLE_CYCLE_VERIFY_TIMES");
+
+            if(times == 0){
+                this.设置周期最大值();
+                times = this.getKeyValue(DynamicItem.配置,"SINGLE_CYCLE_VERIFY_TIMES");
+            }
+
+            if(pkTimes >= times){
+                //转为打赏模式
+                this.生成PK打赏任务(order.getPkId());
+                //任务模式
+                this.修改PK模式(order.getPkId(),PkMode.打赏模式.getKey());
+            }
+        }
+        else
+        {
+            //打赏模式
+            this.valueIncr(DynamicItem.PK总打赏次数,order.getPkId());
+            int pkTimes = this.valueIncr(DynamicItem.PK本次周期打赏次数,order.getPkId());
+
+            int times = this.getKeyValue(DynamicItem.配置,"SINGLE_CYCLE_FEE_TIMES");
+
+            if(times == 0){
+                this.设置周期最大值();
+                times = this.getKeyValue(DynamicItem.配置,"SINGLE_CYCLE_FEE_TIMES");
+            }
+            if(pkTimes >= times){
+                this.修改PK模式(order.getPkId(), PkMode.推广模式.getKey());
+                this.清理所有任务(order.getPkId());
+
+                this.setKeyValue(DynamicItem.PK本次周期推广次数,order.getPkId(),0);
+                this.setKeyValue(DynamicItem.PK本次周期打赏次数,order.getPkId(),0);
+            }
+
+        }
+
+    }
+
+
+    public void 设置周期最大值() {
+        setKeyValue(DynamicItem.配置,"SINGLE_CYCLE_VERIFY_TIMES",1);
+        setKeyValue(DynamicItem.配置,"SINGLE_CYCLE_FEE_TIMES",1);
+    }
+
+
 }

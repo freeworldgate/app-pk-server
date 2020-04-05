@@ -46,7 +46,7 @@ public class AppConfigService
                 }
             }
             /*缓存配置项*/
-            configCache.put(configName,value);
+//            configCache.put(configName,value);
             return value;
         }
         catch (Exception e)
