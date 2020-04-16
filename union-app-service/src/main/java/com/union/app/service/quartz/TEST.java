@@ -32,7 +32,7 @@ public class TEST {
     @Resource
     private RedisTemplate<String, String> redisTemplate;
 
-    @Scheduled(cron = "*/1 * * * * ?") // 每分钟执行一次  刷新整个PKID的所有PAGE
+    @Scheduled(cron = "* */50 * * * ?") // 每分钟执行一次  刷新整个PKID的所有PAGE
     public void work() throws Exception {
 
 

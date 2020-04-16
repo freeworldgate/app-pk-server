@@ -6,8 +6,11 @@ import com.union.app.dao.spi.AppDaoService;
 import com.union.app.domain.pk.OperType;
 import com.union.app.domain.pk.PkDynamic.*;
 import com.union.app.domain.pk.PkMode;
+import com.union.app.domain.pk.Post;
 import com.union.app.domain.pk.UserCode;
 import com.union.app.domain.pk.apply.KeyNameValue;
+import com.union.app.domain.pk.integral.UserIntegral;
+import com.union.app.domain.pk.审核.ApproveMessage;
 import com.union.app.domain.user.User;
 import com.union.app.domain.工具.RandomUtil;
 import com.union.app.entity.ImgStatu;
@@ -17,7 +20,9 @@ import com.union.app.entity.pk.apply.OrderType;
 import com.union.app.entity.pk.apply.PayOrderEntity;
 import com.union.app.plateform.constant.常量值;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
+import com.union.app.service.pk.service.ApproveService;
 import com.union.app.service.pk.service.PkService;
+import com.union.app.service.pk.service.PostService;
 import com.union.app.service.pk.service.UserInfoService;
 import com.union.app.service.user.UserService;
 import org.apache.commons.collections4.MapUtils;
@@ -30,6 +35,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
+import java.io.UnsupportedEncodingException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -47,7 +53,13 @@ public class DynamicService {
     UserInfoService userInfoService;
 
     @Autowired
+    PostService postService;
+
+    @Autowired
     AppDaoService daoService;
+
+    @Autowired
+    ApproveService approveService;
 
     @Resource
     private RedisTemplate<String, String> redisTemplate;
@@ -132,8 +144,8 @@ public class DynamicService {
 
     public int 获取用户排名(String pkId, String userId) {
         String keyName = DynamicKeyName.getSetKey_Value_Name(DynamicItem.PK今日排名,pkId);
-        long index = redisTemplate.opsForZSet().rank(keyName,userId);
-        return new Long(index).intValue();
+        Long index = redisTemplate.opsForZSet().rank(keyName,userId);
+        return ObjectUtils.isEmpty(index)?-1:index.intValue();
     }
 
 
@@ -401,4 +413,149 @@ public class DynamicService {
     }
 
 
+    public void 用户投诉新增(String pkId,String userId, String userId1) {
+
+        this.mapValueIncr(DynamicItem.PKUSER用户投诉,pkId,userId);
+        this.mapValueIncr(DynamicItem.PKUSER用户投诉,pkId,userId1);
+
+    }
+
+    public UserIntegral 查询用户排名积分信息(String pkId, String userId) {
+
+        UserIntegral userIntegral = new UserIntegral();
+        userIntegral.setFollow(this.获取收藏积分(pkId,userId));
+        userIntegral.setShare(this.获取今日分享积分(pkId,userId));
+
+        if(userInfoService.用户是否具有有效收款码(pkId,userId))
+        {
+            userIntegral.setSort(Boolean.TRUE);
+            userIntegral.setIndex(this.获取用户排名(pkId,userId) + 1);
+        }
+        else
+        {
+            userIntegral.setSort(Boolean.FALSE);
+        }
+
+        return userIntegral;
+    }
+
+    public List<String> 查询所有审核用户(String pkId) {
+
+        User creator = pkService.queryPkCreator(pkId);
+        Set<String> list = new HashSet<>();
+        list.add(creator.getUserId());
+        String keyName = DynamicKeyName.getSetKey_Value_Name(DynamicItem.PK今日审批用户,pkId);
+        List<String> tasks = redisTemplate.opsForList().range(keyName,0,49);
+        if(!CollectionUtils.isEmpty(tasks)){
+            list.addAll(tasks);
+        }
+
+
+
+        list.add("U2");
+        list.add("U3");
+        list.add("U4");
+        list.add("U5");
+        list.add("U6");
+        list.add("U7");
+        list.add("U8");
+        list.add("U9");
+        list.add("U10");
+        list.add("U11");
+        list.add("U12");
+        list.add("U13");
+        list.add("U14");
+        list.add("U15");
+
+        List<String> all = new ArrayList<>();
+        all.addAll(list);
+        return all;
+
+
+
+    }
+
+
+    /**
+     * 每日清除
+     * @param pkId
+     * @param postId
+     * @return
+     */
+    public String 查询审核用户(String pkId, String postId) {
+
+        String approver = (String)redisTemplate.opsForHash().get(DynamicItem.榜帖审核用户.getRedisKeySuffix(),pkId + "-" + postId);
+        return approver;
+
+    }
+
+    /**
+     *
+     * 有效期5分钟
+     *
+     * @param pkId
+     * @param postId
+     * @param approveUserId
+     */
+    public void 设置帖子的审核用户(String pkId, String postId, String approveUserId) {
+        //设置帖子用户审核
+
+        redisTemplate.opsForHash().put(DynamicItem.榜帖审核用户.getRedisKeySuffix(),pkId + "-" + postId,approveUserId);
+
+        //当前审核中POST列表---
+        redisTemplate.opsForZSet().add(DynamicItem.用户审核中POST列表.getRedisKeySuffix() + "-" + pkId + "-" + approveUserId,postId,System.currentTimeMillis() * 1.0D);
+
+
+        this.valueIncr(DynamicItem.审核用户审核中数量,pkId + approveUserId);
+    }
+
+    public ApproveMessage 查询审核用户的消息(String approveUserId) {
+        ApproveMessage approveMessage = new ApproveMessage();
+
+        String message = (String)redisTemplate.opsForHash().get(DynamicItem.审核用户消息.getRedisKeySuffix(),approveUserId);
+        if(StringUtils.isBlank(message)){
+
+            approveMessage.setText("消息内容");
+            approveMessage.setTitle("消息标题");
+            approveMessage.setUrl(RandomUtil.getRandomImage());
+        }
+        else
+        {
+            approveMessage = JSON.parseObject(message,ApproveMessage.class);
+        }
+
+        return approveMessage;
+    }
+
+    public void 已审核(String pkId, String postId,String approveUserId) {
+        redisTemplate.opsForHash().delete(DynamicItem.榜帖审核用户.getRedisKeySuffix(),pkId + "-" + postId);
+        this.valueDecr(DynamicItem.审核用户审核中数量,pkId + approveUserId);
+        this.valueIncr(DynamicItem.审核用户已审核数量,pkId + approveUserId);
+
+        //当前已审核POST列表---
+        redisTemplate.opsForZSet().add(DynamicItem.用户已审核POST列表.getRedisKeySuffix() + "-" + pkId + "-" + approveUserId,postId,System.currentTimeMillis() * 1.0D);
+        redisTemplate.opsForZSet().remove(DynamicItem.用户审核中POST列表.getRedisKeySuffix() + "-" + pkId + "-" + approveUserId,postId);
+
+
+
+
+
+    }
+
+
+    public List<Post> 查询已审核指定范围的Post(String pkId,String approveUserId,int index) throws UnsupportedEncodingException {
+
+
+        Set<String> postIds = redisTemplate.opsForZSet().range(DynamicItem.用户已审核POST列表.getRedisKeySuffix() + "-" + pkId + "-" + approveUserId,0,(index+1) * 10);
+        List<Post> posts = new ArrayList<>();
+        for(String postId:postIds)
+        {
+            Post post = postService.查询帖子(pkId,postId,"");
+            post.setApproveComment(approveService.获取留言信息(pkId,postId,approveUserId));
+            posts.add(post);
+        }
+
+        return posts;
+
+    }
 }

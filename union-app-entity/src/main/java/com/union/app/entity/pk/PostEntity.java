@@ -32,5 +32,10 @@ public class PostEntity {
     @Enumerated(EnumType.STRING)
     private PostStatu statu;
 
+    private String approveUserId;
+
+
+
+
 
 }

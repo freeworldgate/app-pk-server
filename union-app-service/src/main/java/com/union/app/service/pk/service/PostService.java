@@ -81,11 +81,11 @@ public class PostService {
         postEntity.setPkId(pkId);
         postEntity.setPostId(postId);
         postEntity.setUserId(userId);
-        postEntity.setTopic(title.getBytes(Charset.forName("UTF-8")));
+        postEntity.setTopic(org.apache.commons.lang.StringUtils.isBlank(title)?"...".getBytes("UTF-8"):title.getBytes(Charset.forName("UTF-8")));
         postEntity.setImgNum(images.size());
         postEntity.setCreateTime(TimeUtils.currentTime());
         postEntity.setLastModifyTime(TimeUtils.currentTime());
-        postEntity.setStatu(PostStatu.上线);
+        postEntity.setStatu(PostStatu.审核中);
         for(String img:images){
             PostImageEntity postImageEntity = new PostImageEntity();
             postImageEntity.setPkId(pkId);
@@ -158,13 +158,20 @@ public class PostService {
         post.setDynamic(getPostDynamic(postEntity.getPostId(),postEntity.getPkId()));
         post.setPostImages(getPostImages(postEntity.getPostId(),postEntity.getPkId()));
         post.setStatu(new KeyNameValue(postEntity.getStatu().getStatu(),postEntity.getStatu().getStatuStr()));
+
+        post.setUserIntegral(dynamicService.查询用户排名积分信息(postEntity.getPkId(),postEntity.getUserId()));
+
+
+
+
+
         return post;
     }
 
 
 
 
-    private List<PostImage> getPostImages(String postId, String pkId) {
+    public List<PostImage> getPostImages(String postId, String pkId) {
         List<PostImage> postImages = new ArrayList<>();
 
         EntityFilterChain filter = EntityFilterChain.newFilterChain(PostImageEntity.class)
@@ -193,6 +200,9 @@ public class PostService {
 
 
     public PostEntity 查询用户帖(String pkId, String userId) {
+        if(StringUtils.isEmpty(userId)){return null;}
+
+
         EntityFilterChain filter = EntityFilterChain.newFilterChain(PostEntity.class)
                 .compareFilter("pkId",CompareTag.Equal,pkId)
                 .andFilter()
@@ -209,6 +219,7 @@ public class PostService {
                 return null;
             }
             else {
+
                 return this.translate(userPostEntity);
             }
     }
@@ -347,7 +358,18 @@ public class PostService {
         daoService.updateEntity(postEntity);
         return keyNameValue;
     }
+    public void 上线帖子(String pkId, String postId)  {
+        PostEntity postEntity = this.查询帖子ById(pkId,postId);
+        postEntity.setStatu(PostStatu.上线);
+        daoService.updateEntity(postEntity);
 
+    }
+    public void 审核不通过(String pkId, String postId)  {
+        PostEntity postEntity = this.查询帖子ById(pkId,postId);
+        postEntity.setStatu(PostStatu.审核不通过);
+        daoService.updateEntity(postEntity);
+
+    }
     public PostEntity getPostEntityById(String postId) {
         EntityFilterChain filter1 = EntityFilterChain.newFilterChain(PostEntity.class)
                 .compareFilter("postId",CompareTag.Equal,postId);

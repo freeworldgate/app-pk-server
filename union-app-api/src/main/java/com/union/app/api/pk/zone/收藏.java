@@ -1,12 +1,14 @@
 package com.union.app.api.pk.zone;
 
 import com.union.app.common.OSS存储.CacheStorage;
+import com.union.app.common.config.AppConfigService;
 import com.union.app.common.id.KeyGetter;
 import com.union.app.dao.spi.AppDaoService;
 import com.union.app.domain.pk.Post;
 import com.union.app.domain.工具.RandomUtil;
 import com.union.app.entity.pk.PostEntity;
 import com.union.app.entity.pk.UserCollectionEntity;
+import com.union.app.plateform.constant.常量值;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.Level;
@@ -76,7 +78,12 @@ public class 收藏 {
 
         }
         dynamicService.更新今日用户排名(pkId,postEntity.getUserId());
-        return AppResponse.buildResponse(PageAction.执行处理器("success",""));
+
+        int score = AppConfigService.getConfigAsInteger(常量值.收藏一次的积分,100);
+
+//        Post post = postService.查询帖子(pkId,postId,userId);
+
+        return AppResponse.buildResponse(PageAction.执行处理器("success",score));
 
     }
 }

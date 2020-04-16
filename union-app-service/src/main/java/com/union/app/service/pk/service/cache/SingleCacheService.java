@@ -69,7 +69,7 @@ public class SingleCacheService<T> {
 
 
 
-    @Scheduled(cron = "*/60 * * * * ?") // 定时刷新页面
+    @Scheduled(cron = "* */60 * * * ?") // 定时刷新页面
     public void work() throws Exception {
 
 

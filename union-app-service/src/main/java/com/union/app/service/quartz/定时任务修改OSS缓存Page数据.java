@@ -38,7 +38,7 @@ public class 定时任务修改OSS缓存Page数据 {
     OssStorage ossStorage;
 
 
-    @Scheduled(cron = "*/60 * * * * ?") // 每分钟执行一次  刷新整个PKID的所有PAGE
+    @Scheduled(cron = "* */50 * * * ?") // 每分钟执行一次  刷新整个PKID的所有PAGE
     public void work() throws Exception {
 
 

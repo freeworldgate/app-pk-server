@@ -1,4 +1,0 @@
-[14:36:05:223]|[ERROR]|org.hibernate.engine.jdbc.spi.SqlExceptionHelper|logExceptions|Field 'id' doesn't have a default value
-[14:36:05:242]|[ERROR]|org.hibernate.internal.ExceptionMapperStandardImpl|mapManagedFlushFailure|HHH000346: Error during managed flush [org.hibernate.exception.GenericJDBCException: could not execute statement]
-[14:36:21:866]|[ERROR]|org.hibernate.engine.jdbc.spi.SqlExceptionHelper|logExceptions|Field 'id' doesn't have a default value
-[14:36:21:867]|[ERROR]|org.hibernate.internal.ExceptionMapperStandardImpl|mapManagedFlushFailure|HHH000346: Error during managed flush [org.hibernate.exception.GenericJDBCException: could not execute statement]

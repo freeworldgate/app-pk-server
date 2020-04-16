@@ -1,6 +1,0 @@
-[20:36:06:563]|[ERROR]|org.hibernate.engine.jdbc.spi.SqlExceptionHelper|logExceptions|Duplicate entry '850103d6-2772-4589-90ef-c8c2e1cb3df1' for key 'PRIMARY'
-[20:36:33:757]|[ERROR]|org.hibernate.engine.jdbc.spi.SqlExceptionHelper|logExceptions|Duplicate entry '7d1af989-b87e-4251-9cb5-708d218f569f' for key 'PRIMARY'
-[20:37:04:003]|[ERROR]|org.hibernate.engine.jdbc.spi.SqlExceptionHelper|logExceptions|Duplicate entry 'adbd6b53-1213-453b-9a91-7cfa76075817' for key 'PRIMARY'
-[20:37:37:585]|[ERROR]|org.hibernate.engine.jdbc.spi.SqlExceptionHelper|logExceptions|Duplicate entry '7c2527aa-68a3-43db-afe4-766326930546' for key 'PRIMARY'
-[20:53:20:774]|[ERROR]|org.hibernate.engine.jdbc.spi.SqlExceptionHelper|logExceptions|Table 'meetfood.t_post' doesn't exist
-[20:53:20:779]|[ERROR]|org.hibernate.engine.jdbc.spi.SqlExceptionHelper|logExceptions|Table 'meetfood.t_post' doesn't exist

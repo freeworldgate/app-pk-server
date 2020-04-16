@@ -33,4 +33,5 @@ public abstract class 常量值 {
     public static String 操作动态的保留长度 = "OPER_DYNAMIC_LENGTH";
     public static String 排名队列长度 = "USER_SCORE_SORT_LENGTH";
     public static String 单个订单的超时时间 = "ORDER_OUR_TIME";
+    public static String 审核用户超时时间 = "APPROVE_EXPIRE_TIME";
 }

@@ -84,7 +84,7 @@ public class 用户登录加注册 {
         UserBasicInfo userBasicInfo = new UserBasicInfo();
         userBasicInfo.setUserType(userEntity.getUserType().getType());
         userBasicInfo.setFromUser(userEntity.getFromUser());
-        userBasicInfo.setUserId(userEntity.getUserId());
+        userBasicInfo.setUserId(userEntity.getOpenId());
         userBasicInfo.setImgUrl(userEntity.getAvatarUrl());
         userBasicInfo.setUserName(new String(userEntity.getNickName(),"UTF-8"));
 
