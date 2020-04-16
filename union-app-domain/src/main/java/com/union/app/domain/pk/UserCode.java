@@ -9,6 +9,9 @@ import lombok.Setter;
 @Getter
 public class UserCode {
 
+    private String dynamicId;
+
+
     private String pkId;
 
     private User user;

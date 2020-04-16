@@ -29,13 +29,13 @@ public class 定时判断和刷新任意PK所处的模式 {
     @Resource
     private RedisTemplate<String, String> redisTemplate;
 
-    @Scheduled(cron = "*/5 * * * * ?") // 每分钟执行一次  刷新整个PKID的所有PAGE
+    @Scheduled(cron = "* */50 * * * ?") // 每分钟执行一次  刷新整个PKID的所有PAGE
     @Transactional(rollbackOn = Exception.class)
     public void work() throws Exception {
 
 
 
-        dynamicService.设置周期最大值();
+//        dynamicService.设置周期最大值();
 
 
 

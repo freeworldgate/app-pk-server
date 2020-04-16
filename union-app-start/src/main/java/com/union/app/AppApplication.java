@@ -1,7 +1,7 @@
 package com.union.app;
 
 
-import com.union.app.util.env.EnvUtil;
+//import com.union.app.util.env.EnvUtil;
 import org.apache.commons.io.FileUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -30,14 +30,14 @@ public class AppApplication {
 
         System.out.println("APP_HOME = " + System.getenv("APP_HOME"));
 
-
-        File applicationFile = EnvUtil.appCoreConfigFile();
-        Properties properties = new Properties();
-        FileInputStream fileInputStream = FileUtils.openInputStream(applicationFile);
-        properties.load(fileInputStream);
-        fileInputStream.close();
+//
+//        File applicationFile = EnvUtil.appCoreConfigFile();
+//        Properties properties = new Properties();
+//        FileInputStream fileInputStream = FileUtils.openInputStream(applicationFile);
+//        properties.load(fileInputStream);
+//        fileInputStream.close();
         SpringApplication springApplication = new SpringApplication(AppApplication.class);
-        springApplication.setDefaultProperties(properties);
+//        springApplication.setDefaultProperties(properties);
         springApplication.run(args);
     }
 

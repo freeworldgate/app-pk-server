@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Component;
@@ -16,8 +17,7 @@ import java.sql.SQLException;
 /**
  * 配置Durid数据库配置信息
  */
-//@PropertySource(value={"file:${APP_HOME}/conf/jdbc/durid.properties"})
-
+//@PropertySource(value={"durid.properties"})
 @Component
 @Configuration
 public class DuridConfig {

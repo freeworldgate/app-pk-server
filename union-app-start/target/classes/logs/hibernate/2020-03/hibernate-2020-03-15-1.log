@@ -1,1 +1,0 @@
-[20:35:05:968]|[ERROR]|org.hibernate.engine.jdbc.spi.SqlExceptionHelper|logExceptions|Duplicate entry '82f77893-2a4d-4f5b-812d-16d5b690bacf' for key 'PRIMARY'

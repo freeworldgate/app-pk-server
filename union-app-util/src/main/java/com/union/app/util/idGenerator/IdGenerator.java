@@ -27,4 +27,6 @@ public class IdGenerator {
     public static String getImageId() {return UUID.randomUUID().toString(); }
 
     public static String getOrderId() {return UUID.randomUUID().toString(); }
+
+    public static String 生成收款码ID() {return UUID.randomUUID().toString(); }
 }

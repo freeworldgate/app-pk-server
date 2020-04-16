@@ -3,6 +3,22 @@ package com.union.app.service.pk.dynamic;
 public enum DynamicItem {
 
     配置(DynamicLevel.ALL,"ALL-CONFIG"),
+    榜帖审核用户(DynamicLevel.ALL,"ALL-APPROVEUSER-POST"),
+
+    审核用户消息(DynamicLevel.ALL,"ALL-APPROVEUSER-MESSAGE"),
+
+    审核用户昨日排名(DynamicLevel.ALL,"ALL-APPROVEUSER-YESTERDAY-SORT"),
+
+    审核用户昨日积分(DynamicLevel.ALL,"ALL-APPROVEUSER-YESTERDAY-SCORE"),
+
+    审核用户审核中数量(DynamicLevel.ALL,"ALL-APPROVEUSER-APPROVING"),
+    用户审核中POST列表(DynamicLevel.ALL,"USER-POSTLIST-APPROVING"),
+
+    审核用户已审核数量(DynamicLevel.ALL,"ALL-APPROVEUSER-APPROVED"),
+    用户已审核POST列表(DynamicLevel.ALL,"USER-POSTLIST-APPROVED"),
+
+
+
 
     等待变更模式的PK列表(DynamicLevel.ALL,"WAITING-LIST-CHANGE-PK-MODE"),
 
@@ -41,19 +57,22 @@ public enum DynamicItem {
     PKUSER收款次数(DynamicLevel.PK_USER,"USER-CONFIRM-MONEY"),
 
 
-
+    PKUSER用户投诉(DynamicLevel.PK_USER,"USER-COMPLAIN"),
 
     //--------------------------------------------
     PK今日排名(DynamicLevel.PK_USER,"USER-TODAY-SORT"),
+
+    PK今日审批用户(DynamicLevel.PK_USER,"USER-TODAY-APPROVEUSER"),
 
     PK当前任务(DynamicLevel.PK,"CUREENT-FEE-TASTS"),
 
     PK当前操作动态(DynamicLevel.PK,"CUREENT-OPER-INFOS"),
 
 
-    PK订单过期时间列表(DynamicLevel.PK,"CUREENT-ORDER-LIST"), ;
+    PK订单过期时间列表(DynamicLevel.PK,"CUREENT-ORDER-LIST"),
 
 
+        ;
 
     private DynamicLevel level;
 

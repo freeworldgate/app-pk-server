@@ -82,7 +82,13 @@ public class PkService {
 
 
     public PkDetail querySinglePk(String pkId) throws IOException {
-        PkDetail pkDetail = ossStorage.getOssWidthMapCache(SceneType.存储PK缓存,"PK-Cache",pkId,PkDetail.class);
+//        PkDetail pkDetail = ossStorage.getOssWidthMapCache(SceneType.存储PK缓存,"PK-Cache",pkId,PkDetail.class);
+        PkDetail pkDetail = new PkDetail();
+        PkEntity pk = this.querySinglePkEntity(pkId);
+        pkDetail.setPkId(pk.getPkId());
+        pkDetail.setTopic(pk.getTopic());
+        pkDetail.setUser(userService.queryUser(pk.getUserId()));
+        pkDetail.setWatchWord(pk.getWatchWord());
         return pkDetail;
     }
 

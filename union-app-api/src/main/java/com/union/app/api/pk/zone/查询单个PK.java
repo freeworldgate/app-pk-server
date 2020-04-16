@@ -66,14 +66,15 @@ public class 查询单个PK {
         boolean isUserPublish = !ObjectUtils.isEmpty(postService.查询用户帖(pkId,userId));
         User creator = pkService.queryPkCreator(pkId);
         UserCode userCode = userInfoService.查询收款码信息(pkId,userId);
-//        KeyNameValue userOrder = userInfoService.查询当前打赏订单状态(pkId,creator.getUserId(),userId);
+
 
         List<DataSet> dataSets = new ArrayList<>();
         dataSets.add(new DataSet("isUserPublish",isUserPublish));
         dataSets.add(new DataSet("pkDetail",pkDetail));
         dataSets.add(new DataSet("creator",creator));
         dataSets.add(new DataSet("userCode",userCode));
-//        dataSets.add(new DataSet("userOrder",userOrder));
+
+
         dataSets.add(new DataSet("posts",posts));
         dataSets.add(new DataSet("page",1));
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));

@@ -52,7 +52,7 @@ public class UserInfoService {
 
 
     public UserCode 查询并创建收款码信息(String pkId,String userId) {
-
+        UserCode userCode = new UserCode();
 
         EntityFilterChain filter = EntityFilterChain.newFilterChain(UserDynamicEntity.class)
                 .compareFilter("pkId",CompareTag.Equal,pkId)
@@ -61,14 +61,14 @@ public class UserInfoService {
         UserDynamicEntity userDynamicEntity = daoService.querySingleEntity(UserDynamicEntity.class,filter);
         if(org.springframework.util.ObjectUtils.isEmpty(userDynamicEntity)){
             userDynamicEntity = new UserDynamicEntity();
-            userDynamicEntity.setDynamicId(UUID.randomUUID().toString());
+            userDynamicEntity.setDynamicId(com.union.app.util.idGenerator.IdGenerator.生成收款码ID());
             userDynamicEntity.setPkId(pkId);
             userDynamicEntity.setUserId(userId);
             userDynamicEntity.setFeeImgStatu(ImgStatu.无内容);
             daoService.insertEntity(userDynamicEntity);
         }
 
-        UserCode userCode = new UserCode();
+        userCode.setDynamicId(userDynamicEntity.getDynamicId());
         userCode.setFeeNum(pkService.查询Pk打赏金额(pkId));
         userCode.setPkId(pkId);
         userCode.setUser(userService.queryUser(userId));
@@ -79,6 +79,27 @@ public class UserInfoService {
         return userCode;
 
     }
+    public UserCode 查询收款码信息(String dynamicId) {
+        UserCode userCode = new UserCode();
+
+
+        UserDynamicEntity userDynamicEntity = this.查询用户收款码表ById(dynamicId);
+
+
+        userCode.setDynamicId(userDynamicEntity.getDynamicId());
+        userCode.setFeeNum(pkService.查询Pk打赏金额(userDynamicEntity.getPkId()));
+        userCode.setPkId(userDynamicEntity.getPkId());
+        userCode.setUser(userService.queryUser(userDynamicEntity.getUserId()));
+        userCode.setPhone(userDynamicEntity.getPhone());
+        userCode.setStatu(new KeyNameValue(userDynamicEntity.getFeeImgStatu().getKey(),userDynamicEntity.getFeeImgStatu().getValue()));
+        userCode.setUrl(userDynamicEntity.getFeePayUrl());
+
+        return userCode;
+
+    }
+
+
+
 
     public UserDynamicEntity 查询用户收款码表(String pkId,String userId){
         EntityFilterChain filter = EntityFilterChain.newFilterChain(UserDynamicEntity.class)
@@ -88,6 +109,14 @@ public class UserInfoService {
         UserDynamicEntity userDynamicEntity = daoService.querySingleEntity(UserDynamicEntity.class,filter);
         return userDynamicEntity;
     }
+
+    public UserDynamicEntity 查询用户收款码表ById(String dynamicId){
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(UserDynamicEntity.class)
+                .compareFilter("dynamicId",CompareTag.Equal,dynamicId);
+        UserDynamicEntity userDynamicEntity = daoService.querySingleEntity(UserDynamicEntity.class,filter);
+        return userDynamicEntity;
+    }
+
 
     public UserCode 查询收款码信息(String pkId,String userId) {
 
