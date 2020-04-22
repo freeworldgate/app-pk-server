@@ -35,16 +35,21 @@ public class PK动态 {
     @Transactional(rollbackOn = Exception.class)
     public AppResponse PK动态(@RequestParam("pkId") String pkId) throws AppException, IOException {
 
-        if(dynamicService.getPK模式(pkId) == PkMode.打赏模式)
-        {
-            List<FeeTask> task = dynamicService.获取PK打赏任务(pkId);
-            return AppResponse.buildResponse(PageAction.执行处理器("tasks",task));
-        }
-        else
-        {
-            List<FactualInfo> factualInfos = dynamicService.获取当前PK操作动态(pkId);
-            return AppResponse.buildResponse(PageAction.执行处理器("infos",factualInfos));
-        }
+
+        List<FactualInfo> factualInfos = dynamicService.获取当前PK操作动态(pkId);
+        return AppResponse.buildResponse(PageAction.执行处理器("infos",factualInfos));
+
+
+
+//        if(dynamicService.getPK模式(pkId) == PkMode.打赏模式)
+//        {
+//            List<FeeTask> task = dynamicService.获取PK打赏任务(pkId);
+//            return AppResponse.buildResponse(PageAction.执行处理器("tasks",task));
+//        }
+//        else
+//        {
+
+//        }
 
     }
 

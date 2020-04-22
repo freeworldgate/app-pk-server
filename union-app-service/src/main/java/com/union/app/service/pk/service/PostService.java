@@ -36,10 +36,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.sql.Time;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class PostService {
@@ -81,7 +78,7 @@ public class PostService {
         postEntity.setPkId(pkId);
         postEntity.setPostId(postId);
         postEntity.setUserId(userId);
-        postEntity.setTopic(org.apache.commons.lang.StringUtils.isBlank(title)?"...".getBytes("UTF-8"):title.getBytes(Charset.forName("UTF-8")));
+        postEntity.setTopic(noActiveTitle(title)?"...".getBytes("UTF-8"):title.getBytes(Charset.forName("UTF-8")));
         postEntity.setImgNum(images.size());
         postEntity.setCreateTime(TimeUtils.currentTime());
         postEntity.setLastModifyTime(TimeUtils.currentTime());
@@ -105,6 +102,18 @@ public class PostService {
 
 
         return postId;
+    }
+
+    private boolean noActiveTitle(String title) {
+        if(org.apache.commons.lang.StringUtils.isBlank(title)){return true;}
+
+        if(org.apache.commons.lang.StringUtils.equalsIgnoreCase(title,"undefined")){return true;}
+        if(org.apache.commons.lang.StringUtils.equalsIgnoreCase(title,"Nan")){return true;}
+        if(org.apache.commons.lang.StringUtils.equalsIgnoreCase(title,"null")){return true;}
+
+        return false;
+
+
     }
 
     private String getLegalImgUrl(String image) {
@@ -137,11 +146,11 @@ public class PostService {
 //        return post;
 //    }
 
-    public Post 查询帖子(String pkId,String postId,String queryerId) throws UnsupportedEncodingException {
+    public Post 查询帖子(String pkId,String postId,String queryerId,Date date) throws UnsupportedEncodingException {
 
         PostEntity postEntity = this.查询帖子ById(pkId,postId);
         if(ObjectUtils.isEmpty(postEntity)){return null;}
-        Post post = translate(postEntity);
+        Post post = translate(postEntity,date);
         if((!StringUtils.isEmpty(queryerId)) && (!org.apache.commons.lang.StringUtils.equals(postEntity.getUserId(),queryerId))){
             post.setQueryerCollect(isUserCollectPost(postId,queryerId));
         }
@@ -149,7 +158,7 @@ public class PostService {
     }
 
 
-    public Post translate(PostEntity postEntity) throws UnsupportedEncodingException {
+    public Post translate(PostEntity postEntity,Date date) throws UnsupportedEncodingException {
         Post post = new Post();
         post.setPkId(postEntity.getPkId());
         post.setPostId(postEntity.getPostId());
@@ -159,7 +168,7 @@ public class PostService {
         post.setPostImages(getPostImages(postEntity.getPostId(),postEntity.getPkId()));
         post.setStatu(new KeyNameValue(postEntity.getStatu().getStatu(),postEntity.getStatu().getStatuStr()));
 
-        post.setUserIntegral(dynamicService.查询用户排名积分信息(postEntity.getPkId(),postEntity.getUserId()));
+        post.setUserIntegral(dynamicService.查询用户打榜信息(postEntity.getPkId(),postEntity.getUserId(),date));
 
 
 
@@ -212,7 +221,7 @@ public class PostService {
     }
 
 
-    public Post 查询用户帖子(String pkId, String userId) throws UnsupportedEncodingException {
+    public Post 查询用户帖子(String pkId, String userId,Date date) throws UnsupportedEncodingException {
 
             PostEntity userPostEntity = 查询用户帖(pkId,userId);
             if(ObjectUtils.isEmpty(userPostEntity)){
@@ -220,7 +229,7 @@ public class PostService {
             }
             else {
 
-                return this.translate(userPostEntity);
+                return this.translate(userPostEntity,date);
             }
     }
 
@@ -266,10 +275,10 @@ public class PostService {
 
 
         postEntity.setLastModifyTime(TimeUtils.currentTime());
-        String oldTitle = new String(postEntity.getTopic(),Charset.forName("UTF-8"));
-        if(!StringUtils.isEmpty(title)) {
-            postEntity.setTopic(org.apache.commons.lang.StringUtils.equals(title, oldTitle) ? postEntity.getTopic() : title.getBytes("UTF-8"));
-        }
+//        String oldTitle = new String(postEntity.getTopic(),Charset.forName("UTF-8"));
+
+        postEntity.setTopic(noActiveTitle(title) ? postEntity.getTopic() : title.getBytes("UTF-8"));
+
         for(String img:images){
             PostImageEntity postImageEntity = new PostImageEntity();
             postImageEntity.setPkId(postEntity.getPkId());
@@ -364,12 +373,7 @@ public class PostService {
         daoService.updateEntity(postEntity);
 
     }
-    public void 审核不通过(String pkId, String postId)  {
-        PostEntity postEntity = this.查询帖子ById(pkId,postId);
-        postEntity.setStatu(PostStatu.审核不通过);
-        daoService.updateEntity(postEntity);
 
-    }
     public PostEntity getPostEntityById(String postId) {
         EntityFilterChain filter1 = EntityFilterChain.newFilterChain(PostEntity.class)
                 .compareFilter("postId",CompareTag.Equal,postId);

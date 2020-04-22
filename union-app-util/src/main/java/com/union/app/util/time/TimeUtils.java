@@ -1,5 +1,8 @@
 package com.union.app.util.time;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class TimeUtils {
     public static String getTime() {
         return "20190505344534";
@@ -40,4 +43,27 @@ public class TimeUtils {
     public static String getOrderCreateTime(String createTime) {
         return "2019.04.23 13:34";
     }
+
+
+
+    public static String currentDate() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String currentDay = simpleDateFormat.format(new Date());
+        return currentDay;
+    }
+    public static String dateStr(Date date){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String currentDay = simpleDateFormat.format(date);
+        return currentDay;
+    }
+    public static Date 前一天(Date date) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        long preDay = date.getTime() - 24 * 60 * 60 *1000;
+        return new Date(preDay);
+    }
+
+
+
+
+
 }

@@ -24,6 +24,7 @@ import javax.transaction.Transactional;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.security.InvalidAlgorithmParameterException;
+import java.util.Date;
 
 @RestController
 @RequestMapping(path="/user")
@@ -66,7 +67,7 @@ public class 用户登录加注册 {
             userEntity.setUserId(openId);
             if(userService.isUserVip(fromUser)){userEntity.setUserType(UserType.重点用户);}else{userEntity.setUserType(UserType.普通用户);}
             convert(userInfo,userEntity);
-            dynamicService.新增注册用户(appName,pkId,userEntity.getUserId(),fromUser);
+            dynamicService.新增注册用户(appName,pkId,userEntity.getUserId(),fromUser,new Date());
             appDaoService.insertEntity(userEntity);
 
         }

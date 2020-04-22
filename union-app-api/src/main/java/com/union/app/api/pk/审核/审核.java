@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -52,17 +53,19 @@ public class 审核 {
     @RequestMapping(path="/approve",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
     public AppResponse 查询审核信息(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId,@RequestParam("userId") String userId) throws AppException, IOException {
+
+        Date currentDay = new Date();
         List<DataSet> dataSets = new ArrayList<>();
-        String approveUserId = dynamicService.查询审核用户(pkId,postId);
+        String approveUserId = dynamicService.查询审核用户(pkId,postId,currentDay);
         if(!org.apache.commons.lang.StringUtils.equals(userId,approveUserId)){
             return AppResponse.buildResponse(PageAction.消息级别提示框(Level.错误消息,"审核权限过期"));
         }
 
 
         postService.上线帖子(pkId,postId);
-        dynamicService.已审核(pkId,postId,approveUserId);
+        dynamicService.已审核(pkId,postId,approveUserId,currentDay);
 
-        Post post = postService.查询帖子(pkId,postId,null);
+        Post post = postService.查询帖子(pkId,postId,null,currentDay);
         DataSet dataSet1 = new DataSet("userPost",post);
 
         dataSets.add(dataSet1);

@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -55,20 +56,32 @@ public class 查询审核信息1 {
     @Autowired
     ApproveService approveService;
 
+    /** 用户查询所有审核人
+     * @param pkId
+     * @param postId
+     * @param userId
+     * @return
+     * @throws AppException
+     * @throws IOException
+     */
     @RequestMapping(path="/queryApproveInfo1",method = RequestMethod.GET)
     public AppResponse 查询审核信息(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId,@RequestParam("userId") String userId) throws AppException, IOException {
 
 
+        Date currentDate = new Date();
+
+
         List<DataSet> dataSets = new ArrayList<>();
         PostEntity postEntity = postService.查询帖子ById(pkId,postId);
-        String approveUserId = dynamicService.查询审核用户(pkId,postId);
+        String approveUserId = dynamicService.查询审核用户(pkId,postId,currentDate);
 
         if(!org.apache.commons.lang.StringUtils.equals(userId,postEntity.getUserId())){
             return AppResponse.buildResponse(PageAction.消息级别提示框(Level.错误消息,"非法操作"));
         }
 
 
-        List<ApproveUser> approveUserList = approveService.查询今日所有审核用户(pkId,postId);
+        List<ApproveUser> approveUserList = approveService.查询今日所有审核用户(pkId,postId,currentDate);
+
         DataSet dataSet3 = new DataSet("approveUserList",approveUserList);
         dataSets.add(dataSet3);
         ApproveUser currentApprover = null;
@@ -79,11 +92,13 @@ public class 查询审核信息1 {
                 }
         }
         if(!ObjectUtils.isEmpty(currentApprover)) {
-                DataSet dataSet4 = new DataSet("currentApprover",currentApprover);
+                DataSet dataSet4 = new DataSet("currentSelectApprover",currentApprover.getUser());
                 int index = approveUserList.indexOf(currentApprover);
                 DataSet dataSet5 = new DataSet("currentIndex",index);
+                DataSet dataSet6 = new DataSet("currentApprover",currentApprover);
                 dataSets.add(dataSet5);
                 dataSets.add(dataSet4);
+                dataSets.add(dataSet6);
         }
         else
         {

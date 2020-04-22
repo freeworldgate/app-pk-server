@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -55,6 +56,8 @@ public class 设置留言 {
     @Transactional(rollbackOn = Exception.class)
     public AppResponse 设置留言(@RequestParam("pkId") String pkId, @RequestParam("approvorId") String approvorId,  @RequestParam("userId") String userId,@RequestParam("text") String text,@RequestParam("imgUrl") String imgUrl) throws AppException, IOException {
 
+        Date currentDay = new Date();
+
         List<DataSet> dataSets = new ArrayList<>();
         PostEntity postEntity = postService.查询用户帖(pkId,userId);
 
@@ -63,20 +66,21 @@ public class 设置留言 {
 
         List<ApproveUser> newApproveUserList = new ArrayList<>();
 
-        List<ApproveUser> approveUserList = approveService.查询今日所有审核用户(pkId,postEntity.getPostId());
+//        List<ApproveUser> approveUserList = approveService.查询今日所有审核用户(pkId,postEntity.getPostId());
 
-        ApproveUser currentApproveUser = null;
-        for(ApproveUser approveUser:approveUserList){
-            if(org.apache.commons.lang.StringUtils.equals(approveUser.getUser().getUserId(),approvorId)){
-                currentApproveUser = approveUser;
-            }
-
-        }
+        ApproveUser currentApproveUser = approveService.查询审核用户WidthCommentById(pkId,postEntity.getPostId(),approvorId,currentDay);
+//        查询帖子的审核用户(pkId,postEntity.getPostId());
+//        for(ApproveUser approveUser:approveUserList){
+//            if(org.apache.commons.lang.StringUtils.equals(approveUser.getUser().getUserId(),approvorId)){
+//                currentApproveUser = approveUser;
+//            }
+//
+//        }
 
         DataSet dataSet4 = new DataSet("currentApprover",currentApproveUser);
-        DataSet dataSet3 = new DataSet("approveUserList",approveUserList);
+//        DataSet dataSet3 = new DataSet("approveUserList",approveUserList);
 //        DataSet dataSet5 = new DataSet("currentIndex",0);
-        dataSets.add(dataSet3);
+//        dataSets.add(dataSet3);
         dataSets.add(dataSet4);
 
 
@@ -85,7 +89,8 @@ public class 设置留言 {
 
 
 
-        return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
+//        return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
+        return AppResponse.buildResponse(PageAction.执行处理器("success",currentApproveUser));
 
 
 

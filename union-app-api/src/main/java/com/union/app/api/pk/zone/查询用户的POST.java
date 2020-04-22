@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.util.Date;
 
 @RestController
 @RequestMapping(path="/pk")
@@ -46,19 +47,24 @@ public class 查询用户的POST {
     @RequestMapping(path="/queryUserPost",method = RequestMethod.GET)
     public AppResponse 查询用户的POST(@RequestParam("pkId") String pkId, @RequestParam("userId") String userId) throws AppException, IOException {
 
+            Date cureentDate = new Date();
 
 
 
 
+            Post post = postService.查询用户帖子(pkId,userId,cureentDate);
 
-            Post post = postService.查询用户帖子(pkId,userId);
+//            return AppResponse.buildResponse(PageAction.执行处理器("uploadImgs",""));
+
+
             if(!ObjectUtils.isEmpty(post)){
 
                 return AppResponse.buildResponse(PageAction.执行处理器("userPost",post));
             }
             else
             {
-                return AppResponse.buildResponse(PageAction.执行处理器("createPost",""));
+//                return AppResponse.buildResponse(PageAction.执行处理器("createPost",""));
+                return AppResponse.buildResponse(PageAction.执行处理器("uploadImgs",""));
             }
 
 

@@ -4,6 +4,7 @@ import com.union.app.domain.pk.PkDetail;
 import com.union.app.domain.pk.Post;
 import com.union.app.domain.pk.UserCode;
 import com.union.app.domain.pk.apply.KeyNameValue;
+import com.union.app.domain.pk.integral.UserIntegral;
 import com.union.app.domain.user.User;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
@@ -11,6 +12,7 @@ import com.union.app.plateform.data.resultcode.DataSet;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.service.pk.click.ClickService;
+import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.service.OrderService;
 import com.union.app.service.pk.service.PkService;
 import com.union.app.service.pk.service.PostService;
@@ -26,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -54,25 +57,36 @@ public class 查询单个PK {
     @Autowired
     UserInfoService userInfoService;
 
+    @Autowired
+    DynamicService dynamicService;
+
+
     @RequestMapping(path="/queryPk",method = RequestMethod.GET)
     public AppResponse 查询单个PK(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId,@RequestParam("fromUser") String fromUser) throws AppException, IOException {
 
 
-
+        Date currentDate = new Date();
 
         //查询PK详情
         PkDetail pkDetail = pkService.querySinglePk(pkId);
-        List<Post> posts = pkService.queryPkPost(userId,pkId,1);
+        List<Post> posts = pkService.queryPkPost(userId,pkId,1,currentDate);
         boolean isUserPublish = !ObjectUtils.isEmpty(postService.查询用户帖(pkId,userId));
         User creator = pkService.queryPkCreator(pkId);
-        UserCode userCode = userInfoService.查询收款码信息(pkId,userId);
+
+
+        List<UserIntegral> userIntegrals = dynamicService.查询今日审核用户列表(pkId,currentDate);
+//        UserIntegral creatorIntegral = dynamicService.查询榜主审核信息(pkId);
+//        userIntegrals.add(0,creatorIntegral);
+
 
 
         List<DataSet> dataSets = new ArrayList<>();
         dataSets.add(new DataSet("isUserPublish",isUserPublish));
         dataSets.add(new DataSet("pkDetail",pkDetail));
         dataSets.add(new DataSet("creator",creator));
-        dataSets.add(new DataSet("userCode",userCode));
+        dataSets.add(new DataSet("userIntegrals",userIntegrals));
+//        dataSets.add(new DataSet("creatorIntegral",creatorIntegral));
+
 
 
         dataSets.add(new DataSet("posts",posts));
@@ -83,9 +97,9 @@ public class 查询单个PK {
 
     @RequestMapping(path="/nextPage",method = RequestMethod.GET)
     public AppResponse 查询单个PK(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId,@RequestParam("page") int page) throws AppException, IOException {
-
+        Date currentDate = new Date();
         //页数不断递增，但是只有一百页。
-        List<Post> posts = pkService.queryPkPost(userId,pkId,page+1);
+        List<Post> posts = pkService.queryPkPost(userId,pkId,page+1,currentDate);
         List<DataSet> dataSets = new ArrayList<>();
         dataSets.add(new DataSet("posts",posts));
         return AppResponse.buildResponse(PageAction.执行处理器("success",posts));

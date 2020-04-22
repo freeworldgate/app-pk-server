@@ -74,8 +74,8 @@ public class PkService {
 
 
 
-    public List<Post> queryPkPost(String userId,String pkId,int page) throws IOException {
-        List<Post> posts = postCacheService.getPostPage(userId,pkId,page);
+    public List<Post> queryPkPost(String userId,String pkId,int page,Date date) throws IOException {
+        List<Post> posts = postCacheService.getPostPage(userId,pkId,page,date);
 
         return posts;
     }

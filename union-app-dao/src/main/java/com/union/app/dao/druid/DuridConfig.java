@@ -17,14 +17,17 @@ import java.sql.SQLException;
 /**
  * 配置Durid数据库配置信息
  */
-//@PropertySource(value={"durid.properties"})
+
 @Component
 @Configuration
 public class DuridConfig {
-    @Value("${spring.datasource.url}")
-    private String dbUrl;
+
     @Value("${spring.datasource.username}")
     private String username;
+
+    @Value("${spring.datasource.url}")
+    private String dbUrl;
+
     @Value("${spring.datasource.password}")
     private String password;
     @Value("${spring.datasource.driverClassName}")

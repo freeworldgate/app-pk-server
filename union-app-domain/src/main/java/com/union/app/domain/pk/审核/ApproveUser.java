@@ -10,7 +10,7 @@ public class ApproveUser {
 
 
     private User user;
-
+    private int role;
     private ApproveMessage approveMessage;
 
     private ApproveDynamic approveDynamic;

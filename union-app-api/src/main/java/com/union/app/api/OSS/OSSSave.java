@@ -3,6 +3,8 @@ package com.union.app.api.OSS;
 import com.union.app.common.config.AppConfigService;
 import com.union.app.domain.Oss上传.OssUrlInfo;
 import com.union.app.plateform.constant.常量值;
+import com.union.app.plateform.data.resultcode.AppResponse;
+import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.response.ApiResponse;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,7 +23,7 @@ public class OSSSave {
 
 
     @RequestMapping(path="/getUrl",method = RequestMethod.GET)
-    public ApiResponse 获取临时URL( @RequestParam(value="type")String type,@RequestParam(value="userId")String userId)
+    public AppResponse 获取临时URL( @RequestParam(value="type")String type,@RequestParam(value="userId")String userId)
     {
         OssUrlInfo ossUrlInfo = new OssUrlInfo();
         ossUrlInfo.setAliyunServerURL(AppConfigService.getConfigAsString(常量值.OSS基础地址,"https://oss.211shopper.com"));
@@ -30,7 +32,7 @@ public class OSSSave {
         ossUrlInfo.setPrefix("wx");
         ossUrlInfo.setTaskId(UUID.randomUUID().toString());
 
-        return ApiResponse.buildSuccessResponse(ossUrlInfo);
+        return AppResponse.buildResponse(PageAction.执行处理器("success",ossUrlInfo));
     }
 
     @RequestMapping(path="/postUploadImgs",method = RequestMethod.GET)

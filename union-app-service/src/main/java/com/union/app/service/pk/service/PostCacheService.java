@@ -65,17 +65,9 @@ public class PostCacheService {
      * @param page
      * @return
      */
-    public List<Post> getPostPage(String userId,String pkId,int page) throws IOException {
+    public List<Post> getPostPage(String userId,String pkId,int page,Date date) throws IOException {
 
         List<Post> pagePosts = new ArrayList<>();
-
-
-
-
-
-
-
-
 
 
 
@@ -99,7 +91,7 @@ public class PostCacheService {
 
             List<Post> posts = pkAllPages.get(pkPage);
             if(CollectionUtils.isEmpty(posts)){
-                posts = getRandomPage(pkId);
+                posts = getRandomPage(pkId,date);
                 pkAllPages.put(pkPage,posts);
             }
             pagePosts.addAll(posts);
@@ -107,7 +99,7 @@ public class PostCacheService {
         else
         {
             //更新时间不一致，查询数据库更新页面
-            List<Post> posts = syncRefreshCachePost(pkId,pkPage);
+            List<Post> posts = syncRefreshCachePost(pkId,pkPage,date);
             pagePosts.addAll(posts);
             pkAllPages.put(pkPage,posts);
             Map<String,String> refreshTime = postCacheTime.get(pkId);
@@ -136,7 +128,7 @@ public class PostCacheService {
         return pagePosts;
     }
 
-    private List<Post> syncRefreshCachePost(String pkId, String pkPage) throws UnsupportedEncodingException {
+    private List<Post> syncRefreshCachePost(String pkId, String pkPage,Date date) throws UnsupportedEncodingException {
 
         List<Post> posts = new ArrayList<>();
 
@@ -150,13 +142,13 @@ public class PostCacheService {
         if(!CollectionUtils.isEmpty(pageCache)) {
             for (PkPageCacheEntity pkPageCacheEntity : pageCache) {
                 String postId = pkPageCacheEntity.getPostId();
-                Post post = postService.查询帖子(pkId,postId, org.apache.commons.lang.StringUtils.EMPTY);
+                Post post = postService.查询帖子(pkId,postId, org.apache.commons.lang.StringUtils.EMPTY,date);
                 posts.add(post);
             }
         }
         else
         {
-            posts.addAll(getRandomPage(pkId));
+            posts.addAll(getRandomPage(pkId,date));
         }
         return posts;
     }
@@ -180,7 +172,7 @@ public class PostCacheService {
 
     }
 
-    private List<Post> getRandomPage(String pkId) throws UnsupportedEncodingException {
+    private List<Post> getRandomPage(String pkId,Date date) throws UnsupportedEncodingException {
 
         List<Post> posts = new ArrayList<>();
         EntityFilterChain filterChain = EntityFilterChain.newFilterChain(PostEntity.class)
@@ -189,7 +181,7 @@ public class PostCacheService {
 
         List<PostEntity> postEntities = daoService.queryEntities(PostEntity.class,filterChain);
         for(PostEntity postEntity:postEntities){
-            Post post = postService.查询帖子(pkId,postEntity.getPostId(), org.apache.commons.lang.StringUtils.EMPTY);
+            Post post = postService.查询帖子(pkId,postEntity.getPostId(), org.apache.commons.lang.StringUtils.EMPTY,date);
             posts.add(post);
         }
         return posts;

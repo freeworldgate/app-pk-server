@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -51,14 +52,33 @@ public class 查询审核信息2 {
     @Autowired
     ApproveService approveService;
 
+    /**
+     * 审核员审批页面入口
+     * @param pkId
+     * @param postId
+     * @param userId
+     * @return
+     * @throws AppException
+     * @throws IOException
+     */
     @RequestMapping(path="/queryApproveInfo2",method = RequestMethod.GET)
     public AppResponse 查询审核信息(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId,@RequestParam("userId") String userId) throws AppException, IOException {
 
 
+        Date currentDay = new Date();
+
         List<DataSet> dataSets = new ArrayList<>();
-        String approveUserId = dynamicService.查询审核用户(pkId,postId);
-        ApproveUser approveUser = approveService.查询帖子的审核用户(pkId,postId);
-        Post post = postService.查询帖子(pkId,postId,null);
+        String approveUserId = dynamicService.查询审核用户(pkId,postId,currentDay);
+        if(!dynamicService.用户是否为今日审核员(pkId,approveUserId,currentDay)){
+
+            return AppResponse.buildResponse(PageAction.前端数据更新("outOfTime",true));
+        }
+
+
+
+
+        ApproveUser approveUser = approveService.查询帖子的审核用户(pkId,postId,currentDay);
+        Post post = postService.查询帖子(pkId,postId,null,currentDay);
         DataSet dataSet3 = new DataSet("userPost",post);
         DataSet dataSet4 = new DataSet("approveUserId",approveUserId);
         DataSet dataSet5 = new DataSet("approveUser",approveUser);

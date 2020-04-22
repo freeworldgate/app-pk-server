@@ -1,5 +1,6 @@
 package com.union.app.api.pk.审核;
 
+import com.union.app.domain.pk.Post;
 import com.union.app.domain.pk.审核.ApproveUser;
 import com.union.app.entity.pk.PostEntity;
 import com.union.app.plateform.data.resultcode.*;
@@ -11,6 +12,7 @@ import com.union.app.service.pk.service.PostService;
 import com.union.app.service.pk.service.UserInfoService;
 import com.union.app.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -48,19 +51,43 @@ public class 查询审核员审核中列表 {
     ApproveService approveService;
 
     @RequestMapping(path="/queryApprovingPost",method = RequestMethod.GET)
-    public AppResponse 查询审核信息(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId,@RequestParam("userId") String userId) throws AppException, IOException {
+    public AppResponse 查询审核员审核中列表(@RequestParam("pkId") String pkId,@RequestParam("approverUserId") String approverUserId) throws AppException, IOException {
+
+        Date date = new Date();
+        List<DataSet> dataSets = new ArrayList<>();
+
+        List<Post> posts = dynamicService.查询审核中指定范围的Post(pkId,approverUserId,0,date);
+
+
+
+        DataSet dataSet2 = new DataSet("approvingPosts",posts);
+        DataSet dataSet3 = new DataSet("currentApprovingPost",CollectionUtils.isEmpty(posts)?null:posts.get(0));
+        DataSet dataSet4 = new DataSet("currentApprovingPage",1);
+        DataSet dataSet1 = new DataSet("tag",1);
+
+        dataSets.add(dataSet1);
+        dataSets.add(dataSet2);
+        dataSets.add(dataSet3);
+        dataSets.add(dataSet4);
+
+        return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
 
 
 
 
 
+    }
+    @RequestMapping(path="/queryMoreApprovingPost",method = RequestMethod.GET)
+    public AppResponse 查询审核信息More(@RequestParam("pkId") String pkId,@RequestParam("approverUserId") String approverUserId,@RequestParam("currentApprovingPage") int page) throws AppException, IOException {
+        Date date = new Date();
+        List<Post> posts = dynamicService.查询审核中指定范围的Post(pkId, approverUserId, page,date);
+
+        if(CollectionUtils.isEmpty(posts)){
+            return AppResponse.buildResponse(PageAction.前端数据更新("approvingEnd",true));
+        }
 
 
-
-
-
-        return AppResponse.buildResponse(PageAction.前端多条数据更新(null));
-
+        return AppResponse.buildResponse(PageAction.执行处理器("success",posts));
     }
 
 

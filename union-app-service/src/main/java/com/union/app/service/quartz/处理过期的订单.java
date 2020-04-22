@@ -36,26 +36,26 @@ public class 处理过期的订单 {
 
 
 
-        String orderId = dynamicService.获取过期订单();
-
-        if(StringUtils.isBlank(orderId)){return;}
-
-        PayOrderEntity orderEntity = userInfoService.获取OrderEntityById(orderId);
-
-        if(ObjectUtils.equals(orderEntity.getOrderStatu(),OrderStatu.订单确认中))
-        {
-
-            int leftSeconds = userInfoService.获取订单剩余时间(orderEntity);
-
-            if(leftSeconds == 0){
-
-                userInfoService.确认已收款(orderEntity.getOrderId(),orderEntity.getCashierId());
-
-            }
-
-
-
-        }
+//        String orderId = dynamicService.获取过期订单();
+//
+//        if(StringUtils.isBlank(orderId)){return;}
+//
+//        PayOrderEntity orderEntity = userInfoService.获取OrderEntityById(orderId);
+//
+//        if(ObjectUtils.equals(orderEntity.getOrderStatu(),OrderStatu.订单确认中))
+//        {
+//
+//            int leftSeconds = userInfoService.获取订单剩余时间(orderEntity);
+//
+//            if(leftSeconds == 0){
+//
+//                userInfoService.确认已收款(orderEntity.getOrderId(),orderEntity.getCashierId());
+//
+//            }
+//
+//
+//
+//        }
 
 
 

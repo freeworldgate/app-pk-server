@@ -4,6 +4,7 @@ import com.union.app.domain.pk.Post;
 import com.union.app.domain.pk.审核.ApproveComment;
 import com.union.app.domain.pk.审核.ApproveComplain;
 import com.union.app.domain.pk.审核.ApproveUser;
+import com.union.app.domain.user.User;
 import com.union.app.entity.pk.PostEntity;
 import com.union.app.plateform.data.resultcode.*;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -53,15 +55,17 @@ public class 设置审核人员 {
     @RequestMapping(path="/setApprover",method = RequestMethod.GET)
     public AppResponse 用户积分(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId,@RequestParam("userId") String userId,@RequestParam("approveUserId") String approveUserId) throws AppException, IOException {
 
+        Date currentDate = new Date();
 
         PostEntity postEntity = postService.查询帖子ById(pkId,postId);
         if(!StringUtils.equals(userId,postEntity.getUserId())){return AppResponse.buildResponse(PageAction.消息级别提示框(Level.错误消息,"非法操作"));}
 
-        dynamicService.设置帖子的审核用户(pkId,postId,approveUserId);
+        dynamicService.设置帖子的审核用户(pkId,postId,approveUserId,currentDate);
+
+        User approveUser = userService.queryUser(approveUserId);
 
 
-
-        return AppResponse.buildResponse(PageAction.前端数据更新("",""));
+        return AppResponse.buildResponse(PageAction.前端数据更新("currentSelectApprover",approveUser));
 
     }
 

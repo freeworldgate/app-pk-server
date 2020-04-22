@@ -15,13 +15,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 public class UserService {
 
     @Autowired
     AppDaoService appDaoService;
 
-
+    private Map<String,User> users = new HashMap<>();
     /**
      * 查询用户
      * @param userId
@@ -33,6 +36,10 @@ public class UserService {
         {
             return null;
         }
+        User user1 = users.get(userId);
+        if(!ObjectUtils.isEmpty(user1)){return user1;}
+
+
 
         EntityFilterChain filter = EntityFilterChain.newFilterChain(UserEntity.class)
                 .compareFilter("userId",CompareTag.Equal,userId);
@@ -48,7 +55,7 @@ public class UserService {
 
             user.setUserSex(RandomUtil.getRandomNumber() %2 == 1?UserSex.男.getSex():UserSex.女.getSex());
 
-
+            users.put(user.getUserId(),user);
 
             return user;
         }

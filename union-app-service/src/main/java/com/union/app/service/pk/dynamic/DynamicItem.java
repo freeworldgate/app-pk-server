@@ -3,13 +3,14 @@ package com.union.app.service.pk.dynamic;
 public enum DynamicItem {
 
     配置(DynamicLevel.ALL,"ALL-CONFIG"),
+    需要更新的PK列表(DynamicLevel.ALL,"ALL-PK-UPDATE-LIST"),
     榜帖审核用户(DynamicLevel.ALL,"ALL-APPROVEUSER-POST"),
 
     审核用户消息(DynamicLevel.ALL,"ALL-APPROVEUSER-MESSAGE"),
 
-    审核用户昨日排名(DynamicLevel.ALL,"ALL-APPROVEUSER-YESTERDAY-SORT"),
-
-    审核用户昨日积分(DynamicLevel.ALL,"ALL-APPROVEUSER-YESTERDAY-SCORE"),
+//    审核用户昨日排名(DynamicLevel.ALL,"ALL-APPROVEUSER-YESTERDAY-SORT"),
+//
+//    审核用户昨日积分(DynamicLevel.ALL,"ALL-APPROVEUSER-YESTERDAY-SCORE"),
 
     审核用户审核中数量(DynamicLevel.ALL,"ALL-APPROVEUSER-APPROVING"),
     用户审核中POST列表(DynamicLevel.ALL,"USER-POSTLIST-APPROVING"),
@@ -61,6 +62,8 @@ public enum DynamicItem {
 
     //--------------------------------------------
     PK今日排名(DynamicLevel.PK_USER,"USER-TODAY-SORT"),
+
+    PK今日预备审核员列表(DynamicLevel.PK,"PRE-APPROVER-TODAY"),
 
     PK今日审批用户(DynamicLevel.PK_USER,"USER-TODAY-APPROVEUSER"),
 

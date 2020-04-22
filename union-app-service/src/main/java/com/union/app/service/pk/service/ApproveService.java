@@ -9,6 +9,7 @@ import com.union.app.domain.pk.UserCode;
 import com.union.app.domain.pk.apply.ApplyOrder;
 import com.union.app.domain.pk.apply.ApproveCode;
 import com.union.app.domain.pk.apply.KeyNameValue;
+import com.union.app.domain.pk.integral.UserIntegral;
 import com.union.app.domain.pk.审核.*;
 import com.union.app.domain.user.User;
 import com.union.app.entity.ImgStatu;
@@ -28,10 +29,10 @@ import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class ApproveService {
@@ -51,9 +52,9 @@ public class ApproveService {
     DynamicService dynamicService;
 
 
-    public ApproveUser 查询帖子的审核用户(String pkId, String postId) throws UnsupportedEncodingException {
+    public ApproveUser 查询帖子的审核用户(String pkId, String postId,Date date) throws UnsupportedEncodingException {
 
-        String approveUserId = dynamicService.查询审核用户(pkId,postId);
+        String approveUserId = dynamicService.查询审核用户(pkId,postId,date);
 
         if(StringUtils.isBlank(approveUserId))
         {
@@ -63,8 +64,8 @@ public class ApproveService {
         {
             ApproveUser approveUser = new ApproveUser();
             User user = userService.queryUser(approveUserId);
-            ApproveMessage approveMessage = this.获取审核人员消息(approveUserId);
-            ApproveDynamic approveDynamic = this.获取审核人员动态信息(approveUserId);
+            ApproveMessage approveMessage = this.获取审核人员消息(pkId,approveUserId,date);
+            ApproveDynamic approveDynamic = this.获取审核人员动态信息(pkId,approveUserId,date);
             approveUser.setUser(user);
             approveUser.setApproveDynamic(approveDynamic);
             approveUser.setApproveMessage(approveMessage);
@@ -80,21 +81,23 @@ public class ApproveService {
     }
 
 
-    public List<ApproveUser> 查询今日所有审核用户(String pkId, String postId) throws UnsupportedEncodingException {
+    public List<ApproveUser> 查询今日所有审核用户(String pkId, String postId,Date date) throws UnsupportedEncodingException {
         List<ApproveUser> approveUsers = new ArrayList<>();
-        List<String> userIds = dynamicService.查询所有审核用户(pkId);
-        for(String approveUserId:userIds)
+        List<UserIntegral> approvers = dynamicService.查询今日审核用户列表(pkId,date);
+
+        for(UserIntegral userIntegral:approvers)
         {
             ApproveUser approveUser = new ApproveUser();
-            User user = userService.queryUser(approveUserId);
-            ApproveMessage approveMessage = this.获取审核人员消息(approveUserId);
-            ApproveDynamic approveDynamic = this.获取审核人员动态信息(approveUserId);
+            approveUser.setRole(userIntegral.isCreator()?1:0);
+            User user = userService.queryUser(userIntegral.getUser().getUserId());
+            ApproveMessage approveMessage = this.获取审核人员消息(pkId,userIntegral.getUser().getUserId(),date);
+            ApproveDynamic approveDynamic = this.获取审核人员动态信息(pkId,userIntegral.getUser().getUserId(),date);
 
             approveUser.setUser(user);
             approveUser.setApproveDynamic(approveDynamic);
             approveUser.setApproveMessage(approveMessage);
-            ApproveComplain approveComplain = this.获取投诉信息(pkId,postId,approveUserId);
-            ApproveComment approveComment = this.获取留言信息(pkId,postId,approveUserId);
+            ApproveComplain approveComplain = this.获取投诉信息(pkId,postId,userIntegral.getUser().getUserId());
+            ApproveComment approveComment = this.获取留言信息(pkId,postId,userIntegral.getUser().getUserId());
 
             approveUser.setApproveComment(approveComment);
             approveUser.setApproveComplain(approveComplain);
@@ -130,17 +133,19 @@ public class ApproveService {
         return null;
     }
 
-    private ApproveDynamic 获取审核人员动态信息(String userId) {
+    private ApproveDynamic 获取审核人员动态信息(String pkId,String userId,Date date) {
 
         ApproveDynamic approveDynamic = new ApproveDynamic();
 
-        approveDynamic.setYesterdayRank(dynamicService.getKeyValue(DynamicItem.审核用户昨日排名,userId));
+        UserIntegral userIntegral =  dynamicService.查询审核用户信息(pkId,userId,date);
 
-        approveDynamic.setYesterdayScore(dynamicService.getKeyValue(DynamicItem.审核用户昨日积分,userId));
+        approveDynamic.setYesterdayRank(userIntegral.getIndex());
 
-        approveDynamic.setApproving(dynamicService.getKeyValue(DynamicItem.审核用户审核中数量,userId));
+        approveDynamic.setYesterdayScore(userIntegral.getFollow() + userIntegral.getShare());
 
-        approveDynamic.setApproved(dynamicService.getKeyValue(DynamicItem.审核用户已审核数量,userId));
+        approveDynamic.setApproving(userIntegral.getApproving());
+
+        approveDynamic.setApproved(userIntegral.getApproved());
 
         return approveDynamic;
     }
@@ -150,10 +155,9 @@ public class ApproveService {
      * @param approveUserId
      * @return
      */
-    private ApproveMessage 获取审核人员消息( String approveUserId) {
+    private ApproveMessage 获取审核人员消息(String pkId, String approveUserId,Date date) {
 
-        ApproveMessage approveMessage = dynamicService.查询审核用户的消息(approveUserId);
-        //
+        ApproveMessage approveMessage = dynamicService.查询审核用户的消息(pkId,approveUserId,date);
 
         return approveMessage;
     }
@@ -161,13 +165,9 @@ public class ApproveService {
 
 
 
-    public void 设置帖子的审核用户(String pkId, String postId, String approvorId) {
+    public void 设置帖子的审核用户(String pkId, String postId, String approvorId,Date date) {
 
-        dynamicService.设置帖子的审核用户(pkId,postId,approvorId);
-
-
-
-
+        dynamicService.设置帖子的审核用户(pkId,postId,approvorId,date);
 
     }
 
@@ -219,14 +219,43 @@ public class ApproveService {
         return image;
     }
 
-    public ApproveUser 查询审核用户ById(String approverUserId) {
+    public ApproveUser 查询审核用户ById(String pkId,String approverUserId,Date date) {
         ApproveUser approveUser = new ApproveUser();
         User user = userService.queryUser(approverUserId);
-        ApproveMessage approveMessage = this.获取审核人员消息(approverUserId);
-        ApproveDynamic approveDynamic = this.获取审核人员动态信息(approverUserId);
+        ApproveMessage approveMessage = this.获取审核人员消息(pkId,approverUserId,date);
+        ApproveDynamic approveDynamic = this.获取审核人员动态信息(pkId,approverUserId,date);
+
         approveUser.setUser(user);
         approveUser.setApproveDynamic(approveDynamic);
         approveUser.setApproveMessage(approveMessage);
         return approveUser;
     }
+
+
+    public ApproveUser 查询审核用户WidthCommentById(String pkId,String postId,String approverUserId,Date date) throws UnsupportedEncodingException {
+        ApproveUser approveUser = new ApproveUser();
+        User user = userService.queryUser(approverUserId);
+        ApproveMessage approveMessage = this.获取审核人员消息(pkId,approverUserId,date);
+        ApproveDynamic approveDynamic = this.获取审核人员动态信息(pkId,approverUserId,date);
+        ApproveComment approveComment = this.获取留言信息(pkId,postId,approverUserId);
+        approveUser.setUser(user);
+        approveUser.setApproveDynamic(approveDynamic);
+        approveUser.setApproveMessage(approveMessage);
+        approveUser.setApproveComment(approveComment);
+        return approveUser;
+    }
+
+
+    public int 今日打榜总人数(String pkId,Date date) {
+
+        return dynamicService.今日打榜总人数(pkId,date);
+
+    }
+
+    public int 计算管理员设置人数(String pkId) {
+        return 10;
+    }
+
+
+
 }

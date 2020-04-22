@@ -25,6 +25,7 @@ import javax.transaction.Transactional;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -55,9 +56,26 @@ public class 发布Post {
     public AppResponse 发布Post(@RequestParam("pkId") String pkId,@RequestParam("title") String title,@RequestParam("userId") String userId,@RequestParam("imgUrls") List<String> images) throws AppException, IOException {
 
 
+        Date cureentDate = new Date();
 
-        String postId = postService.创建帖子(pkId,userId,title,images);
-        Post post = postService.查询帖子(pkId,postId,userId);
+
+        String postId = null;
+
+        PostEntity postEntity = postService.查询用户帖(pkId,userId);
+        if(ObjectUtils.isEmpty(postEntity)){
+            postId = postService.创建帖子(pkId,userId,title,images);
+
+
+        }
+        else
+        {
+            postId = postEntity.getPostId();
+            postService.续传帖子(postEntity.getPostId(),title,userId,images);
+        }
+
+
+
+        Post post = postService.查询帖子(pkId,postId,userId,cureentDate);
 
 
 
@@ -69,32 +87,32 @@ public class 发布Post {
 
 
 
-
-    @RequestMapping(path="/uploadPostImgs",method = RequestMethod.GET)
-    @Transactional(rollbackOn = Exception.class)
-    public AppResponse 续传封面(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId,@RequestParam("title") String title,@RequestParam("userId") String userId,@RequestParam("imgUrls") List<String> images) throws AppException, IOException {
-
-
-
-        postService.续传帖子(postId,title,userId,images);
-
-        Post post = postService.查询帖子(pkId,postId,userId);
-
-        return AppResponse.buildResponse(PageAction.执行处理器("success",post));
-
-    }
-
+//
+//    @RequestMapping(path="/uploadPostImgs",method = RequestMethod.GET)
+//    @Transactional(rollbackOn = Exception.class)
+//    public AppResponse 续传封面(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId,@RequestParam("title") String title,@RequestParam("userId") String userId,@RequestParam("imgUrls") List<String> images) throws AppException, IOException {
+//
+//
+//
+//        postService.续传帖子(postId,title,userId,images);
+//
+//        Post post = postService.查询帖子(pkId,postId,userId);
+//
+//        return AppResponse.buildResponse(PageAction.执行处理器("success",post));
+//
+//    }
+//
 
 
 
     @RequestMapping(path="/deletePostImg",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
     public AppResponse 删除图片(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId,@RequestParam("imgId") String imgId,@RequestParam("userId") String userId) throws AppException, IOException {
-
+        Date cureentDate = new Date();
 
         postService.删除帖子指定图片(postId,imgId,userId);
 
-        Post post = postService.查询帖子(pkId,postId,userId);
+        Post post = postService.查询帖子(pkId,postId,userId,cureentDate);
 
         return AppResponse.buildResponse(PageAction.执行处理器("success",post));
 

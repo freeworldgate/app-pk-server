@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -64,6 +65,7 @@ public class 收藏 {
     @Transactional(rollbackOn = Exception.class)
     public AppResponse 收藏(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId,@RequestParam("postId") String postId,@RequestParam("isQueryerCollect") boolean isQueryerCollect) throws AppException, IOException {
 
+        Date date = new Date();
         PostEntity postEntity = postService.查询帖子ById(pkId,postId);
 
         if(isQueryerCollect){
@@ -77,7 +79,7 @@ public class 收藏 {
             dynamicService.mapValueIncr(DynamicItem.PKUSER榜帖被收藏的次数,pkId,postEntity.getUserId());
 
         }
-        dynamicService.更新今日用户排名(pkId,postEntity.getUserId());
+        dynamicService.更新今日用户排名(pkId,postEntity.getUserId(),date);
 
         int score = AppConfigService.getConfigAsInteger(常量值.收藏一次的积分,100);
 

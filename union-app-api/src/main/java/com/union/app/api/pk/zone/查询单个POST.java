@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -43,8 +44,8 @@ public class 查询单个POST {
     @RequestMapping(path="/queryPostById",method = RequestMethod.GET)
     public AppResponse 查询单个POSTById(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId,@RequestParam("userId") String userId) throws AppException, IOException {
 
-
-        Post post = postService.查询帖子(pkId,postId,userId);
+        Date currentDate = new Date();
+        Post post = postService.查询帖子(pkId,postId,userId,currentDate);
 
 
         return AppResponse.buildResponse(PageAction.执行处理器("success",post));
