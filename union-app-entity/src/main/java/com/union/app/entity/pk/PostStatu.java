@@ -10,6 +10,7 @@ public enum PostStatu {
 
     审核中(3,"审核中"),
 
+    审核不通过(4,"审核不通过"),
     ;
 
     private int statu;
