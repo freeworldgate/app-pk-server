@@ -33,7 +33,7 @@ public class PK动态 {
 
     @RequestMapping(path="/queryPkStatu",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse PK动态(@RequestParam("pkId") String pkId) throws AppException, IOException {
+    public AppResponse PK动态(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId) throws AppException, IOException {
 
 
         List<FactualInfo> factualInfos = dynamicService.获取当前PK操作动态(pkId);

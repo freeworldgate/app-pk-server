@@ -1,5 +1,6 @@
 package com.union.app.api.pk.task;
 
+import com.union.app.common.微信.WeChatUtil;
 import com.union.app.domain.pk.PkDynamic.FactualInfo;
 import com.union.app.domain.pk.integral.UserIntegral;
 import com.union.app.domain.user.User;
@@ -49,49 +50,50 @@ public class 今日排名 {
     @Transactional(rollbackOn = Exception.class)
     public AppResponse 今日排名(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId,@RequestParam("index") int page) throws AppException, IOException, ParseException {
 
-
+        List<DataSet> dataSets = new ArrayList<>();
 
         Date currentDate = new Date();
-
+        UserIntegral userIntegralInfo = dynamicService.查询用户打榜信息(pkId,userId,currentDate);
 
         User creator = pkService.queryPkCreator(pkId);
         List<UserIntegral> userIntegrals = dynamicService.queryUserIntegrals(pkId,page,currentDate);
-        int approverNum = approveService.计算管理员设置人数(pkId);
+        int approverNum = approveService.计算管理员设置人数(pkId,currentDate);
         int sortNum = approveService.今日打榜总人数(pkId,currentDate);
-        List<UserIntegral> currentApprovers = dynamicService.查询今日审核用户列表(pkId,currentDate);
-        currentApprovers.removeIf(new Predicate<UserIntegral>() {
-            @Override
-            public boolean test(UserIntegral userIntegral) {
-                return StringUtils.equals(userIntegral.getUser().getUserId() ,creator.getUserId());
-            }
-        });
-        List<UserIntegral> approvers = dynamicService.查询预备审核用户列表(pkId,currentDate);
+        if(dynamicService.是否开抢时间(pkId)) {
+            List<UserIntegral> approvers = dynamicService.查询预备审核用户列表(pkId, currentDate);
+            DataSet dataSet5 = new DataSet("approvers",approvers);
+            dataSets.add(dataSet5);
+
+        }
         //打榜剩余时间
         long leftTime = dynamicService.计算今日剩余时间(pkId);
 
 
 
+        String approverIndexRange = approveService.计算预审核员排名边界(sortNum);
 
 
 
 
-        List<DataSet> dataSets = new ArrayList<>();
         DataSet dataSet1 = new DataSet("userIntegrals",userIntegrals);
         DataSet dataSet2 = new DataSet("index",page + 1);
         DataSet dataSet3 = new DataSet("approverNum",approverNum);
         DataSet dataSet4 = new DataSet("sortNum",sortNum);
-        DataSet dataSet5 = new DataSet("approvers",approvers);
-        DataSet dataSet6 = new DataSet("currentApprovers",currentApprovers);
+
+
         DataSet dataSet7 = new DataSet("creator",creator);
         DataSet dataSet8 = new DataSet("leftTime",leftTime);
-        dataSets.add(dataSet1);
         dataSets.add(dataSet2);
         dataSets.add(dataSet3);
         dataSets.add(dataSet4);
-        dataSets.add(dataSet5);
-        dataSets.add(dataSet6);
+
         dataSets.add(dataSet7);
         dataSets.add(dataSet8);
+        dataSets.add(new DataSet("date",TimeUtils.dateStr(currentDate)));
+        dataSets.add(new DataSet("userIntegralInfo",userIntegralInfo));
+        dataSets.add(new DataSet("approverIndexRange",approverIndexRange));
+        dataSets.add(dataSet1);
+
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
     }
 
@@ -118,7 +120,7 @@ public class 今日排名 {
 
         long leftTime = dynamicService.计算今日剩余时间(pkId);
 
-        return AppResponse.buildResponse(PageAction.执行处理器("success", 10 * 60));
+        return AppResponse.buildResponse(PageAction.执行处理器("success",leftTime));
 
 
     }

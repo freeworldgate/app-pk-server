@@ -69,14 +69,16 @@ public class 收藏 {
         PostEntity postEntity = postService.查询帖子ById(pkId,postId);
 
         if(isQueryerCollect){
+
+            // 修改成消息队列形式
             postCacheService.取消助力POST(pkId,userId,postId);
-            dynamicService.mapValueDecr(DynamicItem.PKUSER榜帖被收藏的次数,pkId,postEntity.getUserId());
+            dynamicService.收藏积分减1(pkId,postEntity.getUserId());
 
         }
         else
         {
             postCacheService.助力POST(pkId,userId,postId);
-            dynamicService.mapValueIncr(DynamicItem.PKUSER榜帖被收藏的次数,pkId,postEntity.getUserId());
+            dynamicService.收藏积分加1(pkId,postEntity.getUserId());
 
         }
         dynamicService.更新今日用户排名(pkId,postEntity.getUserId(),date);

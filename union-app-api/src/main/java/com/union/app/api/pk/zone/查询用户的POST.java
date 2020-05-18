@@ -59,7 +59,7 @@ public class 查询用户的POST {
 
             if(!ObjectUtils.isEmpty(post)){
 
-                return AppResponse.buildResponse(PageAction.执行处理器("userPost",post));
+                return AppResponse.buildResponse(PageAction.页面跳转("/pages/pk/post/post?pkId=" + pkId + "&postId=" + post.getPostId(),true));
             }
             else
             {

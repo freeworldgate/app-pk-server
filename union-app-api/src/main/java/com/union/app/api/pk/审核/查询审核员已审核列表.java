@@ -11,6 +11,7 @@ import com.union.app.service.pk.service.PkService;
 import com.union.app.service.pk.service.PostService;
 import com.union.app.service.pk.service.UserInfoService;
 import com.union.app.service.user.UserService;
+import com.union.app.util.time.TimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
@@ -65,10 +66,23 @@ public class 查询审核员已审核列表 {
         DataSet dataSet2 = new DataSet("approvedPosts",posts);
         DataSet dataSet3 = new DataSet("currentApprovedPost",CollectionUtils.isEmpty(posts)?null:posts.get(0));
         DataSet dataSet4 = new DataSet("currentApprovedPage",1);
+        DataSet dataSet5 = new DataSet("currentIndex",0);
+        DataSet dataSet6 = new DataSet("approvedSize",dynamicService.已审核订单数量(pkId,approverUserId,currentDate));
+        DataSet dataSet7 = new DataSet("approvingSize",dynamicService.审核中订单数量(pkId,approverUserId,currentDate));
+        DataSet dataSet8 = new DataSet("pkId",pkId);
+        DataSet dataSet9 = new DataSet("creator",pkService.queryPkCreator(pkId));
+        DataSet dataSet10 = new DataSet("date",TimeUtils.dateStr(currentDate));
+
         dataSets.add(dataSet1);
         dataSets.add(dataSet2);
         dataSets.add(dataSet3);
         dataSets.add(dataSet4);
+        dataSets.add(dataSet5);
+        dataSets.add(dataSet6);
+        dataSets.add(dataSet7);
+        dataSets.add(dataSet8);
+        dataSets.add(dataSet9);
+        dataSets.add(dataSet10);
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
     }
 

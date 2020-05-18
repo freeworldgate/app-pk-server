@@ -6,6 +6,7 @@ import com.union.app.domain.pk.integral.UserIntegral;
 import com.union.app.domain.pk.审核.ApproveComment;
 import com.union.app.domain.pk.审核.ApproveComplain;
 import com.union.app.domain.pk.审核.ApproveUser;
+import com.union.app.domain.user.User;
 import com.union.app.domain.工具.RandomUtil;
 import com.union.app.entity.pk.PostEntity;
 import com.union.app.plateform.data.resultcode.*;
@@ -16,6 +17,7 @@ import com.union.app.service.pk.service.PkService;
 import com.union.app.service.pk.service.PostService;
 import com.union.app.service.pk.service.UserInfoService;
 import com.union.app.service.user.UserService;
+import com.union.app.util.time.TimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
@@ -26,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -65,7 +68,7 @@ public class 查询审核信息1 {
      * @throws IOException
      */
     @RequestMapping(path="/queryApproveInfo1",method = RequestMethod.GET)
-    public AppResponse 查询审核信息(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId,@RequestParam("userId") String userId) throws AppException, IOException {
+    public AppResponse 查询审核信息(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId,@RequestParam("userId") String userId) throws AppException, IOException, ParseException {
 
 
         Date currentDate = new Date();
@@ -80,7 +83,7 @@ public class 查询审核信息1 {
         }
 
 
-        List<ApproveUser> approveUserList = approveService.查询今日所有审核用户(pkId,postId,currentDate);
+        List<ApproveUser> approveUserList = approveService.查询当前可用户审核用户列表(pkId,postId,currentDate);
 
         DataSet dataSet3 = new DataSet("approveUserList",approveUserList);
         dataSets.add(dataSet3);
@@ -109,10 +112,21 @@ public class 查询审核信息1 {
 
         }
         //顺序不能颠倒
+        User creator = pkService.queryPkCreator(pkId);
 
 
+        String mediaId = dynamicService.查询PK群组二维码MediaId(pkId,currentDate);
+        DataSet dataSet8 = new DataSet("creator",creator);
+        DataSet dataSet7 = new DataSet("mediaId",mediaId);
+        DataSet dataSet9 = new DataSet("pkId",pkId);
+        DataSet dataSet10 = new DataSet("date",TimeUtils.dateStr(currentDate));
+        DataSet dataSet11 = new DataSet("timeout",dynamicService.计算今日剩余时间(pkId));
 
-
+        dataSets.add(dataSet7);
+        dataSets.add(dataSet8);
+        dataSets.add(dataSet9);
+        dataSets.add(dataSet10);
+        dataSets.add(dataSet11);
 
 
 

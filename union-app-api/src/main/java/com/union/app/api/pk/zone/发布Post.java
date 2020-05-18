@@ -105,12 +105,27 @@ public class 发布Post {
 
 
 
-    @RequestMapping(path="/deletePostImg",method = RequestMethod.GET)
+//    @RequestMapping(path="/deletePostImg",method = RequestMethod.GET)
+//    @Transactional(rollbackOn = Exception.class)
+//    public AppResponse 删除图片(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId,@RequestParam("imgId") String imgId,@RequestParam("userId") String userId) throws AppException, IOException {
+//        Date cureentDate = new Date();
+//
+//        postService.删除帖子指定图片(postId,imgId,userId);
+//
+//        Post post = postService.查询帖子(pkId,postId,userId,cureentDate);
+//
+//        return AppResponse.buildResponse(PageAction.执行处理器("success",post));
+//
+//    }
+    @RequestMapping(path="/replaceImg",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse 删除图片(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId,@RequestParam("imgId") String imgId,@RequestParam("userId") String userId) throws AppException, IOException {
+    public AppResponse 替換图片(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId,@RequestParam("imgUrl") String imgUrl,@RequestParam("index") int index,@RequestParam("userId") String userId) throws AppException, IOException {
         Date cureentDate = new Date();
 
-        postService.删除帖子指定图片(postId,imgId,userId);
+        postService.替换指定图片(pkId,postId,imgUrl,index,userId);
+
+
+
 
         Post post = postService.查询帖子(pkId,postId,userId,cureentDate);
 
@@ -120,8 +135,21 @@ public class 发布Post {
 
 
 
+    @RequestMapping(path="/replaceText",method = RequestMethod.GET)
+    @Transactional(rollbackOn = Exception.class)
+    public AppResponse 删除图片(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId,@RequestParam("text") String text,@RequestParam("userId") String userId) throws AppException, IOException {
+        Date cureentDate = new Date();
+
+        postService.替换Topic(pkId,postId,text,userId);
 
 
+
+
+//        Post post = postService.查询帖子(pkId,postId,userId,cureentDate);
+
+        return AppResponse.buildResponse(PageAction.执行处理器("success",""));
+
+    }
 
 
 

@@ -1,6 +1,7 @@
 package com.union.app.api.pk.zone;
 
 import com.union.app.domain.pk.*;
+import com.union.app.domain.user.User;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.common.OSS存储.OssStorage;
 import com.union.app.plateform.data.resultcode.AppResponse;
@@ -47,8 +48,16 @@ public class 查询单个POST {
         Date currentDate = new Date();
         Post post = postService.查询帖子(pkId,postId,userId,currentDate);
 
+        User creator = pkService.queryPkCreator(pkId);
 
-        return AppResponse.buildResponse(PageAction.执行处理器("success",post));
+        List<DataSet> dataSets = new ArrayList<>();
+        DataSet dataSet1 = new DataSet("post",post);
+        DataSet dataSet2 = new DataSet("creator",creator);
+
+        dataSets.add(dataSet1);
+        dataSets.add(dataSet2);
+
+        return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
     }
 
 
