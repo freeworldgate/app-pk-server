@@ -11,6 +11,7 @@ import com.union.app.service.pk.service.PkService;
 import com.union.app.service.pk.service.PostService;
 import com.union.app.service.pk.service.UserInfoService;
 import com.union.app.service.user.UserService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -53,21 +54,27 @@ public class 榜帖是否已经审核 {
     @Transactional(rollbackOn = Exception.class)
     public AppResponse 查询审核信息(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId,@RequestParam("userId") String userId) throws AppException, IOException {
 
-
-
-
-        PostEntity postEntity    = postService.查询帖子ById(pkId,postId);
-
-        if(postEntity.getStatu() == PostStatu.审核中)
+        if(userService.isUserVip(userId))
         {
+            Date current = new Date();
 
-            return AppResponse.buildResponse(PageAction.执行处理器("noApprove",""));
+
+            PostEntity postEntity    = postService.查询帖子ById(pkId,postId);
+            if(  (postEntity.getStatu() == PostStatu.审核中)  && StringUtils.isBlank(dynamicService.查询审核用户(pkId,postEntity.getPostId())))
+            {
+
+                return AppResponse.buildResponse(PageAction.执行处理器("noApprove",""));
+
+            }
+            else
+            {
+                return AppResponse.buildResponse(PageAction.前端数据更新("verfiy",true));
+            }
+
 
         }
-        else
-        {
-            return AppResponse.buildResponse(PageAction.前端数据更新("verfiy",true));
-        }
+        return AppResponse.buildResponse(PageAction.前端数据更新("verfiy",true));
+
 
 
 

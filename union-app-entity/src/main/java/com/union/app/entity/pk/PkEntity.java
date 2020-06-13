@@ -19,10 +19,11 @@ public class PkEntity {
 
     private String userId;
 
-    private String topic;
+    private byte[] topic;
 
-    private String watchWord;
+    private byte[] watchWord;
 
+    private boolean isInvite;
     //时长
     private String time;
 
@@ -36,12 +37,17 @@ public class PkEntity {
 
     private String nodeUUID;
 
-    private PkStatu pkStatu;
+    @Enumerated(EnumType.STRING)
+    private PkStatu albumStatu;
+
+    @Enumerated(EnumType.STRING)
+    private PkType pkType;
 
     /**
      * 打榜任务每天重置一次，重置时写入重置时间
      */
     private long resetTime;
+
 
 
 

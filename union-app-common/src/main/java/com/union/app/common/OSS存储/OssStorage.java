@@ -11,7 +11,9 @@ import com.union.app.common.api.runtime.ApiRuntimePro;
 import com.union.app.common.config.AppConfigService;
 import com.union.app.common.id.KeyGetter;
 import com.union.app.plateform.constant.常量值;
+import com.union.app.util.file.FileUtil;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +24,9 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,11 +40,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class OssStorage {
 
 //    private static String endpoint = "oss-accelerate.aliyuncs.com";
-    private  String endpoint = AppConfigService.getConfigAsString(常量值.OSS基础地址,"oss-accelerate.aliyuncs.com");
-    private  String accessKeyId = "LTAI4FqqnPNfxT3TpYdXqq9N";
-    private  String accessKeySecret = "mB8LeZ70pRJiXa1CCQisVECf6R0XXY";
-    private  String bucketName = AppConfigService.getConfigAsString(常量值.OSSBuket名称,"fenghao211");
-    private  OSS  ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
+    private static String endpoint = AppConfigService.getConfigAsString(常量值.OSS基础地址,"https://oss.211shopper.com");
+//    private static String accessKeyId = "LTAI4FqqnPNfxT3TpYdXqq9N";
+//    private static String accessKeySecret = "mB8LeZ70pRJiXa1CCQisVECf6R0XXY";
+    private static String accessKeyId = "LTAIzxViWZTSLgfe";
+    private static String accessKeySecret = "MPyvdgboQZhezjdhPCXPr7lUoaAfpe";
+    private static String bucketName = AppConfigService.getConfigAsString(常量值.OSSBuket名称,"211shop");
+    private static OSS  ossClient = new OSSClientBuilder().build("oss-accelerate.aliyuncs.com", accessKeyId, accessKeySecret);
 
     private static Map<String,ConcurrentHashMap<String,AtomicInteger>> lruCache = new HashMap<String,ConcurrentHashMap<String,AtomicInteger>>();
 
@@ -54,6 +60,43 @@ public class OssStorage {
 
 
     private static final Semaphore semaphore = new Semaphore(300,true);
+
+    public static File downLoadFile(String key) throws IOException {
+
+        key = key.replace(endpoint + "/","");
+        File downLoadFile = new File(AppConfigService.getConfigAsString(常量值.本地文件存储地址,System.getProperty("user.dir")) + "/" + key);
+        FileUtils.forceMkdirParent(downLoadFile);
+        OSSObject object = ossClient.getObject(bucketName,key);
+        // 获取ObjectMeta
+        ObjectMetadata meta = object.getObjectMetadata();
+
+        // 获取Object的输入流
+        InputStream objectContent = object.getObjectContent();
+
+        ObjectMetadata objectData = ossClient.getObject(new GetObjectRequest(bucketName, key), downLoadFile);
+        objectContent.close();
+
+        return downLoadFile;
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

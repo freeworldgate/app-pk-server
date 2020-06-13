@@ -52,14 +52,11 @@ public class CacheService {
 
     public long 获取收藏积分(String pkId,String userId){ return redisMapService.getIntValue(CacheKeyName.打榜Follow(pkId),userId) * AppConfigService.getConfigAsInteger(常量值.收藏一次的积分,100); }
 
-    public long 获取今日分享积分(String pkId,Date date,String userId){ return redisMapService.getIntValue(CacheKeyName.打榜Share(pkId,date),userId) * AppConfigService.getConfigAsInteger(常量值.分享一次的积分,100) ;}
+    public long 获取今日分享积分(String pkId,String userId){ return redisMapService.getIntValue(CacheKeyName.打榜Share(pkId),userId) * AppConfigService.getConfigAsInteger(常量值.分享一次的积分,100) ;}
 
-    public long 获取用户排名(String pkId, Date date,String userId) { return redisSortSetService.getIndex(CacheKeyName.打榜排名列表(pkId,date),userId); }
+    public long 获取用户排名(String pkId,String userId) { return redisSortSetService.getIndex(CacheKeyName.打榜排名列表(pkId),userId); }
 
-    public void 更新今日用户排名(String pkId,Date date,String userId){ double score = (获取收藏积分(pkId,userId) + 获取今日分享积分(pkId,date,userId)) * -1.0D;redisSortSetService.addEle(CacheKeyName.打榜排名列表(pkId,date),userId,score); }
-
-    public String 榜帖当前有效审核用户(String pkId, String postId,Date date) { return redisMapService.getStringValue(CacheKeyName.榜帖有效审核人(pkId,date),postId); }
-
+    public void 更新今日用户排名(String pkId,String userId){ double score = (获取收藏积分(pkId,userId) + 获取今日分享积分(pkId,userId)) * -1.0D;redisSortSetService.addEle(CacheKeyName.打榜排名列表(pkId),userId,score); }
 
 
 

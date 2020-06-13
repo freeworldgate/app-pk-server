@@ -53,7 +53,7 @@ public class 今日排名 {
         List<DataSet> dataSets = new ArrayList<>();
 
         Date currentDate = new Date();
-        UserIntegral userIntegralInfo = dynamicService.查询用户打榜信息(pkId,userId,currentDate);
+        UserIntegral userIntegralInfo = dynamicService.查询用户打榜信息(pkId,userId);
 
         User creator = pkService.queryPkCreator(pkId);
         List<UserIntegral> userIntegrals = dynamicService.queryUserIntegrals(pkId,page,currentDate);

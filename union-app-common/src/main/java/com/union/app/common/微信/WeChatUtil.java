@@ -2,15 +2,19 @@ package com.union.app.common.微信;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.union.app.common.OSS存储.OssStorage;
 import com.union.app.domain.pk.wechat.AccessToken;
 import com.union.app.domain.wechat.UserInfo;
 import com.union.app.domain.wechat.WeChatUser;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.boot.SpringApplication;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.security.InvalidAlgorithmParameterException;
 
 public class WeChatUtil
@@ -47,7 +51,7 @@ public class WeChatUtil
         return userInfo;
     }
 
-    public static AccessToken getAccess_token() {
+    public static String getAccess_token() {
         //获取access_token
 //        https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential
         String WX_URL = "https://api.weixin.qq.com/cgi-bin/token?appid=APPID&secret=SECRET&grant_type=client_credential";
@@ -61,12 +65,33 @@ public class WeChatUtil
 
 
         AccessToken accessToken = JSON.parseObject(msg, AccessToken.class);
-        return accessToken;
+        return accessToken.getAccess_token();
+    }
+
+
+    public static String uploadImg2Wx(String imgUrl) throws IOException {
+
+
+        Result<MdlUpload> result=FileUpload.Upload(getAccess_token(),"image", OssStorage.downLoadFile(imgUrl));
+        if(!ObjectUtils.isEmpty(result.getObj())){
+            return result.getObj().getMedia_id();
+        }
+        return null;
+
     }
 
 
 
-
+//
+//    public static void main(String[] args) throws IOException
+//    {
+//
+//        String mediaId = uploadImg2Wx("https://oss.211shopper.com/00590952-ebe1-4cfc-9d06-467de044714f/wx-1577269541719.jpg");
+//
+//
+//        System.out.println(mediaId);
+//
+//    }
 
 
 

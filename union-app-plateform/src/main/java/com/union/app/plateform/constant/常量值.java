@@ -7,6 +7,7 @@ public abstract class 常量值 {
 
     public  static final int 用户申请开通管理员 = 200;
     public static final String OSS基础地址 = "OSS-BASE-URL";
+    public static final String 本地文件存储地址 = "LOCAL-FILE-STORAGE";
     public static final String OSSBuket名称 = "OSS-BUKET-NAME" ;
     public static final String PK页面最新刷新时间 = "PK-PAGE-REFRESH-TIME";
 

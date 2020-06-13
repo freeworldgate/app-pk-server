@@ -1,6 +1,7 @@
 package com.union.app.api.pk.审核;
 
 import com.union.app.domain.pk.Post;
+import com.union.app.domain.pk.审核.ApproveComment;
 import com.union.app.domain.pk.审核.ApproveUser;
 import com.union.app.entity.pk.PostEntity;
 import com.union.app.plateform.data.resultcode.AppException;
@@ -14,6 +15,7 @@ import com.union.app.service.pk.service.PkService;
 import com.union.app.service.pk.service.PostService;
 import com.union.app.service.pk.service.UserInfoService;
 import com.union.app.service.user.UserService;
+import com.union.app.util.time.TimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -68,27 +70,23 @@ public class 查询审核信息2 {
         Date currentDay = new Date();
 
         List<DataSet> dataSets = new ArrayList<>();
-        String approveUserId = dynamicService.查询审核用户(pkId,postId,currentDay);
-        if(!dynamicService.用户是否为今日审核员(pkId,approveUserId,currentDay)){
-
-            return AppResponse.buildResponse(PageAction.前端数据更新("outOfTime",true));
-        }
-
-
-
-
-        ApproveUser approveUser = approveService.查询帖子的审核用户(pkId,postId,currentDay);
-        Post post = postService.查询帖子(pkId,postId,null,currentDay);
-        DataSet dataSet3 = new DataSet("userPost",post);
-        DataSet dataSet4 = new DataSet("approveUserId",approveUserId);
-        DataSet dataSet5 = new DataSet("approveUser",approveUser);
-        dataSets.add(dataSet3);
-        dataSets.add(dataSet4);
-        dataSets.add(dataSet5);
+//        String approveUserId = dynamicService.查询审核用户(pkId,postId,currentDay);
+//        if(!dynamicService.用户是否为今日审核员(pkId,approveUserId,currentDay)){
+//
+//            return AppResponse.buildResponse(PageAction.前端数据更新("outOfTime",true));
+//        }
 
 
 
 
+        Post post = postService.查询帖子(pkId,postId,null);
+        ApproveComment pkComment = approveService.获取留言信息(pkId, postId);
+
+        dataSets.add(new DataSet("userPost",post));
+        dataSets.add(new DataSet("pkComment",pkComment));
+        dataSets.add(new DataSet("creator",pkService.queryPkCreator(pkId)));
+        dataSets.add(new DataSet("date",TimeUtils.currentDate()));
+        dataSets.add(new DataSet("pkId",pkId));
 
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
 

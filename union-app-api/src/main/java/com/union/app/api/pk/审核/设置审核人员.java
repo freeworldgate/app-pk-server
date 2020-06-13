@@ -53,19 +53,19 @@ public class 设置审核人员 {
     ApproveService approveService;
 
     @RequestMapping(path="/setApprover",method = RequestMethod.GET)
-    public AppResponse 用户积分(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId,@RequestParam("userId") String userId,@RequestParam("approveUserId") String approveUserId) throws AppException, IOException {
+    public AppResponse 用户积分(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId,@RequestParam("userId") String userId) throws AppException, IOException {
 
         Date currentDate = new Date();
 
         PostEntity postEntity = postService.查询帖子ById(pkId,postId);
         if(!StringUtils.equals(userId,postEntity.getUserId())){return AppResponse.buildResponse(PageAction.消息级别提示框(Level.错误消息,"非法操作"));}
 
-        dynamicService.设置帖子的审核用户(pkId,postId,approveUserId,currentDate);
-
-        User approveUser = userService.queryUser(approveUserId);
+        dynamicService.设置帖子的审核用户(pkId,postId);
 
 
-        return AppResponse.buildResponse(PageAction.前端数据更新("currentSelectApprover",approveUser));
+
+
+        return AppResponse.buildResponse(PageAction.前端数据更新("",""));
 
     }
 

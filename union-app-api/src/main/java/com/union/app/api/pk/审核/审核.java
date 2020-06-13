@@ -1,6 +1,7 @@
 package com.union.app.api.pk.审核;
 
 import com.union.app.domain.pk.Post;
+import com.union.app.domain.pk.审核.ApproveComment;
 import com.union.app.domain.pk.审核.ApproveUser;
 import com.union.app.plateform.data.resultcode.*;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
@@ -10,6 +11,7 @@ import com.union.app.service.pk.service.PkService;
 import com.union.app.service.pk.service.PostService;
 import com.union.app.service.pk.service.UserInfoService;
 import com.union.app.service.user.UserService;
+import com.union.app.util.time.TimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
@@ -56,19 +58,27 @@ public class 审核 {
 
         Date currentDay = new Date();
         List<DataSet> dataSets = new ArrayList<>();
-        String approveUserId = dynamicService.查询审核用户(pkId,postId,currentDay);
-        if(!org.apache.commons.lang.StringUtils.equals(userId,approveUserId)){
-            return AppResponse.buildResponse(PageAction.消息级别提示框(Level.错误消息,"审核权限过期"));
+
+
+        if(!pkService.isPkCreator(pkId,userId))
+        {
+            throw AppException.buildException(PageAction.消息级别提示框(Level.错误消息,"非榜主用户"));
         }
 
-
         postService.上线帖子(pkId,postId);
-        dynamicService.已审核(pkId,postId,approveUserId,currentDay);
+        dynamicService.已审核(pkId,postId);
 
-        Post post = postService.查询帖子(pkId,postId,null,currentDay);
-        DataSet dataSet1 = new DataSet("userPost",post);
+        Post post = postService.查询帖子(pkId,postId,null);
+        ApproveComment pkComment = approveService.获取留言信息(pkId, postId);
 
-        dataSets.add(dataSet1);
+        dataSets.add(new DataSet("userPost",post));
+        dataSets.add(new DataSet("pkComment",pkComment));
+        dataSets.add(new DataSet("creator",pkService.queryPkCreator(pkId)));
+
+        dataSets.add(new DataSet("pkId",pkId));
+
+
+
 
 
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));

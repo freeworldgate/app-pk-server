@@ -6,25 +6,17 @@ import com.union.app.dao.spi.filter.CompareTag;
 import com.union.app.dao.spi.filter.EntityFilterChain;
 import com.union.app.domain.wechat.UserInfo;
 import com.union.app.domain.wechat.WeChatUser;
-import com.union.app.domain.工具.RandomUtil;
 import com.union.app.entity.用户.UserEntity;
-import com.union.app.entity.用户.UserSex;
-import com.union.app.entity.用户.support.UserType;
-import com.union.app.plateform.data.resultcode.ResultCode;
 import com.union.app.plateform.response.ApiResponse;
-import com.union.app.service.app.AppService;
 import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
 import java.security.InvalidAlgorithmParameterException;
-import java.util.Date;
 
 @RestController
 @RequestMapping(path="/user")
@@ -65,9 +57,10 @@ public class 用户登录加注册 {
             userEntity.setSessionId(weChatUser.getSession_key());
             userEntity.setAppName(appName);
             userEntity.setUserId(openId);
-            if(userService.isUserVip(fromUser)){userEntity.setUserType(UserType.重点用户);}else{userEntity.setUserType(UserType.普通用户);}
+//            if(userService.isUserVip(fromUser)){userEntity.setUserType(UserType.重点用户);}else{userEntity.setUserType(UserType.普通用户);}
             convert(userInfo,userEntity);
-            dynamicService.新增注册用户(appName,pkId,userEntity.getUserId(),fromUser,new Date());
+            userService.新增注册用户(userEntity,appName,pkId,userEntity.getUserId(),fromUser);
+
             appDaoService.insertEntity(userEntity);
 
         }

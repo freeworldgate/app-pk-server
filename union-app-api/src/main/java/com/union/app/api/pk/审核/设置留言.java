@@ -1,11 +1,10 @@
 package com.union.app.api.pk.审核;
 
+import com.union.app.domain.pk.审核.ApproveComment;
 import com.union.app.domain.pk.审核.ApproveUser;
 import com.union.app.entity.pk.PostEntity;
-import com.union.app.plateform.data.resultcode.AppException;
-import com.union.app.plateform.data.resultcode.AppResponse;
-import com.union.app.plateform.data.resultcode.DataSet;
-import com.union.app.plateform.data.resultcode.PageAction;
+import com.union.app.entity.pk.PostStatu;
+import com.union.app.plateform.data.resultcode.*;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.service.ApproveService;
@@ -54,43 +53,20 @@ public class 设置留言 {
 
     @RequestMapping(path="/setComment",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse 设置留言(@RequestParam("pkId") String pkId, @RequestParam("approvorId") String approvorId,  @RequestParam("userId") String userId,@RequestParam("text") String text,@RequestParam("imgUrl") String imgUrl) throws AppException, IOException {
+    public AppResponse 设置留言(@RequestParam("pkId") String pkId,  @RequestParam("userId") String userId,@RequestParam("text") String text,@RequestParam("imgUrl") String imgUrl) throws AppException, IOException {
 
         Date currentDay = new Date();
 
         List<DataSet> dataSets = new ArrayList<>();
         PostEntity postEntity = postService.查询用户帖(pkId,userId);
+        if(postEntity.getStatu() != PostStatu.审核中){
+            throw AppException.buildException(PageAction.消息级别提示框(Level.错误消息,"当前状态不支持设置留言"));
+        }
 
+        approveService.设置审核留言(pkId,postEntity.getPostId(),userId,text,imgUrl);
+        ApproveComment approveComment = approveService.获取留言信息(pkId,postEntity.getPostId());
 
-        approveService.设置审核留言(pkId,postEntity.getPostId(),approvorId,userId,text,imgUrl);
-
-        List<ApproveUser> newApproveUserList = new ArrayList<>();
-
-//        List<ApproveUser> approveUserList = approveService.查询今日所有审核用户(pkId,postEntity.getPostId());
-
-        ApproveUser currentApproveUser = approveService.查询审核用户WidthCommentById(pkId,postEntity.getPostId(),approvorId,currentDay);
-//        查询帖子的审核用户(pkId,postEntity.getPostId());
-//        for(ApproveUser approveUser:approveUserList){
-//            if(org.apache.commons.lang.StringUtils.equals(approveUser.getUser().getUserId(),approvorId)){
-//                currentApproveUser = approveUser;
-//            }
-//
-//        }
-
-        DataSet dataSet4 = new DataSet("currentApprover",currentApproveUser);
-//        DataSet dataSet3 = new DataSet("approveUserList",approveUserList);
-//        DataSet dataSet5 = new DataSet("currentIndex",0);
-//        dataSets.add(dataSet3);
-        dataSets.add(dataSet4);
-
-
-
-
-
-
-
-//        return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
-        return AppResponse.buildResponse(PageAction.执行处理器("success",currentApproveUser));
+        return AppResponse.buildResponse(PageAction.执行处理器("message",approveComment));
 
 
 

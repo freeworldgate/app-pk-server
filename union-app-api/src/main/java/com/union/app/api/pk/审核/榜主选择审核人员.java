@@ -56,88 +56,88 @@ public class 榜主选择审核人员 {
     @Autowired
     ApproveService approveService;
 
-    @RequestMapping(path="/setApproveUser",method = RequestMethod.GET)
-    public AppResponse 榜主选择审核人员(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId) throws AppException, IOException, ParseException {
-
-        Date current = new Date();
-
-        if(pkService.isPkCreator(pkId,userId)){
-            return AppResponse.buildResponse(PageAction.信息反馈框("提示","榜主为默认审核员..."));
-        }
-
-        dynamicService.验证预备审核员(pkId,userId,current);
-        boolean result = dynamicService.添加预备审核员(pkId,userId);
-        List<UserIntegral> approvers = dynamicService.查询预备审核用户列表(pkId,current);
-
-        if(result)
-        {
-            return AppResponse.buildResponse(PageAction.执行处理器("success",approvers));
-
-        }
-        else
-        {
-            return AppResponse.buildResponse(PageAction.执行处理器("fail",approvers));
-        }
-
-
-    }
-
-    @RequestMapping(path="/removeApproveUser",method = RequestMethod.GET)
-    public AppResponse 取消审核人员(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId) throws AppException, IOException, ParseException {
-
-        Date current = new Date();
-
-        if(pkService.isPkCreator(pkId,userId)){
-            return AppResponse.buildResponse(PageAction.信息反馈框("操作异常","榜主不可取消审核权..."));
-        }
+//    @RequestMapping(path="/setApproveUser",method = RequestMethod.GET)
+//    public AppResponse 榜主选择审核人员(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId) throws AppException, IOException, ParseException {
 //
-//        dynamicService.验证预备审核员(pkId,userId,current);
-          dynamicService.删除预备审核员(pkId,userId);
+//        Date current = new Date();
+//
+//        if(pkService.isPkCreator(pkId,userId)){
+//            return AppResponse.buildResponse(PageAction.信息反馈框("提示","榜主为默认审核员..."));
+//        }
+//
+//        dynamicService.验证预备审核员(pkId,userId);
+//        boolean result = dynamicService.添加预备审核员(pkId,userId);
 //        List<UserIntegral> approvers = dynamicService.查询预备审核用户列表(pkId,current);
-        return AppResponse.buildResponse(PageAction.执行处理器("success",""));
-
-    }
-
-    @RequestMapping(path="/approverDetail",method = RequestMethod.GET)
-    public AppResponse 审核人员详情(@RequestParam("pkId") String pkId,@RequestParam("approverId") String approverId,@RequestParam("userId") String userId) throws AppException, IOException, ParseException {
-
-        Date current = new Date();
-
-
-
-
-
-        ApproveMessage approveMessage = approveService.获取审核人员消息(pkId,approverId,current);
-        if(org.springframework.util.ObjectUtils.isEmpty(approveMessage))
-        {
-            if(StringUtils.equals(approverId,userId))
-            {
-                return AppResponse.buildResponse(PageAction.执行处理器("editMessage",""));
-            }
-            else
-            {
-                return AppResponse.buildResponse(PageAction.信息反馈框("审核员未激活","审核用户未发布审核消息，激活审核用户..."));
-            }
-
-
-
-
-
-
-
-
-
-
-
-
-        }
-        else
-        {
-            return AppResponse.buildResponse(PageAction.页面跳转("/pages/pk/approverInfos/approverInfos?approverUserId=" + approverId + "&pkId=" + pkId,false));
-        }
-
-
-
-    }
+//
+//        if(result)
+//        {
+//            return AppResponse.buildResponse(PageAction.执行处理器("success",approvers));
+//
+//        }
+//        else
+//        {
+//            return AppResponse.buildResponse(PageAction.执行处理器("fail",approvers));
+//        }
+//
+//
+//    }
+//
+//    @RequestMapping(path="/removeApproveUser",method = RequestMethod.GET)
+//    public AppResponse 取消审核人员(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId) throws AppException, IOException, ParseException {
+//
+//        Date current = new Date();
+//
+//        if(pkService.isPkCreator(pkId,userId)){
+//            return AppResponse.buildResponse(PageAction.信息反馈框("操作异常","榜主不可取消审核权..."));
+//        }
+////
+////        dynamicService.验证预备审核员(pkId,userId,current);
+//          dynamicService.删除预备审核员(pkId,userId);
+////        List<UserIntegral> approvers = dynamicService.查询预备审核用户列表(pkId,current);
+//        return AppResponse.buildResponse(PageAction.执行处理器("success",""));
+//
+//    }
+//
+//    @RequestMapping(path="/approverDetail",method = RequestMethod.GET)
+//    public AppResponse 审核人员详情(@RequestParam("pkId") String pkId,@RequestParam("approverId") String approverId,@RequestParam("userId") String userId) throws AppException, IOException, ParseException {
+//
+//        Date current = new Date();
+//
+//
+//
+//
+//
+//        ApproveMessage approveMessage = approveService.获取审核人员消息(pkId,approverId,current);
+//        if(org.springframework.util.ObjectUtils.isEmpty(approveMessage))
+//        {
+//            if(StringUtils.equals(approverId,userId))
+//            {
+//                return AppResponse.buildResponse(PageAction.执行处理器("editMessage",""));
+//            }
+//            else
+//            {
+//                return AppResponse.buildResponse(PageAction.信息反馈框("审核员未激活","审核用户未发布审核消息，激活审核用户..."));
+//            }
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//        }
+//        else
+//        {
+//            return AppResponse.buildResponse(PageAction.页面跳转("/pages/pk/approverInfos/approverInfos?approverUserId=" + approverId + "&pkId=" + pkId,false));
+//        }
+//
+//
+//
+//    }
 
 }

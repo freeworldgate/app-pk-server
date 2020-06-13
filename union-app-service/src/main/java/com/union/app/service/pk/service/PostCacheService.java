@@ -65,70 +65,55 @@ public class PostCacheService {
      * @param page
      * @return
      */
-    public List<Post> getPostPage(String userId,String pkId,int page,Date date) throws IOException {
-
-        List<Post> pagePosts = new ArrayList<>();
-
-
-
-        String pkPage = "PAGE-" + String.valueOf(page);
-        Map<String,String> pageRefreshTime = postCacheTime.get(pkId);
-        if(MapUtils.isEmpty(pageRefreshTime)){
-            pageRefreshTime = new HashMap<>();
-            postCacheTime.put(pkId,pageRefreshTime);
-        }
-        Map<String,List<Post>> pkAllPages = postCache.get(pkId);
-        if(MapUtils.isEmpty(pkAllPages)){
-            pkAllPages = new HashMap<>();
-            postCache.put(pkId,pkAllPages);
-        }
-
-        String localLastRefreshTime = pageRefreshTime.get(pkPage);
-        String lastRefreshTime = queryPageLastModifyTime(pkId,pkPage);
-
-        if(org.apache.commons.lang.StringUtils.equals(lastRefreshTime,localLastRefreshTime)){
-
-
-            List<Post> posts = pkAllPages.get(pkPage);
-            if(CollectionUtils.isEmpty(posts)){
-                posts = getRandomPage(pkId,date);
-                pkAllPages.put(pkPage,posts);
-            }
-            pagePosts.addAll(posts);
-        }
-        else
-        {
-            //更新时间不一致，查询数据库更新页面
-            List<Post> posts = syncRefreshCachePost(pkId,pkPage,date);
-            pagePosts.addAll(posts);
-            pkAllPages.put(pkPage,posts);
-            Map<String,String> refreshTime = postCacheTime.get(pkId);
-            refreshTime.put(pkPage,lastRefreshTime);
-        }
-
-
-
-
+    public List<Post> getPostPage(String userId,String pkId,int page) throws IOException {
+        return getRandomPage(pkId);
+//
+//        List<Post> pagePosts = new ArrayList<>();
+//
+//
+//
+//        String pkPage = "PAGE-" + String.valueOf(page);
+//        Map<String,String> pageRefreshTime = postCacheTime.get(pkId);
+//        if(MapUtils.isEmpty(pageRefreshTime)){
+//            pageRefreshTime = new HashMap<>();
+//            postCacheTime.put(pkId,pageRefreshTime);
+//        }
+//        Map<String,List<Post>> pkAllPages = postCache.get(pkId);
+//        if(MapUtils.isEmpty(pkAllPages)){
+//            pkAllPages = new HashMap<>();
+//            postCache.put(pkId,pkAllPages);
+//        }
+//
+//        String localLastRefreshTime = pageRefreshTime.get(pkPage);
+//        String lastRefreshTime = queryPageLastModifyTime(pkId,pkPage);
+//
+//        if(org.apache.commons.lang.StringUtils.equals(lastRefreshTime,localLastRefreshTime)){
+//
+//
+//            List<Post> posts = pkAllPages.get(pkPage);
+//            if(CollectionUtils.isEmpty(posts)){
+//                posts = getRandomPage(pkId);
+//                pkAllPages.put(pkPage,posts);
+//            }
+//            pagePosts.addAll(posts);
+//        }
+//        else
+//        {
+//            //更新时间不一致，查询数据库更新页面
+//            List<Post> posts = syncRefreshCachePost(pkId,pkPage);
+//            pagePosts.addAll(posts);
+//            pkAllPages.put(pkPage,posts);
+//            Map<String,String> refreshTime = postCacheTime.get(pkId);
+//            refreshTime.put(pkPage,lastRefreshTime);
+//        }
+//
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-        genUserLike(pkId,userId,pagePosts);
-        return pagePosts;
+//        return pagePosts;
     }
 
-    private List<Post> syncRefreshCachePost(String pkId, String pkPage,Date date) throws UnsupportedEncodingException {
+    private List<Post> syncRefreshCachePost(String pkId, String pkPage) throws UnsupportedEncodingException {
 
         List<Post> posts = new ArrayList<>();
 
@@ -142,13 +127,13 @@ public class PostCacheService {
         if(!CollectionUtils.isEmpty(pageCache)) {
             for (PkPageCacheEntity pkPageCacheEntity : pageCache) {
                 String postId = pkPageCacheEntity.getPostId();
-                Post post = postService.查询帖子(pkId,postId, org.apache.commons.lang.StringUtils.EMPTY,date);
+                Post post = postService.查询帖子(pkId,postId, org.apache.commons.lang.StringUtils.EMPTY);
                 posts.add(post);
             }
         }
         else
         {
-            posts.addAll(getRandomPage(pkId,date));
+            posts.addAll(getRandomPage(pkId));
         }
         return posts;
     }
@@ -172,16 +157,17 @@ public class PostCacheService {
 
     }
 
-    private List<Post> getRandomPage(String pkId,Date date) throws UnsupportedEncodingException {
+    private List<Post> getRandomPage(String pkId) throws UnsupportedEncodingException {
 
         List<Post> posts = new ArrayList<>();
         EntityFilterChain filterChain = EntityFilterChain.newFilterChain(PostEntity.class)
+                .compareFilter("pkId",CompareTag.Equal,pkId)
                 .pageLimitFilter(1,AppConfigService.getConfigAsInteger(常量值.单个PK页面的帖子数,50))
                 .orderByRandomFilter();
 
         List<PostEntity> postEntities = daoService.queryEntities(PostEntity.class,filterChain);
         for(PostEntity postEntity:postEntities){
-            Post post = postService.查询帖子(pkId,postEntity.getPostId(), org.apache.commons.lang.StringUtils.EMPTY,date);
+            Post post = postService.查询帖子(pkId,postEntity.getPostId(), org.apache.commons.lang.StringUtils.EMPTY);
             posts.add(post);
         }
         return posts;

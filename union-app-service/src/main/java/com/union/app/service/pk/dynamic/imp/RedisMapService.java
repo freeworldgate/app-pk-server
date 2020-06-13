@@ -21,6 +21,12 @@ public class RedisMapService implements IRedisService {
     @Resource
     private RedisTemplate<String, String> redisTemplate;
 
+    public void removeMapKey(String key,String mapKey) {
+        redisTemplate.opsForHash().delete(key, mapKey);
+
+    }
+
+
     public String getStringValue(String key,String mapKey){
         Object value = redisTemplate.opsForHash().get(key,mapKey);
         if(ObjectUtils.isEmpty(value)){
@@ -75,7 +81,7 @@ public class RedisMapService implements IRedisService {
 
         Object value = redisTemplate.opsForHash().get(key,mapKey);
 
-        return JSON.parseObject(value.toString(),tClass);
+        return JSON.parseObject(ObjectUtils.isEmpty(value)?"":value.toString(),tClass);
 
     }
 
@@ -87,6 +93,19 @@ public class RedisMapService implements IRedisService {
 
     @Override
     public int size(String key) {
-        return redisTemplate.opsForHash().size(key).intValue();
+        if(redisTemplate.hasKey(key)) {
+            Long size = redisTemplate.opsForHash().size(key);
+            return ObjectUtils.isEmpty(size) ? 0 : size.intValue();
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+    public boolean hasKey(String key, String mapKey) {
+        return redisTemplate.opsForHash().hasKey(key,mapKey);
+
+
     }
 }

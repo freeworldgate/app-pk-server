@@ -247,6 +247,22 @@ public class RandomUtil {
 
     };
 
+    public static String[] imageBack = new String[]{
+
+//            "https://fenghao211.oss-cn-beijing.aliyuncs.com/imgback/1.png",
+//            "https://fenghao211.oss-cn-beijing.aliyuncs.com/imgback/2.png",
+//            "https://fenghao211.oss-cn-beijing.aliyuncs.com/imgback/3.png",
+            "https://fenghao211.oss-cn-beijing.aliyuncs.com/imgback/4.png",
+//            "https://fenghao211.oss-cn-beijing.aliyuncs.com/imgback/5.png",
+//
+//            "https://fenghao211.oss-cn-beijing.aliyuncs.com/imgback/9.png",
+//            "https://fenghao211.oss-cn-beijing.aliyuncs.com/imgback/14.png",
+//            "https://fenghao211.oss-cn-beijing.aliyuncs.com/imgback/15.png",
+//            "https://fenghao211.oss-cn-beijing.aliyuncs.com/imgback/16.png",
+
+
+    };
+
 
     public static String getRandomImage(){
         Random random = new SecureRandom();
@@ -324,5 +340,19 @@ public class RandomUtil {
         city.setCityCode("nj");
         city.setCityName("南京");
         return city;
+    }
+
+    public static String getRandomBackImg() {
+
+
+        Random random = new SecureRandom();
+        int url = Math.abs(random.nextInt())%imageBack.length;
+        return imageBack[url];
+
+
+
+
+
+
     }
 }

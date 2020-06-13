@@ -46,7 +46,7 @@ public class 查询单个POST {
     public AppResponse 查询单个POSTById(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId,@RequestParam("userId") String userId) throws AppException, IOException {
 
         Date currentDate = new Date();
-        Post post = postService.查询帖子(pkId,postId,userId,currentDate);
+        Post post = postService.查询帖子(pkId,postId,userId);
 
         User creator = pkService.queryPkCreator(pkId);
 

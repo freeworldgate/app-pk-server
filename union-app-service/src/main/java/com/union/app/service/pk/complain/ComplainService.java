@@ -71,7 +71,55 @@ public class ComplainService {
     @Autowired
     PkService pkService;
 
+    public void 新增审核投诉(String id, String userId) {
+    }
 
+    public ComplainEntity 查询投诉信息(String id) {
+        return null;
+    }
+
+    public void 新增收款投诉(String id, String userId) {
+    }
+
+    public Complain 下一个投诉信息(int type) {
+        return null;
+    }
+
+    public void 查询投诉信息(String pkId, String approverUserId, String userId) {
+    }
+
+    public void 添加投诉(String pkId, String userId) {
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(ComplainEntity.class)
+                .compareFilter("pkId",CompareTag.Equal,pkId)
+                .andFilter()
+                .compareFilter("userId",CompareTag.Equal,userId);
+        ComplainEntity complainEntity = daoService.querySingleEntity(ComplainEntity.class,filter);
+        if(ObjectUtils.isEmpty(complainEntity))
+        {
+            ComplainEntity newComplain = new ComplainEntity();
+
+            newComplain.setUserId(userId);
+            newComplain.setPkId(pkId);
+            newComplain.setComplainStatu(ComplainStatu.处理中);
+            daoService.insertEntity(newComplain);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    }
 
 
 //    public boolean 用户是否可以收款(String pkId,String userId,int tag){

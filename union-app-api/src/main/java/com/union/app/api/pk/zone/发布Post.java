@@ -1,21 +1,20 @@
 package com.union.app.api.pk.zone;
 
-import com.union.app.domain.pk.*;
-import com.union.app.domain.工具.RandomUtil;
-import com.union.app.entity.pk.AppMode;
-import com.union.app.entity.pk.EmptyPostEntity;
-import com.union.app.entity.pk.PkEntity;
+import com.union.app.domain.pk.Post;
 import com.union.app.entity.pk.PostEntity;
-import com.union.app.plateform.data.resultcode.*;
+import com.union.app.entity.pk.PostStatu;
+import com.union.app.plateform.data.resultcode.AppException;
+import com.union.app.plateform.data.resultcode.AppResponse;
+import com.union.app.plateform.data.resultcode.Level;
+import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
-import com.union.app.service.app.AppService;
 import com.union.app.service.pk.click.ClickService;
+import com.union.app.service.pk.service.AppService;
 import com.union.app.service.pk.service.PkService;
 import com.union.app.service.pk.service.PostService;
 import com.union.app.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,8 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -69,13 +66,12 @@ public class 发布Post {
         }
         else
         {
-            postId = postEntity.getPostId();
-            postService.续传帖子(postEntity.getPostId(),title,userId,images);
+            return AppResponse.buildResponse(PageAction.消息级别提示框(Level.错误消息,"榜帖已存在"));
         }
 
 
 
-        Post post = postService.查询帖子(pkId,postId,userId,cureentDate);
+        Post post = postService.查询帖子(pkId,postId,userId);
 
 
 
@@ -117,17 +113,35 @@ public class 发布Post {
 //        return AppResponse.buildResponse(PageAction.执行处理器("success",post));
 //
 //    }
+
+    @RequestMapping(path="/postStatu",method = RequestMethod.GET)
+    @Transactional(rollbackOn = Exception.class)
+    public AppResponse 查询榜帖状态(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId) throws AppException, IOException {
+        Date cureentDate = new Date();
+
+        PostEntity postEntity = postService.查询帖子ById(pkId,postId);
+        if(postEntity.getStatu() == PostStatu.上线)
+        {
+            return AppResponse.buildResponse(PageAction.执行处理器("online",""));
+        }
+        return AppResponse.buildResponse(PageAction.执行处理器("offline",""));
+
+
+
+
+
+    }
+
+
     @RequestMapping(path="/replaceImg",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
     public AppResponse 替換图片(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId,@RequestParam("imgUrl") String imgUrl,@RequestParam("index") int index,@RequestParam("userId") String userId) throws AppException, IOException {
-        Date cureentDate = new Date();
+        Date currentDate = new Date();
 
-        postService.替换指定图片(pkId,postId,imgUrl,index,userId);
-
-
+        postService.替换指定图片(pkId,postId,imgUrl,index,userId,currentDate);
 
 
-        Post post = postService.查询帖子(pkId,postId,userId,cureentDate);
+        Post post = postService.查询帖子(pkId,postId,userId);
 
         return AppResponse.buildResponse(PageAction.执行处理器("success",post));
 

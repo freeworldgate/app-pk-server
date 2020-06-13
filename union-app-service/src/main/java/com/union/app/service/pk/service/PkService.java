@@ -20,13 +20,16 @@ import com.union.app.plateform.storgae.KeyName;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.user.UserService;
+import com.union.app.util.time.TimeUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
+
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -74,23 +77,27 @@ public class PkService {
 
 
 
-    public List<Post> queryPkPost(String userId,String pkId,int page,Date date) throws IOException {
-        List<Post> posts = postCacheService.getPostPage(userId,pkId,page,date);
+    public List<Post> queryPkPost(String userId,String pkId,int page) throws IOException {
+        List<Post> posts = postCacheService.getPostPage(userId,pkId,page);
 
         return posts;
     }
 
 
     public PkDetail querySinglePk(String pkId) throws IOException {
-//        PkDetail pkDetail = ossStorage.getOssWidthMapCache(SceneType.存储PK缓存,"PK-Cache",pkId,PkDetail.class);
         PkDetail pkDetail = new PkDetail();
         PkEntity pk = this.querySinglePkEntity(pkId);
         pkDetail.setPkId(pk.getPkId());
-        pkDetail.setTopic(pk.getTopic());
+        pkDetail.setTopic(new String(pk.getTopic(),"UTF-8"));
         pkDetail.setUser(userService.queryUser(pk.getUserId()));
-        pkDetail.setWatchWord(pk.getWatchWord());
+        pkDetail.setWatchWord(new String(pk.getWatchWord(),"UTF-8"));
+        pkDetail.setTotalApprover(new KeyNameValue(1,dynamicService.查询今日审核员数量(pkId)));
+        pkDetail.setTotalSort(new KeyNameValue(2,dynamicService.查询今日打榜用户数量(pkId)));
+        pkDetail.setTime(TimeUtils.translateTime(pk.getCreateTime()));
+        pkDetail.setInvite(pk.isInvite()?"仅邀请用户":"公开");
         return pkDetail;
     }
+
 
 
     public User queryPkCreator(String pkId){
@@ -170,5 +177,29 @@ public class PkService {
     public boolean isPkCreator(String pkId, String userId) {
         User creator = this.queryPkCreator(pkId);
         return org.apache.commons.lang.StringUtils.equals(userId,creator.getUserId())? Boolean.TRUE:Boolean.FALSE;
+    }
+
+    public String 创建PK(String userId, String topic, String watchWord,boolean invite) throws UnsupportedEncodingException {
+        String pkId = UUID.randomUUID().toString();
+        PkEntity pkEntity = new PkEntity();
+
+        pkEntity.setPkId(pkId);
+        pkEntity.setCreateTime(TimeUtils.currentDateTime());
+        pkEntity.setPkType(PkType.平台相册);
+        pkEntity.setTopic(topic.getBytes("UTF-8"));
+        pkEntity.setWatchWord(watchWord.getBytes("UTF-8"));
+        pkEntity.setInvite(invite);
+        pkEntity.setUserId(userId);
+        pkEntity.setAlbumStatu(PkStatu.审核中);
+        daoService.insertEntity(pkEntity);
+        return pkId;
+    }
+
+    public boolean 是否更新今日审核群(String pkId) {
+        return !StringUtils.isBlank(dynamicService.查询PK群组二维码MediaId(pkId,new Date()));
+    }
+
+    public boolean 是否更新今日公告(String pkId) {
+        return !StringUtils.isBlank(dynamicService.查询PK公告消息Id(pkId,new Date()));
     }
 }

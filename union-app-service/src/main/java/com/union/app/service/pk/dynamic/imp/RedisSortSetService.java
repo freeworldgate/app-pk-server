@@ -24,7 +24,7 @@ public class RedisSortSetService implements IRedisService {
 
     public Set<String> queryPage(String key,int page){
         Set<String> pageList = new HashSet<>();
-        Set<String> sorts = redisTemplate.opsForZSet().range(key,  page * 50,(page+1) * 50 - 1);
+        Set<String> sorts = redisTemplate.opsForZSet().range(key,  page * 30,(page+1) * 30 - 1);
         if(!CollectionUtils.isEmpty(sorts)){
             pageList.addAll(sorts);
         }
@@ -37,14 +37,21 @@ public class RedisSortSetService implements IRedisService {
         return ObjectUtils.isEmpty(index)?-1:index;
     }
 
-    public void addEle(String key,String value,double score){
-        redisTemplate.opsForZSet().add(key,value,score);
+    public boolean addEle(String key,String value,double score){
+
+        return redisTemplate.opsForZSet().add(key,value,score);
     }
 
     public boolean isMember(String key ,String member){
         Long index = redisTemplate.opsForZSet().rank(key,member);
         return ObjectUtils.isEmpty(index)?false:true;
     }
+
+    public Double getEleScore(String key,String member){
+        return redisTemplate.opsForZSet().score(key,member);
+    }
+
+
     public Set<String> members(String key ){
         return redisTemplate.opsForZSet().range(key,0,this.size(key));
     }
@@ -61,7 +68,14 @@ public class RedisSortSetService implements IRedisService {
 
     @Override
     public int size(String key) {
-        return redisTemplate.opsForZSet().size(key).intValue();
+        if(redisTemplate.hasKey(key)) {
+            Long size = redisTemplate.opsForZSet().size(key);
+            return ObjectUtils.isEmpty(size) ? 0 : size.intValue();
+        }
+        else
+        {
+            return 0;
+        }
     }
 
 

@@ -92,7 +92,7 @@
                         <fork>true</fork>
                         <mainClass>com.union.app.AppApplication</mainClass>
                         <!--<jvmArguments>-->
-                                 <!-- -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8080-->
+                                    <!-- -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8080-->
                         <!--</jvmArguments>-->
                     </configuration>
                     <executions>

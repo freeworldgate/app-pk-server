@@ -11,12 +11,14 @@ import com.union.app.domain.pk.*;
 import com.union.app.common.id.KeyGetter;
 import com.union.app.domain.pk.apply.ApproveCode;
 import com.union.app.domain.pk.apply.KeyNameValue;
+import com.union.app.domain.pk.审核.ApproveComment;
 import com.union.app.domain.user.User;
 import com.union.app.domain.工具.RandomUtil;
 import com.union.app.entity.ImgStatu;
 import com.union.app.entity.pk.*;
 import com.union.app.entity.pk.apply.PayOrderEntity;
 import com.union.app.entity.pk.助力浏览评论分享.UserLikeEntity;
+import com.union.app.entity.pk.审核.ApproveCommentEntity;
 import com.union.app.plateform.constant.常量值;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.Level;
@@ -26,6 +28,7 @@ import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.user.UserService;
 import com.union.app.util.idGenerator.IdGenerator;
 import com.union.app.util.time.TimeUtils;
+import org.apache.commons.lang.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -65,7 +68,8 @@ public class PostService {
     PkService pkService;
 
 
-
+    @Autowired
+    ApproveService approveService;
 
 
 
@@ -83,16 +87,20 @@ public class PostService {
         postEntity.setCreateTime(TimeUtils.currentTime());
         postEntity.setLastModifyTime(TimeUtils.currentTime());
         postEntity.setStatu(PostStatu.审核中);
-        for(String img:images){
-            PostImageEntity postImageEntity = new PostImageEntity();
-            postImageEntity.setPkId(pkId);
-            postImageEntity.setPostId(postId);
-            postImageEntity.setImgUrl(getLegalImgUrl(img));
-            postImageEntity.setImgId(IdGenerator.getImageId());
-            postImageEntity.setCreateTime(TimeUtils.currentTime());
-            daoService.insertEntity(postImageEntity);
-        }
 
+        StringBuffer stringBuffer = new StringBuffer();
+        for(String img:images){
+            stringBuffer.append(getLegalImgUrl(img));
+            stringBuffer.append(";");
+//            PostImageEntity postImageEntity = new PostImageEntity();
+//            postImageEntity.setPkId(pkId);
+//            postImageEntity.setPostId(postId);
+//            postImageEntity.setImgUrl();
+//            postImageEntity.setImgId(IdGenerator.getImageId());
+//            postImageEntity.setCreateTime(TimeUtils.currentTime());
+//            daoService.insertEntity(postImageEntity);
+        }
+        postEntity.setImgUrls(stringBuffer.toString());
         daoService.insertEntity(postEntity);
 
 //        PkDynamicEntity pkDynamicEntity = pkService.查询PK动态表(pkId);
@@ -120,6 +128,7 @@ public class PostService {
         String reg1 = "\\[";
         String reg2 = "]";
         String reg3 = "\"";
+//        String reg4 = AppConfigService.getConfigAsString(常量值.OSS基础地址,"https://oss.211shopper.com");
         image = image.replaceAll(reg3,"").replaceAll(reg1,"").replaceAll(reg2,"").trim();
         return image;
     }
@@ -146,11 +155,11 @@ public class PostService {
 //        return post;
 //    }
 
-    public Post 查询帖子(String pkId,String postId,String queryerId,Date date) throws UnsupportedEncodingException {
+    public Post 查询帖子(String pkId,String postId,String queryerId) throws UnsupportedEncodingException {
 
         PostEntity postEntity = this.查询帖子ById(pkId,postId);
         if(ObjectUtils.isEmpty(postEntity)){return null;}
-        Post post = translate(postEntity,date);
+        Post post = translate(postEntity);
         if((!StringUtils.isEmpty(queryerId)) && (!org.apache.commons.lang.StringUtils.equals(postEntity.getUserId(),queryerId))){
             post.setQueryerCollect(isUserCollectPost(postId,queryerId));
         }
@@ -158,42 +167,35 @@ public class PostService {
     }
 
 
-    public Post translate(PostEntity postEntity,Date date) throws UnsupportedEncodingException {
+    public Post translate(PostEntity postEntity) throws UnsupportedEncodingException {
         Post post = new Post();
         post.setPkId(postEntity.getPkId());
         post.setPostId(postEntity.getPostId());
+        post.setTime(TimeUtils.convertTime(postEntity.getCreateTime()));
         post.setCreator(userService.queryUser(postEntity.getUserId()));
         post.setTopic(new String(postEntity.getTopic(),"UTF-8"));
         post.setDynamic(getPostDynamic(postEntity.getPostId(),postEntity.getPkId()));
-        post.setPostImages(getPostImages(postEntity.getPostId(),postEntity.getPkId()));
+        post.setPostImages(getPostImages(postEntity.getImgUrls()));
         post.setStatu(new KeyNameValue(postEntity.getStatu().getStatu(),postEntity.getStatu().getStatuStr()));
-
-        post.setUserIntegral(dynamicService.查询用户打榜信息(postEntity.getPkId(),postEntity.getUserId(),date));
-
-
-
-
-
+        post.setUserIntegral(dynamicService.查询用户打榜信息(postEntity.getPkId(),postEntity.getUserId()));
+        post.setSelfComment(ArrayUtils.isEmpty(postEntity.getSelfComment())? org.apache.commons.lang.StringUtils.EMPTY :new String(postEntity.getSelfComment(),"UTF-8"));
+        post.setSelfCommentTime(TimeUtils.convertTime(postEntity.getSelfCommentTime()));
         return post;
     }
 
 
 
 
-    public List<PostImage> getPostImages(String postId, String pkId) {
+    public List<PostImage> getPostImages(String urls) {
         List<PostImage> postImages = new ArrayList<>();
+        if(StringUtils.isEmpty(urls)){return postImages;}
+        String[] imgUrls = urls.split(";");
 
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(PostImageEntity.class)
-                .compareFilter("postId",CompareTag.Equal,postId)
-                .andFilter()
-                .compareFilter("pkId",CompareTag.Equal,pkId);
-        List<PostImageEntity> postImageEntities = daoService.queryEntities(PostImageEntity.class,filter);
-
-        for(PostImageEntity postImageEntity:postImageEntities){
+        for(String url:imgUrls){
             PostImage postImage = new PostImage();
-            postImage.setImgUrl(postImageEntity.getImgUrl());
-            postImage.setImageId(postImageEntity.getImgId());
-            postImage.setTime(postImageEntity.getCreateTime());
+            postImage.setImgUrl(url);
+            postImage.setImageId("");
+            postImage.setTime("");
             postImages.add(postImage);
         }
         return postImages;
@@ -229,7 +231,7 @@ public class PostService {
             }
             else {
 
-                return this.translate(userPostEntity,date);
+                return this.translate(userPostEntity);
             }
     }
 
@@ -316,7 +318,7 @@ public class PostService {
             post.setCreator(userService.queryUser(postEntity.getUserId()));
             post.setTopic(new String(postEntity.getTopic(),"UTF-8"));
             post.setDynamic(getPostDynamic(postEntity.getPostId(),postEntity.getPkId()));
-            post.setPostImages(getPostImages(postEntity.getPostId(),postEntity.getPkId()));
+            post.setPostImages(getPostImages(new String(postEntity.getImgUrls())));
             post.setStatu(new KeyNameValue(postEntity.getStatu().getStatu(), postEntity.getStatu().getStatuStr()));
         }
 
@@ -372,14 +374,16 @@ public class PostService {
         postEntity.setStatu(PostStatu.上线);
         daoService.updateEntity(postEntity);
 
+
+        ApproveCommentEntity approveCommentEntity = approveService.查询留言(pkId,postId);
+
+        approveCommentEntity.setPostStatu(PostStatu.上线);
+        daoService.updateEntity(approveCommentEntity);
+
+
+
     }
 
-    public PostEntity getPostEntityById(String postId) {
-        EntityFilterChain filter1 = EntityFilterChain.newFilterChain(PostEntity.class)
-                .compareFilter("postId",CompareTag.Equal,postId);
-        PostEntity postEntity = daoService.querySingleEntity(PostEntity.class,filter1);
-        return postEntity;
-    }
 
     private boolean isUserCollectPost(String postId,String userId){
         EntityFilterChain cfilter = EntityFilterChain.newFilterChain(UserCollectionEntity.class)
@@ -398,5 +402,55 @@ public class PostService {
                 .compareFilter("postId",CompareTag.Equal,postId);
         PostEntity postEntity = daoService.querySingleEntity(PostEntity.class,filter1);
         return postEntity;
+    }
+
+    public void 替换指定图片(String pkId, String postId, String imgUrl, int index, String userId,Date date) throws AppException {
+
+        PostEntity postEntity = 查询帖子ById(pkId,postId);
+        if(!org.apache.commons.lang.StringUtils.equals(userId,postEntity.getUserId())){
+            throw AppException.buildException(PageAction.消息级别提示框(Level.错误消息,"非法操作"));
+        }
+        String[] imgs = postEntity.getImgUrls().split(";");
+        imgs[index] = imgUrl;
+        StringBuffer stringBuffer = new StringBuffer();
+        for(String img:imgs)
+        {
+            stringBuffer.append(img);
+            stringBuffer.append(";");
+        }
+        postEntity.setImgUrls(stringBuffer.toString());
+        postEntity.setStatu(PostStatu.审核中);
+        ApproveCommentEntity approveCommentEntity = approveService.查询留言(pkId,postId);
+        if(!ObjectUtils.isEmpty(approveCommentEntity)) {
+            approveCommentEntity.setPostStatu(PostStatu.审核中);
+            daoService.updateEntity(approveCommentEntity);
+
+        }
+
+        daoService.updateEntity(postEntity);
+
+        dynamicService.榜帖恢复到审核中状态(pkId,postId);
+    }
+
+    public void 替换Topic(String pkId, String postId, String text, String userId) throws AppException, UnsupportedEncodingException {
+
+        PostEntity postEntity = 查询帖子ById(pkId,postId);
+        if(!org.apache.commons.lang.StringUtils.equals(userId,postEntity.getUserId())){
+            throw AppException.buildException(PageAction.消息级别提示框(Level.错误消息,"非法操作"));
+        }
+
+        postEntity.setTopic(text.getBytes("UTF-8"));
+
+        daoService.updateEntity(postEntity);
+
+
+    }
+
+    public void 设置自评(String pkId, PostEntity postEntity, String text) {
+        postEntity.setSelfComment(text.getBytes(Charset.forName("UTF-8")));
+
+        postEntity.setSelfCommentTime(System.currentTimeMillis());
+        daoService.updateEntity(postEntity);
+
     }
 }

@@ -1,5 +1,6 @@
 package com.union.app.entity.pk.审核;
 
+import com.union.app.entity.pk.PostStatu;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,11 +22,15 @@ public class ApproveCommentEntity {
     private int commentId;
     private String pkId;
     private String postId;
-    private String approverId;
+    private String userId;
     private byte[] text;
     private String imgUrl;
     private long time;
-
+    private String date;
+    private int speckTime;
+    private String voiceUrl;
+    @Enumerated(EnumType.STRING)
+    private PostStatu postStatu;
 
 
 }

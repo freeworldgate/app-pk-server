@@ -38,9 +38,10 @@ public class Post {
     private ApproveComment approveComment;
 
 
+    private String time;
 
-
-
+    private String selfComment;
+    private String selfCommentTime;
 
 
 

@@ -14,20 +14,19 @@ import javax.persistence.*;
 @EqualsAndHashCode
 @ToString
 @Entity
-@Table(name="T_Pk_Complain")
+@Table(name="T_Pk_Complain_Table")
 public class ComplainEntity {
 
     @Id
-    String id;
+    @GeneratedValue(strategy = GenerationType.AUTO)//mysql数据库主键策略
+    int id;
 
+    String pkId;
 
-    ComplainType complainType;
+    String userId;
 
-
-    ComplainStatu statu;
-
-
-    long time;
+    @Enumerated(EnumType.STRING)
+    ComplainStatu complainStatu;
 
 
 

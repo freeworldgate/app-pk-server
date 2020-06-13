@@ -1,5 +1,6 @@
 package com.union.app.domain.pk.审核;
 
+import com.union.app.domain.user.User;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,14 +8,21 @@ import lombok.Setter;
 @Setter
 public class ApproveMessage {
 
-    private String title;
+
+    private String date;
+    private User user;
 
     private String text;
 
-    private String url;
+    private String imgeUrl;
 
+    private String mediaId;
 
+    private String time;
 
+    private int speckTime;
+
+    private String voiceUrl;
 
 
 

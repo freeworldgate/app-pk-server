@@ -1,9 +1,10 @@
 package com.union.app.api.pk.审核;
 
 import com.union.app.domain.pk.Post;
-import com.union.app.domain.pk.审核.ApproveUser;
-import com.union.app.entity.pk.PostEntity;
-import com.union.app.plateform.data.resultcode.*;
+import com.union.app.plateform.data.resultcode.AppException;
+import com.union.app.plateform.data.resultcode.AppResponse;
+import com.union.app.plateform.data.resultcode.DataSet;
+import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.service.ApproveService;
@@ -11,10 +12,8 @@ import com.union.app.service.pk.service.PkService;
 import com.union.app.service.pk.service.PostService;
 import com.union.app.service.pk.service.UserInfoService;
 import com.union.app.service.user.UserService;
-import com.union.app.util.time.TimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -52,7 +51,7 @@ public class 查询审核员已审核列表 {
     ApproveService approveService;
 
     @RequestMapping(path="/queryApprovedPost",method = RequestMethod.GET)
-    public AppResponse 查询审核信息(@RequestParam("pkId") String pkId,@RequestParam("approverUserId") String approverUserId,@RequestParam("userId") String userId) throws AppException, IOException {
+    public AppResponse 查询审核信息(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId) throws AppException, IOException {
 
         Date currentDate = new Date();
 
@@ -60,37 +59,31 @@ public class 查询审核员已审核列表 {
 
 
         List<DataSet> dataSets = new ArrayList<>();
-        ApproveUser approveUser = approveService.查询审核用户ById(pkId,approverUserId,currentDate);
-        List<Post> posts = dynamicService.查询已审核指定范围的Post(pkId,approverUserId,0,currentDate);
-        DataSet dataSet1 = new DataSet("approver",approveUser);
+
+        List<Post> posts = dynamicService.查询已审核指定范围的Post(pkId,0,userId);
         DataSet dataSet2 = new DataSet("approvedPosts",posts);
-        DataSet dataSet3 = new DataSet("currentApprovedPost",CollectionUtils.isEmpty(posts)?null:posts.get(0));
         DataSet dataSet4 = new DataSet("currentApprovedPage",1);
-        DataSet dataSet5 = new DataSet("currentIndex",0);
-        DataSet dataSet6 = new DataSet("approvedSize",dynamicService.已审核订单数量(pkId,approverUserId,currentDate));
-        DataSet dataSet7 = new DataSet("approvingSize",dynamicService.审核中订单数量(pkId,approverUserId,currentDate));
+
         DataSet dataSet8 = new DataSet("pkId",pkId);
         DataSet dataSet9 = new DataSet("creator",pkService.queryPkCreator(pkId));
-        DataSet dataSet10 = new DataSet("date",TimeUtils.dateStr(currentDate));
 
-        dataSets.add(dataSet1);
+
+
         dataSets.add(dataSet2);
-        dataSets.add(dataSet3);
+
         dataSets.add(dataSet4);
-        dataSets.add(dataSet5);
-        dataSets.add(dataSet6);
-        dataSets.add(dataSet7);
+
         dataSets.add(dataSet8);
         dataSets.add(dataSet9);
-        dataSets.add(dataSet10);
+
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
     }
 
     @RequestMapping(path="/queryMoreApprovedPost",method = RequestMethod.GET)
-    public AppResponse 查询审核信息More(@RequestParam("pkId") String pkId,@RequestParam("approverUserId") String approverUserId,@RequestParam("currentApprovedPage") int page) throws AppException, IOException {
-        Date currentDate = new Date();
+    public AppResponse 查询审核信息More(@RequestParam("pkId") String pkId,@RequestParam("currentApprovedPage") int page,@RequestParam("userId") String userId) throws AppException, IOException {
 
-        List<Post> posts = dynamicService.查询已审核指定范围的Post(pkId,approverUserId,page,currentDate);
+
+        List<Post> posts = dynamicService.查询已审核指定范围的Post(pkId,page,userId);
         if(CollectionUtils.isEmpty(posts)){
             return AppResponse.buildResponse(PageAction.前端数据更新("approvedEnd",true));
         }

@@ -5,6 +5,7 @@ package com.union.app.api.pk.zone;
         import com.union.app.domain.pk.UserCode;
         import com.union.app.domain.pk.apply.KeyNameValue;
         import com.union.app.domain.pk.integral.UserIntegral;
+        import com.union.app.domain.pk.审核.ApproveMessage;
         import com.union.app.domain.pk.审核.ApproveUser;
         import com.union.app.domain.user.User;
         import com.union.app.domain.工具.RandomUtil;
@@ -69,31 +70,34 @@ public class 查询单个PK {
     @RequestMapping(path="/queryPk",method = RequestMethod.GET)
     public AppResponse 查询单个PK(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId,@RequestParam("fromUser") String fromUser) throws AppException, IOException {
 
+        List<DataSet> dataSets = new ArrayList<>();
 
-        Date currentDate = new Date();
         String imgBack = RandomUtil.getRandomBackImg();
         //查询PK详情
-        PkDetail pkDetail = pkService.querySinglePk(pkId,currentDate);
-        List<Post> posts = pkService.queryPkPost(userId,pkId,1,currentDate);
+        PkDetail pkDetail = pkService.querySinglePk(pkId);
+        List<Post> posts = pkService.queryPkPost(userId,pkId,1);
         boolean isUserPublish = !ObjectUtils.isEmpty(postService.查询用户帖(pkId,userId));
         User creator = pkService.queryPkCreator(pkId);
 
 
-//        List<UserIntegral> userIntegrals = dynamicService.查询今日审核用户列表(pkId,currentDate);
-//        UserIntegral creatorIntegral = dynamicService.查询榜主审核信息(pkId);
-//        userIntegrals.add(0,creatorIntegral);
+        if(userService.isUserVip(userId) || userService.isUserVip(fromUser))
+        {
+            ApproveMessage pkMessage = approveService.查询PK公告消息(pkId, new Date());
+            dataSets.add(new DataSet("pkMessage", pkMessage));
+        }
+        else
+        {
+            dataSets.add(new DataSet("hidden", true));
+        }
 
-        List<ApproveUser> userIntegrals = approveService.查询当前户审核用户列表(pkId,currentDate);
 
-
-        List<DataSet> dataSets = new ArrayList<>();
         dataSets.add(new DataSet("isUserPublish",isUserPublish));
         dataSets.add(new DataSet("pkDetail",pkDetail));
-        dataSets.add(new DataSet("date",TimeUtils.dateStr(currentDate)));
         dataSets.add(new DataSet("creator",creator));
-        dataSets.add(new DataSet("userIntegrals",userIntegrals));
+
+
         dataSets.add(new DataSet("imgBack",imgBack));
-//        dataSets.add(new DataSet("creatorIntegral",creatorIntegral));
+        dataSets.add(new DataSet("date",TimeUtils.currentDate()));
 
 
 
@@ -105,9 +109,9 @@ public class 查询单个PK {
 
     @RequestMapping(path="/nextPage",method = RequestMethod.GET)
     public AppResponse 查询单个PK(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId,@RequestParam("page") int page) throws AppException, IOException {
-        Date currentDate = new Date();
+
         //页数不断递增，但是只有一百页。
-        List<Post> posts = pkService.queryPkPost(userId,pkId,page+1,currentDate);
+        List<Post> posts = pkService.queryPkPost(userId,pkId,page+1);
         if(CollectionUtils.isEmpty(posts))
         {
             return AppResponse.buildResponse(PageAction.前端数据更新("nomore",Boolean.TRUE));

@@ -5,6 +5,7 @@ import com.union.app.domain.pk.审核.ApproveMessage;
 import com.union.app.plateform.data.resultcode.*;
 import com.union.app.service.pk.complain.ComplainService;
 import com.union.app.service.pk.service.ApproveService;
+import com.union.app.service.pk.service.PkService;
 import com.union.app.service.user.UserService;
 import com.union.app.util.time.TimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,18 +38,21 @@ public class 查询审核员消息 {
     @Autowired
     UserService userService;
 
+    @Autowired
+    PkService pkService;
 
 
     @RequestMapping(path="/queryApproveMessage",method = RequestMethod.GET)
-    public AppResponse 查询审核员消息(@RequestParam("pkId") String pkId,@RequestParam("approverUserId") String approverUserId,@RequestParam("userId") String userId) throws AppException, IOException {
+    public AppResponse 查询审核员消息(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId) throws AppException, IOException {
 
         Date currentDate = new Date();
 
-        ApproveMessage approveMessage = approveService.获取审核人员消息(pkId,approverUserId,currentDate);
+        ApproveMessage approveMessage = approveService.获取审核人员消息(pkId,currentDate);
 
         List<DataSet> dataSets = new ArrayList<>();
         dataSets.add(new DataSet("message",approveMessage));
         dataSets.add(new DataSet("user",userService.queryUser(userId)));
+        dataSets.add(new DataSet("creator",pkService.queryPkCreator(pkId)));
         dataSets.add(new DataSet("pkId",pkId));
         dataSets.add(new DataSet("date",TimeUtils.dateStr(currentDate)));
 

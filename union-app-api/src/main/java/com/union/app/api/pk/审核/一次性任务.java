@@ -14,6 +14,7 @@ import com.union.app.service.pk.service.PkService;
 import com.union.app.service.pk.service.PostService;
 import com.union.app.service.pk.service.UserInfoService;
 import com.union.app.service.user.UserService;
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -61,56 +62,31 @@ public class 一次性任务 {
 
 
 
+        PostEntity postEntity = postService.查询用户帖(pkId,userId);
 
+        if(userService.isUserVip(userId)) {
 
+            if (pkService.isPkCreator(pkId, userId) && StringUtils.isBlank(dynamicService.查询PK群组二维码MediaId(pkId, current))) {
+                return AppResponse.buildResponse(PageAction.执行处理器("groupCode", ""));
 
+            }
+            if (pkService.isPkCreator(pkId, userId)) {
+                ApproveMessage approveMessage = approveService.获取审核人员消息(pkId, userId, current);
+                if (org.springframework.util.ObjectUtils.isEmpty(approveMessage)) {
+                    return AppResponse.buildResponse(PageAction.执行处理器("editApproverMessage", ""));
+                }
+            }
+            if ((postEntity.getStatu() == PostStatu.审核中) && StringUtils.isBlank(dynamicService.查询审核用户(pkId, postEntity.getPostId()))) {
 
-        if(pkService.isPkCreator(pkId,userId) && StringUtils.isBlank(dynamicService.查询PK群组二维码MediaId(pkId,current)))
-        {
-            return AppResponse.buildResponse(PageAction.执行处理器("groupCode",""));
+                return AppResponse.buildResponse(PageAction.执行处理器("select", postEntity.getPostId()));
+
+            }
 
         }
 
-        PostEntity postEntity = postService.查询用户帖(pkId,userId);
         if(org.springframework.util.ObjectUtils.isEmpty(postEntity)){
             return AppResponse.buildResponse(PageAction.执行处理器("publish",""));
         }
-
-        if(  (postEntity.getStatu() == PostStatu.审核中)  && StringUtils.isBlank(dynamicService.查询审核用户(pkId,postEntity.getPostId(),current)))
-        {
-
-            return AppResponse.buildResponse(PageAction.执行处理器("select",postEntity.getPostId()));
-
-        }
-        if(dynamicService.用户是否为今日审核员(pkId,userId,current))
-        {
-            ApproveMessage approveMessage = approveService.获取审核人员消息(pkId,userId,current);
-            if(org.springframework.util.ObjectUtils.isEmpty(approveMessage))
-            {
-                return AppResponse.buildResponse(PageAction.执行处理器("editApproverMessage",""));
-            }
-        }
-
-        int leftTime = dynamicService.计算今日剩余时间(pkId);
-
-        if(leftTime < 3600)
-        {
-            //23:00之后啥都不提示
-            return AppResponse.buildResponse(PageAction.执行处理器("robPrivilege",""));
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

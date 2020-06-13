@@ -15,9 +15,12 @@ import com.union.app.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(path="/pk")
@@ -43,24 +46,17 @@ public class 创建单个PK {
     PostService postService;
 
     @RequestMapping(path="/createPk",method = RequestMethod.GET)
-    public AppResponse 创建单个PK() throws AppException, IOException {
-        redisStringUtil.test();
+    @Transactional(rollbackOn = Exception.class)
+    public AppResponse 创建单个PK(@RequestParam("userId") String userId,@RequestParam("topic") String topic,@RequestParam("watchWord") String watchWord,@RequestParam("invite") boolean invite) throws AppException, IOException {
 
 
-        PkDetail pkDetail = new PkDetail();
+        String pkId = pkService.创建PK(userId,topic,watchWord,invite);
 
-        pkDetail.setPkId("PK01");
-        pkDetail.setTopic("过了年");
-        pkDetail.setWatchWord("坎坷的回乡之旅!");
-        pkDetail.setUser(userService.queryUser("ozm2e4r6IgyVMlA6goFt7AbB3wVw"));
+        PkDetail pkDetail = pkService.querySinglePk(pkId);
 
 
-        String jsonStr = JSON.toJSONString(userService.queryUser("ozm2e4r6IgyVMlA6goFt7AbB3wVw"));
-        System.out.println("JSON:" + jsonStr);
 
-        ossStorage.setOssWidthMapCache(SceneType.存储PK缓存,"PK-Cache",pkDetail.getPkId(),pkDetail);
-
-        return AppResponse.buildResponse(PageAction.信息反馈框("",""));
+        return AppResponse.buildResponse(PageAction.执行处理器("success",pkDetail));
     }
 
 
