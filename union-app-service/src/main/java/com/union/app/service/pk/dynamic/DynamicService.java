@@ -637,13 +637,22 @@ public class DynamicService {
     }
 
 
-    public String 查询PK公告消息Id(String pkId, Date date) {
+    public String 查询PK公告消息Id(String pkId) {
 
-        return redisMapService.getStringValue(CacheKeyName.审核消息ID(date),pkId);
+        return redisMapService.getStringValue(CacheKeyName.审核消息ID(),pkId);
 
     }
-    public void 设置PK公告消息Id(String pkId, String messageId,Date date) {
-        redisMapService.setStringValue(CacheKeyName.审核消息ID(date),pkId,messageId);
+    public void 设置PK公告消息Id(String pkId, String messageId) {
+        redisMapService.setStringValue(CacheKeyName.审核消息ID(),pkId,messageId);
+    }
+
+    public String 获取需要更新公告的PKId() {
+        return redisTemplate.opsForSet().pop(CacheKeyName.更新公告的PKId列表());
+
+    }
+
+    public void 添加需要更新MediaId的PKId(String pkId) {
+        redisTemplate.opsForSet().add(CacheKeyName.更新公告的PKId列表(),pkId);
     }
 }
 

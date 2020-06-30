@@ -32,10 +32,12 @@ public class CacheKeyName {
     public static String 打榜Follow(String pkId){return "Follow-"+ pkId ;}
     public static String 打榜Share(String pkId){return "Share-"+ pkId  ;}
     public static String 群组二维码(Date date){return "Group-Code-MediaId-" + TimeUtils.dateStr(date) ;}
-    public static String 审核消息ID(Date date){return "Approve-MessageId-" + TimeUtils.dateStr(date) ;}
+    public static String 审核消息ID(){return "Approve-MessageId-MediaId" ;}
 
     public static String 群组URL(Date date){return "Group-Code-Url-" + TimeUtils.dateStr(date) ;}
 
 
     public static String 拉取资源图片() { return "USER-MEDIA-CURRENT" ;}
+
+    public static String 更新公告的PKId列表() {return "PK-NEED-UPDATE" ; }
 }

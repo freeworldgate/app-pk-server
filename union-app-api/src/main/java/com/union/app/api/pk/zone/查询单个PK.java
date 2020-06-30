@@ -82,8 +82,17 @@ public class 查询单个PK {
 
         if(userService.isUserVip(userId) || userService.isUserVip(fromUser))
         {
-            ApproveMessage pkMessage = approveService.查询PK公告消息(pkId, new Date());
-            dataSets.add(new DataSet("pkMessage", pkMessage));
+            ApproveMessage pkMessage = approveService.查询PK公告消息(pkId);
+
+            if(ObjectUtils.isEmpty(pkMessage))
+            {
+                dataSets.add(new DataSet("hidden", true));
+            }
+            else
+            {
+                dataSets.add(new DataSet("pkMessage", pkMessage));
+            }
+
         }
         else
         {

@@ -33,6 +33,9 @@ public class PkDetail implements Serializable{
 
     private KeyNameValue totalApprover;
 
+    private KeyNameValue pkStatu;
+
+
     private ApproveMessage approveMessage;
 
     private PkType pkType;

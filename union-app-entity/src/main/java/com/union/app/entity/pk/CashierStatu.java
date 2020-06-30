@@ -1,18 +1,23 @@
 package com.union.app.entity.pk;
 
-public enum PkStatu {
+public enum CashierStatu {
+
+    停用(0,"停用状态"),
+
+    启用(1,"启用状态")
 
 
-    审核中(0,"审核中"),
 
-    已审核(1,"审核通过"),
-;
 
+
+
+
+    ;
 
     private int statu;
     private String statuStr;
 
-    PkStatu(int statu, String statuStr) {
+    CashierStatu(int statu, String statuStr) {
         this.statu = statu;
         this.statuStr = statuStr;
     }

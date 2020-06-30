@@ -18,6 +18,7 @@ import com.union.app.plateform.data.resultcode.Level;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.user.UserService;
+import com.union.app.util.time.ImageUtils;
 import com.union.app.util.time.TimeUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
@@ -48,7 +49,7 @@ public class ApproveService {
     @Autowired
     PostService postService;
 
-    public ApproveUser 查询帖子的审核用户(String pkId, String postId,Date date) throws UnsupportedEncodingException {
+    public ApproveUser 查询帖子的审核用户(String pkId, String postId,Date date) throws IOException {
 
         String approveUserId = dynamicService.查询审核用户(pkId,postId);
 
@@ -60,7 +61,7 @@ public class ApproveService {
         {
             ApproveUser approveUser = new ApproveUser();
             User user = userService.queryUser(approveUserId);
-            ApproveMessage approveMessage = this.获取审核人员消息(pkId,approveUserId,date);
+            ApproveMessage approveMessage = this.获取审核人员消息(pkId);
             ApproveDynamic approveDynamic = this.获取审核人员动态信息(pkId,approveUserId,date);
             approveUser.setUser(user);
             approveUser.setApproveDynamic(approveDynamic);
@@ -232,10 +233,10 @@ public class ApproveService {
         return image;
     }
 
-    public ApproveUser 查询审核用户ById(String pkId,String approverUserId,Date date) throws UnsupportedEncodingException {
+    public ApproveUser 查询审核用户ById(String pkId,String approverUserId,Date date) throws IOException {
         ApproveUser approveUser = new ApproveUser();
         User user = userService.queryUser(approverUserId);
-        ApproveMessage approveMessage = this.获取审核人员消息(pkId,approverUserId,date);
+        ApproveMessage approveMessage = this.获取审核人员消息(pkId);
         ApproveDynamic approveDynamic = this.获取审核人员动态信息(pkId,approverUserId,date);
 
         approveUser.setUser(user);
@@ -245,10 +246,10 @@ public class ApproveService {
     }
 
 
-    public ApproveUser 查询审核用户WidthCommentById(String pkId,String postId,String approverUserId,Date date) throws UnsupportedEncodingException {
+    public ApproveUser 查询审核用户WidthCommentById(String pkId,String postId,String approverUserId,Date date) throws IOException {
         ApproveUser approveUser = new ApproveUser();
         User user = userService.queryUser(approverUserId);
-        ApproveMessage approveMessage = this.获取审核人员消息(pkId,approverUserId,date);
+        ApproveMessage approveMessage = this.获取审核人员消息(pkId);
         ApproveDynamic approveDynamic = this.获取审核人员动态信息(pkId,approverUserId,date);
         ApproveComment approveComment = this.获取留言信息(pkId,postId);
         approveUser.setUser(user);
@@ -271,12 +272,18 @@ public class ApproveService {
      * 查询审核人消息
      * @return
      */
-    public ApproveMessage 获取审核人员消息(String pkId, Date date) throws UnsupportedEncodingException {
+    public ApproveMessage 获取审核人员消息(String pkId) throws IOException {
 
 
 
-        ApproveMessageEntity approveMessageEntity = 获取审核人员消息Entity(pkId,date);
+        ApproveMessageEntity approveMessageEntity = 获取审核人员消息Entity(pkId);
         if(!org.springframework.util.ObjectUtils.isEmpty(approveMessageEntity)) {
+            if(TimeUtils.图片是否在微信中过期(approveMessageEntity.getTime()))
+            {
+                dynamicService.添加需要更新MediaId的PKId(pkId);
+            }
+
+
             return translate(approveMessageEntity);
         }
         else
@@ -285,54 +292,43 @@ public class ApproveService {
         }
     }
 
-    /**
-     * 查询审核人消息
-     * @param approveUserId
-     * @return
-     */
-    public ApproveMessage 获取审核人员消息(String pkId, String approveUserId, Date date) throws UnsupportedEncodingException {
-
-
-//        dynamicService.查询审核用户的消息(pkId,approveUserId,date);
-
-        ApproveMessageEntity approveMessageEntity = 获取审核人员消息Entity(pkId,approveUserId,date);
-        if(!org.springframework.util.ObjectUtils.isEmpty(approveMessageEntity)) {
-            return translate(approveMessageEntity);
-        }
-        else
-        {
-            return null;
-        }
-    }
+//    /**
+//     * 查询审核人消息
+//     * @param approveUserId
+//     * @return
+//     */
+//    public ApproveMessage 获取审核人员消息(String pkId, String approveUserId, Date date) throws UnsupportedEncodingException {
+//
+//
+////        dynamicService.查询审核用户的消息(pkId,approveUserId,date);
+//
+//        ApproveMessageEntity approveMessageEntity = 获取审核人员消息Entity(pkId);
+//        if(!org.springframework.util.ObjectUtils.isEmpty(approveMessageEntity)) {
+//            return translate(approveMessageEntity);
+//        }
+//        else
+//        {
+//            return null;
+//        }
+//    }
     public ApproveMessage translate(ApproveMessageEntity approveMessageEntity) throws UnsupportedEncodingException {
         ApproveMessage approveMessage = new ApproveMessage();
         approveMessage.setUser(userService.queryUser(approveMessageEntity.getApproverUserId()));
         approveMessage.setText(new String(approveMessageEntity.getText(), "UTF-8"));
-        approveMessage.setImgeUrl(approveMessageEntity.getImgUrl());
+        approveMessage.setImgeUrl(ImageUtils.添加水印(approveMessageEntity.getImgUrl()));
         approveMessage.setTime(TimeUtils.convertTime(approveMessageEntity.getTime()));
         approveMessage.setMediaId(approveMessageEntity.getMediaId());
-        approveMessage.setDate(approveMessageEntity.getDate());
+//        approveMessage.setDate(approveMessageEntity.getDate());
         return approveMessage;
 
     }
 
-    public ApproveMessageEntity 获取审核人员消息Entity(String pkId, String approveUserId,Date date) throws UnsupportedEncodingException {
+    public ApproveMessageEntity 获取审核人员消息Entity(String pkId) throws UnsupportedEncodingException {
 
         EntityFilterChain filter = EntityFilterChain.newFilterChain(ApproveMessageEntity.class)
-                .compareFilter("pkId",CompareTag.Equal,pkId)
-                .andFilter()
-                .compareFilter("approverUserId",CompareTag.Equal,approveUserId)
-                .andFilter()
-                .compareFilter("date",CompareTag.Equal,TimeUtils.dateStr(date));
-        ApproveMessageEntity approveMessageEntity = daoService.querySingleEntity(ApproveMessageEntity.class,filter);
-        return approveMessageEntity;
-    }
-    public ApproveMessageEntity 获取审核人员消息Entity(String pkId, Date date) throws UnsupportedEncodingException {
-
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(ApproveMessageEntity.class)
-                .compareFilter("pkId",CompareTag.Equal,pkId)
-                .andFilter()
-                .compareFilter("date",CompareTag.Equal,TimeUtils.dateStr(date));
+                .compareFilter("pkId",CompareTag.Equal,pkId);
+//                .andFilter()
+//                .compareFilter("date",CompareTag.Equal,TimeUtils.dateStr(date));
         ApproveMessageEntity approveMessageEntity = daoService.querySingleEntity(ApproveMessageEntity.class,filter);
         return approveMessageEntity;
     }
@@ -347,7 +343,7 @@ public class ApproveService {
         }
 
 
-        ApproveMessageEntity approveMessageEntity = this.获取审核人员消息Entity(pkId,userId,currentDate);
+        ApproveMessageEntity approveMessageEntity = this.获取审核人员消息Entity(pkId);
 
         if(org.springframework.util.ObjectUtils.isEmpty(approveMessageEntity)){
 
@@ -359,7 +355,7 @@ public class ApproveService {
             approveMessageEntity.setPkId(pkId);
             approveMessageEntity.setMsgId(messageId);
             approveMessageEntity.setApproverUserId(userId);
-            approveMessageEntity.setDate(TimeUtils.dateStr(currentDate));
+//            approveMessageEntity.setDate(TimeUtils.dateStr(currentDate));
             approveMessageEntity.setTime(System.currentTimeMillis());
             approveMessageEntity.setImgUrl(imgUrl);
             approveMessageEntity.setText(text.getBytes("UTF-8"));
@@ -370,15 +366,16 @@ public class ApproveService {
         }
         else
         {
-            String mediaId = WeChatUtil.uploadImg2Wx(imgUrl);
 
+            String mediaId = WeChatUtil.uploadImg2Wx(imgUrl);
+            approveMessageEntity.setMsgId(StringUtils.isBlank(approveMessageEntity.getMsgId())?UUID.randomUUID().toString():approveMessageEntity.getMsgId());
             approveMessageEntity.setImgUrl(imgUrl);
             approveMessageEntity.setText(text.getBytes("UTF-8"));
             approveMessageEntity.setMediaId(mediaId);
             daoService.updateEntity(approveMessageEntity);
         }
 
-        dynamicService.设置PK公告消息Id(pkId,approveMessageEntity.getMsgId(),new Date());
+//        dynamicService.设置PK公告消息Id(pkId,approveMessageEntity.getMsgId());
 
 
 
@@ -388,23 +385,6 @@ public class ApproveService {
 
     }
 
-    public void 设置审核员语言留言(String pkId, String approveUserId, int speckTime, String voiceUrl, Date currentDate) throws UnsupportedEncodingException, AppException {
-        ApproveMessageEntity approveMessageEntity = 获取审核人员消息Entity(pkId,approveUserId,currentDate);
-        if(!org.springframework.util.ObjectUtils.isEmpty(approveMessageEntity)) {
-            approveMessageEntity.setVoiceUrl(voiceUrl);
-            approveMessageEntity.setSpeckTime(speckTime);
-            daoService.updateEntity(approveMessageEntity);
-        }
-        else
-        {
-            throw AppException.buildException(PageAction.消息级别提示框(Level.警告消息,"未初始化公告栏"));
-        }
-
-
-
-
-
-    }
 
     public String 计算预审核员排名边界(int sortNum) {
 //            根据打榜总人数来确定前100%的边界值
@@ -456,9 +436,9 @@ public class ApproveService {
 
         return new ArrayList<>();
     }
-    public ApproveMessage 查询PK公告消息(String pkId, Date date) throws UnsupportedEncodingException {
+    public ApproveMessage 查询PK公告消息(String pkId) throws IOException {
 
-        ApproveMessage approveMessage = this.获取审核人员消息(pkId,date);
+        ApproveMessage approveMessage = this.获取审核人员消息(pkId);
         return approveMessage;
 
     }

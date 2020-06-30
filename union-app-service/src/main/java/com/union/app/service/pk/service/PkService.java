@@ -70,6 +70,8 @@ public class PkService {
     @Autowired
     PostCacheService postCacheService;
 
+    @Autowired
+    ApproveService approveService;
 
     public static Map<String,List<FeeTask>> taskCache = new ConcurrentHashMap<>();
 
@@ -95,6 +97,7 @@ public class PkService {
         pkDetail.setTotalSort(new KeyNameValue(2,dynamicService.查询今日打榜用户数量(pkId)));
         pkDetail.setTime(TimeUtils.translateTime(pk.getCreateTime()));
         pkDetail.setInvite(pk.isInvite()?"仅邀请用户":"公开");
+        pkDetail.setPkStatu(ObjectUtils.isEmpty(pk.getAlbumStatu())?new KeyNameValue(PkStatu.审核中.getStatu(),PkStatu.审核中.getStatuStr()):new KeyNameValue(pk.getAlbumStatu().getStatu(),pk.getAlbumStatu().getStatuStr()));
         return pkDetail;
     }
 
@@ -199,7 +202,9 @@ public class PkService {
         return !StringUtils.isBlank(dynamicService.查询PK群组二维码MediaId(pkId,new Date()));
     }
 
-    public boolean 是否更新今日公告(String pkId) {
-        return !StringUtils.isBlank(dynamicService.查询PK公告消息Id(pkId,new Date()));
+    public boolean 是否更新今日公告(String pkId) throws UnsupportedEncodingException {
+//        return !StringUtils.isBlank(dynamicService.查询PK公告消息Id(pkId));
+        return !ObjectUtils.isEmpty(approveService.获取审核人员消息Entity(pkId));
+
     }
 }

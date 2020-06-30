@@ -102,7 +102,7 @@ public class 查询邀请 {
     public AppResponse 查询单个PK(@RequestParam("userId") String userId,@RequestParam("page") int page) throws AppException, IOException {
 
 //        List<PkDetail> pkDetails = new ArrayList<>();
-        List<PkDetail> pks = appService.查询用户邀请(userId,page);
+        List<PkDetail> pks = appService.查询用户邀请(userId,page+1);
         appService.vip包装(pks,userId,"");
 //        if(!userService.isUserVip(userId) )
 //        {

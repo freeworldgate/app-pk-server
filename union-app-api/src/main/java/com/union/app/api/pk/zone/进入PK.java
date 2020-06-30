@@ -2,6 +2,7 @@ package com.union.app.api.pk.zone;
 
 import com.union.app.common.OSS存储.OssStorage;
 import com.union.app.domain.pk.PkDetail;
+import com.union.app.domain.pk.TipConstant;
 import com.union.app.entity.pk.InvitePkEntity;
 import com.union.app.entity.pk.PkEntity;
 import com.union.app.entity.pk.PkStatu;
@@ -90,10 +91,22 @@ public class 进入PK {
         {
 
 
-            if(ObjectUtils.equals(pkEntity.getAlbumStatu(),PkStatu.审核中))
+            if(!ObjectUtils.equals(pkEntity.getAlbumStatu(),PkStatu.已审核))
             {
                 if(StringUtils.equals(userId,pkEntity.getUserId())){
-                    return AppResponse.buildResponse(PageAction.页面跳转("/pages/pk/pk/pk?pkId=" + pkId,true));
+
+                    if(!pkService.是否更新今日审核群(pkId))
+                    {
+                        return AppResponse.buildResponse(PageAction.执行处理器("group",""));
+                    }
+                    if(!pkService.是否更新今日公告(pkId))
+                    {
+                        return AppResponse.buildResponse(PageAction.执行处理器("message",""));
+                    }
+
+
+                    return AppResponse.buildResponse(PageAction.执行处理器("approve",""));
+//                    return AppResponse.buildResponse(PageAction.页面跳转("/pages/pk/pk/pk?pkId=" + pkId,true));
 //
                 }
                 else {
@@ -104,11 +117,16 @@ public class 进入PK {
             else
             {
                 if(!StringUtils.equals(userId,pkEntity.getUserId())){
-                    InvitePkEntity invitePkEntity = appService.queryInvitePk(pkId,userId);
-                    if(org.springframework.util.ObjectUtils.isEmpty(invitePkEntity))
+                    if(pkEntity.isInvite())
                     {
-                        return AppResponse.buildResponse(PageAction.信息反馈框("仅邀请用户可见","您不是邀请用户"));
+                        InvitePkEntity invitePkEntity = appService.queryInvitePk(pkId,userId);
+                        if(org.springframework.util.ObjectUtils.isEmpty(invitePkEntity))
+                        {
+                            return AppResponse.buildResponse(PageAction.信息反馈框("仅邀请用户可见","您不是邀请用户"));
+                        }
                     }
+
+
                     if(!pkService.是否更新今日审核群(pkId))
                     {
                         return AppResponse.buildResponse(PageAction.信息反馈框("提示","榜主未更新今日审核群"));
@@ -126,7 +144,10 @@ public class 进入PK {
                     {
                         return AppResponse.buildResponse(PageAction.页面跳转("/pages/pk/message/message?pkId=" + pkId,true));
                     }
-
+                    if(!pkService.是否更新今日公告(pkId))
+                    {
+                        return AppResponse.buildResponse(PageAction.页面跳转("/pages/pk/messageInfo/messageInfo?pkId=" + pkId,true));
+                    }
 
 
                 }

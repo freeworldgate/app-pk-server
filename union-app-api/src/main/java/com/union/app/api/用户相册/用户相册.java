@@ -69,7 +69,7 @@ public class 用户相册 {
     public AppResponse 查询单个PK(@RequestParam("userId") String userId,@RequestParam("page") int page) throws AppException, IOException {
 
 //        List<PkDetail> pkDetails = new ArrayList<>();
-        List<PkDetail> pks = appService.查询用户相册(userId,page);
+        List<PkDetail> pks = appService.查询用户相册(userId,page+1);
         appService.vip包装(pks,userId,"");
 //        if(!userService.isUserVip(userId) )
 //        {

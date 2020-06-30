@@ -79,4 +79,9 @@ public class TimeUtils {
     public static String convertTime(String createTime) {
         return "刚刚";
     }
+
+    public static boolean 图片是否在微信中过期(long time) {
+
+        return (System.currentTimeMillis() - time) > 2 * 24 * 3600 * 1000; //两天过期
+    }
 }

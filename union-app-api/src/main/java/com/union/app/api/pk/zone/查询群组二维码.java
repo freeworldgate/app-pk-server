@@ -3,11 +3,13 @@ package com.union.app.api.pk.zone;
 import com.union.app.common.OSS存储.CacheStorage;
 import com.union.app.common.OSS存储.OssStorage;
 import com.union.app.domain.pk.Post;
+import com.union.app.entity.pk.InvitePkEntity;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.service.pk.click.ClickService;
 import com.union.app.service.pk.dynamic.DynamicService;
+import com.union.app.service.pk.service.AppService;
 import com.union.app.service.pk.service.OrderService;
 import com.union.app.service.pk.service.PkService;
 import com.union.app.service.pk.service.PostService;
@@ -52,34 +54,34 @@ public class 查询群组二维码 {
     @Autowired
     DynamicService dynamicService;
 
+
+    @Autowired
+    AppService appService;
+
     @RequestMapping(path="/viewGroupCode",method = RequestMethod.GET)
     public AppResponse 查询用户的POST(@RequestParam("pkId") String pkId, @RequestParam("userId") String userId) throws AppException, IOException {
 
 
        if(userService.isUserVip(userId)){
-           if( !pkService.isPkCreator(pkId,userId) && org.apache.commons.lang.StringUtils.isBlank(dynamicService.查询PK群组二维码MediaId(pkId,new Date())))
-           {
-               return AppResponse.buildResponse(PageAction.信息反馈框("提示","今日群组未更新"));
-
-           }
-           else
-           {
-
-               return AppResponse.buildResponse(PageAction.页面跳转("/pages/pk/message/message?pkId=" + pkId,true));
 
 
-           }
+           InvitePkEntity invitePkEntity = appService.queryInvitePk(pkId,userId);
+            if(!pkService.isPkCreator(pkId,userId) && ObjectUtils.isEmpty(invitePkEntity))
+            {
+                return AppResponse.buildResponse(PageAction.信息反馈框("非邀请用户","仅邀请用户可见"));
+            }
 
 
 
 
 
+           return AppResponse.buildResponse(PageAction.页面跳转("/pages/pk/message/message?pkId=" + pkId,true));
 
        }
        else
        {
 
-           return AppResponse.buildResponse(PageAction.前端数据更新("haha",""));
+           return AppResponse.buildResponse(PageAction.页面跳转("/pages/pk/message/message?pkId=" + pkId,true));
        }
 
 

@@ -28,8 +28,6 @@ public class ApproveMessageEntity {
 
     private String approverUserId;
 
-    private String date;
-
     private byte[] text;
 
     private String imgUrl;
@@ -38,9 +36,6 @@ public class ApproveMessageEntity {
 
     private long time;
 
-    private int speckTime;
-
-    private String voiceUrl;
 
 
 

@@ -2,6 +2,8 @@ package com.union.app.api.pk.消息;
 
 import com.union.app.domain.pk.complain.Complain;
 import com.union.app.domain.pk.审核.ApproveMessage;
+import com.union.app.entity.pk.PkEntity;
+import com.union.app.entity.pk.PkStatu;
 import com.union.app.plateform.data.resultcode.*;
 import com.union.app.service.pk.complain.ComplainService;
 import com.union.app.service.pk.service.ApproveService;
@@ -47,7 +49,7 @@ public class 查询审核员消息 {
 
         Date currentDate = new Date();
 
-        ApproveMessage approveMessage = approveService.获取审核人员消息(pkId,currentDate);
+        ApproveMessage approveMessage = approveService.获取审核人员消息(pkId);
 
         List<DataSet> dataSets = new ArrayList<>();
         dataSets.add(new DataSet("message",approveMessage));
@@ -59,6 +61,23 @@ public class 查询审核员消息 {
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
     }
 
+    @RequestMapping(path="/canEditApproveMessage",method = RequestMethod.GET)
+    public AppResponse 查询审核员消息(@RequestParam("pkId") String pkId) throws AppException, IOException {
+
+        PkEntity pk = pkService.querySinglePkEntity(pkId);
+        if(pk.getAlbumStatu() == PkStatu.已审核)
+        {
+            return AppResponse.buildResponse(PageAction.信息反馈框("提示","相册已发布,不能审核"));
+        }
+        else
+        {
+            return AppResponse.buildResponse(PageAction.执行处理器("success",""));
+        }
+
+
+
+
+    }
 
 
 

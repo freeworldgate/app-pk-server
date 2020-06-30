@@ -71,7 +71,7 @@ public class 一次性任务 {
 
             }
             if (pkService.isPkCreator(pkId, userId)) {
-                ApproveMessage approveMessage = approveService.获取审核人员消息(pkId, userId, current);
+                ApproveMessage approveMessage = approveService.获取审核人员消息(pkId);
                 if (org.springframework.util.ObjectUtils.isEmpty(approveMessage)) {
                     return AppResponse.buildResponse(PageAction.执行处理器("editApproverMessage", ""));
                 }

@@ -13,6 +13,8 @@ import com.union.app.domain.pk.PkDynamic.FactualInfo;
 import com.union.app.domain.pk.PkDynamic.FeeTask;
 import com.union.app.domain.pk.Post;
 import com.union.app.domain.pk.apply.KeyNameValue;
+import com.union.app.domain.pk.审核.AppMessage;
+import com.union.app.domain.pk.审核.PkComment;
 import com.union.app.domain.user.User;
 import com.union.app.entity.pk.*;
 import com.union.app.entity.pk.task.PkTaskEntity;
@@ -84,28 +86,28 @@ public class AppService {
     @Autowired
     RedisSortSetService redisSortSetService;
 
-    public List<PkDetail> 查询预设相册(int page) throws UnsupportedEncodingException {
+    public List<PkDetail> 查询预设相册(int page) throws IOException {
         Date current = new Date();
         List<PkDetail> pkDetails = new ArrayList<>();
         List<PkEntity> pkEntities = queryPrePks(page);
         for(PkEntity pkPreEntity:pkEntities)
         {
             PkDetail pkDetail = this.translate(pkPreEntity);
-            pkDetail.setApproveMessage(approveService.查询PK公告消息(pkPreEntity.getPkId(),current));
+            pkDetail.setApproveMessage(approveService.查询PK公告消息(pkPreEntity.getPkId()));
             pkDetails.add(pkDetail);
         }
         return pkDetails;
     }
 
 
-    public List<PkDetail> 查询平台相册(int page) throws UnsupportedEncodingException {
+    public List<PkDetail> 查询平台相册(int page) throws IOException {
         Date current = new Date();
         List<PkDetail> pkDetails = new ArrayList<>();
         List<PkEntity> pkEntities = queryPlateFormPks(page);
         for(PkEntity pkEntity:pkEntities)
         {
             PkDetail pkDetail = this.translate(pkEntity);
-            pkDetail.setApproveMessage(approveService.查询PK公告消息(pkEntity.getPkId(),current));
+            pkDetail.setApproveMessage(approveService.查询PK公告消息(pkEntity.getPkId()));
             pkDetails.add(pkDetail);
         }
 
@@ -161,33 +163,34 @@ public class AppService {
             pkDetails.add(pkDetail);
         }
         return pkDetails;
+
     }
-    public void vip包装(List<PkDetail> pks,String userId, String fromUser) throws UnsupportedEncodingException {
+    public void vip包装(List<PkDetail> pks,String userId, String fromUser) throws IOException {
         Date current = new Date();
         if(userService.isUserVip(userId) || (!userService.isUserExist(userId) && userService.isUserVip(fromUser)))
         {
             for(PkDetail pkDetail:pks)
             {
 
-                    pkDetail.setApproveMessage(approveService.查询PK公告消息(pkDetail.getPkId(),current));
-                    pkDetail.setApproved(redisSortSetService.size(CacheKeyName.榜主已审核列表(pkDetail.getPkId())) + "已审核");
-                    pkDetail.setApproving(redisSortSetService.size(CacheKeyName.榜主审核中列表(pkDetail.getPkId())) + "审核中");
-                    GroupInfo groupInfo = new GroupInfo();
-                    groupInfo.setMode(1);
-                    boolean hasGroup = !StringUtils.isBlank(dynamicService.查询PK群组二维码MediaId(pkDetail.getPkId(),current ));
-                    groupInfo.setName("审核群组");
-                    if(hasGroup)
-                    {
-                        groupInfo.setHasGroup(true);
-                        groupInfo.setIconUrl(IconUrl.有效微信标识.getUrl());
-                    }
-                    else
-                    {
-                        groupInfo.setHasGroup(true);
-                        groupInfo.setIconUrl(IconUrl.无效微信标识.getUrl());
-                    }
+                pkDetail.setApproveMessage(approveService.查询PK公告消息(pkDetail.getPkId()));
+                pkDetail.setApproved(redisSortSetService.size(CacheKeyName.榜主已审核列表(pkDetail.getPkId())) + "已审核");
+                pkDetail.setApproving(redisSortSetService.size(CacheKeyName.榜主审核中列表(pkDetail.getPkId())) + "审核中");
+                GroupInfo groupInfo = new GroupInfo();
+                groupInfo.setMode(1);
+                boolean hasGroup = !StringUtils.isBlank(dynamicService.查询PK群组二维码MediaId(pkDetail.getPkId(),current ));
+                groupInfo.setName("审核群组");
+                if(hasGroup)
+                {
+                    groupInfo.setHasGroup(true);
+                    groupInfo.setIconUrl(IconUrl.有效微信标识.getUrl());
+                }
+                else
+                {
+                    groupInfo.setHasGroup(true);
+                    groupInfo.setIconUrl(IconUrl.无效微信标识.getUrl());
+                }
 
-                    pkDetail.setGroupInfo(groupInfo);
+                pkDetail.setGroupInfo(groupInfo);
 
 
             }
@@ -207,6 +210,41 @@ public class AppService {
 
 
 
+
+        }
+
+
+    }
+    public void vip包装(PkDetail pkDetail,String userId, String fromUser) throws IOException {
+        Date current = new Date();
+        if(userService.isUserVip(userId) || (!userService.isUserExist(userId) && userService.isUserVip(fromUser)))
+        {
+
+                pkDetail.setApproveMessage(approveService.查询PK公告消息(pkDetail.getPkId()));
+                pkDetail.setApproved(redisSortSetService.size(CacheKeyName.榜主已审核列表(pkDetail.getPkId())) + "已审核");
+                pkDetail.setApproving(redisSortSetService.size(CacheKeyName.榜主审核中列表(pkDetail.getPkId())) + "审核中");
+                GroupInfo groupInfo = new GroupInfo();
+                groupInfo.setMode(1);
+                boolean hasGroup = !StringUtils.isBlank(dynamicService.查询PK群组二维码MediaId(pkDetail.getPkId(),current ));
+                groupInfo.setName("审核群组");
+                if(hasGroup)
+                {
+                    groupInfo.setHasGroup(true);
+                    groupInfo.setIconUrl(IconUrl.有效微信标识.getUrl());
+                }
+                else
+                {
+                    groupInfo.setHasGroup(true);
+                    groupInfo.setIconUrl(IconUrl.无效微信标识.getUrl());
+                }
+                pkDetail.setGroupInfo(groupInfo);
+        }
+        else
+        {
+                GroupInfo groupInfo = new GroupInfo();
+                groupInfo.setMode(0);
+                groupInfo.setName(redisSortSetService.size(CacheKeyName.榜主已审核列表(pkDetail.getPkId())) + "已审核");
+                pkDetail.setGroupInfo(groupInfo);
 
         }
 
@@ -252,7 +290,7 @@ public class AppService {
         return invitePkEntity;
     }
 
-    public List<PkDetail> 查询用户相册(String userId,int page) throws UnsupportedEncodingException {
+    public List<PkDetail> 查询用户相册(String userId,int page) throws IOException {
 
         Date current = new Date();
         List<PkDetail> pkDetails = new ArrayList<>();
@@ -260,7 +298,7 @@ public class AppService {
         for(PkEntity pkEntity:pkEntities)
         {
             PkDetail pkDetail = this.translate(pkEntity);
-            pkDetail.setApproveMessage(approveService.查询PK公告消息(pkEntity.getPkId(),current));
+            pkDetail.setApproveMessage(approveService.查询PK公告消息(pkEntity.getPkId()));
             pkDetails.add(pkDetail);
         }
 
@@ -296,16 +334,38 @@ public class AppService {
     }
 
 
+    public PkComment 查询激活消息留言(String pkId) {
+
+
+
+
+
+        return null;
+    }
+
+
+    public AppMessage 查询激活消息(String pkId,String userId) {
 
 
 
 
 
 
+        return null;
+    }
 
 
+    private PkCashierEntity queryPkCashierEntity() {
 
+//        EntityFilterChain filter = EntityFilterChain.newFilterChain(PkEntity.class)
+//                .compareFilter("userId",CompareTag.Equal,userId)
+//                .pageLimitFilter(page,20);;
+//        List<PkEntity> pkEntities = daoService.queryEntities(PkEntity.class,filter);
+//
+//        return pkEntities;
 
+        return null;
+    }
 
 
 
