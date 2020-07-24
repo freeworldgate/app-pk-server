@@ -12,35 +12,21 @@ import javax.persistence.*;
 @EqualsAndHashCode
 @ToString
 @Entity
-@Table(name="T_PK_CASHIER")
+@Table(name="T_PK_CASHIER_TABLE")
 public class PkCashierEntity {
 
 
     @Id
-    private String cashierId;
+    String cashierId;
 
-    private String realName;
-
-    private String cashierName;
-
-    private String cashierImg;
-
-    private int feeNum;
-
-    private String imgUrl;
-
-    private String text;
-
-    private String mediaId;
+    String realName;
 
     @Enumerated(EnumType.STRING)
-    private CashierStatu statu;
+    CashierStatu statu;
 
-    private int selectTimes;
+    int selectTimes;
 
-    private int confirmTimes;
 
-    private String time;
 
 
 

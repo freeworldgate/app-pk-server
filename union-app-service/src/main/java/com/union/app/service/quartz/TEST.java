@@ -43,7 +43,7 @@ public class TEST {
     @Resource
     private RedisTemplate<String, String> redisTemplate;
 
-    @Scheduled(cron = "* */5 * * * ?") // 每分钟执行一次  刷新整个PKID的所有PAGE
+    @Scheduled(cron = "* * * */5 * ?") // 每分钟执行一次  刷新整个PKID的所有PAGE
     public void work() throws Exception {
 
         EntityFilterChain filter1 = EntityFilterChain.newFilterChain(UserEntity.class).pageLimitFilter(1,20);
@@ -70,10 +70,16 @@ public class TEST {
             dynamicService.更新今日用户排名("PK01",userEntity.getUserId(),new Date());
 
 
-
-
-
         }
+
+
+
+
+
+
+
+
+
 //        redisMapService.delete(CacheKeyName.所有审核人("PK01",new Date()));
 //        for(int j=1;j<15;j++){
 //            UserIntegral userIntegral = dynamicService.查询用户打榜信息("PK01","U" + j,TimeUtils.前一天(new Date()));

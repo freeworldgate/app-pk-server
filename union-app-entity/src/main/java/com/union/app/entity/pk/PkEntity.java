@@ -23,7 +23,10 @@ public class PkEntity {
 
     private byte[] watchWord;
 
-    private boolean isInvite;
+
+    @Enumerated(EnumType.STRING)
+    private InviteType isInvite;
+
     //时长
     private String time;
 
@@ -48,7 +51,7 @@ public class PkEntity {
      */
     private long resetTime;
 
-
+    private String selectCashierId;
 
 
 

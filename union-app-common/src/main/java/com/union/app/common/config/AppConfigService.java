@@ -6,6 +6,7 @@ import com.union.app.dao.spi.filter.CompareTag;
 import com.union.app.dao.spi.filter.EntityFilterChain;
 import com.union.app.entity.配置表.ColumSwitch;
 import com.union.app.entity.配置表.ConfigEntity;
+import com.union.app.plateform.constant.ConfigItem;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.Calendar;
@@ -55,6 +56,18 @@ public class AppConfigService
         }
     }
 
+    public static String getConfigAsString(ConfigItem configItem) {
+        return getConfigAsString(configItem.getName(),configItem.getDefaultValue());
+    }
+    public static int getConfigAsInteger(ConfigItem configItem) {
+        return getConfigAsInteger(configItem.getName(),Integer.valueOf(configItem.getDefaultValue()));
+    }
+    public static long getConfigAsLong(ConfigItem configItem) {
+        return getConfigAsLong(configItem.getName(),Long.valueOf(configItem.getDefaultValue()));
+    }
+    public static boolean getConfigAsBoolean(ConfigItem configItem) {
+        return getConfigAsBoolean(configItem.getName(),Boolean.valueOf(configItem.getDefaultValue()));
+    }
 
     public static int getConfigAsInteger(String configName,int configValue){
         String value = getConfigAsString(configName,String.valueOf(configValue));

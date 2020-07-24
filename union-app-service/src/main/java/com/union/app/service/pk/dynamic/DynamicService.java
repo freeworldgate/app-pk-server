@@ -10,6 +10,7 @@ import com.union.app.domain.pk.apply.KeyNameValue;
 import com.union.app.domain.pk.integral.UserIntegral;
 import com.union.app.domain.pk.审核.ApproveMessage;
 import com.union.app.domain.user.User;
+import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.constant.常量值;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
@@ -170,7 +171,7 @@ public class DynamicService {
             double score = redisSortSetService.getEleScore(CacheKeyName.榜主审核中列表(pkId) ,postId);
 
             long scoreAbs = new Double(Math.abs(score)).longValue() ;
-            if((System.currentTimeMillis() - scoreAbs ) > 10 * 60 * 1000)
+            if((System.currentTimeMillis() - scoreAbs ) > AppConfigService.getConfigAsInteger(ConfigItem.审核榜帖最大等待时间) * 60 * 1000)
             {
                 redisSortSetService.remove(pkId,postId);
                 return null;
@@ -513,7 +514,7 @@ public class DynamicService {
             }
         }
 
-        if(userService.isUserVip(userId))
+        if(AppConfigService.getConfigAsBoolean(ConfigItem.对所有用户展示审核系统) || userService.canUserView(userId))
         {
             for(Post post:posts)
             {
@@ -530,21 +531,14 @@ public class DynamicService {
 
 
     }
-    public List<Post> 查询审核中指定范围的Post(String pkId,String approveUserId,int page,Date date) throws UnsupportedEncodingException {
+    public List<Post> 查询审核中指定范围的Post(String pkId,String userId,int page) throws UnsupportedEncodingException {
 
         List<Post> posts = new ArrayList<>();
         List<String> postIds = new ArrayList<>();
-        if(pkService.isPkCreator(pkId,approveUserId))
-        {
-            Set<String> pageList = redisSortSetService.queryPage(CacheKeyName.榜主审核中列表(pkId),page);
-            postIds.addAll(pageList);
-        }
-        else
-        {
 
-            Set<String> pageList = redisSortSetService.queryPage(CacheKeyName.审核员审核中列表(pkId,date,approveUserId),page);
-            postIds.addAll(pageList);
-        }
+        Set<String> pageList = redisSortSetService.queryPage(CacheKeyName.榜主审核中列表(pkId),page);
+        postIds.addAll(pageList);
+
         for(String postId:postIds)
         {
             Post post = postService.查询帖子(pkId,postId,"");
@@ -637,8 +631,34 @@ public class DynamicService {
     }
 
 
-    public String 查询PK公告消息Id(String pkId) {
 
+    //
+    public long 查询群组分配的人数(String groupId) { return redisMapService.getIntValue(CacheKeyName.群组分配人数(),groupId); }
+    public long 群组分配的人数加一(String groupId) { return redisMapService.valueIncr(CacheKeyName.群组分配人数(),groupId); }
+
+
+    public long 查询收款码分配的人数(String feeCodeId) { return redisMapService.getIntValue(CacheKeyName.收款码分配人数(),feeCodeId); }
+    public long 收款码分配的人数加一(String feeCodeId) { return redisMapService.valueIncr(CacheKeyName.收款码分配人数(),feeCodeId); }
+
+    public long 查询收款码确认次数(String feeCodeId) { return redisMapService.getIntValue(CacheKeyName.收款码确认次数(),feeCodeId); }
+    public long 收款码确认次数加一(String feeCodeId) { return redisMapService.valueIncr(CacheKeyName.收款码确认次数(),feeCodeId); }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public String 查询PK公告消息Id(String pkId) {
         return redisMapService.getStringValue(CacheKeyName.审核消息ID(),pkId);
 
     }

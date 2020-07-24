@@ -33,6 +33,9 @@ public class CacheKeyName {
     public static String 打榜Share(String pkId){return "Share-"+ pkId  ;}
     public static String 群组二维码(Date date){return "Group-Code-MediaId-" + TimeUtils.dateStr(date) ;}
     public static String 审核消息ID(){return "Approve-MessageId-MediaId" ;}
+    public static String 群组分配人数(){return "GROUP_MEMBERS" ;}
+    public static String 收款码分配人数(){return "FEECODE_MEMBERS" ;}
+    public static String 收款码确认次数(){return "FEECODE_CONFIRM_TIMES" ;}
 
     public static String 群组URL(Date date){return "Group-Code-Url-" + TimeUtils.dateStr(date) ;}
 

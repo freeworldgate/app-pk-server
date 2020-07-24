@@ -84,4 +84,12 @@ public class TimeUtils {
 
         return (System.currentTimeMillis() - time) > 2 * 24 * 3600 * 1000; //两天过期
     }
+
+    public static String 距离上传的小时数(long createTime) {
+
+        long day = (System.currentTimeMillis() - createTime)/(3600 * 1000) ;
+                return String.valueOf(day);
+
+
+    }
 }

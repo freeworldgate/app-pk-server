@@ -55,7 +55,7 @@ public class 设置审核人员 {
     @RequestMapping(path="/setApprover",method = RequestMethod.GET)
     public AppResponse 用户积分(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId,@RequestParam("userId") String userId) throws AppException, IOException {
 
-        Date currentDate = new Date();
+
 
         PostEntity postEntity = postService.查询帖子ById(pkId,postId);
         if(!StringUtils.equals(userId,postEntity.getUserId())){return AppResponse.buildResponse(PageAction.消息级别提示框(Level.错误消息,"非法操作"));}

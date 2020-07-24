@@ -71,9 +71,10 @@ public class 查询主页 {
 
 
 
-        if(userService.isUserVip(userId) || userService.isUserVip(fromUser))
+        if(userService.canUserView(userId,fromUser))
         {
             List<PkDetail> pks = appService.查询预设相册(1);
+            appService.vip包装(pks,userId,fromUser);
             pkDetails.addAll(pks);
 
         }
@@ -114,7 +115,7 @@ public class 查询主页 {
     public AppResponse 查询单个PK(@RequestParam("userId") String userId,@RequestParam("fromUser") String fromUser,@RequestParam("page") int page) throws AppException, IOException {
         List<PkDetail> pkDetails = new ArrayList<>();
 
-        if(userService.isUserVip(userId) || userService.isUserVip(fromUser))
+        if(userService.canUserView(userId,fromUser))
         {
             List<PkDetail> pks = appService.查询预设相册(page + 1);
             pkDetails.addAll(pks);

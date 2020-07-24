@@ -15,6 +15,7 @@ import com.union.app.domain.user.User;
 import com.union.app.entity.pk.*;
 import com.union.app.entity.pk.task.PkTaskEntity;
 import com.union.app.entity.pk.task.TaskStatu;
+import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.constant.常量值;
 import com.union.app.plateform.storgae.KeyName;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
@@ -96,7 +97,7 @@ public class PkService {
         pkDetail.setTotalApprover(new KeyNameValue(1,dynamicService.查询今日审核员数量(pkId)));
         pkDetail.setTotalSort(new KeyNameValue(2,dynamicService.查询今日打榜用户数量(pkId)));
         pkDetail.setTime(TimeUtils.translateTime(pk.getCreateTime()));
-        pkDetail.setInvite(pk.isInvite()?"仅邀请用户":"公开");
+        pkDetail.setInvite(new KeyNameValue(pk.getIsInvite().getStatu(),pk.getIsInvite().getStatuStr()));
         pkDetail.setPkStatu(ObjectUtils.isEmpty(pk.getAlbumStatu())?new KeyNameValue(PkStatu.审核中.getStatu(),PkStatu.审核中.getStatuStr()):new KeyNameValue(pk.getAlbumStatu().getStatu(),pk.getAlbumStatu().getStatuStr()));
         return pkDetail;
     }
@@ -191,9 +192,17 @@ public class PkService {
         pkEntity.setPkType(PkType.平台相册);
         pkEntity.setTopic(topic.getBytes("UTF-8"));
         pkEntity.setWatchWord(watchWord.getBytes("UTF-8"));
-        pkEntity.setInvite(invite);
+        pkEntity.setIsInvite(invite?InviteType.公开:InviteType.邀请);
         pkEntity.setUserId(userId);
-        pkEntity.setAlbumStatu(PkStatu.审核中);
+        if(!AppConfigService.getConfigAsBoolean(ConfigItem.对所有用户展示审核系统) && !userService.canUserView(userId))
+        {
+            pkEntity.setAlbumStatu(PkStatu.已审核);
+        }
+        else
+        {
+            pkEntity.setAlbumStatu(PkStatu.审核中);
+
+        }
         daoService.insertEntity(pkEntity);
         return pkId;
     }

@@ -6,6 +6,7 @@ import com.union.app.common.OSS存储.OssStorage;
 import com.union.app.domain.pk.wechat.AccessToken;
 import com.union.app.domain.wechat.UserInfo;
 import com.union.app.domain.wechat.WeChatUser;
+import com.union.app.entity.pk.PkCashierGroupEntity;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.boot.SpringApplication;
 import org.springframework.util.ObjectUtils;

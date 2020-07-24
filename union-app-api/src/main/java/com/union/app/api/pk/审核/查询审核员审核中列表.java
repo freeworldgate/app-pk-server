@@ -51,24 +51,24 @@ public class 查询审核员审核中列表 {
     ApproveService approveService;
 
     @RequestMapping(path="/queryApprovingPost",method = RequestMethod.GET)
-    public AppResponse 查询审核员审核中列表(@RequestParam("pkId") String pkId,@RequestParam("approverUserId") String approverUserId) throws AppException, IOException {
+    public AppResponse 查询审核员审核中列表(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId) throws AppException, IOException {
 
         Date date = new Date();
         List<DataSet> dataSets = new ArrayList<>();
 
-        List<Post> posts = dynamicService.查询审核中指定范围的Post(pkId,approverUserId,0,date);
+        List<Post> posts = dynamicService.查询审核中指定范围的Post(pkId,userId,0);
 
 
 
-        DataSet dataSet2 = new DataSet("approvingPosts",posts);
-        DataSet dataSet3 = new DataSet("currentApprovingPost",CollectionUtils.isEmpty(posts)?null:posts.get(0));
-        DataSet dataSet4 = new DataSet("currentApprovingPage",1);
-        DataSet dataSet1 = new DataSet("tag",1);
+        DataSet dataSet2 = new DataSet("approvedPosts",posts);
+        DataSet dataSet4 = new DataSet("currentApprovedPage",1);
+        DataSet dataSet8 = new DataSet("pkId",pkId);
+        DataSet dataSet9 = new DataSet("creator",pkService.queryPkCreator(pkId));
 
-        dataSets.add(dataSet1);
         dataSets.add(dataSet2);
-        dataSets.add(dataSet3);
         dataSets.add(dataSet4);
+        dataSets.add(dataSet8);
+        dataSets.add(dataSet9);
 
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
 
@@ -78,12 +78,12 @@ public class 查询审核员审核中列表 {
 
     }
     @RequestMapping(path="/queryMoreApprovingPost",method = RequestMethod.GET)
-    public AppResponse 查询审核信息More(@RequestParam("pkId") String pkId,@RequestParam("approverUserId") String approverUserId,@RequestParam("currentApprovingPage") int page) throws AppException, IOException {
+    public AppResponse 查询审核信息More(@RequestParam("pkId") String pkId,@RequestParam("currentApprovedPage") int page,@RequestParam("userId") String userId) throws AppException, IOException {
         Date date = new Date();
-        List<Post> posts = dynamicService.查询审核中指定范围的Post(pkId, approverUserId, page,date);
+        List<Post> posts = dynamicService.查询审核中指定范围的Post(pkId, userId, page);
 
         if(CollectionUtils.isEmpty(posts)){
-            return AppResponse.buildResponse(PageAction.前端数据更新("approvingEnd",true));
+            return AppResponse.buildResponse(PageAction.前端数据更新("approvedEnd",true));
         }
 
 

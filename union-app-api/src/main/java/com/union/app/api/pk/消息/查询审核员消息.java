@@ -56,7 +56,7 @@ public class 查询审核员消息 {
         dataSets.add(new DataSet("user",userService.queryUser(userId)));
         dataSets.add(new DataSet("creator",pkService.queryPkCreator(pkId)));
         dataSets.add(new DataSet("pkId",pkId));
-        dataSets.add(new DataSet("date",TimeUtils.dateStr(currentDate)));
+        dataSets.add(new DataSet("date","相册公告"));
 
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
     }

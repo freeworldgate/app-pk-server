@@ -3,9 +3,9 @@ package com.union.app.entity.pk;
 public enum PkStatu {
 
 
-    审核中(0,"审核中"),
+    审核中(0,"待激活"),
 
-    已审核(1,"审核通过"),
+    已审核(1,"已激活"),
 ;
 
 

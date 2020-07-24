@@ -77,7 +77,7 @@ public class 查询审核页面 {
 
         List<DataSet> dataSets = new ArrayList<>();
 
-        if(userService.isUserVip(userId) || userService.isUserVip(fromUser))
+        if(userService.canUserView(userId,fromUser))
         {
             ApproveComment pkComment = approveService.获取留言信息(pkId, postId);
             dataSets.add(new DataSet("pkComment",pkComment));

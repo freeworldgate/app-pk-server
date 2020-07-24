@@ -16,6 +16,7 @@ import java.io.Serializable;
 @ToString
 public class PkDetail implements Serializable{
 
+    private String publishName = "审核公告";
 
     private String pkId;
 
@@ -25,7 +26,7 @@ public class PkDetail implements Serializable{
 
     private String watchWord;
 
-    private String invite;
+    private KeyNameValue invite;
 
     private int shareMode;
 

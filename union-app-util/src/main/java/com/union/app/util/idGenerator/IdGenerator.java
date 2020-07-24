@@ -29,4 +29,10 @@ public class IdGenerator {
     public static String getOrderId() {return UUID.randomUUID().toString(); }
 
     public static String 生成收款码ID() {return UUID.randomUUID().toString(); }
+
+    public static String 收款用户ID() {return UUID.randomUUID().toString(); }
+
+    public static String 收款群组ID() {return UUID.randomUUID().toString(); }
+
+    public static String 收款码ID()  {return UUID.randomUUID().toString(); }
 }

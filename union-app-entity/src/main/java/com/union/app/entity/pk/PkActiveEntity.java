@@ -24,17 +24,18 @@ public class PkActiveEntity {
 
     private String cashierId;
 
-    private String commentImgUrl;
+    String groupId;
 
-    private String mediaId;
-
-    private String commentText;
+    String feeCodeId;
 
 
 
-    private String time;
+    //打赏截图
 
+    private String screenCutUrl;
+    private String screenCutMediaId;
 
+    private long screenCutTime;
 
 
 

@@ -37,4 +37,8 @@ public abstract class 常量值 {
     public static String 审核用户超时时间 = "APPROVE_EXPIRE_TIME";
     public static String 审核员合法排名比例 = "APPROVE_SORT_PERCENT";
     public static String 设置预审核员时间段长度单位分钟 = "SET_PRE_APPROVE_TIME";
+    public static String 群组最大成员数量 = "MAX_GROUP_MEMBER";
+
+
+
 }

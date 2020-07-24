@@ -49,6 +49,10 @@ public class ApproveService {
     @Autowired
     PostService postService;
 
+
+    @Autowired
+    MediaService mediaService;
+
     public ApproveUser 查询帖子的审核用户(String pkId, String postId,Date date) throws IOException {
 
         String approveUserId = dynamicService.查询审核用户(pkId,postId);
@@ -278,10 +282,7 @@ public class ApproveService {
 
         ApproveMessageEntity approveMessageEntity = 获取审核人员消息Entity(pkId);
         if(!org.springframework.util.ObjectUtils.isEmpty(approveMessageEntity)) {
-            if(TimeUtils.图片是否在微信中过期(approveMessageEntity.getTime()))
-            {
-                dynamicService.添加需要更新MediaId的PKId(pkId);
-            }
+//            approveMessageEntity = mediaService.更新公告MediaId(approveMessageEntity);
 
 
             return translate(approveMessageEntity);

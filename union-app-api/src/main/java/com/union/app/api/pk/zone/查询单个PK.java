@@ -1,5 +1,6 @@
 package com.union.app.api.pk.zone;
 
+        import com.union.app.domain.pk.PkButtonType;
         import com.union.app.domain.pk.PkDetail;
         import com.union.app.domain.pk.Post;
         import com.union.app.domain.pk.UserCode;
@@ -66,6 +67,9 @@ public class 查询单个PK {
     @Autowired
     ApproveService approveService;
 
+    @Autowired
+    AppService appService;
+
 
     @RequestMapping(path="/queryPk",method = RequestMethod.GET)
     public AppResponse 查询单个PK(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId,@RequestParam("fromUser") String fromUser) throws AppException, IOException {
@@ -79,25 +83,34 @@ public class 查询单个PK {
         boolean isUserPublish = !ObjectUtils.isEmpty(postService.查询用户帖(pkId,userId));
         User creator = pkService.queryPkCreator(pkId);
 
-
-        if(userService.isUserVip(userId) || userService.isUserVip(fromUser))
+        if(userService.canUserView(userId,fromUser))
         {
             ApproveMessage pkMessage = approveService.查询PK公告消息(pkId);
 
-            if(ObjectUtils.isEmpty(pkMessage))
-            {
-                dataSets.add(new DataSet("hidden", true));
-            }
-            else
-            {
-                dataSets.add(new DataSet("pkMessage", pkMessage));
-            }
-
+            dataSets.add(new DataSet("pkMessage", pkMessage));
         }
         else
         {
-            dataSets.add(new DataSet("hidden", true));
+            dataSets.add(new DataSet("pkMessage", null));
         }
+
+        dataSets.add(new DataSet("group",appService.显示按钮(userId,fromUser,PkButtonType.群组)));
+        dataSets.add(new DataSet("post",appService.显示按钮(userId,fromUser,PkButtonType.榜帖)));
+        dataSets.add(new DataSet("approve",appService.显示按钮(userId,fromUser,PkButtonType.审核)));
+        dataSets.add(new DataSet("approving",appService.显示审核中按钮(userId,pkId)));
+        //
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         dataSets.add(new DataSet("isUserPublish",isUserPublish));

@@ -35,6 +35,9 @@ public class ApproveMessageEntity {
     private String mediaId;
 
     private long time;
+    private long lastUpdateTime;
+
+
 
 
 

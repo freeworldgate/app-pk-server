@@ -1,12 +1,11 @@
 package com.union.app.api.pk.zone;
 
 import com.union.app.common.OSS存储.OssStorage;
+import com.union.app.common.config.AppConfigService;
 import com.union.app.domain.pk.PkDetail;
 import com.union.app.domain.pk.TipConstant;
-import com.union.app.entity.pk.InvitePkEntity;
-import com.union.app.entity.pk.PkEntity;
-import com.union.app.entity.pk.PkStatu;
-import com.union.app.entity.pk.PkType;
+import com.union.app.entity.pk.*;
+import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.PageAction;
@@ -59,106 +58,105 @@ public class 进入PK {
 
         PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
 
-
-
-        if(!userService.isUserVip(userId))
+        //邀请或者非邀请
+        if(!StringUtils.equals(userId,pkEntity.getUserId()) && ObjectUtils.equals(pkEntity.getIsInvite(),InviteType.邀请))
         {
-
-            if(!StringUtils.equals(userId,pkEntity.getUserId())){
-
-
-                InvitePkEntity invitePkEntity = appService.queryInvitePk(pkId,userId);
-                if(org.springframework.util.ObjectUtils.isEmpty(invitePkEntity))
-                {
-                    return AppResponse.buildResponse(PageAction.信息反馈框("仅邀请用户可见","您不是邀请用户"));
-                }
-                else
-                {
-                    return AppResponse.buildResponse(PageAction.页面跳转("/pages/pk/pk/pk?pkId=" + pkId,true));
-                }
-
-            }
-            else
+            InvitePkEntity invitePkEntity = appService.queryInvitePk(pkId,userId);
+            if(org.springframework.util.ObjectUtils.isEmpty(invitePkEntity))
             {
-                return AppResponse.buildResponse(PageAction.页面跳转("/pages/pk/pk/pk?pkId=" + pkId,true));
+                return AppResponse.buildResponse(PageAction.信息反馈框("仅邀请用户可见","您不是邀请用户"));
             }
+        }
+        //创建者未更新今日审核群 && (对所有用户展示审核系统 或者  遗传用户)
+        if(pkService.isPkCreator(pkId,userId) && !pkService.是否更新今日审核群(pkId) && (AppConfigService.getConfigAsBoolean(ConfigItem.对所有用户展示审核系统) || userService.canUserView(userId)))
+        {
+            return AppResponse.buildResponse(PageAction.执行处理器("group","/pages/pk/message/message?pkId=" + pkId + "&type=1" + "&userId=" + userId));
+        }
+        //遗传用户创建者未更新今日审核群
+        if(pkService.isPkCreator(pkId,userId) && !pkService.是否更新今日公告(pkId) &&  userService.canUserView(userId))
+        {
+            return AppResponse.buildResponse(PageAction.执行处理器("message","/pages/pk/messageInfo/messageInfo?pkId=" + pkId));
+        }
 
+        if(pkService.isPkCreator(pkId,userId) && ObjectUtils.equals(pkEntity.getAlbumStatu(),PkStatu.审核中) && (AppConfigService.getConfigAsBoolean(ConfigItem.对所有用户展示审核系统) || userService.canUserView(userId))){
 
-
+            return AppResponse.buildResponse(PageAction.执行处理器("approve","/pages/pk/selectPker/selectPker?pkId=" + pkId));
 
         }
-        else
-        {
 
 
-            if(!ObjectUtils.equals(pkEntity.getAlbumStatu(),PkStatu.已审核))
-            {
-                if(StringUtils.equals(userId,pkEntity.getUserId())){
+        if(!pkService.isPkCreator(pkId,userId) && ObjectUtils.equals(pkEntity.getAlbumStatu(),PkStatu.审核中) && (AppConfigService.getConfigAsBoolean(ConfigItem.对所有用户展示审核系统) || userService.canUserView(userId))){
 
-                    if(!pkService.是否更新今日审核群(pkId))
-                    {
-                        return AppResponse.buildResponse(PageAction.执行处理器("group",""));
-                    }
-                    if(!pkService.是否更新今日公告(pkId))
-                    {
-                        return AppResponse.buildResponse(PageAction.执行处理器("message",""));
-                    }
-
-
-                    return AppResponse.buildResponse(PageAction.执行处理器("approve",""));
-//                    return AppResponse.buildResponse(PageAction.页面跳转("/pages/pk/pk/pk?pkId=" + pkId,true));
-//
-                }
-                else {
-                    return AppResponse.buildResponse(PageAction.信息反馈框("相册未激活","相册未激活"));
-                }
-
-            }
-            else
-            {
-                if(!StringUtils.equals(userId,pkEntity.getUserId())){
-                    if(pkEntity.isInvite())
-                    {
-                        InvitePkEntity invitePkEntity = appService.queryInvitePk(pkId,userId);
-                        if(org.springframework.util.ObjectUtils.isEmpty(invitePkEntity))
-                        {
-                            return AppResponse.buildResponse(PageAction.信息反馈框("仅邀请用户可见","您不是邀请用户"));
-                        }
-                    }
-
-
-                    if(!pkService.是否更新今日审核群(pkId))
-                    {
-                        return AppResponse.buildResponse(PageAction.信息反馈框("提示","榜主未更新今日审核群"));
-                    }
-                    if(!pkService.是否更新今日公告(pkId))
-                    {
-                        return AppResponse.buildResponse(PageAction.信息反馈框("提示","榜主未发布公告"));
-                    }
-
-
-                }
-                else
-                {
-                    if(!pkService.是否更新今日审核群(pkId))
-                    {
-                        return AppResponse.buildResponse(PageAction.页面跳转("/pages/pk/message/message?pkId=" + pkId,true));
-                    }
-                    if(!pkService.是否更新今日公告(pkId))
-                    {
-                        return AppResponse.buildResponse(PageAction.页面跳转("/pages/pk/messageInfo/messageInfo?pkId=" + pkId,true));
-                    }
-
-
-                }
-
-            }
-
+            return AppResponse.buildResponse(PageAction.信息反馈框("相册未激活","相册未激活"));
 
         }
+
+        if(!pkService.isPkCreator(pkId,userId)  && !pkService.是否更新今日审核群(pkId) && (AppConfigService.getConfigAsBoolean(ConfigItem.对所有用户展示审核系统) || userService.canUserView(userId)))
+        {
+            return AppResponse.buildResponse(PageAction.信息反馈框("提示","榜主未更新今日审核群"));
+        }
+
 
 
         return AppResponse.buildResponse(PageAction.页面跳转("/pages/pk/pk/pk?pkId=" + pkId,true));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//
+//        if(!userService.canUserView(userId))
+//        {
+//
+//            return AppResponse.buildResponse(PageAction.页面跳转("/pages/pk/pk/pk?pkId=" + pkId,true));
+//
+//        }
+//        else
+//        {
+//
+//
+//            if(!ObjectUtils.equals(pkEntity.getAlbumStatu(),PkStatu.已审核))
+//            {
+//                //未审核
+//
+//
+//            }
+//            else
+//            {
+//                if(!StringUtils.equals(userId,pkEntity.getUserId())){
+//
+//
+//                    if(!pkService.是否更新今日审核群(pkId))
+//                    {
+//                        return AppResponse.buildResponse(PageAction.信息反馈框("提示","榜主未更新今日审核群"));
+//                    }
+//
+//
+//
+//                }
+//                else
+//                {
+//
+//
+//                }
+//
+//            }
+//
+//
+//        }
+
+
+
     }
 
 

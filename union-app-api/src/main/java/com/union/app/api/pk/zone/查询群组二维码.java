@@ -62,7 +62,7 @@ public class 查询群组二维码 {
     public AppResponse 查询用户的POST(@RequestParam("pkId") String pkId, @RequestParam("userId") String userId) throws AppException, IOException {
 
 
-       if(userService.isUserVip(userId)){
+       if(userService.canUserView(userId)){
 
 
            InvitePkEntity invitePkEntity = appService.queryInvitePk(pkId,userId);
@@ -75,13 +75,13 @@ public class 查询群组二维码 {
 
 
 
-           return AppResponse.buildResponse(PageAction.页面跳转("/pages/pk/message/message?pkId=" + pkId,true));
+           return AppResponse.buildResponse(PageAction.页面跳转("/pages/pk/message/message?pkId=" + pkId + "&type=1",true));
 
        }
        else
        {
 
-           return AppResponse.buildResponse(PageAction.页面跳转("/pages/pk/message/message?pkId=" + pkId,true));
+           return AppResponse.buildResponse(PageAction.页面跳转("/pages/pk/message/message?pkId=" + pkId + "&type=1",true));
        }
 
 

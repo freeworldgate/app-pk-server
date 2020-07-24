@@ -2,6 +2,7 @@ package com.union.app.service.user;
 
 
 import com.alibaba.fastjson.JSON;
+import com.union.app.common.config.AppConfigService;
 import com.union.app.common.微信.WeChatUtil;
 import com.union.app.dao.spi.AppDaoService;
 import com.union.app.dao.spi.filter.CompareTag;
@@ -17,6 +18,7 @@ import com.union.app.domain.user.User;
 import com.union.app.entity.用户.UserEntity;
 import com.union.app.entity.用户.UserSex;
 import com.union.app.entity.用户.support.UserType;
+import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.service.pk.dynamic.DynamicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,7 +50,7 @@ public class UserService {
      */
     public User queryUser(String userId)
     {
-        if(StringUtils.isEmpty(userId))
+        if(org.apache.commons.lang.StringUtils.isBlank(userId))
         {
             return null;
         }
@@ -63,13 +65,12 @@ public class UserService {
         if(!ObjectUtils.isEmpty(result))
         {
             User user = new User();
+//            user.setUserName(new String(result.getNickName()));
+            user.setUserName(RandomUtil.getRandomName());
             user.setUserId(result.getUserId());
             user.setUserType(ObjectUtils.isEmpty(result.getUserType())?UserType.普通用户.getType():result.getUserType().getType());
+//            user.setImgUrl(result.getAvatarUrl());
             user.setImgUrl(RandomUtil.getRandomImage());
-            user.setUserName(RandomUtil.getRandomName());
-            user.setAge(RandomUtil.getRandomNumber());
-
-            user.setUserSex(RandomUtil.getRandomNumber() %2 == 1?UserSex.男.getSex():UserSex.女.getSex());
 
             users.put(user.getUserId(),user);
 
@@ -79,17 +80,49 @@ public class UserService {
     }
 
 
-    public boolean isUserVip(String userId){
-//        User user = queryUser(userId);
-//        if(ObjectUtils.isEmpty(user)){return false;}
-//        return user.getUserType() == UserType.重点用户.getType();
-//        String[] users = {"U1","U2","U3","U4","U15","U14","U14","U12"};
-//        if(Arrays.asList(users).contains(userId)){return true;}
+    private boolean isUserVip(String userId){
+
+        int mode = AppConfigService.getConfigAsInteger(ConfigItem.系统展示的模式);
+        if(mode == 2)
+        {
+            //运营模式
+            User user = this.queryUser(userId);
+            if(UserType.重点用户.getType() == user.getUserType()){return true;}
+            else{return false;}
 
 
+        }
+        else if(mode == 3)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
 
-        return true;
     }
+
+
+    public boolean canUserView(String userId,String fromUserId)
+    {
+        if(this.isUserExist(userId))
+        {
+            return this.isUserVip(userId);
+        }
+        else
+        {
+            return this.isUserVip(fromUserId);
+        }
+    }
+    public boolean canUserView(String userId)
+    {
+
+        return this.isUserVip(userId);
+
+
+    }
+
 
 
 

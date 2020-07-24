@@ -1,9 +1,11 @@
 package com.union.app.api.pk.审核;
 
+import com.union.app.common.config.AppConfigService;
 import com.union.app.domain.pk.integral.UserIntegral;
 import com.union.app.domain.pk.审核.ApproveMessage;
 import com.union.app.entity.pk.PostEntity;
 import com.union.app.entity.pk.PostStatu;
+import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.PageAction;
@@ -64,34 +66,32 @@ public class 一次性任务 {
 
         PostEntity postEntity = postService.查询用户帖(pkId,userId);
 
-        if(userService.isUserVip(userId)) {
+        if(AppConfigService.getConfigAsBoolean(ConfigItem.对所有用户展示审核系统) || userService.canUserView(userId)) {
 
-            if (pkService.isPkCreator(pkId, userId) && StringUtils.isBlank(dynamicService.查询PK群组二维码MediaId(pkId, current))) {
-                return AppResponse.buildResponse(PageAction.执行处理器("groupCode", ""));
-
-            }
-            if (pkService.isPkCreator(pkId, userId)) {
+            if(pkService.isPkCreator(pkId, userId))
+            {
+                if(StringUtils.isBlank(dynamicService.查询PK群组二维码MediaId(pkId, current))){
+                    return AppResponse.buildResponse(PageAction.执行处理器("groupCode", ""));
+                }
                 ApproveMessage approveMessage = approveService.获取审核人员消息(pkId);
-                if (org.springframework.util.ObjectUtils.isEmpty(approveMessage)) {
+
+                if (userService.canUserView(userId) && org.springframework.util.ObjectUtils.isEmpty(approveMessage)) {
                     return AppResponse.buildResponse(PageAction.执行处理器("editApproverMessage", ""));
                 }
+
             }
-            if ((postEntity.getStatu() == PostStatu.审核中) && StringUtils.isBlank(dynamicService.查询审核用户(pkId, postEntity.getPostId()))) {
 
+
+            if ((!org.springframework.util.ObjectUtils.isEmpty(postEntity)) && (postEntity.getStatu() == PostStatu.审核中) && StringUtils.isBlank(dynamicService.查询审核用户(pkId, postEntity.getPostId()))) {
                 return AppResponse.buildResponse(PageAction.执行处理器("select", postEntity.getPostId()));
-
             }
 
         }
+
 
         if(org.springframework.util.ObjectUtils.isEmpty(postEntity)){
             return AppResponse.buildResponse(PageAction.执行处理器("publish",""));
         }
-
-
-
-
-
 
         return AppResponse.buildResponse(PageAction.执行处理器("no",""));
 

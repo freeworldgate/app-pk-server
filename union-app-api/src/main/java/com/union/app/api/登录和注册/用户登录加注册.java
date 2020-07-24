@@ -66,9 +66,9 @@ public class 用户登录加注册 {
         }
         else
         {
-            String name = new String(userEntity.getNickName(),"UTF-8");
+            String name = new String(userEntity.getNickName());
             if(!org.apache.commons.lang.StringUtils.equals(name,userInfo.getNickName())){
-                userEntity.setNickName(userInfo.getNickName().getBytes("UTF-8"));
+                userEntity.setNickName(userInfo.getNickName().getBytes());
                 appDaoService.updateEntity(userEntity);
             }
 
@@ -80,7 +80,7 @@ public class 用户登录加注册 {
         userBasicInfo.setFromUser(userEntity.getFromUser());
         userBasicInfo.setUserId(userEntity.getOpenId());
         userBasicInfo.setImgUrl(userEntity.getAvatarUrl());
-        userBasicInfo.setUserName(new String(userEntity.getNickName(),"UTF-8"));
+        userBasicInfo.setUserName(new String(userEntity.getNickName()));
 
 
         return ApiResponse.buildSuccessResponse(userBasicInfo);

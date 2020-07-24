@@ -19,6 +19,7 @@ import com.union.app.entity.pk.*;
 import com.union.app.entity.pk.apply.PayOrderEntity;
 import com.union.app.entity.pk.助力浏览评论分享.UserLikeEntity;
 import com.union.app.entity.pk.审核.ApproveCommentEntity;
+import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.constant.常量值;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.Level;
@@ -92,23 +93,13 @@ public class PostService {
         for(String img:images){
             stringBuffer.append(getLegalImgUrl(img));
             stringBuffer.append(";");
-//            PostImageEntity postImageEntity = new PostImageEntity();
-//            postImageEntity.setPkId(pkId);
-//            postImageEntity.setPostId(postId);
-//            postImageEntity.setImgUrl();
-//            postImageEntity.setImgId(IdGenerator.getImageId());
-//            postImageEntity.setCreateTime(TimeUtils.currentTime());
-//            daoService.insertEntity(postImageEntity);
+
         }
         postEntity.setImgUrls(stringBuffer.toString());
         daoService.insertEntity(postEntity);
-
-//        PkDynamicEntity pkDynamicEntity = pkService.查询PK动态表(pkId);
-//        pkDynamicEntity.setPostNum(pkDynamicEntity.getPostNum() + 1);
-
-//        daoService.updateEntity(pkDynamicEntity);
-
-
+        if(!AppConfigService.getConfigAsBoolean(ConfigItem.对所有用户展示审核系统) && !userService.canUserView(userId)) {
+            dynamicService.设置帖子的审核用户(pkId, postId);
+        }
         return postId;
     }
 
@@ -407,7 +398,7 @@ public class PostService {
     public void 替换指定图片(String pkId, String postId, String imgUrl, int index, String userId,Date date) throws AppException {
 
         PostEntity postEntity = 查询帖子ById(pkId,postId);
-        if(!org.apache.commons.lang.StringUtils.equals(userId,postEntity.getUserId())){
+        if(!pkService.isPkCreator(pkId,userId)){
             throw AppException.buildException(PageAction.消息级别提示框(Level.错误消息,"非法操作"));
         }
         String[] imgs = postEntity.getImgUrls().split(";");
