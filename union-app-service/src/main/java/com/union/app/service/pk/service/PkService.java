@@ -192,7 +192,7 @@ public class PkService {
         pkEntity.setPkType(PkType.平台相册);
         pkEntity.setTopic(topic.getBytes("UTF-8"));
         pkEntity.setWatchWord(watchWord.getBytes("UTF-8"));
-        pkEntity.setIsInvite(invite?InviteType.公开:InviteType.邀请);
+        pkEntity.setIsInvite(invite?InviteType.邀请:InviteType.公开);
         pkEntity.setUserId(userId);
         if(!AppConfigService.getConfigAsBoolean(ConfigItem.对所有用户展示审核系统) && !userService.canUserView(userId))
         {

@@ -194,10 +194,11 @@ public class AppService {
         if(userService.canUserView(userId,fromUser)) {
             pkDetail.setApproveMessage(approveService.查询PK公告消息(pkDetail.getPkId()));
         }
+        pkDetail.setApproved(redisSortSetService.size(CacheKeyName.榜主已审核列表(pkDetail.getPkId())) + "已审核");
+        pkDetail.setApproving(redisSortSetService.size(CacheKeyName.榜主审核中列表(pkDetail.getPkId())) + "审核中");
         if(AppConfigService.getConfigAsBoolean(ConfigItem.对所有用户展示审核系统))
         {
-            pkDetail.setApproved(redisSortSetService.size(CacheKeyName.榜主已审核列表(pkDetail.getPkId())) + "已审核");
-            pkDetail.setApproving(redisSortSetService.size(CacheKeyName.榜主审核中列表(pkDetail.getPkId())) + "审核中");
+
             GroupInfo groupInfo = new GroupInfo();
             groupInfo.setMode(1);
             boolean hasGroup = !StringUtils.isBlank(dynamicService.查询PK群组二维码MediaId(pkDetail.getPkId(),current ));
@@ -216,10 +217,8 @@ public class AppService {
         }
         else
         {
-            GroupInfo groupInfo = new GroupInfo();
-            groupInfo.setMode(0);
-            groupInfo.setName(redisSortSetService.size(CacheKeyName.榜主已审核列表(pkDetail.getPkId())) + "展示");
-            pkDetail.setGroupInfo(groupInfo);
+
+            pkDetail.setGroupInfo(null);
 
         }
 
