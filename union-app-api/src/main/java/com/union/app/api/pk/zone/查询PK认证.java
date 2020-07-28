@@ -101,18 +101,23 @@ public class 查询PK认证 {
 
             dataSets.add(new DataSet("link1Name", "激活群"));
             dataSets.add(new DataSet("link1Icon", "/images/group1.png"));
-            dataSets.add(new DataSet("link1Url",  "/pages/pk/message/message?pkId=" + pkId + "&userId=" + userId + "&type=2"));
+            dataSets.add(new DataSet("link1Url", "/pages/pk/message/message?pkId=" + pkId + "&userId=" + userId + "&type=2"));
 
-            dataSets.add(new DataSet("link2Name", "打赏"));
-            dataSets.add(new DataSet("link2Icon", "/images/dashang.png"));
-            dataSets.add(new DataSet("link2Url",  "/pages/pk/message/message?pkId=" + pkId + "&userId=" + userId + "&type=3"));
-
-            dataSets.add(new DataSet("link3Name", "留言"));
-            dataSets.add(new DataSet("link3Icon", "/images/comments.png"));
-            dataSets.add(new DataSet("link3Url", "/pages/pk/message/message?pkId=" + pkId + "&userId=" + userId + "&type=4"));
+            if(userService.canUserView(userId)) {
 
 
 
+
+                dataSets.add(new DataSet("link2Name", "打赏"));
+                dataSets.add(new DataSet("link2Icon", "/images/dashang.png"));
+                dataSets.add(new DataSet("link2Url", "/pages/pk/message/message?pkId=" + pkId + "&userId=" + userId + "&type=3"));
+
+                dataSets.add(new DataSet("link3Name", "留言"));
+                dataSets.add(new DataSet("link3Icon", "/images/comments.png"));
+                dataSets.add(new DataSet("link3Url", "/pages/pk/message/message?pkId=" + pkId + "&userId=" + userId + "&type=4"));
+
+
+            }
 
 
 

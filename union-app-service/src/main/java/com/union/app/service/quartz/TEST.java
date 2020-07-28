@@ -45,32 +45,32 @@ public class TEST {
 
     @Scheduled(cron = "* * * */5 * ?") // 每分钟执行一次  刷新整个PKID的所有PAGE
     public void work() throws Exception {
-
-        EntityFilterChain filter1 = EntityFilterChain.newFilterChain(UserEntity.class).pageLimitFilter(1,20);
-        List<UserEntity> userEntities = daoService.queryEntities(UserEntity.class,filter1);
-
-
-
-
-
-
-        int i = 0;
-        for(UserEntity userEntity:userEntities){
-
-            i++;
-
-            if(i > 30){return;}
-
-            FactualInfo factualInfo = new FactualInfo();
-            factualInfo.setFactualId(UUID.randomUUID().toString());
-            factualInfo.setUser(RandomUtil.getRandomUser());
-            factualInfo.setOperType(new KeyNameValue(1,"上传收款码"));
-            factualInfo.setTime(RandomUtil.getRandomDate());
-            dynamicService.添加动态("PK01",factualInfo);
-            dynamicService.更新今日用户排名("PK01",userEntity.getUserId(),new Date());
-
-
-        }
+//
+//        EntityFilterChain filter1 = EntityFilterChain.newFilterChain(UserEntity.class).pageLimitFilter(1,20);
+//        List<UserEntity> userEntities = daoService.queryEntities(UserEntity.class,filter1);
+//
+//
+//
+//
+//
+//
+//        int i = 0;
+//        for(UserEntity userEntity:userEntities){
+//
+//            i++;
+//
+//            if(i > 30){return;}
+//
+//            FactualInfo factualInfo = new FactualInfo();
+//            factualInfo.setFactualId(UUID.randomUUID().toString());
+//            factualInfo.setUser(RandomUtil.getRandomUser());
+//            factualInfo.setOperType(new KeyNameValue(1,"上传收款码"));
+//            factualInfo.setTime(RandomUtil.getRandomDate());
+//            dynamicService.添加动态("PK01",factualInfo);
+//            dynamicService.更新今日用户排名("PK01",userEntity.getUserId(),new Date());
+//
+//
+//        }
 
 
 

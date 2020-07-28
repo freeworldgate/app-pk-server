@@ -7,6 +7,7 @@ import com.union.app.common.config.AppConfigService;
 import com.union.app.dao.spi.AppDaoService;
 import com.union.app.dao.spi.filter.CompareTag;
 import com.union.app.dao.spi.filter.EntityFilterChain;
+import com.union.app.dao.spi.filter.OrderTag;
 import com.union.app.domain.pk.*;
 import com.union.app.common.id.KeyGetter;
 import com.union.app.domain.pk.apply.ApproveCode;
@@ -88,7 +89,7 @@ public class PostService {
         postEntity.setCreateTime(TimeUtils.currentTime());
         postEntity.setLastModifyTime(TimeUtils.currentTime());
         postEntity.setStatu(PostStatu.审核中);
-
+        postEntity.setApproveStatu(ApproveStatu.未处理);
         StringBuffer stringBuffer = new StringBuffer();
         for(String img:images){
             stringBuffer.append(getLegalImgUrl(img));
@@ -363,14 +364,15 @@ public class PostService {
     public void 上线帖子(String pkId, String postId)  {
         PostEntity postEntity = this.查询帖子ById(pkId,postId);
         postEntity.setStatu(PostStatu.上线);
+        postEntity.setApproveStatu(ApproveStatu.处理过);
         daoService.updateEntity(postEntity);
-
-
         ApproveCommentEntity approveCommentEntity = approveService.查询留言(pkId,postId);
-
-        approveCommentEntity.setPostStatu(PostStatu.上线);
-        daoService.updateEntity(approveCommentEntity);
-
+        if(!ObjectUtils.isEmpty(approveCommentEntity))
+        {
+            approveCommentEntity.setPostStatu(PostStatu.上线);
+            daoService.updateEntity(approveCommentEntity);
+        }
+        userService.用户已打榜(postEntity.getUserId());
 
 
     }
@@ -443,5 +445,32 @@ public class PostService {
         postEntity.setSelfCommentTime(System.currentTimeMillis());
         daoService.updateEntity(postEntity);
 
+    }
+
+    public List<Post> 查询需要审核的帖子() throws UnsupportedEncodingException {
+        List<Post> posts = new ArrayList<>();
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(PostEntity.class)
+                .compareFilter("approveStatu",CompareTag.Equal,ApproveStatu.未处理)
+                .andFilter()
+                .compareFilter("statu",CompareTag.Equal,PostStatu.审核中)
+                .andFilter()
+                .compareFilter("shareTime",CompareTag.Small,System.currentTimeMillis() - AppConfigService.getConfigAsInteger(ConfigItem.榜帖可发起投诉的等待时间)*60*1000)
+                .pageLimitFilter(1,20)
+                .orderByRandomFilter();
+        List<PostEntity> postEntities = daoService.queryEntities(PostEntity.class,filter);
+        for(PostEntity postEntity:postEntities)
+        {
+            Post post = this.translate(postEntity);
+            post.setApproveComment(approveService.获取留言信息(postEntity.getPkId(),postEntity.getPostId()));
+            posts.add(post);
+        }
+        return posts;
+
+    }
+
+    public void 用户转发审批(PostEntity postEntity) {
+        postEntity.setShareTime(System.currentTimeMillis());
+        postEntity.setApproveStatu(ApproveStatu.未处理);
+        daoService.updateEntity(postEntity);
     }
 }

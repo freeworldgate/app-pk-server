@@ -10,6 +10,10 @@ public class CacheKeyName {
 //    List
     public static String 榜主已审核列表(String pkId){return "Approved-Creator-Set" + pkId;}
     public static String 榜主审核中列表(String pkId){return "Approving-Creator-Set" + pkId;}
+
+
+
+
     public static String 审核员审核中列表(String pkId, Date date, String approverId){return "ApprovingSet-"+ pkId +"-"+ TimeUtils.dateStr(date) + "-" + approverId ;}
     public static String 审核员已审核列表(String pkId, Date date, String approverId){return "ApprovedSet-"+ pkId +"-"+ TimeUtils.dateStr(date) + "-" + approverId ;}
     public static String 打榜排名列表(String pkId){return "Sort-"+ pkId ;}

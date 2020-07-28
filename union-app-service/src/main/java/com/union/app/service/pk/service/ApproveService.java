@@ -49,6 +49,8 @@ public class ApproveService {
     @Autowired
     PostService postService;
 
+    @Autowired
+    AppService appService;
 
     @Autowired
     MediaService mediaService;
@@ -373,10 +375,11 @@ public class ApproveService {
             approveMessageEntity.setImgUrl(imgUrl);
             approveMessageEntity.setText(text.getBytes("UTF-8"));
             approveMessageEntity.setMediaId(mediaId);
+            appService.修改激活处理的状态(pkId);
             daoService.updateEntity(approveMessageEntity);
         }
 
-//        dynamicService.设置PK公告消息Id(pkId,approveMessageEntity.getMsgId());
+
 
 
 

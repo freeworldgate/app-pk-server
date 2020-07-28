@@ -20,6 +20,8 @@ public class ApproveComment {
     private KeyNameValue statu;
     private String time;
     private String date;
+    private String word1 = "编辑内容";
+    private String word2 = "审核留言";
 
 
 

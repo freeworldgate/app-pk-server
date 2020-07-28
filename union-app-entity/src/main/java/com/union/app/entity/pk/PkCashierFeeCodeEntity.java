@@ -32,4 +32,5 @@ public class PkCashierFeeCodeEntity {
     @Enumerated(EnumType.STRING)
     FeeNumber feeNumber;
 
+    int confirmTimes;
 }

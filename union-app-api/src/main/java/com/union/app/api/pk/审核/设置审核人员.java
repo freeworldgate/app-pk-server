@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -53,7 +54,8 @@ public class 设置审核人员 {
     ApproveService approveService;
 
     @RequestMapping(path="/setApprover",method = RequestMethod.GET)
-    public AppResponse 用户积分(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId,@RequestParam("userId") String userId) throws AppException, IOException {
+    @Transactional(rollbackOn = Exception.class)
+    public AppResponse 设置审核人员(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId,@RequestParam("userId") String userId) throws AppException, IOException {
 
 
 
@@ -61,6 +63,8 @@ public class 设置审核人员 {
         if(!StringUtils.equals(userId,postEntity.getUserId())){return AppResponse.buildResponse(PageAction.消息级别提示框(Level.错误消息,"非法操作"));}
 
         dynamicService.设置帖子的审核用户(pkId,postId);
+
+        postService.用户转发审批(postEntity);
 
 
 

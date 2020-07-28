@@ -4,6 +4,8 @@ public enum CompareTag {
 
     Equal("等于","="),
 
+    NotEqual("不等于","<>"),
+
     Bigger("大于",">"),
 
     Small("小于","<"),

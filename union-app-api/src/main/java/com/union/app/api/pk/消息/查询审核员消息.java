@@ -1,9 +1,11 @@
 package com.union.app.api.pk.消息;
 
+import com.union.app.common.config.AppConfigService;
 import com.union.app.domain.pk.complain.Complain;
 import com.union.app.domain.pk.审核.ApproveMessage;
 import com.union.app.entity.pk.PkEntity;
 import com.union.app.entity.pk.PkStatu;
+import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.*;
 import com.union.app.service.pk.complain.ComplainService;
 import com.union.app.service.pk.service.ApproveService;
@@ -56,7 +58,20 @@ public class 查询审核员消息 {
         dataSets.add(new DataSet("user",userService.queryUser(userId)));
         dataSets.add(new DataSet("creator",pkService.queryPkCreator(pkId)));
         dataSets.add(new DataSet("pkId",pkId));
-        dataSets.add(new DataSet("date","相册公告"));
+        dataSets.add(new DataSet("date","审核公告"));
+
+        boolean mode = AppConfigService.getConfigAsBoolean(ConfigItem.系统当前是否客服模式);
+        dataSets.add(new DataSet("mode",mode));
+        if(mode)
+        {
+            dataSets.add(new DataSet("buttonStr","获取图片"));
+        }
+        else
+        {
+            dataSets.add(new DataSet("buttonStr","保存图片到相册"));
+        }
+        dataSets.add(new DataSet("word1","编辑公告"));
+        dataSets.add(new DataSet("word2","审核公告"));
 
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
     }

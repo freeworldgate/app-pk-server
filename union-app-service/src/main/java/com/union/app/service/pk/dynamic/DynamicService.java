@@ -189,6 +189,30 @@ public class DynamicService {
         }
 
     }
+
+    public boolean 审核等待时间过长(String pkId, String postId) {
+        double score = redisSortSetService.getEleScore(CacheKeyName.榜主审核中列表(pkId) ,postId);
+        long scoreAbs = new Double(Math.abs(score)).longValue() ;
+        long canComplainWaitingTime  = AppConfigService.getConfigAsInteger(ConfigItem.榜帖可发起投诉的等待时间) * 60 * 1000;
+        if(System.currentTimeMillis() - scoreAbs > canComplainWaitingTime)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
+
+    }
+
+
+
+
+
+
+
+
     public void 榜帖恢复到审核中状态(String pkId, String postId) {
 
 //        榜帖已经审核过了，重新清除所有记录
@@ -640,8 +664,8 @@ public class DynamicService {
     public long 查询收款码分配的人数(String feeCodeId) { return redisMapService.getIntValue(CacheKeyName.收款码分配人数(),feeCodeId); }
     public long 收款码分配的人数加一(String feeCodeId) { return redisMapService.valueIncr(CacheKeyName.收款码分配人数(),feeCodeId); }
 
-    public long 查询收款码确认次数(String feeCodeId) { return redisMapService.getIntValue(CacheKeyName.收款码确认次数(),feeCodeId); }
-    public long 收款码确认次数加一(String feeCodeId) { return redisMapService.valueIncr(CacheKeyName.收款码确认次数(),feeCodeId); }
+//    public long 查询收款码确认次数(String feeCodeId) { return redisMapService.getIntValue(CacheKeyName.收款码确认次数(),feeCodeId); }
+//    public long 收款码确认次数加一(String feeCodeId) { return redisMapService.valueIncr(CacheKeyName.收款码确认次数(),feeCodeId); }
 
 
 
@@ -674,6 +698,8 @@ public class DynamicService {
     public void 添加需要更新MediaId的PKId(String pkId) {
         redisTemplate.opsForSet().add(CacheKeyName.更新公告的PKId列表(),pkId);
     }
+
+
 }
 
 

@@ -17,6 +17,7 @@ import com.union.app.domain.工具.RandomUtil;
 import com.union.app.domain.user.User;
 import com.union.app.entity.用户.UserEntity;
 import com.union.app.entity.用户.UserSex;
+import com.union.app.entity.用户.support.UserPostStatu;
 import com.union.app.entity.用户.support.UserType;
 import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.service.pk.dynamic.DynamicService;
@@ -266,6 +267,53 @@ public class UserService {
 
 
 
+
+    }
+
+    public void 用户已打榜(String userId) {
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(UserEntity.class)
+                .compareFilter("userId",CompareTag.Equal,userId);
+        UserEntity result = appDaoService.querySingleEntity(UserEntity.class,filter);
+        if(!org.apache.commons.lang.ObjectUtils.equals(UserPostStatu.已打榜,result.getUserPostStatu()))
+        {
+            result.setUserPostStatu(UserPostStatu.已打榜);
+            appDaoService.updateEntity(result);
+
+        }
+
+
+
+
+
+
+
+
+
+    }
+
+    public UserPostStatu queryUserPostStatu(String userId) {
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(UserEntity.class)
+                .compareFilter("userId",CompareTag.Equal,userId);
+        UserEntity result = appDaoService.querySingleEntity(UserEntity.class,filter);
+
+        return result.getUserPostStatu();
+
+    }
+
+    public int queryUserPkTimes(String userId) {
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(UserEntity.class)
+                .compareFilter("userId",CompareTag.Equal,userId);
+        UserEntity result = appDaoService.querySingleEntity(UserEntity.class,filter);
+
+        return result.getPkTimes();
+    }
+
+    public void 创建榜次数加1(String userId) {
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(UserEntity.class)
+                .compareFilter("userId",CompareTag.Equal,userId);
+        UserEntity result = appDaoService.querySingleEntity(UserEntity.class,filter);
+        result.setPkTimes(result.getPkTimes() + 1);
+        appDaoService.updateEntity(result);
 
     }
 }

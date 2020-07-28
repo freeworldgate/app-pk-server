@@ -1,5 +1,6 @@
 package com.union.app.api.pk.消息推送;
 
+import com.union.app.common.config.AppConfigService;
 import com.union.app.common.微信.WeChatUtil;
 import com.union.app.domain.pk.PkActive;
 import com.union.app.domain.user.User;
@@ -7,6 +8,7 @@ import com.union.app.entity.pk.PkActiveEntity;
 import com.union.app.entity.pk.PkCashierEntity;
 import com.union.app.entity.pk.PkCashierFeeCodeEntity;
 import com.union.app.entity.pk.PkCashierGroupEntity;
+import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.*;
 import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.service.AppService;
@@ -49,7 +51,7 @@ public class 上传群二维码 {
      */
     @RequestMapping(value = "/uploadGroupCode", method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse 上传群二维码(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId,@RequestParam("url") String url,@RequestParam("type") int type) throws IOException {
+    public AppResponse 上传群二维码(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId,@RequestParam("url") String url,@RequestParam("type") int type) throws IOException, AppException {
 
         List<DataSet> dataSets = new ArrayList<>();
         Date currentDate = new Date();
@@ -94,7 +96,7 @@ public class 上传群二维码 {
         {
             appService.上传打赏截图(pkId,userId,url);
 
-            PkActiveEntity pkActiveEntity = appService.查询打赏截图(pkId);
+            PkActiveEntity pkActiveEntity = appService.查询PK激活信息(pkId);
             dataSet4 = new DataSet("title", "打赏截图");
             if(ObjectUtils.isEmpty(pkActiveEntity) || StringUtils.isBlank(pkActiveEntity.getScreenCutUrl()))
             {
@@ -141,13 +143,24 @@ public class 上传群二维码 {
         User creator = pkService.queryPkCreator(pkId);
         DataSet dataSet1 = new DataSet("creator",creator);
         DataSet dataSet5 = new DataSet("mode", "show");
-
-
         DataSet dataSet2 = new DataSet("imgUrl","");
         DataSet dataSet3 = new DataSet("mediaId","");
         DataSet dataSet4 = new DataSet("title","");
         DataSet dataSet6 = new DataSet("t1","");
         DataSet dataSet7 = new DataSet("t2","");
+
+        boolean download = AppConfigService.getConfigAsBoolean(ConfigItem.系统当前是否客服模式);
+        dataSets.add(new DataSet("download",download));
+        if(download)
+        {
+            dataSets.add(new DataSet("buttonStr","获取图片"));
+        }
+        else
+        {
+            dataSets.add(new DataSet("buttonStr","保存图片到相册"));
+        }
+
+
 
 
         if(type == 1)
@@ -207,7 +220,7 @@ public class 上传群二维码 {
         {
             //查询打赏截图。
 
-            PkActiveEntity pkActiveEntity = appService.查询打赏截图(pkId);
+            PkActiveEntity pkActiveEntity = appService.查询PK激活信息(pkId);
             dataSet4 = new DataSet("title", "打赏截图");
             if(ObjectUtils.isEmpty(pkActiveEntity) || StringUtils.isBlank(pkActiveEntity.getScreenCutUrl()))
             {

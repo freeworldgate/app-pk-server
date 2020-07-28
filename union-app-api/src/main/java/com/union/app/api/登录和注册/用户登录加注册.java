@@ -7,6 +7,7 @@ import com.union.app.dao.spi.filter.EntityFilterChain;
 import com.union.app.domain.wechat.UserInfo;
 import com.union.app.domain.wechat.WeChatUser;
 import com.union.app.entity.用户.UserEntity;
+import com.union.app.entity.用户.support.UserPostStatu;
 import com.union.app.plateform.response.ApiResponse;
 import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.user.UserService;
@@ -57,6 +58,8 @@ public class 用户登录加注册 {
             userEntity.setSessionId(weChatUser.getSession_key());
             userEntity.setAppName(appName);
             userEntity.setUserId(openId);
+            userEntity.setPkTimes(0);
+            userEntity.setUserPostStatu(UserPostStatu.未打榜);
 //            if(userService.isUserVip(fromUser)){userEntity.setUserType(UserType.重点用户);}else{userEntity.setUserType(UserType.普通用户);}
             convert(userInfo,userEntity);
             userService.新增注册用户(userEntity,appName,pkId,userEntity.getUserId(),fromUser);

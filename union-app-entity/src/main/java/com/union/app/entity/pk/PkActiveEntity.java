@@ -22,6 +22,8 @@ public class PkActiveEntity {
 
     private String pkId;
 
+    private String userId;
+
     private String cashierId;
 
     String groupId;
@@ -37,8 +39,8 @@ public class PkActiveEntity {
 
     private long screenCutTime;
 
-
-
+    @Enumerated(EnumType.STRING)
+    ActiveStatu statu;
 
 
 

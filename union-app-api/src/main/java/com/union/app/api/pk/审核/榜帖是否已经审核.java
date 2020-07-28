@@ -61,7 +61,7 @@ public class 榜帖是否已经审核 {
             PostEntity postEntity    = postService.查询帖子ById(pkId,postId);
             if(  (postEntity.getStatu() == PostStatu.审核中) && StringUtils.isBlank(dynamicService.查询审核用户(pkId,postEntity.getPostId())))
             {
-                return AppResponse.buildResponse(PageAction.执行处理器("noApprove",""));
+                return AppResponse.buildResponse(PageAction.执行处理器("noApprove","/pages/pk/editApproveComment/editApproveComment?pkId=" + pkId + "&postId=" + postEntity.getPostId()));
             }
             else
             {
@@ -84,7 +84,8 @@ public class 榜帖是否已经审核 {
             PostEntity postEntity    = postService.查询帖子ById(pkId,postId);
             if(  (postEntity.getStatu() == PostStatu.审核中))
             {
-                if(StringUtils.isBlank(dynamicService.查询审核用户(pkId,postEntity.getPostId())))
+                boolean approve = StringUtils.isBlank(dynamicService.查询审核用户(pkId,postEntity.getPostId()));
+                if(approve)
                 {
                     return AppResponse.buildResponse(PageAction.执行处理器("noApprove","/pages/pk/editApproveComment/editApproveComment?pkId=" + pkId + "&postId=" + postEntity.getPostId()));
                 }

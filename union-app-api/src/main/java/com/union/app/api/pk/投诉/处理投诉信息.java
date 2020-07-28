@@ -1,8 +1,10 @@
 package com.union.app.api.pk.投诉;
 
+import com.union.app.common.config.AppConfigService;
 import com.union.app.domain.pk.complain.Complain;
 import com.union.app.entity.pk.PostEntity;
 import com.union.app.entity.pk.PostStatu;
+import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.Level;
@@ -46,7 +48,7 @@ public class 处理投诉信息 {
         PostEntity postEntity = postService.查询用户帖(pkId,userId);
         if(ObjectUtils.isEmpty(postEntity))
         {
-            return AppResponse.buildResponse(PageAction.信息反馈框("提示","审核员名下没有你的榜帖，你无权投诉..."));
+            return AppResponse.buildResponse(PageAction.信息反馈框("提示","未发布你的榜帖，无权投诉..."));
         }
 
 
@@ -58,13 +60,27 @@ public class 处理投诉信息 {
         String approverId =  dynamicService.查询审核用户(pkId,postEntity.getPostId());
         if( StringUtils.isBlank(approverId))
         {
-            return AppResponse.buildResponse(PageAction.信息反馈框("提示","未转发审核群审核榜帖..."));
+            return AppResponse.buildResponse(PageAction.信息反馈框("提示","未转发审核群或审核已过期需要重新转发..."));
         }
-        complainService.添加投诉(pkId,userId);
+        if(dynamicService.审核等待时间过长(pkId,postEntity.getPostId()))
+        {
+            return AppResponse.buildResponse(PageAction.执行处理器("complain","审核时间已经超过" + AppConfigService.getConfigAsInteger(ConfigItem.榜帖可发起投诉的等待时间) +"分钟，确定投诉，虚假投诉将可能被封号,确定需要投诉榜主？"));
+        }
+        else
+        {
+
+            return AppResponse.buildResponse(PageAction.信息反馈框("未到投诉时间","按要求发布榜帖后，转发审核群后等待审核时间超过" +  AppConfigService.getConfigAsInteger(ConfigItem.榜帖可发起投诉的等待时间) + "分钟后方可投诉!"));
+
+        }
 
 
 
-        return AppResponse.buildResponse(PageAction.信息反馈框("提示","已收到您的投诉信息，审核员违反主题规则，我们会尽快处理..."));
+//
+//        complainService.添加投诉(pkId,userId);
+//
+//
+//
+//        return AppResponse.buildResponse(PageAction.信息反馈框("提示","已收到您的投诉信息，审核员违反主题规则，我们会尽快处理..."));
 
 
 
@@ -75,6 +91,22 @@ public class 处理投诉信息 {
 
 
 
+    @RequestMapping(path="/confirmComplain",method = RequestMethod.GET)
+    @Transactional(rollbackOn = Exception.class)
+    public AppResponse confirmComplain(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId) throws AppException, IOException {
+
+
+
+
+        complainService.添加投诉(pkId,userId);
+
+
+
+        return AppResponse.buildResponse(PageAction.信息反馈框("提示","已收到您的投诉信息，如若榜主违反主题规则，我们会尽快处理..."));
+
+
+
+    }
 
 
 

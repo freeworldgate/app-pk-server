@@ -204,6 +204,11 @@ public class PkService {
 
         }
         daoService.insertEntity(pkEntity);
+
+        userService.创建榜次数加1(userId);
+
+
+
         return pkId;
     }
 

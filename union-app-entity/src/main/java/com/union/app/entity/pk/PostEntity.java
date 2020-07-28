@@ -38,6 +38,9 @@ public class PostEntity {
 
     private String imgUrls;
 
+    private long shareTime;
 
+    @Enumerated(EnumType.STRING)
+    private ApproveStatu approveStatu;
 
 }

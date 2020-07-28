@@ -72,7 +72,7 @@ public class 进入PK {
         {
             return AppResponse.buildResponse(PageAction.执行处理器("group","/pages/pk/message/message?pkId=" + pkId + "&type=1" + "&userId=" + userId));
         }
-        //遗传用户创建者未更新今日审核群
+        //遗传用户创建者未更新今日公告
         if(pkService.isPkCreator(pkId,userId) && !pkService.是否更新今日公告(pkId) &&  userService.canUserView(userId))
         {
             return AppResponse.buildResponse(PageAction.执行处理器("message","/pages/pk/messageInfo/messageInfo?pkId=" + pkId));
