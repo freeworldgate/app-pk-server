@@ -173,15 +173,15 @@ public class ApproveService {
 
         ApproveDynamic approveDynamic = new ApproveDynamic();
 
-        UserIntegral userIntegral =  dynamicService.查询审核用户信息(pkId,userId,date);
-
-        approveDynamic.setYesterdayRank(userIntegral.getIndex());
-
-        approveDynamic.setYesterdayScore(userIntegral.getFollow() + userIntegral.getShare());
-
-        approveDynamic.setApproving(userIntegral.getApproving());
-
-        approveDynamic.setApproved(userIntegral.getApproved());
+//        UserIntegral userIntegral =  dynamicService.查询审核用户信息(pkId,userId,date);
+//
+//        approveDynamic.setYesterdayRank(userIntegral.getIndex());
+//
+//        approveDynamic.setYesterdayScore(userIntegral.getFollow() + userIntegral.getShare());
+//
+//        approveDynamic.setApproving(userIntegral.getApproving());
+//
+//        approveDynamic.setApproved(userIntegral.getApproved());
 
         return approveDynamic;
     }
@@ -268,8 +268,8 @@ public class ApproveService {
 
     public int 今日打榜总人数(String pkId,Date date) {
 
-        return dynamicService.今日打榜总人数(pkId,date);
-
+//        return dynamicService.今日打榜总人数(pkId,date);
+        return 0;
     }
 
 

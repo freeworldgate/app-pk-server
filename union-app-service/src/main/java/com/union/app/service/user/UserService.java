@@ -86,8 +86,10 @@ public class UserService {
         int mode = AppConfigService.getConfigAsInteger(ConfigItem.系统展示的模式);
         if(mode == 2)
         {
+            if(!this.isUserExist(userId)){return false;}
             //运营模式
             User user = this.queryUser(userId);
+
             if(UserType.重点用户.getType() == user.getUserType()){return true;}
             else{return false;}
 

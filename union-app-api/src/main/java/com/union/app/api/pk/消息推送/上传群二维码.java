@@ -149,6 +149,7 @@ public class 上传群二维码 {
         DataSet dataSet6 = new DataSet("t1","");
         DataSet dataSet7 = new DataSet("t2","");
 
+
         boolean download = AppConfigService.getConfigAsBoolean(ConfigItem.系统当前是否客服模式);
         dataSets.add(new DataSet("download",download));
         if(download)
@@ -251,6 +252,7 @@ public class 上传群二维码 {
         dataSets.add(dataSet5);
         dataSets.add(dataSet6);
         dataSets.add(dataSet7);
+        dataSets.add(new DataSet("upload","上传"));
 
 
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));

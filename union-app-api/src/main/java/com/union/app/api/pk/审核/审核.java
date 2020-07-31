@@ -79,24 +79,24 @@ public class 审核 {
 
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
     }
-    @RequestMapping(path="/doApprove",method = RequestMethod.GET)
-    @Transactional(rollbackOn = Exception.class)
-    public AppResponse approvePost(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId,@RequestParam("userId") String userId) throws AppException, IOException {
-
-
-
-
-        if(!pkService.isPkCreator(pkId,userId))
-        {
-            throw AppException.buildException(PageAction.消息级别提示框(Level.错误消息,"非榜主用户"));
-        }
-
-        postService.上线帖子(pkId,postId);
-        dynamicService.已审核(pkId,postId);
-
-
-        return AppResponse.buildResponse(PageAction.执行处理器("success",""));
-    }
+//    @RequestMapping(path="/doApprove",method = RequestMethod.GET)
+//    @Transactional(rollbackOn = Exception.class)
+//    public AppResponse approvePost(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId,@RequestParam("userId") String userId) throws AppException, IOException {
+//
+//
+//
+//
+//        if(!pkService.isPkCreator(pkId,userId))
+//        {
+//            throw AppException.buildException(PageAction.消息级别提示框(Level.错误消息,"非榜主用户"));
+//        }
+//
+//        postService.上线帖子(pkId,postId);
+//        dynamicService.已审核(pkId,postId);
+//
+//
+//        return AppResponse.buildResponse(PageAction.执行处理器("success",""));
+//    }
 
 
 }

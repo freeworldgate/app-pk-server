@@ -56,6 +56,8 @@ public class 查询单个POST {
 
         dataSets.add(dataSet1);
         dataSets.add(dataSet2);
+        dataSets.add(new DataSet("t1","修改标题"));
+        dataSets.add(new DataSet("t2","留言"));
 
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
     }

@@ -137,33 +137,33 @@ public class DynamicService {
 
 
 
+//
+//
+//    public int 获取收藏积分(String pkId,String userId){
+//        return (int)(redisMapService.getIntValue(CacheKeyName.打榜Follow(pkId),userId) * AppConfigService.getConfigAsInteger(常量值.收藏一次的积分,100));
+//    }
+//    public void 收藏积分加1(String pkId,String userId){
+//        redisMapService.valueIncr(CacheKeyName.打榜Follow(pkId),userId);
+//    }
+//    public void 收藏积分减1(String pkId,String userId){
+//        redisMapService.valueDecr(CacheKeyName.打榜Follow(pkId),userId) ;
+//    }
+//
+//    public int 获取今日分享积分(String pkId,String userId){ return (int)redisMapService.getIntValue(CacheKeyName.打榜Share(pkId),userId) * AppConfigService.getConfigAsInteger(常量值.分享一次的积分,100) ;}
+//
+//
+//    public int 获取用户排名(String pkId, String userId) {
+//        return (int)redisSortSetService.getIndex(CacheKeyName.打榜排名列表(pkId),userId);
+//    }
 
 
-    public int 获取收藏积分(String pkId,String userId){
-        return (int)(redisMapService.getIntValue(CacheKeyName.打榜Follow(pkId),userId) * AppConfigService.getConfigAsInteger(常量值.收藏一次的积分,100));
-    }
-    public void 收藏积分加1(String pkId,String userId){
-        redisMapService.valueIncr(CacheKeyName.打榜Follow(pkId),userId);
-    }
-    public void 收藏积分减1(String pkId,String userId){
-        redisMapService.valueDecr(CacheKeyName.打榜Follow(pkId),userId) ;
-    }
-
-    public int 获取今日分享积分(String pkId,String userId){ return (int)redisMapService.getIntValue(CacheKeyName.打榜Share(pkId),userId) * AppConfigService.getConfigAsInteger(常量值.分享一次的积分,100) ;}
-
-
-    public int 获取用户排名(String pkId, String userId) {
-        return (int)redisSortSetService.getIndex(CacheKeyName.打榜排名列表(pkId),userId);
-    }
-
-
-    //有序集合-按照时间排序
-    public void 更新今日用户排名(String pkId,String userId,Date date){
-        if(pkService.isPkCreator(pkId,userId)){return;}
-        double score = (获取收藏积分(pkId,userId) + 获取今日分享积分(pkId,userId)) * -1.0D;
-        redisSortSetService.addEle(CacheKeyName.打榜排名列表(pkId),userId,score);
-
-    }
+//    //有序集合-按照时间排序
+//    public void 更新今日用户排名(String pkId,String userId,Date date){
+//        if(pkService.isPkCreator(pkId,userId)){return;}
+//        double score = (获取收藏积分(pkId,userId) + 获取今日分享积分(pkId,userId)) * -1.0D;
+//        redisSortSetService.addEle(CacheKeyName.打榜排名列表(pkId),userId,score);
+//
+//    }
     public String 查询审核用户(String pkId, String postId) {
 
         if(redisSortSetService.isMember(CacheKeyName.榜主审核中列表(pkId) ,postId)){
@@ -236,7 +236,7 @@ public class DynamicService {
 
 
 
-    private boolean 是否是预备审核员(String pkId, String userId) { return redisSortSetService.isMember(CacheKeyName.预设审核员列表(pkId),userId); }
+//    private boolean 是否是预备审核员(String pkId, String userId) { return redisSortSetService.isMember(CacheKeyName.预设审核员列表(pkId),userId); }
 
 
 
@@ -285,8 +285,8 @@ public class DynamicService {
 
     public void 新增注册用户(String appName, String pkId,String userId, String fromUser,Date date) {
         if(StringUtils.isBlank(fromUser)){return;}
-        this.mapValueIncr(DynamicItem.PKUSER今日分享次数,pkId,fromUser);
-        this.更新今日用户排名(pkId,fromUser,date);
+//        this.mapValueIncr(DynamicItem.PKUSER今日分享次数,pkId,fromUser);
+//        this.更新今日用户排名(pkId,fromUser,date);
     }
 
 
@@ -306,71 +306,18 @@ public class DynamicService {
 
     public void 已审核(String pkId, String postId) {
 
-
-
-
             redisSortSetService.addEle(CacheKeyName.榜主已审核列表(pkId),postId,System.currentTimeMillis() * -1D);
             redisSortSetService.remove(CacheKeyName.榜主审核中列表(pkId),postId);
-
-
+            this.更新PK排名(pkId);
 
     }
 
+        //有序集合-按照时间排序
+    public void 更新PK排名(String pkId){
+        int size = redisSortSetService.size(CacheKeyName.榜主已审核列表(pkId));
+        double score = size * -1.0D;
+        redisSortSetService.addEle(CacheKeyName.PK排名(),pkId,score);
 
-    public int 今日打榜总人数(String pkId,Date date) { return redisSortSetService.size(CacheKeyName.打榜排名列表(pkId)); }
-
-    public boolean 添加预备审核员(String pkId,String userId) {
-        boolean result = false;
-        synchronized (pkId)
-        {
-
-            if(this.已设置预审核员数量(pkId) < approveService.计算管理员设置人数(pkId, new Date()))
-            {
-                result =  redisSortSetService.addEle(CacheKeyName.预设审核员列表(pkId),userId,System.currentTimeMillis() * 1D);
-            }
-        }
-        return result;
-    }
-
-    public void 删除预备审核员(String pkId,String userId) { redisSortSetService.remove(CacheKeyName.预设审核员列表(pkId),userId); }
-
-
-    /**
-     * 打榜排名信息
-     * @param pkId
-     * @param page
-     * @param date
-     * @return
-     */
-    public List<UserIntegral> queryUserIntegrals(String pkId,int page,Date date){
-        List<UserIntegral> userIntegrals = new ArrayList<>();
-        Set<String> pageList = redisSortSetService.queryPage(CacheKeyName.打榜排名列表(pkId),page);
-        for(String value : pageList){
-            UserIntegral userIntegral = 查询用户打榜信息(pkId,value);
-            userIntegrals.add(userIntegral);
-        }
-        userIntegrals.sort(new Comparator<UserIntegral>() {
-            @Override
-            public int compare(UserIntegral o1, UserIntegral o2) {
-                return o1.getIndex() - o2.getIndex();
-            }
-        });
-        return userIntegrals;
-    }
-
-
-    public UserIntegral 查询用户打榜信息(String pkId,String userId){
-        UserIntegral userIntegral = new UserIntegral();
-        int sortIndex = this.获取用户排名(pkId,userId);
-        int follow = this.获取收藏积分(pkId,userId);
-        int share = this.获取今日分享积分(pkId,userId);
-        userIntegral.setIndex(sortIndex);
-        userIntegral.setShare(share);
-        userIntegral.setFollow(follow);
-        userIntegral.setUser(userService.queryUser(userId));
-        userIntegral.setCreator(pkService.isPkCreator(pkId,userId));
-        userIntegral.setSelectPreApprover(this.是否是预备审核员(pkId,userId));
-        return userIntegral;
     }
 
 
@@ -380,43 +327,99 @@ public class DynamicService {
 
 
 
+//    public int 今日打榜总人数(String pkId,Date date) { return redisSortSetService.size(CacheKeyName.打榜排名列表(pkId)); }
+
+//    public boolean 添加预备审核员(String pkId,String userId) {
+//        boolean result = false;
+//        synchronized (pkId)
+//        {
+//
+//            if(this.已设置预审核员数量(pkId) < approveService.计算管理员设置人数(pkId, new Date()))
+//            {
+//                result =  redisSortSetService.addEle(CacheKeyName.预设审核员列表(pkId),userId,System.currentTimeMillis() * 1D);
+//            }
+//        }
+//        return result;
+//    }
+//
+//    public void 删除预备审核员(String pkId,String userId) { redisSortSetService.remove(CacheKeyName.预设审核员列表(pkId),userId); }
+
+
+//    public List<UserIntegral> queryUserIntegrals(String pkId,int page,Date date){
+//        List<UserIntegral> userIntegrals = new ArrayList<>();
+//        Set<String> pageList = redisSortSetService.queryPage(CacheKeyName.打榜排名列表(pkId),page);
+//        for(String value : pageList){
+//            UserIntegral userIntegral = 查询用户打榜信息(pkId,value);
+//            userIntegrals.add(userIntegral);
+//        }
+//        userIntegrals.sort(new Comparator<UserIntegral>() {
+//            @Override
+//            public int compare(UserIntegral o1, UserIntegral o2) {
+//                return o1.getIndex() - o2.getIndex();
+//            }
+//        });
+//        return userIntegrals;
+//    }
+
+
+//    public UserIntegral 查询用户打榜信息(String pkId,String userId){
+//        UserIntegral userIntegral = new UserIntegral();
+//        int sortIndex = this.获取用户排名(pkId,userId);
+//        int follow = this.获取收藏积分(pkId,userId);
+//        int share = this.获取今日分享积分(pkId,userId);
+//        userIntegral.setIndex(sortIndex);
+//        userIntegral.setShare(share);
+//        userIntegral.setFollow(follow);
+//        userIntegral.setUser(userService.queryUser(userId));
+//        userIntegral.setCreator(pkService.isPkCreator(pkId,userId));
+//        userIntegral.setSelectPreApprover(this.是否是预备审核员(pkId,userId));
+//        return userIntegral;
+//    }
 
 
 
-    public UserIntegral 查询审核用户信息(String pkId, String userId,Date date) {
-        UserIntegral userIntegral = null;
-        if(pkService.isPkCreator(pkId,userId))
-        {
-            userIntegral = new UserIntegral();
-            userIntegral.setCreator(true);
-            userIntegral.setUser(pkService.queryPkCreator(pkId));
-            userIntegral.setSelect(1);
-            userIntegral.setApproved(redisSortSetService.size(CacheKeyName.榜主已审核列表(pkId)));
-            userIntegral.setApproving(redisSortSetService.size(CacheKeyName.榜主审核中列表(pkId)));
-
-        }
-        else
-        {
-            userIntegral = redisMapService.getValue(CacheKeyName.所有审核人(pkId),userId,UserIntegral.class);
-            if(!ObjectUtils.isEmpty(userIntegral)){
-                userIntegral.setApproved(redisSortSetService.size(CacheKeyName.审核员已审核列表(pkId,date,userIntegral.getUser().getUserId())));
-                userIntegral.setApproving(redisSortSetService.size(CacheKeyName.审核员审核中列表(pkId,date,userIntegral.getUser().getUserId())));
-            }
-
-        }
-        return userIntegral;
-    }
 
 
-    public List<UserIntegral> 查询预备审核用户列表(String pkId,Date date) {
-        List<UserIntegral> userIntegrals = new ArrayList<>();
-        Set<String> userIds = redisSortSetService.members(CacheKeyName.预设审核员列表(pkId));
-        for(String userId:userIds){
-            UserIntegral userIntegral = 查询用户打榜信息(pkId,userId);
-            userIntegrals.add(userIntegral);
-        }
-        return userIntegrals;
-    }
+
+
+
+
+
+
+//    public UserIntegral 查询审核用户信息(String pkId, String userId,Date date) {
+//        UserIntegral userIntegral = null;
+//        if(pkService.isPkCreator(pkId,userId))
+//        {
+//            userIntegral = new UserIntegral();
+//            userIntegral.setCreator(true);
+//            userIntegral.setUser(pkService.queryPkCreator(pkId));
+//            userIntegral.setSelect(1);
+//            userIntegral.setApproved(redisSortSetService.size(CacheKeyName.榜主已审核列表(pkId)));
+//            userIntegral.setApproving(redisSortSetService.size(CacheKeyName.榜主审核中列表(pkId)));
+//
+//        }
+//        else
+//        {
+//            userIntegral = redisMapService.getValue(CacheKeyName.所有审核人(pkId),userId,UserIntegral.class);
+//            if(!ObjectUtils.isEmpty(userIntegral)){
+//                userIntegral.setApproved(redisSortSetService.size(CacheKeyName.审核员已审核列表(pkId,date,userIntegral.getUser().getUserId())));
+//                userIntegral.setApproving(redisSortSetService.size(CacheKeyName.审核员审核中列表(pkId,date,userIntegral.getUser().getUserId())));
+//            }
+//
+//        }
+//        return userIntegral;
+//    }
+//
+//
+//    public List<UserIntegral> 查询预备审核用户列表(String pkId,Date date) {
+//        List<UserIntegral> userIntegrals = new ArrayList<>();
+//        Set<String> userIds = redisSortSetService.members(CacheKeyName.预设审核员列表(pkId));
+//        for(String userId:userIds){
+//            UserIntegral userIntegral = 查询用户打榜信息(pkId,userId);
+//            userIntegrals.add(userIntegral);
+//        }
+//        return userIntegrals;
+//    }
 
 
 
@@ -505,18 +508,18 @@ public class DynamicService {
 
 
 
-    private int 已设置预审核员数量(String pkId) { return redisSortSetService.size(CacheKeyName.预设审核员列表(pkId)); }
+//    private int 已设置预审核员数量(String pkId) { return redisSortSetService.size(CacheKeyName.预设审核员列表(pkId)); }
 
-    public boolean 用户是否为今日审核员(String pkId, String approveUserId,Date date) {
-        User user = pkService.queryPkCreator(pkId);
-        if(StringUtils.equals(user.getUserId(),approveUserId))
-        {
-            return true;
-        }
-        return false;
-
-
-    }
+//    public boolean 用户是否为今日审核员(String pkId, String approveUserId,Date date) {
+//        User user = pkService.queryPkCreator(pkId);
+//        if(StringUtils.equals(user.getUserId(),approveUserId))
+//        {
+//            return true;
+//        }
+//        return false;
+//
+//
+//    }
 
 
 
@@ -526,7 +529,7 @@ public class DynamicService {
         List<Post> posts = new ArrayList<>();
         List<String> postIds = new ArrayList<>();
 
-        Set<String> pageList = redisSortSetService.queryPage(CacheKeyName.榜主已审核列表(pkId),page);
+        List<String> pageList = redisSortSetService.queryPage(CacheKeyName.榜主已审核列表(pkId),page);
         postIds.addAll(pageList);
 
 
@@ -538,7 +541,7 @@ public class DynamicService {
             }
         }
 
-        if(AppConfigService.getConfigAsBoolean(ConfigItem.对所有用户展示审核系统) || userService.canUserView(userId))
+        if(userService.canUserView(userId))
         {
             for(Post post:posts)
             {
@@ -560,7 +563,7 @@ public class DynamicService {
         List<Post> posts = new ArrayList<>();
         List<String> postIds = new ArrayList<>();
 
-        Set<String> pageList = redisSortSetService.queryPage(CacheKeyName.榜主审核中列表(pkId),page);
+        List<String> pageList = redisSortSetService.queryPage(CacheKeyName.榜主审核中列表(pkId),page);
         postIds.addAll(pageList);
 
         for(String postId:postIds)
@@ -577,30 +580,30 @@ public class DynamicService {
 
     }
 
-    public int 已审核订单数量(String pkId, String approverUserId,Date date) {
-        if(pkService.isPkCreator(pkId,approverUserId))
-        {
-            return redisSortSetService.size(CacheKeyName.榜主已审核列表(pkId));
-        }
-        else
-        {
-            return redisSortSetService.size(CacheKeyName.审核员已审核列表(pkId,date,approverUserId));
-        }
-
-
-    }
-
-    public int 审核中订单数量(String pkId, String approverUserId,Date date) {
-        if(pkService.isPkCreator(pkId,approverUserId))
-        {
-            return redisSortSetService.size(CacheKeyName.榜主审核中列表(pkId));
-        }
-        else
-        {
-            return redisSortSetService.size(CacheKeyName.审核员审核中列表(pkId,date,approverUserId));
-
-        }
-    }
+//    public int 已审核订单数量(String pkId, String approverUserId,Date date) {
+//        if(pkService.isPkCreator(pkId,approverUserId))
+//        {
+//            return redisSortSetService.size(CacheKeyName.榜主已审核列表(pkId));
+//        }
+//        else
+//        {
+//            return redisSortSetService.size(CacheKeyName.审核员已审核列表(pkId,date,approverUserId));
+//        }
+//
+//
+//    }
+//
+//    public int 审核中订单数量(String pkId, String approverUserId,Date date) {
+//        if(pkService.isPkCreator(pkId,approverUserId))
+//        {
+//            return redisSortSetService.size(CacheKeyName.榜主审核中列表(pkId));
+//        }
+//        else
+//        {
+//            return redisSortSetService.size(CacheKeyName.审核员审核中列表(pkId,date,approverUserId));
+//
+//        }
+//    }
 
     public String 用户拉取群组记录(String pkId, String fromUserName) {
 
@@ -640,19 +643,19 @@ public class DynamicService {
 
     }
 
-    public String 查询今日审核员数量(String pkId) {
-
-        int size = redisMapService.size(CacheKeyName.所有审核人(pkId));
-        return String.valueOf(size);
-
-    }
-
-    public String 查询今日打榜用户数量(String pkId) {
-        int size = redisSortSetService.size(CacheKeyName.打榜排名列表(pkId));
-        return String.valueOf(size);
-
-
-    }
+//    public String 查询今日审核员数量(String pkId) {
+//
+//        int size = redisMapService.size(CacheKeyName.所有审核人(pkId));
+//        return String.valueOf(size);
+//
+//    }
+//
+//    public String 查询今日打榜用户数量(String pkId) {
+//        int size = redisSortSetService.size(CacheKeyName.打榜排名列表(pkId));
+//        return String.valueOf(size);
+//
+//
+//    }
 
 
 
@@ -682,22 +685,22 @@ public class DynamicService {
 
 
 
-    public String 查询PK公告消息Id(String pkId) {
-        return redisMapService.getStringValue(CacheKeyName.审核消息ID(),pkId);
+//    public String 查询PK公告消息Id(String pkId) {
+//        return redisMapService.getStringValue(CacheKeyName.审核消息ID(),pkId);
+//
+//    }
+//    public void 设置PK公告消息Id(String pkId, String messageId) {
+//        redisMapService.setStringValue(CacheKeyName.审核消息ID(),pkId,messageId);
+//    }
 
-    }
-    public void 设置PK公告消息Id(String pkId, String messageId) {
-        redisMapService.setStringValue(CacheKeyName.审核消息ID(),pkId,messageId);
-    }
-
-    public String 获取需要更新公告的PKId() {
-        return redisTemplate.opsForSet().pop(CacheKeyName.更新公告的PKId列表());
-
-    }
-
-    public void 添加需要更新MediaId的PKId(String pkId) {
-        redisTemplate.opsForSet().add(CacheKeyName.更新公告的PKId列表(),pkId);
-    }
+//    public String 获取需要更新公告的PKId() {
+//        return redisTemplate.opsForSet().pop(CacheKeyName.更新公告的PKId列表());
+//
+//    }
+//
+//    public void 添加需要更新MediaId的PKId(String pkId) {
+//        redisTemplate.opsForSet().add(CacheKeyName.更新公告的PKId列表(),pkId);
+//    }
 
 
 }

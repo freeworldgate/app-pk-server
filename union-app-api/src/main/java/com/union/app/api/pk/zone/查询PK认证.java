@@ -72,25 +72,7 @@ public class 查询PK认证 {
     public AppResponse 查询单个PK(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId) throws AppException, IOException {
 
 
-
-
-//        PkDetail pkDetail = pkService.querySinglePk(pkId);
-//        ApproveMessage approveMessage = null;
-//        List<PkCashier> pkCashiers = null;
-//
-//        if(userService.isUserVip(userId))
-//        {
-//
-//            approveMessage = approveService.查询PK公告消息(pkId);
-//            pkCashiers = appService.queryCashiers(pkId);
-//        }
-//        pkDetail.setApproveMessage(approveMessage);
-//
-//
-//
-//        appService.vip包装(pkDetail,userId,"");
-
-        if(AppConfigService.getConfigAsBoolean(ConfigItem.对所有用户展示审核系统) || userService.canUserView(userId)) {
+        if(userService.canUserView(userId)) {
 
 
             List<DataSet> dataSets = new ArrayList<>();
@@ -102,6 +84,11 @@ public class 查询PK认证 {
             dataSets.add(new DataSet("link1Name", "激活群"));
             dataSets.add(new DataSet("link1Icon", "/images/group1.png"));
             dataSets.add(new DataSet("link1Url", "/pages/pk/message/message?pkId=" + pkId + "&userId=" + userId + "&type=2"));
+            dataSets.add(new DataSet("buttonName", "转发审核群"));
+            dataSets.add(new DataSet("buttonType", "share"));
+            dataSets.add(new DataSet("activeCode", "申请激活码"));
+
+
 
             if(userService.canUserView(userId)) {
 

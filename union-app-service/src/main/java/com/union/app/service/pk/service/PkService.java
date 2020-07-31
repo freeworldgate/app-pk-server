@@ -94,8 +94,8 @@ public class PkService {
         pkDetail.setTopic(new String(pk.getTopic(),"UTF-8"));
         pkDetail.setUser(userService.queryUser(pk.getUserId()));
         pkDetail.setWatchWord(new String(pk.getWatchWord(),"UTF-8"));
-        pkDetail.setTotalApprover(new KeyNameValue(1,dynamicService.查询今日审核员数量(pkId)));
-        pkDetail.setTotalSort(new KeyNameValue(2,dynamicService.查询今日打榜用户数量(pkId)));
+//        pkDetail.setTotalApprover(new KeyNameValue(1,dynamicService.查询今日审核员数量(pkId)));
+//        pkDetail.setTotalSort(new KeyNameValue(2,dynamicService.查询今日打榜用户数量(pkId)));
         pkDetail.setTime(TimeUtils.translateTime(pk.getCreateTime()));
         pkDetail.setInvite(new KeyNameValue(pk.getIsInvite().getStatu(),pk.getIsInvite().getStatuStr()));
         pkDetail.setPkStatu(ObjectUtils.isEmpty(pk.getAlbumStatu())?new KeyNameValue(PkStatu.审核中.getStatu(),PkStatu.审核中.getStatuStr()):new KeyNameValue(pk.getAlbumStatu().getStatu(),pk.getAlbumStatu().getStatuStr()));
@@ -194,7 +194,8 @@ public class PkService {
         pkEntity.setWatchWord(watchWord.getBytes("UTF-8"));
         pkEntity.setIsInvite(invite?InviteType.邀请:InviteType.公开);
         pkEntity.setUserId(userId);
-        if(!AppConfigService.getConfigAsBoolean(ConfigItem.对所有用户展示审核系统) && !userService.canUserView(userId))
+//        if(!AppConfigService.getConfigAsBoolean(ConfigItem.对所有用户展示审核系统) && !userService.canUserView(userId))
+        if(userService.canUserView(userId))
         {
             pkEntity.setAlbumStatu(PkStatu.已审核);
         }

@@ -53,7 +53,7 @@ public class 检查创建PK环境 {
     @RequestMapping(path="/checkPk",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
     public AppResponse checkPk(@RequestParam("userId") String userId) throws AppException, IOException {
-        if(AppConfigService.getConfigAsBoolean(ConfigItem.对所有用户展示审核系统) || userService.canUserView(userId))
+        if(userService.canUserView(userId))
         {
             UserPostStatu userPostStatu = userService.queryUserPostStatu(userId);
             if (userPostStatu != UserPostStatu.已打榜)
@@ -63,21 +63,24 @@ public class 检查创建PK环境 {
         }
 
         int times = userService.queryUserPkTimes(userId);
-        if(times == 0){
-            return AppResponse.buildResponse(PageAction.执行处理器("create","建榜将使用一张榜卷，共3榜卷，确定要建榜吗?"));
-        }
-        if(times == 1){
-            return AppResponse.buildResponse(PageAction.执行处理器("create","建榜将使用一张榜卷，共2张榜卷，确定要建榜吗?"));
-        }
-        if(times == 2){
-            return AppResponse.buildResponse(PageAction.执行处理器("create","建榜将使用一张榜卷，共1张榜卷，确定要建榜吗?"));
-        }
-        if(times > 2)
+        int maxPks = AppConfigService.getConfigAsInteger(ConfigItem.用户最大建榜数量);
+
+//        if(times == 0){
+//            return AppResponse.buildResponse(PageAction.执行处理器("create","建榜将使用一张榜卷，共3榜卷，确定要建榜吗?"));
+//        }
+//        if(times == 1){
+//            return AppResponse.buildResponse(PageAction.执行处理器("create","建榜将使用一张榜卷，共2张榜卷，确定要建榜吗?"));
+//        }
+//        if(times == 2){
+//            return AppResponse.buildResponse(PageAction.执行处理器("create","建榜将使用一张榜卷，共1张榜卷，确定要建榜吗?"));
+//        }
+        if(times > maxPks-1)
         {
-            return AppResponse.buildResponse(PageAction.信息反馈框("提示","三张榜卷已经用完"));
+            return AppResponse.buildResponse(PageAction.信息反馈框("提示",maxPks+"张榜卷已经用完"));
         }
 
 
+        return AppResponse.buildResponse(PageAction.执行处理器("create","建榜将使用一张榜卷，共" + (maxPks- times) + "张榜卷，确定要建榜吗?"));
 
 
 
@@ -85,7 +88,6 @@ public class 检查创建PK环境 {
 
 
 
-        return AppResponse.buildResponse(PageAction.执行处理器("success",""));
     }
 
 

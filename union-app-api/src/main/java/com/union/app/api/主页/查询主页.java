@@ -1,10 +1,12 @@
 package com.union.app.api.主页;
 
+import com.union.app.common.config.AppConfigService;
 import com.union.app.domain.pk.PkDetail;
 import com.union.app.domain.pk.Post;
 import com.union.app.domain.pk.审核.ApproveMessage;
 import com.union.app.domain.user.User;
 import com.union.app.domain.工具.RandomUtil;
+import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.DataSet;
@@ -100,6 +102,18 @@ public class 查询主页 {
 
         dataSets.add(new DataSet("pks",pkDetails));
         dataSets.add(new DataSet("page",1));
+
+        if( userService.canUserView(userId,fromUser))
+        {
+            dataSets.add(new DataSet("t1","进入榜单"));
+        }
+        else
+        {
+            dataSets.add(new DataSet("t1","进入相册"));
+        }
+
+
+
         User user = userService.queryUser(userId);
         if(ObjectUtils.isEmpty(user))
         {

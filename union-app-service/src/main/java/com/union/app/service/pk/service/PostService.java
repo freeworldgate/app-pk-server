@@ -98,7 +98,7 @@ public class PostService {
         }
         postEntity.setImgUrls(stringBuffer.toString());
         daoService.insertEntity(postEntity);
-        if(!AppConfigService.getConfigAsBoolean(ConfigItem.对所有用户展示审核系统) && !userService.canUserView(userId)) {
+        if(!userService.canUserView(userId)) {
             dynamicService.设置帖子的审核用户(pkId, postId);
         }
         return postId;
@@ -169,7 +169,7 @@ public class PostService {
         post.setDynamic(getPostDynamic(postEntity.getPostId(),postEntity.getPkId()));
         post.setPostImages(getPostImages(postEntity.getImgUrls()));
         post.setStatu(new KeyNameValue(postEntity.getStatu().getStatu(),postEntity.getStatu().getStatuStr()));
-        post.setUserIntegral(dynamicService.查询用户打榜信息(postEntity.getPkId(),postEntity.getUserId()));
+//        post.setUserIntegral(dynamicService.查询用户打榜信息(postEntity.getPkId(),postEntity.getUserId()));
         post.setSelfComment(ArrayUtils.isEmpty(postEntity.getSelfComment())? org.apache.commons.lang.StringUtils.EMPTY :new String(postEntity.getSelfComment(),"UTF-8"));
         post.setSelfCommentTime(TimeUtils.convertTime(postEntity.getSelfCommentTime()));
         return post;
@@ -400,7 +400,7 @@ public class PostService {
     public void 替换指定图片(String pkId, String postId, String imgUrl, int index, String userId,Date date) throws AppException {
 
         PostEntity postEntity = 查询帖子ById(pkId,postId);
-        if(!pkService.isPkCreator(pkId,userId)){
+        if(!org.apache.commons.lang.StringUtils.equals(postEntity.getUserId(),userId)){
             throw AppException.buildException(PageAction.消息级别提示框(Level.错误消息,"非法操作"));
         }
         String[] imgs = postEntity.getImgUrls().split(";");

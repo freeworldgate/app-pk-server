@@ -56,7 +56,7 @@ public class 榜帖是否已经审核 {
     @Transactional(rollbackOn = Exception.class)
     public AppResponse 查询审核信息(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId,@RequestParam("userId") String userId) throws AppException, IOException {
 
-        if(AppConfigService.getConfigAsBoolean(ConfigItem.对所有用户展示审核系统) || userService.canUserView(userId))
+        if( userService.canUserView(userId))
         {
             PostEntity postEntity    = postService.查询帖子ById(pkId,postId);
             if(  (postEntity.getStatu() == PostStatu.审核中) && StringUtils.isBlank(dynamicService.查询审核用户(pkId,postEntity.getPostId())))
@@ -76,7 +76,7 @@ public class 榜帖是否已经审核 {
     @Transactional(rollbackOn = Exception.class)
     public AppResponse 请求审核(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId,@RequestParam("userId") String userId) throws AppException, IOException {
 
-        if(AppConfigService.getConfigAsBoolean(ConfigItem.对所有用户展示审核系统) || userService.canUserView(userId))
+        if( userService.canUserView(userId))
         {
             Date current = new Date();
 

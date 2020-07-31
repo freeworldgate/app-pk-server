@@ -10,10 +10,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class RedisSortSetService implements IRedisService {
@@ -22,11 +19,13 @@ public class RedisSortSetService implements IRedisService {
     private RedisTemplate<String, String> redisTemplate;
 
 
-    public Set<String> queryPage(String key,int page){
-        Set<String> pageList = new HashSet<>();
-        Set<String> sorts = redisTemplate.opsForZSet().range(key,  page * 30,(page+1) * 30 - 1);
+    public List<String> queryPage(String key,int page){
+        List<String> pageList = new ArrayList<>();
+        Set<ZSetOperations.TypedTuple<String>> sorts = redisTemplate.opsForZSet().rangeWithScores(key,  page * 30,(page+1) * 30 - 1);
         if(!CollectionUtils.isEmpty(sorts)){
-            pageList.addAll(sorts);
+            for(ZSetOperations.TypedTuple<String> type:sorts){
+                pageList.add(type.getValue());
+            }
         }
         return pageList;
     }

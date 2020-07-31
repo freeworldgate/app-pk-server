@@ -66,7 +66,7 @@ public class 一次性任务 {
 
         PostEntity postEntity = postService.查询用户帖(pkId,userId);
 
-        if(AppConfigService.getConfigAsBoolean(ConfigItem.对所有用户展示审核系统) || userService.canUserView(userId)) {
+        if( userService.canUserView(userId)) {
 
             if(pkService.isPkCreator(pkId, userId))
             {

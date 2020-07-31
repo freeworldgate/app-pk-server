@@ -8,6 +8,7 @@ import com.union.app.domain.pk.PkDynamic.FactualInfo;
 import com.union.app.domain.pk.apply.KeyNameValue;
 import com.union.app.domain.pk.integral.UserIntegral;
 import com.union.app.domain.工具.RandomUtil;
+import com.union.app.entity.pk.PkEntity;
 import com.union.app.entity.pk.PostEntity;
 import com.union.app.entity.用户.UserEntity;
 import com.union.app.service.pk.dynamic.CacheKeyName;
@@ -43,8 +44,22 @@ public class TEST {
     @Resource
     private RedisTemplate<String, String> redisTemplate;
 
-    @Scheduled(cron = "* * * */5 * ?") // 每分钟执行一次  刷新整个PKID的所有PAGE
+    @Scheduled(cron = "* * * * */1 ?") // 每分钟执行一次  刷新整个PKID的所有PAGE
     public void work() throws Exception {
+
+//        EntityFilterChain filter = EntityFilterChain.newFilterChain(PkEntity.class);
+//        List<PkEntity> pks = daoService.queryEntities(PkEntity.class,filter);
+//
+//        for(PkEntity pk:pks)
+//        {
+//            dynamicService.更新PK排名(pk.getPkId());
+//
+//
+//
+//        }
+
+
+
 //
 //        EntityFilterChain filter1 = EntityFilterChain.newFilterChain(UserEntity.class).pageLimitFilter(1,20);
 //        List<UserEntity> userEntities = daoService.queryEntities(UserEntity.class,filter1);

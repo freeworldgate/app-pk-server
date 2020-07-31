@@ -150,8 +150,8 @@ public class AppService {
         pkDetail.setTopic(new String(pkEntity.getTopic(),"UTF-8"));
         pkDetail.setUser(userService.queryUser(pkEntity.getUserId()));
         pkDetail.setWatchWord(new String(pkEntity.getWatchWord(),"UTF-8"));
-        pkDetail.setTotalApprover(new KeyNameValue(1,dynamicService.查询今日审核员数量(pkEntity.getPkId())));
-        pkDetail.setTotalSort(new KeyNameValue(2,dynamicService.查询今日打榜用户数量(pkEntity.getPkId())));
+//        pkDetail.setTotalApprover(new KeyNameValue(1,dynamicService.查询今日审核员数量(pkEntity.getPkId())));
+//        pkDetail.setTotalSort(new KeyNameValue(2,dynamicService.查询今日打榜用户数量(pkEntity.getPkId())));
         pkDetail.setTime(TimeUtils.translateTime(pkEntity.getCreateTime()));
         pkDetail.setInvite(new KeyNameValue(pkEntity.getIsInvite().getStatu(),pkEntity.getIsInvite().getStatuStr()));
         pkDetail.setPkStatu(new KeyNameValue(ObjectUtils.isEmpty(pkEntity.getAlbumStatu())?PkStatu.审核中.getStatu():pkEntity.getAlbumStatu().getStatu(),ObjectUtils.isEmpty(pkEntity.getAlbumStatu())?PkStatu.审核中.getStatuStr():pkEntity.getAlbumStatu().getStatuStr()));
@@ -183,10 +183,10 @@ public class AppService {
                 vip包装(pkDetail,userId,fromUser);
 
             }
-
-
-
     }
+
+
+
     public void vip包装(PkDetail pkDetail,String userId, String fromUser) throws IOException {
         Date current = new Date();
 
@@ -195,7 +195,8 @@ public class AppService {
         }
         pkDetail.setApproved(redisSortSetService.size(CacheKeyName.榜主已审核列表(pkDetail.getPkId())) + "已审核");
         pkDetail.setApproving(redisSortSetService.size(CacheKeyName.榜主审核中列表(pkDetail.getPkId())) + "审核中");
-        if(AppConfigService.getConfigAsBoolean(ConfigItem.对所有用户展示审核系统) || userService.canUserView(userId,fromUser))
+//        if(AppConfigService.getConfigAsBoolean(ConfigItem.对所有用户展示审核系统) || userService.canUserView(userId,fromUser))
+        if( userService.canUserView(userId,fromUser))
         {
 
             GroupInfo groupInfo = new GroupInfo();
@@ -958,15 +959,15 @@ public class AppService {
 
 
 
-        boolean showButton = AppConfigService.getConfigAsBoolean(ConfigItem.对所有用户展示审核系统);
-
-        if(showButton)
-        {
-            return new PkButton(pkButtonType.getIcon(),pkButtonType.getName(),pkButtonType.getLinkMethod());
-
-        }
-        else
-        {
+//        boolean showButton = AppConfigService.getConfigAsBoolean(ConfigItem.对所有用户展示审核系统);
+//
+//        if(showButton)
+//        {
+//            return new PkButton(pkButtonType.getIcon(),pkButtonType.getName(),pkButtonType.getLinkMethod());
+//
+//        }
+//        else
+//        {
             if(userService.canUserView(userId,fromUser))
             {
                 return new PkButton(pkButtonType.getIcon(),pkButtonType.getName(),pkButtonType.getLinkMethod());
@@ -978,10 +979,10 @@ public class AppService {
 
         }
 
-    }
+//    }
 
     public PkButton 显示审核中按钮(String userId,String pkId) {
-        if(!AppConfigService.getConfigAsBoolean(ConfigItem.对所有用户展示审核系统) && !userService.canUserView(userId) && pkService.isPkCreator(pkId,userId))
+        if(!userService.canUserView(userId) && pkService.isPkCreator(pkId,userId))
         {
             return new PkButton(PkButtonType.审核中.getIcon(),PkButtonType.审核中.getName(),PkButtonType.审核中.getLinkMethod(),redisSortSetService.size(CacheKeyName.榜主审核中列表(pkId)));
         }
@@ -1086,6 +1087,68 @@ public class AppService {
         PkCashierFeeCodeEntity pkCashierFeeCodeEntity = daoService.querySingleEntity(PkCashierFeeCodeEntity.class,filter2);
         pkCashierFeeCodeEntity.setConfirmTimes(pkCashierFeeCodeEntity.getConfirmTimes() + 1);
         daoService.updateEntity(pkCashierFeeCodeEntity);
+
+    }
+
+    public List<PkDetail> 查询PK排名(int page) throws IOException {
+
+
+        List<PkDetail> pks = new ArrayList<>();
+        List<String> pageList = redisSortSetService.queryPage(CacheKeyName.PK排名(),page);
+        for(String pkId:pageList)
+        {
+            pks.add(pkService.querySinglePk(pkId));
+        }
+
+
+        return pks;
+
+
+
+
+
+
+    }
+
+
+
+    public void 全量查询(List<PkDetail> pks) throws IOException {
+
+        for(PkDetail pkDetail:pks)
+        {
+            全量查询(pkDetail);
+
+        }
+    }
+
+    public void 全量查询(PkDetail pkDetail) throws IOException {
+        Date current = new Date();
+
+
+        pkDetail.setApproveMessage(approveService.查询PK公告消息(pkDetail.getPkId()));
+
+        pkDetail.setApproved(redisSortSetService.size(CacheKeyName.榜主已审核列表(pkDetail.getPkId())) + "已审核");
+        pkDetail.setApproving(redisSortSetService.size(CacheKeyName.榜主审核中列表(pkDetail.getPkId())) + "审核中");
+
+
+        GroupInfo groupInfo = new GroupInfo();
+        groupInfo.setMode(1);
+        boolean hasGroup = !StringUtils.isBlank(dynamicService.查询PK群组二维码MediaId(pkDetail.getPkId(),current ));
+        groupInfo.setName("审核群组");
+        if(hasGroup)
+        {
+            groupInfo.setHasGroup(true);
+            groupInfo.setIconUrl(IconUrl.有效微信标识.getUrl());
+        }
+        else
+        {
+            groupInfo.setHasGroup(true);
+            groupInfo.setIconUrl(IconUrl.无效微信标识.getUrl());
+        }
+        pkDetail.setGroupInfo(groupInfo);
+
+
+
 
     }
 }
