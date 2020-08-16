@@ -25,5 +25,9 @@ public class User implements Serializable{
 
     private String fromUser;
 
+    private int pkTimes;
+    private int postTimes;
+    private int inviteTimes;
+
 
 }

@@ -39,7 +39,8 @@ public class PkDetail implements Serializable{
 
     private ApproveMessage approveMessage;
 
-    private PkType pkType;
+    private String pkType;
+    private int pkTypeValue;
 
     private String time;
 
@@ -48,4 +49,10 @@ public class PkDetail implements Serializable{
     private String approved;
     private String approving;
     private GroupInfo groupInfo;
+
+
+    private String priority;
+
+
+
 }

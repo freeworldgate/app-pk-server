@@ -65,23 +65,13 @@ public class 查询邀请 {
 
         List<PkDetail> pks = appService.查询用户邀请(userId,1);
         appService.vip包装(pks,userId,"");
-//        if(!userService.isUserVip(userId) )
-//        {
-//            for(PkDetail pkDetail:pks)
-//            {
-//                if(pkDetail.getPkType() != PkType.预设相册)
-//                {
-//                    pkDetails.add(pkDetail);
-//                }
-//            }
-//
-//        }
-//        else
-//        {
-//            pkDetails.addAll(pks);
-//        }
-//
-//
+
+        List<DataSet> dataSets = new ArrayList<>();
+
+
+        dataSets.add(new DataSet("pks",pks));
+        dataSets.add(new DataSet("page",1));
+        dataSets.add(new DataSet("imgBack",appService.查询背景(3)));
 
 
 
@@ -90,11 +80,7 @@ public class 查询邀请 {
 
 
 
-
-
-
-
-        return AppResponse.buildResponse(PageAction.执行处理器("success",pks));
+        return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
 
     }
 

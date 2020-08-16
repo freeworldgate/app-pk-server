@@ -71,6 +71,9 @@ public class UserService {
             user.setUserId(result.getUserId());
             user.setUserType(ObjectUtils.isEmpty(result.getUserType())?UserType.普通用户.getType():result.getUserType().getType());
 //            user.setImgUrl(result.getAvatarUrl());
+            user.setPkTimes(result.getPkTimes());
+            user.setPostTimes(result.getPostTimes());
+            user.setInviteTimes(result.getInviteTimes());
             user.setImgUrl(RandomUtil.getRandomImage());
 
             users.put(user.getUserId(),user);
@@ -276,12 +279,9 @@ public class UserService {
         EntityFilterChain filter = EntityFilterChain.newFilterChain(UserEntity.class)
                 .compareFilter("userId",CompareTag.Equal,userId);
         UserEntity result = appDaoService.querySingleEntity(UserEntity.class,filter);
-        if(!org.apache.commons.lang.ObjectUtils.equals(UserPostStatu.已打榜,result.getUserPostStatu()))
-        {
-            result.setUserPostStatu(UserPostStatu.已打榜);
+        result.setPostTimes(result.getPostTimes() + 1);
             appDaoService.updateEntity(result);
 
-        }
 
 
 
@@ -291,16 +291,9 @@ public class UserService {
 
 
 
-    }
-
-    public UserPostStatu queryUserPostStatu(String userId) {
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(UserEntity.class)
-                .compareFilter("userId",CompareTag.Equal,userId);
-        UserEntity result = appDaoService.querySingleEntity(UserEntity.class,filter);
-
-        return result.getUserPostStatu();
 
     }
+
 
     public int queryUserPkTimes(String userId) {
         EntityFilterChain filter = EntityFilterChain.newFilterChain(UserEntity.class)
@@ -318,4 +311,37 @@ public class UserService {
         appDaoService.updateEntity(result);
 
     }
+
+    public void 邀请次数加一(String userId) {
+
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(UserEntity.class)
+                .compareFilter("userId",CompareTag.Equal,userId);
+        UserEntity result = appDaoService.querySingleEntity(UserEntity.class,filter);
+        result.setInviteTimes(result.getInviteTimes() + 1);
+        appDaoService.updateEntity(result);
+
+    }
+
+    public int 查询用户剩余榜单(String userId) {
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(UserEntity.class)
+                .compareFilter("userId",CompareTag.Equal,userId);
+        UserEntity result = appDaoService.querySingleEntity(UserEntity.class,filter);
+        return result.getPostTimes() - result.getPkTimes();
+    }
+
+    public int 查询邀请次数(String userId) {
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(UserEntity.class)
+                .compareFilter("userId",CompareTag.Equal,userId);
+        UserEntity result = appDaoService.querySingleEntity(UserEntity.class,filter);
+        return result.getInviteTimes();
+    }
+
+    public int 查询建榜次数(String userId) {
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(UserEntity.class)
+                .compareFilter("userId",CompareTag.Equal,userId);
+        UserEntity result = appDaoService.querySingleEntity(UserEntity.class,filter);
+        return result.getPkTimes();
+    }
+
+
 }

@@ -140,7 +140,7 @@ public class ApproveService {
 
     public ApproveComment 获取留言信息(String pkId, String postId) throws UnsupportedEncodingException {
         ApproveComment approveComment = new ApproveComment();
-
+        approveComment.setImgBack(appService.查询背景(4));
 
 
         ApproveCommentEntity approveCommentEntity = this.查询留言(pkId,postId);
@@ -339,7 +339,7 @@ public class ApproveService {
 
 
 
-    public ApproveMessage 发布审核员消息(String pkId, String userId, String text, String imgUrl, Date currentDate) throws AppException, IOException {
+    public ApproveMessage 发布审核员消息(String pkId, String userId, String text, String imgUrl) throws AppException, IOException {
 
         if(!pkService.isPkCreator(pkId,userId)){
             throw AppException.buildException(PageAction.消息级别提示框(Level.错误消息,"非法操作"));

@@ -22,7 +22,7 @@ public class ApproveComment {
     private String date;
     private String word1 = "编辑内容";
     private String word2 = "审核留言";
-
+    private String imgBack;
 
 
 

@@ -3,19 +3,41 @@ package com.union.app.entity.pk;
 public enum PkType {
 
 
+    审核相册(1,"审核相册"),
+    运营相册(2,"遗传相册"),
+    内置相册(3,"内置相册"),
 
-    预设相册("预设相册"),
 
-    平台相册("审核相册"),
 
-    运营相册("运营相册"),
+
+
+
+
+
+
+
+
+
+
+
+
 
     ;
 
+    private int type;
     private String desc;
 
-    PkType(String desc) {
+    PkType(int type, String desc) {
+        this.type = type;
         this.desc = desc;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     public String getDesc() {

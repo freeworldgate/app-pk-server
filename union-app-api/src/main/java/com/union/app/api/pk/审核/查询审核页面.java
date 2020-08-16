@@ -8,10 +8,7 @@ import com.union.app.plateform.data.resultcode.DataSet;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.service.pk.dynamic.DynamicService;
-import com.union.app.service.pk.service.ApproveService;
-import com.union.app.service.pk.service.PkService;
-import com.union.app.service.pk.service.PostService;
-import com.union.app.service.pk.service.UserInfoService;
+import com.union.app.service.pk.service.*;
 import com.union.app.service.user.UserService;
 import com.union.app.util.time.TimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +47,10 @@ public class 查询审核页面 {
 
     @Autowired
     ApproveService approveService;
+
+
+    @Autowired
+    AppService appService;
 
     /**
      * 审核员审批页面入口
@@ -100,7 +101,8 @@ public class 查询审核页面 {
         dataSets.add(new DataSet("t1","审核通过"));
         dataSets.add(new DataSet("t2","审核中"));
         dataSets.add(new DataSet("t3","审核留言"));
-
+        dataSets.add(new DataSet("t4","审核榜帖"));
+        dataSets.add(new DataSet("imgBack",appService.查询背景(4)));
 
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
 

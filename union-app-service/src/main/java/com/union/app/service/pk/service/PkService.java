@@ -12,11 +12,14 @@ import com.union.app.domain.pk.PkDynamic.FactualInfo;
 import com.union.app.domain.pk.PkDynamic.FeeTask;
 import com.union.app.domain.pk.apply.KeyNameValue;
 import com.union.app.domain.user.User;
+import com.union.app.domain.工具.RandomUtil;
 import com.union.app.entity.pk.*;
 import com.union.app.entity.pk.task.PkTaskEntity;
 import com.union.app.entity.pk.task.TaskStatu;
 import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.constant.常量值;
+import com.union.app.plateform.data.resultcode.AppException;
+import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.KeyName;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.service.pk.dynamic.DynamicService;
@@ -49,6 +52,9 @@ public class PkService {
 
     @Autowired
     PkService pkService;
+
+    @Autowired
+    AppService appService;
 
     @Autowired
     DynamicService dynamicService;
@@ -90,12 +96,13 @@ public class PkService {
     public PkDetail querySinglePk(String pkId) throws IOException {
         PkDetail pkDetail = new PkDetail();
         PkEntity pk = this.querySinglePkEntity(pkId);
+        if(ObjectUtils.isEmpty(pk)){return null;}
         pkDetail.setPkId(pk.getPkId());
+        pkDetail.setPkTypeValue(pk.getPkType().getType());
+        pkDetail.setPkType(pk.getPkType().getDesc());
         pkDetail.setTopic(new String(pk.getTopic(),"UTF-8"));
         pkDetail.setUser(userService.queryUser(pk.getUserId()));
         pkDetail.setWatchWord(new String(pk.getWatchWord(),"UTF-8"));
-//        pkDetail.setTotalApprover(new KeyNameValue(1,dynamicService.查询今日审核员数量(pkId)));
-//        pkDetail.setTotalSort(new KeyNameValue(2,dynamicService.查询今日打榜用户数量(pkId)));
         pkDetail.setTime(TimeUtils.translateTime(pk.getCreateTime()));
         pkDetail.setInvite(new KeyNameValue(pk.getIsInvite().getStatu(),pk.getIsInvite().getStatuStr()));
         pkDetail.setPkStatu(ObjectUtils.isEmpty(pk.getAlbumStatu())?new KeyNameValue(PkStatu.审核中.getStatu(),PkStatu.审核中.getStatuStr()):new KeyNameValue(pk.getAlbumStatu().getStatu(),pk.getAlbumStatu().getStatuStr()));
@@ -189,7 +196,8 @@ public class PkService {
 
         pkEntity.setPkId(pkId);
         pkEntity.setCreateTime(TimeUtils.currentDateTime());
-        pkEntity.setPkType(PkType.平台相册);
+        if(userService.canUserView(userId)){pkEntity.setPkType(PkType.运营相册);}else{pkEntity.setPkType(PkType.审核相册);}
+
         pkEntity.setTopic(topic.getBytes("UTF-8"));
         pkEntity.setWatchWord(watchWord.getBytes("UTF-8"));
         pkEntity.setIsInvite(invite?InviteType.邀请:InviteType.公开);
@@ -197,11 +205,11 @@ public class PkService {
 //        if(!AppConfigService.getConfigAsBoolean(ConfigItem.对所有用户展示审核系统) && !userService.canUserView(userId))
         if(userService.canUserView(userId))
         {
-            pkEntity.setAlbumStatu(PkStatu.已审核);
+            pkEntity.setAlbumStatu(PkStatu.审核中);
         }
         else
         {
-            pkEntity.setAlbumStatu(PkStatu.审核中);
+            pkEntity.setAlbumStatu(PkStatu.已审核);
 
         }
         daoService.insertEntity(pkEntity);
@@ -213,6 +221,27 @@ public class PkService {
         return pkId;
     }
 
+    public PkEntity 创建预置PK(String topic, String watchWord,boolean invite) throws UnsupportedEncodingException {
+        String pkId = UUID.randomUUID().toString();
+        PkEntity pkEntity = new PkEntity();
+        pkEntity.setPkId(pkId);
+        pkEntity.setCreateTime(TimeUtils.currentDateTime());
+        pkEntity.setPkType(PkType.内置相册);
+        pkEntity.setTopic(topic.getBytes("UTF-8"));
+        pkEntity.setWatchWord(watchWord.getBytes("UTF-8"));
+        pkEntity.setIsInvite(invite?InviteType.邀请:InviteType.公开);
+        pkEntity.setUserId(appService.随机用户());
+        pkEntity.setAlbumStatu(PkStatu.已审核);
+        daoService.insertEntity(pkEntity);
+        return pkEntity;
+    }
+
+
+
+
+
+
+
     public boolean 是否更新今日审核群(String pkId) {
         return !StringUtils.isBlank(dynamicService.查询PK群组二维码MediaId(pkId,new Date()));
     }
@@ -220,6 +249,35 @@ public class PkService {
     public boolean 是否更新今日公告(String pkId) throws UnsupportedEncodingException {
 //        return !StringUtils.isBlank(dynamicService.查询PK公告消息Id(pkId));
         return !ObjectUtils.isEmpty(approveService.获取审核人员消息Entity(pkId));
+
+    }
+
+    public void 删除预置的PK(String pkId) {
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(PkEntity.class)
+                .compareFilter("pkId",CompareTag.Equal,pkId)
+                .andFilter()
+                .compareFilter("pkType",CompareTag.Equal,PkType.内置相册);
+        PkEntity pkEntity = daoService.querySingleEntity(PkEntity.class,filter);
+        daoService.deleteEntity(pkEntity);
+
+
+
+
+
+    }
+
+    public void checkPk(String pkId) throws AppException {
+        PkEntity pkEntity = this.querySinglePkEntity(pkId);
+        if(ObjectUtils.isEmpty(pkEntity)){throw AppException.buildException(PageAction.执行处理器("error","榜单不存在，是否返回主页?"));}
+        PkStatu pkStatu = pkEntity.getAlbumStatu();
+        if(pkStatu == PkStatu.已关闭){
+            throw AppException.buildException(PageAction.执行处理器("error","榜单关闭，是否返回主页?"));
+        }
+
+
+
+
+
 
     }
 }

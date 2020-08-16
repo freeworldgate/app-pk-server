@@ -1,13 +1,13 @@
-package com.union.app.api.pk.zone;
+package com.union.app.api.pk.反馈;
 
-import com.alibaba.fastjson.JSON;
 import com.union.app.common.OSS存储.OssStorage;
-import com.union.app.common.OSS存储.SceneType;
-import com.union.app.domain.pk.PkDetail;
+import com.union.app.domain.pk.Post;
+import com.union.app.domain.pk.TipUrl;
+import com.union.app.domain.user.User;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
+import com.union.app.plateform.data.resultcode.DataSet;
 import com.union.app.plateform.data.resultcode.PageAction;
-import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.service.pk.click.ClickService;
 import com.union.app.service.pk.service.AppService;
 import com.union.app.service.pk.service.PkService;
@@ -19,26 +19,21 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.transaction.Transactional;
 import java.io.IOException;
-import java.util.UUID;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping(path="/pk")
-public class 创建单个PK {
+public class 反馈 {
 
-
-    @Autowired
-    PkService pkService;
 
     @Autowired
     ClickService clickService;
 
     @Autowired
-    RedisStringUtil redisStringUtil;
-
-    @Autowired
-    UserService userService;
+    PkService pkService;
 
     @Autowired
     OssStorage ossStorage;
@@ -46,24 +41,30 @@ public class 创建单个PK {
     @Autowired
     PostService postService;
 
+    @Autowired
+    UserService userService;
+
 
     @Autowired
     AppService appService;
 
-    @RequestMapping(path="/createPk",method = RequestMethod.GET)
-    @Transactional(rollbackOn = Exception.class)
-    public AppResponse 创建单个PK(@RequestParam("userId") String userId,@RequestParam("topic") String topic,@RequestParam("watchWord") String watchWord,@RequestParam("invite") boolean invite) throws AppException, IOException {
+    @RequestMapping(path="/updateTipBack",method = RequestMethod.GET)
+    public AppResponse updateTipBack() throws AppException, IOException {
+
+        TipUrl tipUrl = new TipUrl();
+
+        tipUrl.setTipBack(appService.查询背景(6));
+        tipUrl.setTipImg(appService.查询背景(7));
 
 
 
 
-        String pkId = pkService.创建PK(userId,topic,watchWord,invite);
 
-        PkDetail pkDetail = pkService.querySinglePk(pkId);
-        appService.vip包装(pkDetail,userId,"");
 
-        return AppResponse.buildResponse(PageAction.执行处理器("success",pkDetail));
+
+        return AppResponse.buildResponse(PageAction.执行处理器("success",tipUrl));
     }
+
 
 
 }

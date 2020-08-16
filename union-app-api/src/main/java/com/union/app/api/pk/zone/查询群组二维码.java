@@ -4,6 +4,8 @@ import com.union.app.common.OSS存储.CacheStorage;
 import com.union.app.common.OSS存储.OssStorage;
 import com.union.app.domain.pk.Post;
 import com.union.app.entity.pk.InvitePkEntity;
+import com.union.app.entity.pk.PkEntity;
+import com.union.app.entity.pk.PkType;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.PageAction;
@@ -60,9 +62,19 @@ public class 查询群组二维码 {
 
     @RequestMapping(path="/viewGroupCode",method = RequestMethod.GET)
     public AppResponse 查询用户的POST(@RequestParam("pkId") String pkId, @RequestParam("userId") String userId) throws AppException, IOException {
+        PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
+        if(pkEntity.getPkType() == PkType.内置相册)
+        {
+            return AppResponse.buildResponse(PageAction.信息反馈框("仅邀请用户可见","您不是邀请用户"));
+        }
 
 
-       if(userService.canUserView(userId)){
+
+
+
+
+
+        if(userService.canUserView(userId)){
 
 
            InvitePkEntity invitePkEntity = appService.queryInvitePk(pkId,userId);

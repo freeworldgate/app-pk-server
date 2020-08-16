@@ -8,8 +8,10 @@ import com.union.app.domain.wechat.UserInfo;
 import com.union.app.domain.wechat.WeChatUser;
 import com.union.app.entity.用户.UserEntity;
 import com.union.app.entity.用户.support.UserPostStatu;
+import com.union.app.entity.用户.support.UserType;
 import com.union.app.plateform.response.ApiResponse;
 import com.union.app.service.pk.dynamic.DynamicService;
+import com.union.app.service.pk.service.AppService;
 import com.union.app.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
@@ -32,6 +34,8 @@ public class 用户登录加注册 {
     @Autowired
     DynamicService dynamicService;
 
+    @Autowired
+    AppService appService;
 
     @RequestMapping(path="/login",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
@@ -59,10 +63,22 @@ public class 用户登录加注册 {
             userEntity.setAppName(appName);
             userEntity.setUserId(openId);
             userEntity.setPkTimes(0);
-            userEntity.setUserPostStatu(UserPostStatu.未打榜);
-//            if(userService.isUserVip(fromUser)){userEntity.setUserType(UserType.重点用户);}else{userEntity.setUserType(UserType.普通用户);}
+            userEntity.setPostTimes(0);
+            if(userService.canUserView(fromUser)){userEntity.setUserType(UserType.重点用户);}else{userEntity.setUserType(UserType.普通用户);}
             convert(userInfo,userEntity);
-            userService.新增注册用户(userEntity,appName,pkId,userEntity.getUserId(),fromUser);
+//            userService.新增注册用户(userEntity,appName,pkId,userEntity.getUserId(),fromUser);
+
+
+
+            appService.添加邀请(pkId,userEntity.getUserId());
+
+
+
+
+
+
+
+
 
             appDaoService.insertEntity(userEntity);
 

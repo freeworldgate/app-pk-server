@@ -24,6 +24,8 @@ public class ApproveMessage {
 
     private String voiceUrl;
 
+    private String moreStr = "查看详情>>";
+
 
 
 

@@ -1,6 +1,11 @@
 package com.union.app.api.pk.管理;
 
+import com.union.app.common.微信.WeChatUtil;
+import com.union.app.dao.spi.AppDaoService;
 import com.union.app.domain.pk.PkDetail;
+import com.union.app.domain.pk.审核.ApproveMessage;
+import com.union.app.domain.工具.RandomUtil;
+import com.union.app.entity.pk.PkEntity;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.PageAction;
@@ -15,15 +20,22 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(path="/pk")
-public class 查询排名 {
+public class 查询内置PK {
 
     @Autowired
     AppService appService;
+
+    @Autowired
+    AppDaoService daoService;
 
     @Autowired
     PkService pkService;
@@ -52,30 +64,29 @@ public class 查询排名 {
     @Autowired
     ApproveService approveService;
 
+    public static Map<String,PkDetail> pkDetailMap = new HashMap<>();
 
-    @RequestMapping(path="/querySort",method = RequestMethod.GET)
-    public AppResponse 查询排名信息(@RequestParam("userId") String userId) throws AppException, IOException {
 
-//        List<PkDetail> pkDetails = new ArrayList<>();
 
-        List<PkDetail> pks = appService.查询PK排名(0);
 
+    @RequestMapping(path="/queryPrePks",method = RequestMethod.GET)
+    public AppResponse 查询内置PK(@RequestParam("userId") String userId) throws AppException, IOException {
+
+        List<PkDetail> pks = appService.查询内置相册(userId,1);
         appService.vip包装(pks,userId,"");
-
-
-
 
         return AppResponse.buildResponse(PageAction.执行处理器("success",pks));
 
+
+
     }
 
-    @RequestMapping(path="/nextSortPage",method = RequestMethod.GET)
-    public AppResponse 查询单个PK(@RequestParam("userId") String userId,@RequestParam("page") int page) throws AppException, IOException {
+    @RequestMapping(path="/morePrePks",method = RequestMethod.GET)
+    public AppResponse 查询内置PK(@RequestParam("userId") String userId,@RequestParam("page") int page) throws AppException, IOException {
 
 
-        List<PkDetail> pks = appService.查询PK排名(page);
+        List<PkDetail> pks = appService.查询内置相册(userId,page+1);
         appService.vip包装(pks,userId,"");
-
 
         if(pks.size() == 0)
         {
@@ -86,5 +97,8 @@ public class 查询排名 {
         return AppResponse.buildResponse(PageAction.执行处理器("success",pks));
 
     }
+
+
+
 
 }

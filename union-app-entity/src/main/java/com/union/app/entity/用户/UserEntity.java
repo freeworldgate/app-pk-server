@@ -42,10 +42,10 @@ public class UserEntity {
 
     private String fromUser;
 
-    @Enumerated(EnumType.STRING)
-    private UserPostStatu userPostStatu;
 
+    private int postTimes;
     private int pkTimes;
+    private int inviteTimes;
 
 
 

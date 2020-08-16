@@ -1,6 +1,8 @@
 package com.union.app.api.pk.管理;
 
+import com.union.app.dao.spi.AppDaoService;
 import com.union.app.domain.pk.PkDetail;
+import com.union.app.entity.pk.BackImgEntity;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.PageAction;
@@ -16,14 +18,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(path="/pk")
-public class 查询排名 {
+public class 查询内置背景图片 {
 
     @Autowired
     AppService appService;
+
+    @Autowired
+    AppDaoService daoService;
 
     @Autowired
     PkService pkService;
@@ -52,29 +59,28 @@ public class 查询排名 {
     @Autowired
     ApproveService approveService;
 
-
-    @RequestMapping(path="/querySort",method = RequestMethod.GET)
-    public AppResponse 查询排名信息(@RequestParam("userId") String userId) throws AppException, IOException {
-
-//        List<PkDetail> pkDetails = new ArrayList<>();
-
-        List<PkDetail> pks = appService.查询PK排名(0);
-
-        appService.vip包装(pks,userId,"");
+    public static Map<String,PkDetail> pkDetailMap = new HashMap<>();
 
 
+
+
+    @RequestMapping(path="/queryBackImgs",method = RequestMethod.GET)
+    public AppResponse 查询内置PK(@RequestParam("userId") String userId,@RequestParam("type") int type) throws AppException, IOException {
+
+        List<BackImgEntity> pks = appService.查询内置背景图片(1,type);
 
 
         return AppResponse.buildResponse(PageAction.执行处理器("success",pks));
 
+
+
     }
 
-    @RequestMapping(path="/nextSortPage",method = RequestMethod.GET)
-    public AppResponse 查询单个PK(@RequestParam("userId") String userId,@RequestParam("page") int page) throws AppException, IOException {
+    @RequestMapping(path="/moreBackImgs",method = RequestMethod.GET)
+    public AppResponse 查询内置PK(@RequestParam("userId") String userId,@RequestParam("page") int page,@RequestParam("type") int type) throws AppException, IOException {
 
 
-        List<PkDetail> pks = appService.查询PK排名(page);
-        appService.vip包装(pks,userId,"");
+        List<BackImgEntity> pks = appService.查询内置背景图片(page+1,type);
 
 
         if(pks.size() == 0)
@@ -86,5 +92,8 @@ public class 查询排名 {
         return AppResponse.buildResponse(PageAction.执行处理器("success",pks));
 
     }
+
+
+
 
 }

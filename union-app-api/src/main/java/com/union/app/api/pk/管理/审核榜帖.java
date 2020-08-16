@@ -83,6 +83,7 @@ public class 审核榜帖 {
             if(ObjectUtils.isEmpty(pkDetail))
             {
                 pkDetail = pkService.querySinglePk(post.getPkId());
+                if(ObjectUtils.isEmpty(pkDetail)){continue;}
                 pkDetail.setApproveMessage(approveService.获取审核人员消息(post.getPkId()));
                 approvePost.setPk(pkDetail);
                 pkDetailMap.put(post.getPkId(),pkDetail);

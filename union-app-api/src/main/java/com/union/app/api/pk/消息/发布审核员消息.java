@@ -35,9 +35,9 @@ public class 发布审核员消息 {
     @Transactional(rollbackOn = Exception.class)
     public AppResponse 发布审核员消息(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId,@RequestParam("text") String text,@RequestParam("imgUrl") String imgUrl) throws AppException, IOException {
 
-        Date currentDate = new Date();
 
-        ApproveMessage approveMessage  = approveService.发布审核员消息(pkId,userId,text,imgUrl,currentDate);
+
+        ApproveMessage approveMessage  = approveService.发布审核员消息(pkId,userId,text,imgUrl);
 
 
 

@@ -8,6 +8,7 @@ import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.DataSet;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.service.pk.click.ClickService;
+import com.union.app.service.pk.service.AppService;
 import com.union.app.service.pk.service.PkService;
 import com.union.app.service.pk.service.PostService;
 import com.union.app.service.user.UserService;
@@ -42,6 +43,10 @@ public class 查询单个POST {
     @Autowired
     UserService userService;
 
+
+    @Autowired
+    AppService appService;
+
     @RequestMapping(path="/queryPostById",method = RequestMethod.GET)
     public AppResponse 查询单个POSTById(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId,@RequestParam("userId") String userId) throws AppException, IOException {
 
@@ -58,6 +63,14 @@ public class 查询单个POST {
         dataSets.add(dataSet2);
         dataSets.add(new DataSet("t1","修改标题"));
         dataSets.add(new DataSet("t2","留言"));
+        dataSets.add(new DataSet("t3","审核"));
+        dataSets.add(new DataSet("t4","转发审核群..."));
+        dataSets.add(new DataSet("t5","修改主题"));
+        dataSets.add(new DataSet("t6","修改主题内容"));
+        dataSets.add(new DataSet("t7","修改图片需要重新审核榜帖内容..."));
+        dataSets.add(new DataSet("t3","审核"));
+        dataSets.add(new DataSet("t3","审核"));
+        dataSets.add(new DataSet("imgBack",appService.查询背景(4)));
 
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
     }

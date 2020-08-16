@@ -3,10 +3,14 @@ package com.union.app.api.pk.zone;
 import com.union.app.common.OSS存储.CacheStorage;
 import com.union.app.common.OSS存储.OssStorage;
 import com.union.app.domain.pk.Post;
+import com.union.app.entity.pk.InvitePkEntity;
+import com.union.app.entity.pk.InviteType;
+import com.union.app.entity.pk.PkEntity;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.service.pk.click.ClickService;
+import com.union.app.service.pk.service.AppService;
 import com.union.app.service.pk.service.OrderService;
 import com.union.app.service.pk.service.PkService;
 import com.union.app.service.pk.service.PostService;
@@ -41,7 +45,7 @@ public class 查询用户的POST {
     PostService postService;
 
     @Autowired
-    OrderService orderService;
+    AppService appService;
 
 
     @RequestMapping(path="/queryUserPost",method = RequestMethod.GET)
@@ -49,7 +53,13 @@ public class 查询用户的POST {
 
             Date cureentDate = new Date();
 
-
+        PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
+        if(org.apache.commons.lang.ObjectUtils.equals(pkEntity.getIsInvite(),InviteType.邀请)) {
+            InvitePkEntity invitePkEntity = appService.queryInvitePk(pkId, userId);
+            if (!pkService.isPkCreator(pkId, userId) && ObjectUtils.isEmpty(invitePkEntity)) {
+                return AppResponse.buildResponse(PageAction.信息反馈框("非邀请用户", "仅邀请用户可见"));
+            }
+        }
 
 
             Post post = postService.查询用户帖子(pkId,userId,cureentDate);

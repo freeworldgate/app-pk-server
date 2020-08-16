@@ -1,5 +1,6 @@
 package com.union.app.common.spring.interceptor;
 
+import com.alibaba.fastjson.JSON;
 import org.springframework.core.NamedThreadLocal;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -68,7 +69,7 @@ public class ControllerRequestLoggerInterceptor implements HandlerInterceptor {
         long startTime = System.currentTimeMillis();
         request.setAttribute("startTime", startTime);
         startTimeThreadLocal.set(startTime);
-
+            Thread.sleep(500);
             StringBuilder sb = new StringBuilder(1000);
             sb.append("-----------------------开始计时:").append(new SimpleDateFormat("hh:mm:ss.SSS").format(startTime)).append("-------------------------------------\n");
 //            HandlerMethod h = (HandlerMethod) handler;
@@ -85,16 +86,16 @@ public class ControllerRequestLoggerInterceptor implements HandlerInterceptor {
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
         /*打印响应消息*/
 
-
+        Thread.sleep(500);
 //        logger.debug("-response-", JSON.toJSONString(response));
 
     }
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        Thread.sleep(500);
 
-//        logger.debug("-request-", JSON.toJSONString(request));
-//        logger.debug("-response-", JSON.toJSONString(response));
+        System.out.println(response);
 //
 
 

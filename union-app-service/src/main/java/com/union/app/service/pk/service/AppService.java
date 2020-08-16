@@ -7,6 +7,7 @@ import com.union.app.common.微信.WeChatUtil;
 import com.union.app.dao.spi.AppDaoService;
 import com.union.app.dao.spi.filter.CompareTag;
 import com.union.app.dao.spi.filter.EntityFilterChain;
+import com.union.app.dao.spi.filter.OrderTag;
 import com.union.app.domain.pk.*;
 import com.union.app.domain.pk.PkDynamic.FactualInfo;
 import com.union.app.domain.pk.PkDynamic.FeeTask;
@@ -15,9 +16,13 @@ import com.union.app.domain.pk.cashier.PkCashier;
 import com.union.app.domain.pk.审核.AppMessage;
 import com.union.app.domain.pk.审核.PkComment;
 import com.union.app.domain.user.User;
+import com.union.app.domain.工具.RandomUtil;
 import com.union.app.entity.pk.*;
 import com.union.app.entity.pk.task.PkTaskEntity;
 import com.union.app.entity.pk.task.TaskStatu;
+import com.union.app.entity.用户.UserEntity;
+import com.union.app.entity.用户.support.UserPostStatu;
+import com.union.app.entity.用户.support.UserType;
 import com.union.app.entity.配置表.ColumSwitch;
 import com.union.app.entity.配置表.ConfigEntity;
 import com.union.app.plateform.constant.ConfigItem;
@@ -95,49 +100,97 @@ public class AppService {
     MediaService mediaService;
 
 
-    public List<PkDetail> 查询预设相册(int page) throws IOException {
+    public List<PkDetail> 查询预设相册(int page,int type) throws IOException {
         Date current = new Date();
         List<PkDetail> pkDetails = new ArrayList<>();
-        List<PkEntity> pkEntities = queryPrePks(page);
+        List<PkEntity> pkEntities = queryPrePks(page,type);
         for(PkEntity pkPreEntity:pkEntities)
         {
             PkDetail pkDetail = this.translate(pkPreEntity);
             pkDetail.setApproveMessage(approveService.查询PK公告消息(pkPreEntity.getPkId()));
+            pkDetail.setPriority(appService.查询优先级(pkPreEntity.getPkId()));
             pkDetails.add(pkDetail);
         }
         return pkDetails;
     }
 
 
-    public List<PkDetail> 查询平台相册(int page) throws IOException {
+    public List<PkDetail> 查询审核相册(int page) throws IOException {
         Date current = new Date();
         List<PkDetail> pkDetails = new ArrayList<>();
         List<PkEntity> pkEntities = queryPlateFormPks(page);
         for(PkEntity pkEntity:pkEntities)
         {
             PkDetail pkDetail = this.translate(pkEntity);
-//            pkDetail.setApproveMessage(approveService.查询PK公告消息(pkEntity.getPkId()));
             pkDetails.add(pkDetail);
         }
-
-
 
         return pkDetails;
     }
 
     private List<PkEntity> queryPrePks(int page) {
+
+
         EntityFilterChain filter = EntityFilterChain.newFilterChain(PkEntity.class)
-                .compareFilter("pkType",CompareTag.Equal,PkType.预设相册)
+                .compareFilter("pkType",CompareTag.Equal,PkType.内置相册)
                 .pageLimitFilter(page,20);
         List<PkEntity> pkEntities = daoService.queryEntities(PkEntity.class,filter);
+
+
+
         return pkEntities;
+    }
+
+    private List<PkEntity> queryPrePks(int page,int type) {
+
+        EntityFilterChain filter = null;
+        if(type == 2)
+        {
+            filter = EntityFilterChain.newFilterChain(HomePagePk.class)
+                    .compareFilter("pkType",CompareTag.Equal,PkType.运营相册)
+                    .orderByFilter("priority",OrderTag.DESC)
+                    .pageLimitFilter(page,20);
+        }
+        else if(type == 3)
+        {
+            filter = EntityFilterChain.newFilterChain(HomePagePk.class)
+                    .compareFilter("pkType",CompareTag.Equal,PkType.内置相册)
+                    .orderByFilter("priority",OrderTag.DESC)
+                    .pageLimitFilter(page,20);
+        }
+        else if(type == 4)
+        {
+            filter = EntityFilterChain.newFilterChain(HomePagePk.class)
+                    .compareFilter("pkType",CompareTag.Equal,PkType.审核相册)
+                    .orderByFilter("priority",OrderTag.DESC)
+                    .pageLimitFilter(page,20);
+        }
+        else {
+            filter = EntityFilterChain.newFilterChain(HomePagePk.class)
+                    .orderByFilter("priority",OrderTag.DESC)
+                    .pageLimitFilter(page,20);
+        }
+
+
+
+
+
+
+        List<HomePagePk> pkEntities = daoService.queryEntities(HomePagePk.class,filter);
+
+        List<PkEntity> pks = new ArrayList<>();
+        for(HomePagePk pk:pkEntities)
+        {
+            pks.add(pkService.querySinglePkEntity(pk.getPkId()));
+        }
+        return pks;
     }
 
 
     public List<PkEntity> queryPlateFormPks(int page){
 
         EntityFilterChain filter = EntityFilterChain.newFilterChain(PkEntity.class)
-                .compareFilter("pkType",CompareTag.Equal,PkType.平台相册)
+                .compareFilter("pkType",CompareTag.Equal,PkType.审核相册)
                 .pageLimitFilter(page,20);
         List<PkEntity> pkEntities = daoService.queryEntities(PkEntity.class,filter);
         return pkEntities;
@@ -146,7 +199,7 @@ public class AppService {
     private PkDetail translate(PkEntity pkEntity) throws UnsupportedEncodingException {
         PkDetail pkDetail = new PkDetail();
         pkDetail.setPkId(pkEntity.getPkId());
-        pkDetail.setPkType(pkEntity.getPkType());
+        pkDetail.setPkType(pkEntity.getPkType().getDesc());
         pkDetail.setTopic(new String(pkEntity.getTopic(),"UTF-8"));
         pkDetail.setUser(userService.queryUser(pkEntity.getUserId()));
         pkDetail.setWatchWord(new String(pkEntity.getWatchWord(),"UTF-8"));
@@ -160,7 +213,20 @@ public class AppService {
 
         return pkDetail;
     }
+    public List<PkDetail> 查询内置相册(String userId, int page) throws UnsupportedEncodingException {
 
+        Date current = new Date();
+        List<PkDetail> pkDetails = new ArrayList<>();
+        List<PkEntity>  invites = queryPrePks(page);
+        for(PkEntity pkEntity:invites)
+        {
+            PkDetail pkDetail = this.translate(pkEntity);
+            pkDetail.setPriority(appService.查询优先级(pkEntity.getPkId()));
+            pkDetails.add(pkDetail);
+        }
+        return pkDetails;
+
+    }
     public List<PkDetail> 查询用户邀请(String userId, int page) throws UnsupportedEncodingException {
 
         Date current = new Date();
@@ -188,74 +254,114 @@ public class AppService {
 
 
     public void vip包装(PkDetail pkDetail,String userId, String fromUser) throws IOException {
+        if(ObjectUtils.isEmpty(pkDetail)){return;}
         Date current = new Date();
 
         if(userService.canUserView(userId,fromUser)) {
             pkDetail.setApproveMessage(approveService.查询PK公告消息(pkDetail.getPkId()));
         }
-        pkDetail.setApproved(redisSortSetService.size(CacheKeyName.榜主已审核列表(pkDetail.getPkId())) + "已审核");
-        pkDetail.setApproving(redisSortSetService.size(CacheKeyName.榜主审核中列表(pkDetail.getPkId())) + "审核中");
-//        if(AppConfigService.getConfigAsBoolean(ConfigItem.对所有用户展示审核系统) || userService.canUserView(userId,fromUser))
-        if( userService.canUserView(userId,fromUser))
+
+
+
+        if(StringUtils.equals(pkDetail.getPkType(),PkType.内置相册.getDesc()))
         {
 
-            GroupInfo groupInfo = new GroupInfo();
-            groupInfo.setMode(1);
-            boolean hasGroup = !StringUtils.isBlank(dynamicService.查询PK群组二维码MediaId(pkDetail.getPkId(),current ));
-            groupInfo.setName("审核群组");
-            if(hasGroup)
+
+            EntityFilterChain filter2 = EntityFilterChain.newFilterChain(HomePagePk.class)
+                    .compareFilter("pkId",CompareTag.Equal,pkDetail.getPkId());
+            HomePagePk pk = daoService.querySingleEntity(HomePagePk.class,filter2);
+
+            if(!ObjectUtils.isEmpty(pk))
             {
-                groupInfo.setHasGroup(true);
-                groupInfo.setIconUrl(IconUrl.有效微信标识.getUrl());
+                pkDetail.setApproved(pk.getApproved() + "已审核");
+                pkDetail.setApproving(pk.getApproving() + "审核中");
+
+                GroupInfo groupInfo = new GroupInfo();
+                groupInfo.setMode(1);
+                groupInfo.setName("审核群组");
+                if(pk.getGroupStatu() == 1)
+                {
+                    groupInfo.setHasGroup(true);
+                    groupInfo.setIconUrl(IconUrl.有效微信标识.getUrl());
+                }
+                else
+                {
+                    groupInfo.setHasGroup(true);
+                    groupInfo.setIconUrl(IconUrl.无效微信标识.getUrl());
+                }
+                pkDetail.setGroupInfo(groupInfo);
             }
             else
             {
+                pkDetail.setApproved(0 + "已审核");
+                pkDetail.setApproving(0 + "审核中");
+                GroupInfo groupInfo = new GroupInfo();
+                groupInfo.setMode(1);
+                groupInfo.setName("审核群组");
+
                 groupInfo.setHasGroup(true);
                 groupInfo.setIconUrl(IconUrl.无效微信标识.getUrl());
+                pkDetail.setGroupInfo(groupInfo);
             }
-            pkDetail.setGroupInfo(groupInfo);
+
+
+
+
+
+
+
+
+
+
         }
         else
         {
+            pkDetail.setApproved(redisSortSetService.size(CacheKeyName.榜主已审核列表(pkDetail.getPkId())) + "已审核");
+            pkDetail.setApproving(redisSortSetService.size(CacheKeyName.榜主审核中列表(pkDetail.getPkId())) + "审核中");
+            if( userService.canUserView(userId,fromUser))
+            {
 
-            pkDetail.setGroupInfo(null);
+                GroupInfo groupInfo = new GroupInfo();
+                groupInfo.setMode(1);
+                boolean hasGroup = !StringUtils.isBlank(dynamicService.查询PK群组二维码MediaId(pkDetail.getPkId(),current ));
+                groupInfo.setName("审核群组");
+                if(hasGroup)
+                {
+                    groupInfo.setHasGroup(true);
+                    groupInfo.setIconUrl(IconUrl.有效微信标识.getUrl());
+                }
+                else
+                {
+                    groupInfo.setHasGroup(true);
+                    groupInfo.setIconUrl(IconUrl.无效微信标识.getUrl());
+                }
+                pkDetail.setGroupInfo(groupInfo);
+            }
+            else
+            {
+
+                pkDetail.setGroupInfo(null);
+
+            }
 
         }
 
-//
-//        if(userService.canUserView(userId,fromUser))
-//        {
-//
-//                pkDetail.setApproveMessage(approveService.查询PK公告消息(pkDetail.getPkId()));
-//                pkDetail.setApproved(redisSortSetService.size(CacheKeyName.榜主已审核列表(pkDetail.getPkId())) + "已审核");
-//                pkDetail.setApproving(redisSortSetService.size(CacheKeyName.榜主审核中列表(pkDetail.getPkId())) + "审核中");
-//                GroupInfo groupInfo = new GroupInfo();
-//                groupInfo.setMode(1);
-//                boolean hasGroup = !StringUtils.isBlank(dynamicService.查询PK群组二维码MediaId(pkDetail.getPkId(),current ));
-//                groupInfo.setName("审核群组");
-//                if(hasGroup)
-//                {
-//                    groupInfo.setHasGroup(true);
-//                    groupInfo.setIconUrl(IconUrl.有效微信标识.getUrl());
-//                }
-//                else
-//                {
-//                    groupInfo.setHasGroup(true);
-//                    groupInfo.setIconUrl(IconUrl.无效微信标识.getUrl());
-//                }
-//                pkDetail.setGroupInfo(groupInfo);
-//        }
-//        else
-//        {
-//                GroupInfo groupInfo = new GroupInfo();
-//                groupInfo.setMode(0);
-//                groupInfo.setName(redisSortSetService.size(CacheKeyName.榜主已审核列表(pkDetail.getPkId())) + "已审核");
-//                pkDetail.setGroupInfo(groupInfo);
-//
-//        }
+
+
+
+
+
+
+
 
 
     }
+
+
+
+
+
+
 
     private List<PkEntity> queryUserInvitePks(String userId, int page) {
         List<PkEntity> pkEntities = new ArrayList<>();
@@ -266,13 +372,19 @@ public class AppService {
 
         for(InvitePkEntity invitePkEntity:invites)
         {
-            pkEntities.add(pkService.querySinglePkEntity(invitePkEntity.getPkId()));
+            PkEntity pkEntity = pkService.querySinglePkEntity(invitePkEntity.getPkId());
+            if(!ObjectUtils.isEmpty(pkEntity)){pkEntities.add(pkEntity);}
+
         }
         return pkEntities;
     }
 
 
     public void 添加邀请(String pkId, String userId) {
+
+
+
+
 
         InvitePkEntity invitePkEntity = queryInvitePk(pkId,userId);
         if(ObjectUtils.isEmpty(invitePkEntity))
@@ -282,6 +394,7 @@ public class AppService {
             invitePkEntity.setUserId(userId);
             invitePkEntity.setTime(TimeUtils.currentTime());
             daoService.insertEntity(invitePkEntity);
+            userService.邀请次数加一(userId);
         }
 
     }
@@ -793,7 +906,7 @@ public class AppService {
         List<PkActiveEntity> pkActiveEntities = queryPkActiveHistory(userId);
         //获取可选的收款人
         List<String> leftCashiers = queryLeftCashiers(pkActiveEntities);
-
+        if(CollectionUtils.isEmpty(leftCashiers)){throw AppException.buildException(PageAction.消息级别提示框(Level.错误消息,"没找到可用激活用户,稍后再试!"));}
         PkCashierGroupEntity pkCashierGroupEntity = selectRandomGroup(leftCashiers);
 
         if(ObjectUtils.isEmpty(pkCashierGroupEntity))
@@ -1053,7 +1166,7 @@ public class AppService {
     public void 修改激活处理的状态(String pkId) {
 
         PkActiveEntity pkActiveEntity = this.查询PK激活信息(pkId);
-        if(!StringUtils.isBlank(pkActiveEntity.getScreenCutUrl()))
+        if(!ObjectUtils.isEmpty(pkActiveEntity) && !StringUtils.isBlank(pkActiveEntity.getScreenCutUrl()))
         {
             pkActiveEntity.setStatu(ActiveStatu.待处理);
             daoService.updateEntity(pkActiveEntity);
@@ -1097,58 +1210,213 @@ public class AppService {
         List<String> pageList = redisSortSetService.queryPage(CacheKeyName.PK排名(),page);
         for(String pkId:pageList)
         {
-            pks.add(pkService.querySinglePk(pkId));
+            PkDetail pkDetail =pkService.querySinglePk(pkId);
+            if(ObjectUtils.isEmpty(pkDetail)){continue;}
+            pkDetail.setPriority(appService.查询优先级(pkId));
+            pks.add(pkDetail);
+
         }
 
 
         return pks;
 
 
-
-
-
-
     }
 
 
+    public void 添加到主页预览(String pkId, int value) throws AppException {
+        PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
 
-    public void 全量查询(List<PkDetail> pks) throws IOException {
-
-        for(PkDetail pkDetail:pks)
+        if(org.apache.commons.lang.ObjectUtils.equals(pkEntity.getPkType(),PkType.审核相册))
         {
-            全量查询(pkDetail);
-
+            throw AppException.buildException(PageAction.信息反馈框("错误","审核相册无法添加到主页，只有遗传相册和内置相册可以添加"));
         }
-    }
-
-    public void 全量查询(PkDetail pkDetail) throws IOException {
-        Date current = new Date();
 
 
-        pkDetail.setApproveMessage(approveService.查询PK公告消息(pkDetail.getPkId()));
-
-        pkDetail.setApproved(redisSortSetService.size(CacheKeyName.榜主已审核列表(pkDetail.getPkId())) + "已审核");
-        pkDetail.setApproving(redisSortSetService.size(CacheKeyName.榜主审核中列表(pkDetail.getPkId())) + "审核中");
 
 
-        GroupInfo groupInfo = new GroupInfo();
-        groupInfo.setMode(1);
-        boolean hasGroup = !StringUtils.isBlank(dynamicService.查询PK群组二维码MediaId(pkDetail.getPkId(),current ));
-        groupInfo.setName("审核群组");
-        if(hasGroup)
+        EntityFilterChain filter2 = EntityFilterChain.newFilterChain(HomePagePk.class)
+                .compareFilter("pkId",CompareTag.Equal,pkId);
+        HomePagePk pk = daoService.querySingleEntity(HomePagePk.class,filter2);
+        if(ObjectUtils.isEmpty(pk))
         {
-            groupInfo.setHasGroup(true);
-            groupInfo.setIconUrl(IconUrl.有效微信标识.getUrl());
+
+            pk = new HomePagePk();
+            pk.setPkId(pkId);
+            pk.setPkType(pkEntity.getPkType());
+            pk.setPriority(value);
+            pk.setGroupStatu(1);
+            pk.setApproving(0);
+            pk.setApproved(0);
+            daoService.insertEntity(pk);
         }
         else
         {
-            groupInfo.setHasGroup(true);
-            groupInfo.setIconUrl(IconUrl.无效微信标识.getUrl());
+            pk.setPriority(value);
+            pk.setPkType(pkEntity.getPkType());
+            daoService.updateEntity(pk);
         }
-        pkDetail.setGroupInfo(groupInfo);
 
 
 
+
+
+
+
+
+
+    }
+
+    public String 查询优先级(String pkId) {
+
+
+        EntityFilterChain filter2 = EntityFilterChain.newFilterChain(HomePagePk.class)
+                .compareFilter("pkId",CompareTag.Equal,pkId);
+        HomePagePk pk = daoService.querySingleEntity(HomePagePk.class,filter2);
+
+        if(ObjectUtils.isEmpty(pk))
+        {
+            return null;
+        }
+        return pk.getPriority() + "";
+
+    }
+
+    public void 移除主页预览(String pkId) {
+
+        EntityFilterChain filter2 = EntityFilterChain.newFilterChain(HomePagePk.class)
+                .compareFilter("pkId",CompareTag.Equal,pkId);
+        HomePagePk pk = daoService.querySingleEntity(HomePagePk.class,filter2);
+
+        if(!ObjectUtils.isEmpty(pk))
+        {
+            daoService.deleteEntity(pk);
+        }
+
+    }
+
+    public List<BackImgEntity> 查询内置背景图片(int page,int type) {
+
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(BackImgEntity.class)
+                .compareFilter("type",CompareTag.Equal,type)
+                .pageLimitFilter(page,20);
+
+
+        List<BackImgEntity> pkEntities = daoService.queryEntities(BackImgEntity.class,filter);
+
+
+        return pkEntities;
+
+
+
+
+    }
+
+    public BackImgEntity 设置内置背景图片(int type, String imgUrl) {
+        BackImgEntity backImgEntity = new BackImgEntity();
+        backImgEntity.setImgId(com.union.app.util.idGenerator.IdGenerator.getImageId());
+
+        backImgEntity.setImgUrl(imgUrl);
+        backImgEntity.setType(type);
+
+        daoService.insertEntity(backImgEntity);
+        return backImgEntity;
+
+
+    }
+
+    public String 查询背景(int type) {
+
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(BackImgEntity.class)
+                .compareFilter("type",CompareTag.Equal,type)
+                .orderByRandomFilter()
+                ;
+
+
+        BackImgEntity backImgEntity = daoService.querySingleEntity(BackImgEntity.class,filter);
+
+
+        return ObjectUtils.isEmpty(backImgEntity)?"":backImgEntity.getImgUrl();
+
+    }
+
+    public void 删除内置背景图片(String id) {
+
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(BackImgEntity.class)
+                .compareFilter("imgId",CompareTag.Equal,id);
+
+        BackImgEntity backImgEntity = daoService.querySingleEntity(BackImgEntity.class,filter);
+        daoService.deleteEntity(backImgEntity);
+
+
+    }
+
+    public PreUserEntity 新增内置用户(String name, String imgUrl) throws UnsupportedEncodingException {
+
+        String userId = com.union.app.util.idGenerator.IdGenerator.生成用户ID();
+        PreUserEntity preUserEntity = new PreUserEntity();
+        preUserEntity.setUserId(userId);
+        preUserEntity.setImgUrl(imgUrl);
+        preUserEntity.setName(name.getBytes("UTF-8"));
+        daoService.insertEntity(preUserEntity);
+        UserEntity userEntity = new UserEntity();
+
+        userEntity.setOpenId(userId);
+        userEntity.setUserId(userId);
+        userEntity.setAvatarUrl(imgUrl);
+        userEntity.setPkTimes(0);
+        userEntity.setPostTimes(0);
+        userEntity.setUserType(UserType.重点用户);
+        userEntity.setNickName(name.getBytes("UTF-8"));
+        daoService.insertEntity(userEntity);
+
+        return preUserEntity;
+
+    }
+
+    public List<PreUserEntity> 查询内置用户(int page) throws UnsupportedEncodingException {
+
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(PreUserEntity.class)
+                .pageLimitFilter(page,50)
+                .orderByRandomFilter();
+        List<PreUserEntity> pkEntities = daoService.queryEntities(PreUserEntity.class,filter);
+        for(PreUserEntity userEntity:pkEntities)
+        {
+            userEntity.setUserName(new String(userEntity.getName(),"UTF-8"));
+        }
+        return pkEntities;
+
+
+
+
+    }
+
+    public PreUserEntity 修改内置用户名称(String userId, String name) throws UnsupportedEncodingException {
+
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(PreUserEntity.class)
+                .compareFilter("userId",CompareTag.Equal,userId);
+        PreUserEntity preUserEntity = daoService.querySingleEntity(PreUserEntity.class,filter);
+        preUserEntity.setName(name.getBytes("UTF-8"));
+        daoService.updateEntity(preUserEntity);
+        return preUserEntity;
+
+    }
+
+    public PreUserEntity 修改内置用户头像(String userId, String imgUrl) {
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(PreUserEntity.class)
+                .compareFilter("userId",CompareTag.Equal,userId);
+        PreUserEntity preUserEntity = daoService.querySingleEntity(PreUserEntity.class,filter);
+        preUserEntity.setImgUrl(imgUrl);
+        daoService.updateEntity(preUserEntity);
+        return preUserEntity;
+    }
+
+    public String 随机用户() {
+
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(PreUserEntity.class)
+                .orderByRandomFilter();
+        PreUserEntity preUserEntity = daoService.querySingleEntity(PreUserEntity.class,filter);
+        return preUserEntity.getUserId();
 
     }
 }

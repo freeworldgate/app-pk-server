@@ -54,7 +54,7 @@ public class 审核 {
 
     @RequestMapping(path="/approve",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse 查询审核信息(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId,@RequestParam("userId") String userId) throws AppException, IOException {
+    public AppResponse 审核(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId,@RequestParam("userId") String userId) throws AppException, IOException {
 
         Date currentDay = new Date();
         List<DataSet> dataSets = new ArrayList<>();

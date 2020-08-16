@@ -75,7 +75,7 @@ public class 查询主页 {
 
         if(userService.canUserView(userId,fromUser))
         {
-            List<PkDetail> pks = appService.查询预设相册(1);
+            List<PkDetail> pks = appService.查询预设相册(1,0);
             appService.vip包装(pks,userId,fromUser);
             pkDetails.addAll(pks);
 
@@ -83,13 +83,13 @@ public class 查询主页 {
         else
         {
 
-            List<PkDetail> pks = appService.查询平台相册(1);
+            List<PkDetail> pks = appService.查询审核相册(1);
             pkDetails.addAll(pks);
 
         }
 
 
-        appService.vip包装(pkDetails,userId,fromUser);
+//        appService.vip包装(pkDetails,userId,fromUser);
 
 
 
@@ -119,7 +119,7 @@ public class 查询主页 {
         {
             dataSets.add(new DataSet("user",user));
         }
-
+        dataSets.add(new DataSet("imgBack",appService.查询背景(1)));
 
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
 
@@ -131,12 +131,12 @@ public class 查询主页 {
 
         if(userService.canUserView(userId,fromUser))
         {
-            List<PkDetail> pks = appService.查询预设相册(page + 1);
+            List<PkDetail> pks = appService.查询预设相册(page + 1,0);
             pkDetails.addAll(pks);
         }
         else
         {
-            List<PkDetail> pks = appService.查询平台相册(page + 1);
+            List<PkDetail> pks = appService.查询审核相册(page + 1);
             pkDetails.addAll(pks);
 
         }

@@ -72,11 +72,23 @@ public class 查询单个PK {
 
 
     @RequestMapping(path="/queryPk",method = RequestMethod.GET)
-    public AppResponse 查询单个PK(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId,@RequestParam("fromUser") String fromUser) throws AppException, IOException {
+    public AppResponse 查询单个PK(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId,@RequestParam("fromUser") String fromUser) throws AppException, IOException, InterruptedException {
+
+
+
+
+
 
         List<DataSet> dataSets = new ArrayList<>();
 
-        String imgBack = RandomUtil.getRandomBackImg();
+        pkService.checkPk(pkId);
+
+
+
+
+
+
+
         //查询PK详情
         PkDetail pkDetail = pkService.querySinglePk(pkId);
         List<Post> posts = pkService.queryPkPost(userId,pkId,1);
@@ -118,7 +130,7 @@ public class 查询单个PK {
         dataSets.add(new DataSet("creator",creator));
 
 
-        dataSets.add(new DataSet("imgBack",imgBack));
+        dataSets.add(new DataSet("imgBack",appService.查询背景(0)));
         dataSets.add(new DataSet("date",TimeUtils.currentDate()));
 
 

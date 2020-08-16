@@ -49,6 +49,8 @@ public class 进入PK {
     @Autowired
     PostService postService;
 
+
+
     @Autowired
     AppService appService;
 
@@ -57,6 +59,13 @@ public class 进入PK {
     public AppResponse 进入PK(@RequestParam("userId") String userId,@RequestParam("pkId") String pkId) throws AppException, IOException {
 
         PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
+        if(pkEntity.getPkType() == PkType.内置相册)
+        {
+            return AppResponse.buildResponse(PageAction.信息反馈框("仅邀请用户可见","您不是邀请用户"));
+        }
+
+
+
 
         //邀请或者非邀请
         if(!StringUtils.equals(userId,pkEntity.getUserId()) && ObjectUtils.equals(pkEntity.getIsInvite(),InviteType.邀请))
@@ -95,6 +104,10 @@ public class 进入PK {
         {
             return AppResponse.buildResponse(PageAction.信息反馈框("提示","榜主未更新今日审核群"));
         }
+
+
+
+
 
 
 

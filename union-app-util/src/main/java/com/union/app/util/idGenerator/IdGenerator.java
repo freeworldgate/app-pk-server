@@ -35,4 +35,7 @@ public class IdGenerator {
     public static String 收款群组ID() {return UUID.randomUUID().toString(); }
 
     public static String 收款码ID()  {return UUID.randomUUID().toString(); }
+
+    public static String 生成用户ID() {return UUID.randomUUID().toString(); }
 }
+

@@ -8,6 +8,7 @@ import com.union.app.entity.pk.PkStatu;
 import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.*;
 import com.union.app.service.pk.complain.ComplainService;
+import com.union.app.service.pk.service.AppService;
 import com.union.app.service.pk.service.ApproveService;
 import com.union.app.service.pk.service.PkService;
 import com.union.app.service.user.UserService;
@@ -45,6 +46,8 @@ public class 查询审核员消息 {
     @Autowired
     PkService pkService;
 
+    @Autowired
+    AppService appService;
 
     @RequestMapping(path="/queryApproveMessage",method = RequestMethod.GET)
     public AppResponse 查询审核员消息(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId) throws AppException, IOException {
@@ -72,6 +75,12 @@ public class 查询审核员消息 {
         }
         dataSets.add(new DataSet("word1","编辑公告"));
         dataSets.add(new DataSet("word2","审核公告"));
+        if(mode)
+        {
+            dataSets.add(new DataSet("word3", "客服会话中回复1下载图片"));
+        }
+        dataSets.add(new DataSet("imgBack",appService.查询背景(5)));
+
 
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
     }
@@ -82,7 +91,7 @@ public class 查询审核员消息 {
         PkEntity pk = pkService.querySinglePkEntity(pkId);
         if(pk.getAlbumStatu() == PkStatu.已审核)
         {
-            return AppResponse.buildResponse(PageAction.信息反馈框("提示","相册已发布,不能审核"));
+            return AppResponse.buildResponse(PageAction.信息反馈框("提示","榜单已发布,不能修改公告"));
         }
         else
         {
