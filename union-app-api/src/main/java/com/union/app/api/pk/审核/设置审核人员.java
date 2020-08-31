@@ -1,5 +1,6 @@
 package com.union.app.api.pk.审核;
 
+import com.union.app.domain.pk.ApproveButton;
 import com.union.app.domain.pk.Post;
 import com.union.app.domain.pk.审核.ApproveComment;
 import com.union.app.domain.pk.审核.ApproveComplain;
@@ -62,14 +63,15 @@ public class 设置审核人员 {
         PostEntity postEntity = postService.查询帖子ById(pkId,postId);
         if(!StringUtils.equals(userId,postEntity.getUserId())){return AppResponse.buildResponse(PageAction.消息级别提示框(Level.错误消息,"非法操作"));}
 
+        postService.用户转发审批(postEntity);
         dynamicService.设置帖子的审核用户(pkId,postId);
 
-        postService.用户转发审批(postEntity);
+
+        ApproveButton approveButton = approveService.获取审核按钮(pkId,postId,userId);
 
 
 
-
-        return AppResponse.buildResponse(PageAction.前端数据更新("",""));
+        return AppResponse.buildResponse(PageAction.前端数据更新("button",approveButton));
 
     }
 

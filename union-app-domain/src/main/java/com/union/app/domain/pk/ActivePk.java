@@ -16,11 +16,7 @@ public class ActivePk {
 
     private ApproveMessage approveMessage;
 
-    private PkCashier pkCashier;
+    public String tipId;
 
-    private CashierGroup cashierGroup;
-
-    private CashierFeeCode cashierFeeCode;
-
-    private String cashierCommentUrl;
+    private int rejectTimes;
 }

@@ -43,6 +43,8 @@ public class Post {
     private String selfComment;
     private String selfCommentTime;
 
-
+    private int maxRejectTimes;
+    private int rejectTimes;
+    private String rejectText;
 
 }

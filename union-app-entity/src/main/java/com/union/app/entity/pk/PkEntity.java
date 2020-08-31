@@ -46,6 +46,10 @@ public class PkEntity {
     @Enumerated(EnumType.STRING)
     private PkType pkType;
 
+    @Enumerated(EnumType.STRING)
+    private MessageType messageType;
+
+
     /**
      * 打榜任务每天重置一次，重置时写入重置时间
      */

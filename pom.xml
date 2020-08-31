@@ -25,7 +25,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <!--设置所有模块输出目录-->
-        <!--<project.build.directory>E:\IDEA Workspace\union-app-boot\union-app-build\target\</project.build.directory>-->
+        <!--<project.build.directory>E:\IDEA Workspace\union-data-boot\union-data-build\target\</project.build.directory>-->
     </properties>
     <modules>
         <module>union-app-domain</module>
@@ -154,7 +154,7 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
-            <version>LATEST</version>
+            <version>1.1.22</version>
         </dependency>
 
         <!--MySql链接驱动8.0.11-->

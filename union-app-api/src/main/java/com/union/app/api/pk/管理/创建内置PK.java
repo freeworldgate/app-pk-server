@@ -70,12 +70,12 @@ public class 创建内置PK {
 
     @RequestMapping(path="/preCreatePk",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse 创建预置PK(@RequestParam("userId") String userId,@RequestParam("topic") String topic,@RequestParam("watchWord") String watchWord,@RequestParam("invite") boolean invite) throws AppException, IOException {
+    public AppResponse 创建预置PK(@RequestParam("userId") String userId,@RequestParam("topic") String topic,@RequestParam("watchWord") String watchWord,@RequestParam("isCharge") boolean isCharge,@RequestParam("type") int type) throws AppException, IOException {
 
         //用户校验
-        PkEntity pk = pkService.创建预置PK(topic,watchWord,invite);
+        PkEntity pk = pkService.创建预置PK(topic,watchWord,isCharge,type);
         //预置审核消息
-        ApproveMessage approveMessage  = approveService.发布审核员消息(pk.getPkId(),pk.getUserId(),"编辑审核公告",RandomUtil.getRandomImage());
+//        ApproveMessage approveMessage  = approveService.发布审核员消息(pk.getPkId(),pk.getUserId(),"编辑审核公告",RandomUtil.getRandomImage());
         //预置群组
         Date today = new Date();
         String groupUrl = RandomUtil.getRandomImage();
@@ -83,16 +83,17 @@ public class 创建内置PK {
         dynamicService.设置PK群组二维码MediaId(pk.getPkId(),mediaId,today);
         dynamicService.设置PK群组二维码Url(pk.getPkId(),groupUrl,today);
         PkDetail pkDetail = pkService.querySinglePk(pk.getPkId());
-        appService.vip包装(pkDetail,pkDetail.getUser().getUserId(),"");
+        pkDetail.setGeneticPriority(appService.查询优先级(pk.getPkId(),1));
+        pkDetail.setNonGeneticPriority(appService.查询优先级(pk.getPkId(),2));
         return AppResponse.buildResponse(PageAction.执行处理器("success",pkDetail));
     }
 
     @RequestMapping(path="/removePk",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
     public AppResponse 删除预置PK(@RequestParam("pkId") String pkId) throws AppException, IOException {
-
         appService.移除主页预览(pkId);
-        pkService.删除预置的PK(pkId);
+        appService.移除预置表(pkId);
+//        pkService.删除预置的PK(pkId);
 
         return AppResponse.buildResponse(PageAction.执行处理器("success",""));
     }

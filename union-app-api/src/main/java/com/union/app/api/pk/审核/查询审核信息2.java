@@ -1,5 +1,6 @@
 package com.union.app.api.pk.审核;
 
+import com.union.app.domain.pk.ApproveButton;
 import com.union.app.domain.pk.Post;
 import com.union.app.domain.pk.审核.ApproveComment;
 import com.union.app.domain.pk.审核.ApproveUser;
@@ -15,6 +16,7 @@ import com.union.app.service.user.UserService;
 import com.union.app.util.time.TimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -65,21 +67,19 @@ public class 查询审核信息2 {
     public AppResponse 查询审核信息(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId,@RequestParam("userId") String userId) throws AppException, IOException {
 
 
-        Date currentDay = new Date();
-
         List<DataSet> dataSets = new ArrayList<>();
-//        String approveUserId = dynamicService.查询审核用户(pkId,postId,currentDay);
-//        if(!dynamicService.用户是否为今日审核员(pkId,approveUserId,currentDay)){
-//
-//            return AppResponse.buildResponse(PageAction.前端数据更新("outOfTime",true));
-//        }
-
-
 
 
         Post post = postService.查询帖子(pkId,postId,null);
         ApproveComment pkComment = approveService.获取留言信息(pkId, postId);
+        ApproveButton approveButton = approveService.获取审核按钮(pkId,postId,userId);
+        if(approveButton == ApproveButton.转发审核群){
+            dataSets.add(new DataSet("tip1","如群组已满，请选择"));
+            dataSets.add(new DataSet("tip2", org.apache.commons.lang.StringUtils.isBlank(dynamicService.查询审核用户(pkId,postId))?"在线审核":"审核中"));
 
+
+        }
+        dataSets.add(new DataSet("button",approveButton));
         dataSets.add(new DataSet("userPost",post));
         dataSets.add(new DataSet("pkComment",pkComment));
         dataSets.add(new DataSet("creator",pkService.queryPkCreator(pkId)));

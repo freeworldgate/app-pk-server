@@ -86,9 +86,6 @@ public class UserService {
 
     private boolean isUserVip(String userId){
 
-        int mode = AppConfigService.getConfigAsInteger(ConfigItem.系统展示的模式);
-        if(mode == 2)
-        {
             if(!this.isUserExist(userId)){return false;}
             //运营模式
             User user = this.queryUser(userId);
@@ -97,15 +94,6 @@ public class UserService {
             else{return false;}
 
 
-        }
-        else if(mode == 3)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
 
     }
 
@@ -121,6 +109,13 @@ public class UserService {
             return this.isUserVip(fromUserId);
         }
     }
+
+    public boolean 是否是遗传用户(String userId)
+    {
+        return this.isUserVip(userId);
+
+    }
+
     public boolean canUserView(String userId)
     {
 
@@ -344,4 +339,52 @@ public class UserService {
     }
 
 
+    public void 确认开通PK次数加1(String userId) {
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(UserEntity.class)
+                .compareFilter("userId",CompareTag.Equal,userId);
+        UserEntity result = appDaoService.querySingleEntity(UserEntity.class,filter);
+        result.setActivePkTimes(result.getActivePkTimes() + 1);
+
+    }
+
+    public boolean 用户未激活榜单超限(String userId) {
+
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(UserEntity.class)
+                .compareFilter("userId",CompareTag.Equal,userId);
+        UserEntity result = appDaoService.querySingleEntity(UserEntity.class,filter);
+        int noActivePks = result.getPkTimes() - result.getActivePkTimes();
+        if(noActivePks >= AppConfigService.getConfigAsInteger(ConfigItem.用户最多未激活榜单数量))
+        {
+            return true;
+        }
+        return false;
+
+
+
+    }
+
+    public boolean 是否已经打榜(String userId) {
+        if(org.apache.commons.lang.StringUtils.isBlank(userId)){return false;}
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(UserEntity.class)
+                .compareFilter("userId",CompareTag.Equal,userId);
+        UserEntity result = appDaoService.querySingleEntity(UserEntity.class,filter);
+        if(!ObjectUtils.isEmpty(result))
+        {
+            return result.getPostTimes() > 0;
+        }
+        return false;
+
+
+    }
+
+    public void 删除一个未激活榜单(String userId) {
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(UserEntity.class)
+                .compareFilter("userId",CompareTag.Equal,userId);
+        UserEntity result = appDaoService.querySingleEntity(UserEntity.class,filter);
+
+        result.setPkTimes(result.getPkTimes() - 1);
+        appDaoService.updateEntity(result);
+
+
+    }
 }

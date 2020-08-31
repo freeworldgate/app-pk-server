@@ -63,7 +63,7 @@ public class 主页预览 {
 
 
         List<PkDetail> pks = appService.查询预设相册(1,type);
-        appService.vip包装(pks,userId,"");
+
 
 
         List<DataSet> dataSets = new ArrayList<>();

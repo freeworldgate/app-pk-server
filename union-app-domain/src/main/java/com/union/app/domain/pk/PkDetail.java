@@ -4,6 +4,7 @@ import com.union.app.domain.pk.PkDynamic.PkDynamic;
 import com.union.app.domain.pk.apply.KeyNameValue;
 import com.union.app.domain.pk.审核.ApproveMessage;
 import com.union.app.domain.user.User;
+import com.union.app.entity.pk.InviteType;
 import com.union.app.entity.pk.PkType;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,7 +17,7 @@ import java.io.Serializable;
 @ToString
 public class PkDetail implements Serializable{
 
-    private String publishName = "审核公告";
+    private String publishName = "审核样例";
 
     private String pkId;
 
@@ -27,6 +28,7 @@ public class PkDetail implements Serializable{
     private String watchWord;
 
     private KeyNameValue invite;
+    private InviteType inviteType;
 
     private int shareMode;
 
@@ -35,6 +37,7 @@ public class PkDetail implements Serializable{
     private KeyNameValue totalApprover;
 
     private KeyNameValue pkStatu;
+    private KeyNameValue charge;
 
 
     private ApproveMessage approveMessage;
@@ -51,7 +54,8 @@ public class PkDetail implements Serializable{
     private GroupInfo groupInfo;
 
 
-    private String priority;
+    private long nonGeneticPriority;
+    private long geneticPriority;
 
 
 

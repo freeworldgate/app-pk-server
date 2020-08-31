@@ -4,25 +4,28 @@ import com.union.app.dao.spi.AppDaoService;
 import com.union.app.dao.spi.filter.CompareTag;
 import com.union.app.dao.spi.filter.EntityFilterChain;
 import com.union.app.entity.pk.HomePagePk;
-import com.union.app.entity.pk.PkEntity;
 import com.union.app.entity.pk.PkType;
+import com.union.app.service.data.PkDataService;
 import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.dynamic.imp.RedisMapService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.util.List;
 
 @Component
-public class 内置相册的群组和审核信息定时增长 {
+public class 定时刷新首页 implements ApplicationListener<ContextRefreshedEvent>{
 
 
 
     @Autowired
-    DynamicService dynamicService;
+    PkDataService pkDataService;
 
     @Autowired
     AppDaoService daoService;
@@ -33,12 +36,16 @@ public class 内置相册的群组和审核信息定时增长 {
     @Resource
     private RedisTemplate<String, String> redisTemplate;
 
-    @Scheduled(cron = "* * * * */1 ?") // 每小时执行一次，更新群组以及审核信息
+    @Scheduled(cron = "* */20 * * * ?") // 每小时执行一次，更新群组以及审核信息
     public void work() throws Exception {
-        //内置相册审核信息要实现定期增长
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(HomePagePk.class)
-                .compareFilter("pkType",CompareTag.Equal,PkType.内置相册);
-        List<HomePagePk> pks = daoService.queryEntities(HomePagePk.class,filter);
+
+
+
+        pkDataService.更新相册列表();
+
+
+
+
 
 
 
@@ -47,14 +54,15 @@ public class 内置相册的群组和审核信息定时增长 {
     }
 
 
+    @Override
+    public void onApplicationEvent(ContextRefreshedEvent event) {
+
+        try {
+            pkDataService.更新相册列表();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 
-
-
-
-
-
-
-
-
+    }
 }

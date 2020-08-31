@@ -10,6 +10,7 @@ import com.union.app.domain.pk.apply.KeyNameValue;
 import com.union.app.domain.pk.integral.UserIntegral;
 import com.union.app.domain.pk.审核.ApproveMessage;
 import com.union.app.domain.user.User;
+import com.union.app.domain.工具.RandomUtil;
 import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.constant.常量值;
 import com.union.app.plateform.data.resultcode.AppException;
@@ -26,6 +27,7 @@ import com.union.app.service.pk.service.UserInfoService;
 import com.union.app.service.user.UserService;
 import com.union.app.util.time.TimeUtils;
 import org.apache.commons.lang.StringUtils;
+import org.bouncycastle.pqc.crypto.rainbow.util.RainbowUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
@@ -168,18 +170,18 @@ public class DynamicService {
 
         if(redisSortSetService.isMember(CacheKeyName.榜主审核中列表(pkId) ,postId)){
 
-            double score = redisSortSetService.getEleScore(CacheKeyName.榜主审核中列表(pkId) ,postId);
-
-            long scoreAbs = new Double(Math.abs(score)).longValue() ;
-            if((System.currentTimeMillis() - scoreAbs ) > AppConfigService.getConfigAsInteger(ConfigItem.审核榜帖最大等待时间) * 60 * 1000)
-            {
-                redisSortSetService.remove(pkId,postId);
-                return null;
-            }
-            else
-            {
-                return pkService.queryPkCreator(pkId).getUserId();
-            }
+//            double score = redisSortSetService.getEleScore(CacheKeyName.榜主审核中列表(pkId) ,postId);
+//
+//            long scoreAbs = new Double(Math.abs(score)).longValue() ;
+//            if((System.currentTimeMillis() - scoreAbs ) > AppConfigService.getConfigAsInteger(ConfigItem.审核榜帖最大等待时间) * 60 * 1000)
+//            {
+////                redisSortSetService.remove(pkId,postId);
+//                return null;
+//            }
+//            else
+//            {
+            return pkService.queryPkCreator(pkId).getUserId();
+//            }
 
 
         }
@@ -311,6 +313,13 @@ public class DynamicService {
             this.更新PK排名(pkId);
 
     }
+
+    public void 驳回用户审核(String pkId, String postId) {
+
+        redisSortSetService.remove(CacheKeyName.榜主审核中列表(pkId),postId);
+    }
+
+
 
         //有序集合-按照时间排序
     public void 更新PK排名(String pkId){
@@ -541,42 +550,29 @@ public class DynamicService {
             }
         }
 
-        if(userService.canUserView(userId))
+
+        for(Post post:posts)
         {
-            for(Post post:posts)
-            {
-                post.setApproveComment(approveService.获取留言信息(pkId,post.getPostId()));
-
-            }
-
-
+            post.setApproveComment(approveService.获取留言信息(pkId,post.getPostId()));
         }
-
-
 
         return posts;
 
 
     }
-    public List<Post> 查询审核中指定范围的Post(String pkId,String userId,int page) throws UnsupportedEncodingException {
+    public Post 查询审核中指定范围的Post(String pkId) throws UnsupportedEncodingException {
 
-        List<Post> posts = new ArrayList<>();
-        List<String> postIds = new ArrayList<>();
 
-        List<String> pageList = redisSortSetService.queryPage(CacheKeyName.榜主审核中列表(pkId),page);
-        postIds.addAll(pageList);
-
-        for(String postId:postIds)
-        {
-            Post post = postService.查询帖子(pkId,postId,"");
-            if(!ObjectUtils.isEmpty(post)) {
-                post.setApproveComment(approveService.获取留言信息(pkId, postId));
-                posts.add(post);
-            }
-
+        String postId = redisSortSetService.popEle(CacheKeyName.榜主审核中列表(pkId));
+        if(StringUtils.isBlank(postId)){return null;}
+        Post post = postService.查询帖子(pkId,postId,"");
+        if(!ObjectUtils.isEmpty(post)) {
+            post.setApproveComment(approveService.获取留言信息(pkId, postId));
         }
 
-        return posts;
+
+
+        return post;
 
     }
 
@@ -620,17 +616,25 @@ public class DynamicService {
     public void 设置PK群组二维码MediaId(String pkId, String mediaId,Date date) {
         redisMapService.setStringValue(CacheKeyName.群组二维码(date),pkId,mediaId);
     }
+    public void 设置内置公开PK群组二维码MediaId(String pkId, String mediaId) {
+        redisMapService.setStringValue(CacheKeyName.内置公开PK群组二维码(),pkId,mediaId);
+    }
     public String 查询PK群组二维码MediaId(String pkId,Date date) {
         return redisMapService.getStringValue(CacheKeyName.群组二维码(date),pkId);
     }
     public void 设置PK群组二维码Url(String pkId, String url,Date date) {
         redisMapService.setStringValue(CacheKeyName.群组URL(date),pkId,url);
     }
+    public void 设置内置公开PK群组二维码Url(String pkId, String url) {
+        redisMapService.setStringValue(CacheKeyName.内置公开PK群组URL(),pkId,url);
+    }
     public String 查询PK群组二维码Url(String pkId,Date date) {
         return redisMapService.getStringValue(CacheKeyName.群组URL(date),pkId);
     }
 
-
+    public String 查询内置公开PK群组二维码Url(String pkId) {
+        return redisMapService.getStringValue(CacheKeyName.内置公开PK群组URL(),pkId);
+    }
     public String 获取当前拉取图片(String fromUserName) {
 
         return redisMapService.getStringValue(CacheKeyName.拉取资源图片(),fromUserName);
@@ -666,6 +670,72 @@ public class DynamicService {
 
     public long 查询收款码分配的人数(String feeCodeId) { return redisMapService.getIntValue(CacheKeyName.收款码分配人数(),feeCodeId); }
     public long 收款码分配的人数加一(String feeCodeId) { return redisMapService.valueIncr(CacheKeyName.收款码分配人数(),feeCodeId); }
+
+
+
+
+
+
+
+
+
+
+
+    public long 查看内置相册已审核榜帖(String pkId) {
+        return redisMapService.getIntValue(CacheKeyName.内置相册已审核(),pkId);
+
+
+    }
+
+    public long 查看内置相册审核中榜帖(String pkId) {
+
+
+
+        return redisMapService.getIntValue(CacheKeyName.内置相册审核中(),pkId);
+    }
+
+    public boolean 查看内置相册群组状态(String pkId) {
+
+
+        return redisMapService.getIntValue(CacheKeyName.内置相册群组状态(),pkId) == 0;
+
+    }
+
+    public void 更新内置相册已审核数量(String pkId, int value) {
+        redisMapService.setLongValue(CacheKeyName.内置相册已审核(),pkId,Long.valueOf(value+""));
+    }
+
+    public void 更新内置相册审核中数量(String pkId, int value) {
+        redisMapService.setLongValue(CacheKeyName.内置相册审核中(),pkId,Long.valueOf(value+""));
+
+    }
+
+    public void 更新内置相册群组状态(String pkId) {
+        if(redisMapService.getIntValue(CacheKeyName.内置相册群组状态(),pkId) == 0)
+        {
+            redisMapService.setLongValue(CacheKeyName.内置相册群组状态(),pkId,1L);
+        }
+        else
+        {
+            redisMapService.setLongValue(CacheKeyName.内置相册群组状态(),pkId,0L);
+        }
+
+    }
+
+    public String 查询内置公开PK群组二维码MediaId(String pkId) {
+        return redisMapService.getStringValue(CacheKeyName.内置公开PK群组二维码(),pkId);
+    }
+
+    public void 更新内置相册参数(String pkId) {
+        if(RandomUtil.getRandomNumber()%4 == 0){
+            redisMapService.valueIncr(CacheKeyName.内置相册审核中(),pkId,1L);
+            redisMapService.valueIncr(CacheKeyName.内置相册已审核(),pkId,1L);
+        }
+
+
+
+
+    }
 
 //    public long 查询收款码确认次数(String feeCodeId) { return redisMapService.getIntValue(CacheKeyName.收款码确认次数(),feeCodeId); }
 //    public long 收款码确认次数加一(String feeCodeId) { return redisMapService.valueIncr(CacheKeyName.收款码确认次数(),feeCodeId); }

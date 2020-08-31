@@ -7,33 +7,26 @@ import lombok.ToString;
 
 import javax.persistence.*;
 
+
 @Setter
 @Getter
 @EqualsAndHashCode
 @ToString
 @Entity
-@Table(name="T_PK_CASHIER_LINK_URL_TABLE")
-public class PkCashierEntity {
+@Table(name="T_BUILD_IN_PK")
+public class BuildInPkEntity {
 
 
     @Id
-    String cashierId;
-
-    String realName;
+    private String pkId;
 
     @Enumerated(EnumType.STRING)
-    CashierStatu statu;
-
-    int selectTimes;
-
-    String linkUrl;
-    String mediaId;
-    long lastUpdateTime;
+    private InviteType isInvite;
 
     @Enumerated(EnumType.STRING)
-    LinkType linkType;
+    private MessageType messageType;
 
-    long time;
+    private long createTime;
 
 
 

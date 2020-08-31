@@ -34,8 +34,6 @@ public class PostEntity {
     @Enumerated(EnumType.STRING)
     private PostStatu statu;
 
-    private String approveUserId;
-
     private String imgUrls;
 
     private long shareTime;
@@ -43,4 +41,7 @@ public class PostEntity {
     @Enumerated(EnumType.STRING)
     private ApproveStatu approveStatu;
 
+
+    private int rejectTimes;
+    private byte[] rejectTextBytes;
 }

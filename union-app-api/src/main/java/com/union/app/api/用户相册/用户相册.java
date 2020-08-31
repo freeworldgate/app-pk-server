@@ -65,12 +65,17 @@ public class 用户相册 {
 
         List<PkDetail> pks = appService.查询用户相册(userId,1);
 
-        appService.vip包装(pks,userId,"");
 
         List<DataSet> dataSets = new ArrayList<>();
 
+        if(CollectionUtils.isEmpty(pks))
+        {dataSets.add(new DataSet("pkEnd",true));}
+        else
+        {
+            dataSets.add(new DataSet("pks",pks));
+            dataSets.add(new DataSet("pkEnd",false));
+        }
 
-        dataSets.add(new DataSet("pks",pks));
         dataSets.add(new DataSet("leftPks", userService.查询用户剩余榜单(userId)));
         dataSets.add(new DataSet("inviteTimes", userService.查询邀请次数(userId)));
         dataSets.add(new DataSet("pkTimes", userService.查询建榜次数(userId)));
@@ -92,23 +97,7 @@ public class 用户相册 {
     @RequestMapping(path="/nextUserPks",method = RequestMethod.GET)
     public AppResponse 查询单个PK(@RequestParam("userId") String userId,@RequestParam("page") int page) throws AppException, IOException {
 
-//        List<PkDetail> pkDetails = new ArrayList<>();
         List<PkDetail> pks = appService.查询用户相册(userId,page+1);
-        appService.vip包装(pks,userId,"");
-//        if(!userService.isUserVip(userId) )
-//        {
-//            for(PkDetail pkDetail:pks)
-//            {
-//                if(pkDetail.getPkType() != PkType.预设相册)
-//                {
-//                    pkDetails.add(pkDetail);
-//                }
-//            }
-//        }
-//        else
-//        {
-//            pkDetails.addAll(pks);
-//        }
 
 
         if(CollectionUtils.isEmpty(pks))

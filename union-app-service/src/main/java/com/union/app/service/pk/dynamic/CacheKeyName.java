@@ -42,11 +42,19 @@ public class CacheKeyName {
 //    public static String 收款码确认次数(){return "FEECODE_CONFIRM_TIMES" ;}
 
     public static String 群组URL(Date date){return "Group-Code-Url-" + TimeUtils.dateStr(date) ;}
+    public static String 内置公开PK群组URL(){return "Inner-Public-Group-Code-Url" ;}
 
 
     public static String 拉取资源图片() { return "USER-MEDIA-CURRENT" ;}
 
-    public static String PK排名() {{ return "PK-MEMBER-SORT" ;} }
+    public static String PK排名() { return "PK-POST-MEMBER-SORT" ;}
+
+    public static String 内置相册已审核() { return "PK-PRE-ALBUM-APPROVED-NUMS" ;}
+    public static String 内置相册审核中() { return "PK-PRE-ALBUM-APPROVING-NUMS" ;}
+
+    public static String 内置相册群组状态() { return "PK-PRE-ALBUM-GROUP-STATU" ;}
+
+    public static String 内置公开PK群组二维码() {return "Inner-Public-Group-Code-MediaId" ;}
 
 //    public static String 更新公告的PKId列表() {return "PK-NEED-UPDATE" ; }
 }

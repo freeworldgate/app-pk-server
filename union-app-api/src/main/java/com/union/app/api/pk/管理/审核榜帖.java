@@ -9,6 +9,7 @@ import com.union.app.entity.pk.ApproveStatu;
 import com.union.app.entity.pk.PostEntity;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
+import com.union.app.plateform.data.resultcode.DataSet;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.service.pk.click.ClickService;
@@ -73,35 +74,13 @@ public class 审核榜帖 {
     public AppResponse 查询审核榜帖(@RequestParam("userId") String userId) throws AppException, IOException {
         List<ApprovePost> approvePosts = new ArrayList<>();
 
-        List<Post> posts = postService.查询需要审核的帖子();
-
-        for(Post post:posts)
-        {
-            ApprovePost approvePost = new ApprovePost();
-            approvePost.setPost(post);
-            PkDetail pkDetail = pkDetailMap.get(post.getPkId());
-            if(ObjectUtils.isEmpty(pkDetail))
-            {
-                pkDetail = pkService.querySinglePk(post.getPkId());
-                if(ObjectUtils.isEmpty(pkDetail)){continue;}
-                pkDetail.setApproveMessage(approveService.获取审核人员消息(post.getPkId()));
-                approvePost.setPk(pkDetail);
-                pkDetailMap.put(post.getPkId(),pkDetail);
-            }
-            else
-            {
-                approvePost.setPk(pkDetail);
-            }
-
-            approvePosts.add(approvePost);
-        }
+        List<DataSet> dataSets  = appService.查询下一个审核榜帖();
 
 
 
 
 
-
-        return AppResponse.buildResponse(PageAction.前端数据更新("posts",approvePosts));
+        return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
 
     }
 
@@ -114,8 +93,13 @@ public class 审核榜帖 {
         postService.上线帖子(pkId,postId);
         dynamicService.已审核(pkId,postId);
 
-        return AppResponse.buildResponse(PageAction.执行处理器("success",""));
+        List<DataSet> dataSets  = appService.查询下一个审核榜帖();
 
+
+
+
+
+        return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
 
     }
 
@@ -126,12 +110,15 @@ public class 审核榜帖 {
 
 
         PostEntity postEntity = postService.查询帖子ById(pkId,postId);
-        postEntity.setApproveStatu(ApproveStatu.处理过);
+        postEntity.setApproveStatu(ApproveStatu.驳回修改);
+        postEntity.setRejectTimes(postEntity.getRejectTimes() + 1);
+        postEntity.setRejectTextBytes("请按照审核样例要求编辑榜帖。".getBytes("UTF-8"));
         daoService.updateEntity(postEntity);
+        List<DataSet> dataSets  = appService.查询下一个审核榜帖();
 
+        dynamicService.驳回用户审核(pkId,postId);
+        return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
 
-
-        return AppResponse.buildResponse(PageAction.执行处理器("success",""));
 
     }
 

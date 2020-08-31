@@ -1,8 +1,11 @@
 package com.union.app.api.pk.审核;
 
+import com.union.app.dao.spi.AppDaoService;
 import com.union.app.domain.pk.Post;
 import com.union.app.domain.pk.审核.ApproveComment;
 import com.union.app.domain.pk.审核.ApproveUser;
+import com.union.app.entity.pk.ApproveStatu;
+import com.union.app.entity.pk.PostEntity;
 import com.union.app.plateform.data.resultcode.*;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.service.pk.dynamic.DynamicService;
@@ -32,6 +35,10 @@ public class 审核 {
 
 
     @Autowired
+    AppDaoService daoService;
+
+
+    @Autowired
     PkService pkService;
 
     @Autowired
@@ -56,7 +63,7 @@ public class 审核 {
     @Transactional(rollbackOn = Exception.class)
     public AppResponse 审核(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId,@RequestParam("userId") String userId) throws AppException, IOException {
 
-        Date currentDay = new Date();
+
         List<DataSet> dataSets = new ArrayList<>();
 
 
@@ -79,24 +86,97 @@ public class 审核 {
 
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
     }
-//    @RequestMapping(path="/doApprove",method = RequestMethod.GET)
-//    @Transactional(rollbackOn = Exception.class)
-//    public AppResponse approvePost(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId,@RequestParam("userId") String userId) throws AppException, IOException {
-//
-//
-//
-//
-//        if(!pkService.isPkCreator(pkId,userId))
-//        {
-//            throw AppException.buildException(PageAction.消息级别提示框(Level.错误消息,"非榜主用户"));
-//        }
-//
-//        postService.上线帖子(pkId,postId);
-//        dynamicService.已审核(pkId,postId);
-//
-//
-//        return AppResponse.buildResponse(PageAction.执行处理器("success",""));
-//    }
+
+    @RequestMapping(path="/doApprove",method = RequestMethod.GET)
+    @Transactional(rollbackOn = Exception.class)
+    public AppResponse 审核榜帖(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId,@RequestParam("userId") String userId) throws AppException, IOException {
+
+
+
+        if(!pkService.isPkCreator(pkId,userId))
+        {
+            throw AppException.buildException(PageAction.消息级别提示框(Level.错误消息,"非榜主用户"));
+        }
+
+        postService.上线帖子(pkId,postId);
+        dynamicService.已审核(pkId,postId);
+
+        List<DataSet> dataSets = new ArrayList<>();
+        Post post = dynamicService.查询审核中指定范围的Post(pkId);
+        DataSet dataSet2 = new DataSet("post",post);
+        DataSet dataSet8 = new DataSet("pkId",pkId);
+
+
+        dataSets.add(dataSet2);
+        dataSets.add(dataSet8);
+
+        return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
+
+    }
+
+    @RequestMapping(path="/rejectApprove",method = RequestMethod.GET)
+    @Transactional(rollbackOn = Exception.class)
+    public AppResponse 驳回修改(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId,@RequestParam("userId") String userId,@RequestParam("text") String text) throws AppException, IOException {
+
+
+
+        if(!pkService.isPkCreator(pkId,userId))
+        {
+            throw AppException.buildException(PageAction.消息级别提示框(Level.错误消息,"非榜主用户"));
+        }
+
+        PostEntity postEntity = postService.查询帖子ById(pkId,postId);
+        postEntity.setApproveStatu(ApproveStatu.驳回修改);
+        postEntity.setRejectTextBytes(text.getBytes("UTF-8"));
+        postEntity.setRejectTimes(postEntity.getRejectTimes() + 1);
+        daoService.updateEntity(postEntity);
+
+
+
+
+
+
+
+
+        List<DataSet> dataSets = new ArrayList<>();
+        Post post = dynamicService.查询审核中指定范围的Post(pkId);
+        DataSet dataSet2 = new DataSet("post",post);
+        DataSet dataSet8 = new DataSet("pkId",pkId);
+
+
+        dataSets.add(dataSet2);
+        dataSets.add(dataSet8);
+
+        dynamicService.驳回用户审核(pkId,postId);
+
+        return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
+
+    }
+    @RequestMapping(path="/rejectApprovingPost",method = RequestMethod.GET)
+    @Transactional(rollbackOn = Exception.class)
+    public AppResponse 驳回修改Post(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId,@RequestParam("userId") String userId,@RequestParam("text") String text) throws AppException, IOException {
+
+
+
+        if(!pkService.isPkCreator(pkId,userId))
+        {
+            throw AppException.buildException(PageAction.消息级别提示框(Level.错误消息,"非榜主用户"));
+        }
+
+        PostEntity postEntity = postService.查询帖子ById(pkId,postId);
+        postEntity.setApproveStatu(ApproveStatu.驳回修改);
+        postEntity.setRejectTextBytes(text.getBytes("UTF-8"));
+        postEntity.setRejectTimes(postEntity.getRejectTimes() + 1);
+        daoService.updateEntity(postEntity);
+
+        dynamicService.驳回用户审核(pkId,postId);
+
+        return AppResponse.buildResponse(PageAction.前端数据更新("tt1","已驳回"));
+
+    }
+
+
+
 
 
 }

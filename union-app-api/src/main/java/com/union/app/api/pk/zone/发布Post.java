@@ -122,7 +122,8 @@ public class 发布Post {
         PostEntity postEntity = postService.查询帖子ById(pkId,postId);
         if(postEntity.getStatu() == PostStatu.上线)
         {
-            return AppResponse.buildResponse(PageAction.执行处理器("online",""));
+            return AppResponse.buildResponse(PageAction.信息反馈框("提示","榜帖已发布，不支持修改榜帖内容"));
+//            return AppResponse.buildResponse(PageAction.执行处理器("online",""));
         }
         return AppResponse.buildResponse(PageAction.执行处理器("offline",""));
 

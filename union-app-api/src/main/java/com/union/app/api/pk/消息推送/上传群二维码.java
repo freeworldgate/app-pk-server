@@ -4,10 +4,7 @@ import com.union.app.common.config.AppConfigService;
 import com.union.app.common.微信.WeChatUtil;
 import com.union.app.domain.pk.PkActive;
 import com.union.app.domain.user.User;
-import com.union.app.entity.pk.PkActiveEntity;
-import com.union.app.entity.pk.PkCashierEntity;
-import com.union.app.entity.pk.PkCashierFeeCodeEntity;
-import com.union.app.entity.pk.PkCashierGroupEntity;
+import com.union.app.entity.pk.*;
 import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.*;
 import com.union.app.service.pk.dynamic.DynamicService;
@@ -59,6 +56,7 @@ public class 上传群二维码 {
         DataSet dataSet1 = new DataSet("creator",creator);
         DataSet dataSet5 = new DataSet("mode", "show");
 
+
         DataSet dataSet2 = new DataSet("imgUrl","");
         DataSet dataSet3 = new DataSet("mediaId","");
         DataSet dataSet4 = new DataSet("title","");
@@ -79,37 +77,24 @@ public class 上传群二维码 {
 
         if(type == 1)
         {
+//
+//                String oldMediaId = dynamicService.查询PK群组二维码MediaId(pkId,currentDate);
+//                if(!StringUtils.isBlank(oldMediaId)){ return AppResponse.buildResponse(PageAction.消息级别提示框(Level.错误消息,"今日已更新")); }
+            String mediaId = WeChatUtil.uploadImg2Wx(url);
 
-                String oldMediaId = dynamicService.查询PK群组二维码MediaId(pkId,currentDate);
-                if(!StringUtils.isBlank(oldMediaId)){ return AppResponse.buildResponse(PageAction.消息级别提示框(Level.错误消息,"今日已更新")); }
-                String mediaId = WeChatUtil.uploadImg2Wx(url);
-                dynamicService.设置PK群组二维码MediaId(pkId,mediaId,currentDate);
-                dynamicService.设置PK群组二维码Url(pkId,url,currentDate);
+            dynamicService.设置PK群组二维码MediaId(pkId,mediaId,currentDate);
+            dynamicService.设置PK群组二维码Url(pkId,url,currentDate);
 
 
-                dataSet2 = new DataSet("imgUrl",url);
-                dataSet3 = new DataSet("mediaId",mediaId);
-                dataSet4 = new DataSet("title",TimeUtils.currentDate() + "日审核群");
 
-        }
-        else if(type == 4)
-        {
-            appService.上传打赏截图(pkId,userId,url);
 
-            PkActiveEntity pkActiveEntity = appService.查询PK激活信息(pkId);
-            dataSet4 = new DataSet("title", "打赏截图");
-            if(ObjectUtils.isEmpty(pkActiveEntity) || StringUtils.isBlank(pkActiveEntity.getScreenCutUrl()))
-            {
-                dataSet5 = new DataSet("mode", "upload");
-                dataSet6 = new DataSet("t1", "未上传");
-                dataSet7 = new DataSet("t2", "上传打赏截图，只有一次机会...");
-            }
-            else
-            {
-                dataSet2 = new DataSet("imgUrl",pkActiveEntity.getScreenCutUrl());
-                dataSet3 = new DataSet("mediaId",pkActiveEntity.getScreenCutMediaId());
-                dataSet4 = new DataSet("mode", "show");
-            }
+
+
+
+            dataSet2 = new DataSet("imgUrl",url);
+            dataSet3 = new DataSet("mediaId",mediaId);
+            dataSet4 = new DataSet("title",TimeUtils.currentDate() + "日审核群");
+
         }
         else
         {
@@ -125,6 +110,7 @@ public class 上传群二维码 {
         dataSets.add(dataSet5);
         dataSets.add(dataSet6);
         dataSets.add(dataSet7);
+
 
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
 
@@ -150,16 +136,11 @@ public class 上传群二维码 {
         DataSet dataSet7 = new DataSet("t2","");
 
 
-        boolean download = AppConfigService.getConfigAsBoolean(ConfigItem.系统当前是否客服模式);
-        dataSets.add(new DataSet("download",download));
-        if(download)
-        {
-            dataSets.add(new DataSet("buttonStr","获取图片"));
-        }
-        else
-        {
-            dataSets.add(new DataSet("buttonStr","保存图片到相册"));
-        }
+//        boolean download = AppConfigService.getConfigAsBoolean(ConfigItem.系统当前是否客服模式);
+//        dataSets.add(new DataSet("download",download));
+
+        dataSets.add(new DataSet("buttonStr1","获取图片"));
+        dataSets.add(new DataSet("buttonStr2","保存图片到相册"));
 
 
 
@@ -167,74 +148,76 @@ public class 上传群二维码 {
         if(type == 1)
         {
             //查询打榜群。
-
-            String url = dynamicService.查询PK群组二维码Url(pkId,currentDate);
-            String mediaId = dynamicService.查询PK群组二维码MediaId(pkId,currentDate);
-            if(StringUtils.isBlank(url))
+            String url ="";
+            String mediaId ="";
+            PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
+            if(pkEntity.getPkType() == PkType.内置相册 && pkEntity.getIsInvite() == InviteType.公开)
             {
+                url = dynamicService.查询内置公开PK群组二维码Url(pkId);
+                mediaId = dynamicService.查询内置公开PK群组二维码MediaId(pkId);
+            }
+            else
+            {
+                 url = dynamicService.查询PK群组二维码Url(pkId,currentDate);
+                 mediaId = dynamicService.查询PK群组二维码MediaId(pkId,currentDate);
+            }
 
-                dataSet5 = new DataSet("mode", "");
-                dataSet6 = new DataSet("t1", "空空如也");
-                dataSet7 = new DataSet("t2", "等待用户更新今日审核群...");
 
-                if(StringUtils.equals(userId,creator.getUserId()))
-                {
-                    dataSet5 = new DataSet("mode", "upload");
+
+            dataSet2 = new DataSet("imgUrl",url);
+            dataSet3 = new DataSet("mediaId",mediaId);
+            dataSet4 = new DataSet("title",TimeUtils.currentDate() + "日审核群");
+
+            if(StringUtils.equals(userId,creator.getUserId()))
+            {
+                dataSet5 = new DataSet("mode", "upload");
+                if(StringUtils.isBlank(url)){
                     dataSet6 = new DataSet("t1", "上传群名片");
-                    dataSet7 = new DataSet("t2", "每日只有一次上传机会，请使用微信群组名片...");
+                    dataSet7 = new DataSet("t2", "群成员满200，及时更换群名片...");
+                }
+
+            }
+            else
+            {
+                if(StringUtils.isBlank(url))
+                {
+
+                    dataSet5 = new DataSet("mode", "");
+                    dataSet6 = new DataSet("t1", "空空如也");
+                    dataSet7 = new DataSet("t2", "等待用户更新今日审核群...");
+
+
+
+
 
                 }
 
 
 
             }
-            else
-            {
-                dataSet2 = new DataSet("imgUrl",url);
-                dataSet3 = new DataSet("mediaId",mediaId);
-                dataSet4 = new DataSet("title",TimeUtils.currentDate() + "日审核群");
-            }
+
 
 
         }
         else if(type == 2)
         {
             //查询激活群。
+            PkCashierEntity weidianUrl = appService.获取微店(pkId);
 
-            PkCashierGroupEntity pkCashierGroupEntity = appService.查询可用群组(pkId,userId);
-            dataSet2 = new DataSet("imgUrl",pkCashierGroupEntity.getGroupUrl());
-            dataSet3 = new DataSet("mediaId",pkCashierGroupEntity.getGroupMediaId());
+//            PkCashierGroupEntity pkCashierGroupEntity = appService.查询可用群组(pkId,userId);
+            dataSet2 = new DataSet("imgUrl",weidianUrl.getLinkUrl());
+            dataSet3 = new DataSet("mediaId",weidianUrl.getMediaId());
             dataSet4 = new DataSet("title",TimeUtils.currentDate() + "日激活群");
 
         }
         else if(type == 3)
         {
-            //查询平台收款码。
-            PkCashierFeeCodeEntity pkCashierFeeImgEntity = appService.查询可用收款码(pkId,userId);
+            PkCashierEntity taobaoUrl = appService.获取淘宝(pkId);
 
-            dataSet2 = new DataSet("imgUrl",pkCashierFeeImgEntity.getFeeCodeUrl());
-            dataSet3 = new DataSet("mediaId",pkCashierFeeImgEntity.getFeeCodeMediaId());
+
+            dataSet2 = new DataSet("imgUrl",taobaoUrl.getLinkUrl());
+            dataSet3 = new DataSet("mediaId",taobaoUrl.getMediaId());
             dataSet4 = new DataSet("title", "打赏码");
-
-        }
-        else if(type == 4)
-        {
-            //查询打赏截图。
-
-            PkActiveEntity pkActiveEntity = appService.查询PK激活信息(pkId);
-            dataSet4 = new DataSet("title", "打赏截图");
-            if(ObjectUtils.isEmpty(pkActiveEntity) || StringUtils.isBlank(pkActiveEntity.getScreenCutUrl()))
-            {
-                dataSet5 = new DataSet("mode", "upload");
-                dataSet6 = new DataSet("t1", "未上传");
-                dataSet7 = new DataSet("t2", "上传打赏截图，只有一次机会...");
-            }
-            else
-            {
-                dataSet2 = new DataSet("imgUrl",pkActiveEntity.getScreenCutUrl());
-                dataSet3 = new DataSet("mediaId",pkActiveEntity.getScreenCutMediaId());
-            }
-
 
         }
         else
@@ -253,7 +236,8 @@ public class 上传群二维码 {
         dataSets.add(dataSet6);
         dataSets.add(dataSet7);
         dataSets.add(new DataSet("upload","上传"));
-
+        DataSet dataSet8 = new DataSet("word3", "客服消息回复1获取图片");
+        dataSets.add(dataSet8);
 
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
 

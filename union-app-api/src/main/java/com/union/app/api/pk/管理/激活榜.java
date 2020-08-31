@@ -8,6 +8,7 @@ import com.union.app.domain.pk.Post;
 import com.union.app.entity.pk.*;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
+import com.union.app.plateform.data.resultcode.DataSet;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.service.pk.click.ClickService;
@@ -69,23 +70,21 @@ public class 激活榜 {
 
     @RequestMapping(path="/activePks",method = RequestMethod.GET)
     public AppResponse 查询审核榜帖(@RequestParam("userId") String userId) throws AppException, IOException {
-        List<ActivePk> activePks = new ArrayList<>();
-        List<PkActiveEntity> pkActiveEntities = appService.查询需要激活的PK();
 
-        for(PkActiveEntity pkActiveEntity:pkActiveEntities)
+        ActivePk activePk = appService.查询需要激活的PK();
+        List<DataSet> dataSets = new ArrayList<>();
+        dataSets.add(new DataSet("pk",activePk));
+        if(!ObjectUtils.isEmpty(activePk))
         {
-            ActivePk activePk = new ActivePk();
-            activePk.setPk(pkService.querySinglePk(pkActiveEntity.getPkId()));
-            activePk.setApproveMessage(approveService.获取审核人员消息(pkActiveEntity.getPkId()));
-            activePk.setCashierCommentUrl(pkActiveEntity.getScreenCutUrl());
-            activePk.setPkCashier(appService.查询收款人(pkActiveEntity.getCashierId()));
-            activePk.setCashierGroup(appService.查询激活的群组信息(pkActiveEntity.getGroupId()));
-            activePk.setCashierFeeCode(appService.查询激活的收款码信息(pkActiveEntity.getFeeCodeId()));
-            activePks.add(activePk);
+
+            List<ActiveTipEntity> tips = appService.查询所有提示信息();
+            dataSets.add(new DataSet("tips",tips));
+            dataSets.add(new DataSet("tipId",activePk.getTipId()));
         }
 
 
-        return AppResponse.buildResponse(PageAction.前端数据更新("pks",activePks));
+
+        return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
 
     }
 
@@ -100,24 +99,27 @@ public class 激活榜 {
         pkActiveEntity.setStatu(ActiveStatu.处理过);
         daoService.updateEntity(pkEntity);
         daoService.updateEntity(pkActiveEntity);
-        appService.收款码确认次数加一(pkActiveEntity.getFeeCodeId());
+        userService.确认开通PK次数加1(pkEntity.getUserId());
 
-
-        return AppResponse.buildResponse(PageAction.执行处理器("success",""));
+        ActivePk activePk = appService.查询需要激活的PK();
+        return AppResponse.buildResponse(PageAction.前端数据更新("pk",activePk));
 
     }
 
 
     @RequestMapping(path="/hiddenPk",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse hiddenPk(@RequestParam("userId") String userId,@RequestParam("pkId") String pkId) throws AppException, IOException {
+    public AppResponse hiddenPk(@RequestParam("userId") String userId,@RequestParam("pkId") String pkId,@RequestParam("tipId") String tipId) throws AppException, IOException {
 
 
         PkActiveEntity pkActiveEntity = appService.查询PK激活信息(pkId);
         pkActiveEntity.setStatu(ActiveStatu.处理过);
+        pkActiveEntity.setTipId(tipId);
+//        pkActiveEntity.setRejectTime(pkActiveEntity.getRejectTime() + 1);
         daoService.updateEntity(pkActiveEntity);
 
-        return AppResponse.buildResponse(PageAction.执行处理器("success",""));
+        ActivePk activePk = appService.查询需要激活的PK();
+        return AppResponse.buildResponse(PageAction.前端数据更新("pk",activePk));
 
     }
 

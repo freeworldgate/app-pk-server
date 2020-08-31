@@ -60,7 +60,6 @@ public class 查询排名 {
 
         List<PkDetail> pks = appService.查询PK排名(0);
 
-        appService.vip包装(pks,userId,"");
 
 
 
@@ -70,11 +69,11 @@ public class 查询排名 {
     }
 
     @RequestMapping(path="/nextSortPage",method = RequestMethod.GET)
-    public AppResponse 查询单个PK(@RequestParam("userId") String userId,@RequestParam("page") int page) throws AppException, IOException {
+    public AppResponse 查询排名信息(@RequestParam("userId") String userId,@RequestParam("page") int page) throws AppException, IOException {
 
 
         List<PkDetail> pks = appService.查询PK排名(page);
-        appService.vip包装(pks,userId,"");
+
 
 
         if(pks.size() == 0)

@@ -52,6 +52,10 @@ public class RedisMapService implements IRedisService {
     public void setLongValue(String key,String mapKey,long value){
         redisTemplate.opsForHash().put(key,mapKey,value);
     }
+    public long valueIncr(String key,String mapKey,long value){
+        long res = redisTemplate.opsForHash().increment(key,mapKey,value);
+        return res;
+    }
 
     public long valueIncr(String key,String mapKey){
         long value = redisTemplate.opsForHash().increment(key,mapKey,1L);

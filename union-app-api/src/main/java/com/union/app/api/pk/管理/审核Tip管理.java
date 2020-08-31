@@ -1,11 +1,9 @@
 package com.union.app.api.pk.管理;
 
-import com.union.app.common.微信.WeChatUtil;
 import com.union.app.dao.spi.AppDaoService;
 import com.union.app.domain.pk.PkDetail;
-import com.union.app.domain.pk.审核.ApproveMessage;
-import com.union.app.domain.工具.RandomUtil;
-import com.union.app.entity.pk.PkEntity;
+import com.union.app.entity.pk.ActiveTipEntity;
+import com.union.app.entity.pk.BackImgEntity;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.PageAction;
@@ -22,14 +20,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping(path="/pk")
-public class 查询内置PK {
+public class 审核Tip管理 {
 
     @Autowired
     AppService appService;
@@ -69,34 +66,44 @@ public class 查询内置PK {
 
 
 
-    @RequestMapping(path="/queryPrePks",method = RequestMethod.GET)
-    public AppResponse 查询内置PK(@RequestParam("userId") String userId,@RequestParam("type") int type) throws AppException, IOException {
+    @RequestMapping(path="/queryTips",method = RequestMethod.GET)
+    public AppResponse 查询内置PK(@RequestParam("userId") String userId) throws AppException, IOException {
 
-        List<PkDetail> pks = appService.查询内置相册(userId,1,type);
+        List<ActiveTipEntity> tips = appService.查询所有提示信息();
+
+        return AppResponse.buildResponse(PageAction.前端数据更新("tips",tips));
+
+    }
+    @RequestMapping(path="/addTip",method = RequestMethod.GET)
+    @Transactional(rollbackOn = Exception.class)
+    public AppResponse 查询内置PK(@RequestParam("userId") String userId,@RequestParam("tip") String tip) throws AppException, IOException {
+
+        appService.添加Tip(tip);
 
 
-        return AppResponse.buildResponse(PageAction.执行处理器("success",pks));
+        return AppResponse.buildResponse(PageAction.执行处理器("success",""));
 
 
 
     }
 
-    @RequestMapping(path="/morePrePks",method = RequestMethod.GET)
-    public AppResponse 查询内置PK(@RequestParam("userId") String userId,@RequestParam("page") int page,@RequestParam("type") int type) throws AppException, IOException {
 
 
-        List<PkDetail> pks = appService.查询内置相册(userId,page+1,type);
+    @RequestMapping(path="/removeTip",method = RequestMethod.GET)
+    @Transactional(rollbackOn = Exception.class)
+    public AppResponse removeImg(@RequestParam("userId") String userId,@RequestParam("id") String id) throws AppException, IOException {
+
+        appService.删除Tip(id);
 
 
-        if(pks.size() == 0)
-        {
-            return AppResponse.buildResponse(PageAction.前端数据更新("pkEnd",true));
+        return AppResponse.buildResponse(PageAction.执行处理器("success",""));
 
-        }
 
-        return AppResponse.buildResponse(PageAction.执行处理器("success",pks));
 
     }
+
+
+
 
 
 

@@ -1,7 +1,7 @@
 package com.union.app;
 
 
-//import com.union.app.util.env.EnvUtil;
+//import com.union.data.util.env.EnvUtil;
 import org.apache.commons.io.FileUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;

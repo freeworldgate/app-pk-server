@@ -45,6 +45,7 @@ public class UserEntity {
 
     private int postTimes;
     private int pkTimes;
+    private int activePkTimes;
     private int inviteTimes;
 
 

@@ -74,67 +74,22 @@ public class 查询单个PK {
     @RequestMapping(path="/queryPk",method = RequestMethod.GET)
     public AppResponse 查询单个PK(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId,@RequestParam("fromUser") String fromUser) throws AppException, IOException, InterruptedException {
 
-
-
-
-
-
         List<DataSet> dataSets = new ArrayList<>();
 
+        //榜单有可能被关闭
         pkService.checkPk(pkId);
-
-
-
-
-
-
 
         //查询PK详情
         PkDetail pkDetail = pkService.querySinglePk(pkId);
         List<Post> posts = pkService.queryPkPost(userId,pkId,1);
-        boolean isUserPublish = !ObjectUtils.isEmpty(postService.查询用户帖(pkId,userId));
-        User creator = pkService.queryPkCreator(pkId);
 
-        if(userService.canUserView(userId,fromUser))
-        {
-            ApproveMessage pkMessage = approveService.查询PK公告消息(pkId);
+        dataSets.add(new DataSet("group",appService.显示按钮(PkButtonType.群组)));
+        dataSets.add(new DataSet("post",appService.显示按钮(PkButtonType.榜帖)));
+        dataSets.add(new DataSet("approve",appService.显示按钮(PkButtonType.审核)));
+        if(pkService.isPkCreator(pkId,userId)){dataSets.add(new DataSet("approving",appService.显示按钮(PkButtonType.审核中)));}
 
-            dataSets.add(new DataSet("pkMessage", pkMessage));
-        }
-        else
-        {
-            dataSets.add(new DataSet("pkMessage", null));
-        }
-
-        dataSets.add(new DataSet("group",appService.显示按钮(userId,fromUser,PkButtonType.群组)));
-        dataSets.add(new DataSet("post",appService.显示按钮(userId,fromUser,PkButtonType.榜帖)));
-        dataSets.add(new DataSet("approve",appService.显示按钮(userId,fromUser,PkButtonType.审核)));
-        dataSets.add(new DataSet("approving",appService.显示审核中按钮(userId,pkId)));
-        //
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        dataSets.add(new DataSet("isUserPublish",isUserPublish));
-        dataSets.add(new DataSet("pkDetail",pkDetail));
-        dataSets.add(new DataSet("creator",creator));
-
-
+        dataSets.add(new DataSet("pk",pkDetail));
         dataSets.add(new DataSet("imgBack",appService.查询背景(0)));
-        dataSets.add(new DataSet("date",TimeUtils.currentDate()));
-
-
-
         dataSets.add(new DataSet("posts",posts));
         dataSets.add(new DataSet("page",1));
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));

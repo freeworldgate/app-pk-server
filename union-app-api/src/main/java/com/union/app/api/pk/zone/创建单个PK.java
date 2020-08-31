@@ -54,15 +54,17 @@ public class 创建单个PK {
     @Transactional(rollbackOn = Exception.class)
     public AppResponse 创建单个PK(@RequestParam("userId") String userId,@RequestParam("topic") String topic,@RequestParam("watchWord") String watchWord,@RequestParam("invite") boolean invite) throws AppException, IOException {
 
-
-
-
         String pkId = pkService.创建PK(userId,topic,watchWord,invite);
-
         PkDetail pkDetail = pkService.querySinglePk(pkId);
-        appService.vip包装(pkDetail,userId,"");
-
         return AppResponse.buildResponse(PageAction.执行处理器("success",pkDetail));
+    }
+    @RequestMapping(path="/deletePk",method = RequestMethod.GET)
+    @Transactional(rollbackOn = Exception.class)
+    public AppResponse 删除单个PK(@RequestParam("userId") String userId,@RequestParam("pkId") String pkId) throws AppException, IOException {
+
+        pkService.删除PK(userId,pkId);
+
+        return AppResponse.buildResponse(PageAction.执行处理器("success",""));
     }
 
 

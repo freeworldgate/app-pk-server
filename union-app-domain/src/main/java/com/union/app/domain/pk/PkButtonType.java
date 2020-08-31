@@ -15,7 +15,7 @@ public enum PkButtonType {
 
     审核("/images/approve4.png","审核记录","approveList"),
 
-    审核中("/images/list.png","待审核","approvingList"),
+    审核中("/images/approving.png","审核榜帖","approvingList"),
 
 
     ;

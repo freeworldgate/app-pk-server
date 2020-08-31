@@ -3,6 +3,7 @@ package com.union.app.api.pk.审核;
 import com.union.app.common.config.AppConfigService;
 import com.union.app.domain.pk.integral.UserIntegral;
 import com.union.app.domain.pk.审核.ApproveMessage;
+import com.union.app.entity.pk.ApproveStatu;
 import com.union.app.entity.pk.PostEntity;
 import com.union.app.entity.pk.PostStatu;
 import com.union.app.plateform.constant.ConfigItem;
@@ -66,32 +67,47 @@ public class 一次性任务 {
 
         PostEntity postEntity = postService.查询用户帖(pkId,userId);
 
-        if( userService.canUserView(userId)) {
 
-            if(pkService.isPkCreator(pkId, userId))
-            {
+        if(pkService.isPkCreator(pkId, userId))
+        {
                 if(StringUtils.isBlank(dynamicService.查询PK群组二维码MediaId(pkId, current))){
                     return AppResponse.buildResponse(PageAction.执行处理器("groupCode", ""));
                 }
                 ApproveMessage approveMessage = approveService.获取审核人员消息(pkId);
 
-                if (userService.canUserView(userId) && org.springframework.util.ObjectUtils.isEmpty(approveMessage)) {
+                if (org.springframework.util.ObjectUtils.isEmpty(approveMessage)) {
                     return AppResponse.buildResponse(PageAction.执行处理器("editApproverMessage", ""));
                 }
-
-            }
-
-
-            if ((!org.springframework.util.ObjectUtils.isEmpty(postEntity)) && (postEntity.getStatu() == PostStatu.审核中) && StringUtils.isBlank(dynamicService.查询审核用户(pkId, postEntity.getPostId()))) {
-                return AppResponse.buildResponse(PageAction.执行处理器("select", postEntity.getPostId()));
-            }
-
         }
-
-
         if(org.springframework.util.ObjectUtils.isEmpty(postEntity)){
             return AppResponse.buildResponse(PageAction.执行处理器("publish",""));
         }
+
+        if(postEntity.getStatu() == PostStatu.审核中)
+        {
+            if(postEntity.getApproveStatu() == ApproveStatu.未处理)
+            {
+                return AppResponse.buildResponse(PageAction.执行处理器("select", postEntity.getPostId()));
+            }
+            if(postEntity.getApproveStatu() == ApproveStatu.驳回修改)
+            {
+                return AppResponse.buildResponse(PageAction.信息反馈框("修改榜帖","修改建议:" + postEntity.getRejectTextBytes() == null?"":new String(postEntity.getRejectTextBytes(),"UTF-8")));
+            }
+
+        }
+
+
+
+
+
+//        if ( (postEntity.getStatu() == PostStatu.审核中) && StringUtils.isBlank(dynamicService.查询审核用户(pkId, postEntity.getPostId()))) {
+//            return AppResponse.buildResponse(PageAction.执行处理器("select", postEntity.getPostId()));
+//        }
+
+
+
+
+
 
         return AppResponse.buildResponse(PageAction.执行处理器("no",""));
 

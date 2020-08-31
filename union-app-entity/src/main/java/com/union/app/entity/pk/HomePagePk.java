@@ -21,11 +21,11 @@ public class HomePagePk {
 
     private PkType pkType;
 
-    private long  priority;
 
-    private int approved;
-    private int approving;
-    private int groupStatu;
+    private long  geneticPriority = -1L;
+
+    private long  nonGeneticPriority = -1L;
+
 
 
 

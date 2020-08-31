@@ -78,5 +78,13 @@ public class RedisSortSetService implements IRedisService {
     }
 
 
+    public String popEle(String key) {
 
+        Set<ZSetOperations.TypedTuple<String>> sorts = redisTemplate.opsForZSet().rangeWithScores(key,  0,1);
+        if(!CollectionUtils.isEmpty(sorts)){
+            return CollectionUtils.lastElement(sorts).getValue();
+
+        }
+        return null;
+    }
 }

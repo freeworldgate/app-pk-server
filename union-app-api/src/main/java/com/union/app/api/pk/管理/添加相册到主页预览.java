@@ -67,28 +67,38 @@ public class 添加相册到主页预览 {
 
 
 
-    @RequestMapping(path="/addToPreHome",method = RequestMethod.GET)
+    @RequestMapping(path="/addToGeneticHome",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse addToPreHome(@RequestParam("pkId") String pkId,@RequestParam("value") int value,@RequestParam("userId") String userId) throws AppException, IOException {
+    public AppResponse addToGeneticHome(@RequestParam("pkId") String pkId,@RequestParam("value") int value,@RequestParam("userId") String userId) throws AppException, IOException {
 
-
-
-
-
-        appService.添加到主页预览(pkId,value);
+        appService.添加到主页预览(pkId,value,1);
         PkDetail pkDetail = pkService.querySinglePk(pkId);
-        appService.vip包装(pkDetail,userId,"");
-        pkDetail.setPriority(appService.查询优先级(pkId));
-
+        pkDetail.setGeneticPriority(appService.查询优先级(pkId,1));
+        pkDetail.setNonGeneticPriority(appService.查询优先级(pkId,2));
 
         return AppResponse.buildResponse(PageAction.执行处理器("success",pkDetail));
     }
 
+    @RequestMapping(path="/addToNonGeneticHome",method = RequestMethod.GET)
+    @Transactional(rollbackOn = Exception.class)
+    public AppResponse addToNonGeneticHome(@RequestParam("pkId") String pkId,@RequestParam("value") int value,@RequestParam("userId") String userId) throws AppException, IOException {
+
+        appService.添加到主页预览(pkId,value,2);
+        PkDetail pkDetail = pkService.querySinglePk(pkId);
+        pkDetail.setGeneticPriority(appService.查询优先级(pkId,1));
+        pkDetail.setNonGeneticPriority(appService.查询优先级(pkId,2));
+
+        return AppResponse.buildResponse(PageAction.执行处理器("success",pkDetail));
+    }
+
+
+
+
     @RequestMapping(path="/removePkFromHomPage",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse removePkFromHomPage(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId) throws AppException, IOException {
+    public AppResponse removePkFromHomPage(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId,@RequestParam("type") int type) throws AppException, IOException {
 
-        appService.移除主页预览(pkId);
+        appService.移除主页预览(pkId,type);
 
 
 

@@ -37,5 +37,8 @@ public class IdGenerator {
     public static String 收款码ID()  {return UUID.randomUUID().toString(); }
 
     public static String 生成用户ID() {return UUID.randomUUID().toString(); }
+
+    public static String getActiveTipId() {return UUID.randomUUID().toString(); }
+
 }
 

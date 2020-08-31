@@ -1,18 +1,21 @@
 package com.union.app.service.pk.service;
 
+import com.union.app.common.config.AppConfigService;
 import com.union.app.common.微信.WeChatUtil;
 import com.union.app.dao.spi.AppDaoService;
 import com.union.app.dao.spi.filter.CompareTag;
 import com.union.app.dao.spi.filter.EntityFilterChain;
+import com.union.app.domain.pk.ApproveButton;
 import com.union.app.domain.pk.apply.KeyNameValue;
 import com.union.app.domain.pk.integral.UserIntegral;
 import com.union.app.domain.pk.审核.*;
 import com.union.app.domain.user.User;
-import com.union.app.entity.pk.PostEntity;
-import com.union.app.entity.pk.PostStatu;
+import com.union.app.entity.pk.*;
 import com.union.app.entity.pk.审核.ApproveCommentEntity;
 import com.union.app.entity.pk.审核.ApproveMessageEntity;
 import com.union.app.domain.pk.审核.ApproveMessage;
+import com.union.app.entity.用户.UserEntity;
+import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.Level;
 import com.union.app.plateform.data.resultcode.PageAction;
@@ -284,8 +287,6 @@ public class ApproveService {
 
         ApproveMessageEntity approveMessageEntity = 获取审核人员消息Entity(pkId);
         if(!org.springframework.util.ObjectUtils.isEmpty(approveMessageEntity)) {
-//            approveMessageEntity = mediaService.更新公告MediaId(approveMessageEntity);
-
 
             return translate(approveMessageEntity);
         }
@@ -375,7 +376,7 @@ public class ApproveService {
             approveMessageEntity.setImgUrl(imgUrl);
             approveMessageEntity.setText(text.getBytes("UTF-8"));
             approveMessageEntity.setMediaId(mediaId);
-            appService.修改激活处理的状态(pkId);
+//            appService.修改激活处理的状态(pkId);
             daoService.updateEntity(approveMessageEntity);
         }
 
@@ -406,35 +407,7 @@ public class ApproveService {
             return "1~" + range;
     }
 
-    public int 计算管理员设置人数(String pkId, Date currentDate) {
-        int sortNum = this.今日打榜总人数(pkId,currentDate);
 
-        if(sortNum < 10){return 0;}
-        if(sortNum<30){return 1;}
-        if(sortNum<50){return 2;}
-        if(sortNum<70){return 3;}
-        if(sortNum<90){return 4;}
-        if(sortNum<110){return 5;}
-        if(sortNum<130){return 6;}
-        if(sortNum<150){return 7;}
-        if(sortNum<180){return 8;}
-        if(sortNum<200){return 9;}
-        if(sortNum<220){return 10;}
-        if(sortNum<240){return 11;}
-        if(sortNum<260){return 12;}
-        if(sortNum<280){return 13;}
-        if(sortNum<300){return 14;}
-        if(sortNum<320){return 15;}
-        if(sortNum<340){return 16;}
-        if(sortNum<360){return 17;}
-        if(sortNum<380){return 18;}
-        if(sortNum<400){return 19;}
-        if(sortNum<420){return 20;}
-        if(sortNum>=420){return 20;}
-
-
-        return 20;
-    }
 
     public List<ApproveUser> 查询当前可用户审核用户列表(String pkId, String postId) {
 
@@ -444,6 +417,44 @@ public class ApproveService {
 
         ApproveMessage approveMessage = this.获取审核人员消息(pkId);
         return approveMessage;
+
+    }
+
+    public boolean 是否已发布审核消息(String pkId) throws UnsupportedEncodingException {
+        ApproveMessageEntity approveMessageEntity = this.获取审核人员消息Entity(pkId);
+        return !org.springframework.util.ObjectUtils.isEmpty(approveMessageEntity);
+    }
+
+    public ApproveButton 获取审核按钮(String pkId,String postId, String userId) {
+
+        PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
+        int policy2 = AppConfigService.getConfigAsInteger(ConfigItem.内置相册公开);
+        int policy3 = AppConfigService.getConfigAsInteger(ConfigItem.内置相册邀请);
+        int policy1 = AppConfigService.getConfigAsInteger(ConfigItem.遗传相册);
+        boolean pkType = false;
+        if((pkEntity.getPkType() == PkType.运营相册 && policy1==0) || (pkEntity.getPkType() == PkType.内置相册 && pkEntity.getIsInvite() == InviteType.公开 && policy2 == 0) ||(pkEntity.getPkType() == PkType.内置相册 && pkEntity.getIsInvite() == InviteType.邀请 && policy3 == 0)  )
+        {
+            pkType = true;
+        }
+
+
+        boolean userType = false;
+
+
+        boolean isVipUser = userService.是否是遗传用户(userId);
+        int policy4 = AppConfigService.getConfigAsInteger(ConfigItem.VIP用户);
+        int policy5 = AppConfigService.getConfigAsInteger(ConfigItem.普通用户);
+
+        if((isVipUser && policy4==0) || (!isVipUser && policy5==0) )
+        {
+            userType = true;
+        }
+        if(pkType && userType){return ApproveButton.转发审核群;}
+
+        if(StringUtils.isBlank(dynamicService.查询审核用户(pkId,postId))){
+            return ApproveButton.请求审核有效;
+        }
+        return ApproveButton.请求审核无效;
 
     }
 }

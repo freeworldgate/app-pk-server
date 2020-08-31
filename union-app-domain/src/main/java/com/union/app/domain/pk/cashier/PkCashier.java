@@ -22,6 +22,9 @@ public class PkCashier
     private int selectTimes;
 
     private KeyNameValue statu;
+    private KeyNameValue type;
+    private String linkImg;
 
+    private String time;
 
 }

@@ -67,7 +67,7 @@ public class 查询主页 {
 
 
     @RequestMapping(path="/queryHomePage",method = RequestMethod.GET)
-    public AppResponse 查询单个PK(@RequestParam("userId") String userId,@RequestParam("fromUser") String fromUser) throws AppException, IOException {
+    public AppResponse 查询主页(@RequestParam("userId") String userId,@RequestParam("fromUser") String fromUser) throws AppException, IOException {
 
         List<PkDetail> pkDetails = new ArrayList<>();
 
@@ -75,15 +75,14 @@ public class 查询主页 {
 
         if(userService.canUserView(userId,fromUser))
         {
-            List<PkDetail> pks = appService.查询预设相册(1,0);
-            appService.vip包装(pks,userId,fromUser);
+            List<PkDetail> pks = appService.查询用户主页(userId,1,1);
             pkDetails.addAll(pks);
 
         }
         else
         {
 
-            List<PkDetail> pks = appService.查询审核相册(1);
+            List<PkDetail> pks = appService.查询用户主页(userId,1,0);
             pkDetails.addAll(pks);
 
         }
@@ -126,17 +125,17 @@ public class 查询主页 {
     }
 
     @RequestMapping(path="/nextHomePage",method = RequestMethod.GET)
-    public AppResponse 查询单个PK(@RequestParam("userId") String userId,@RequestParam("fromUser") String fromUser,@RequestParam("page") int page) throws AppException, IOException {
+    public AppResponse 查询主页(@RequestParam("userId") String userId,@RequestParam("fromUser") String fromUser,@RequestParam("page") int page) throws AppException, IOException {
         List<PkDetail> pkDetails = new ArrayList<>();
 
         if(userService.canUserView(userId,fromUser))
         {
-            List<PkDetail> pks = appService.查询预设相册(page + 1,0);
+            List<PkDetail> pks = appService.查询用户主页(userId,page + 1,1);
             pkDetails.addAll(pks);
         }
         else
         {
-            List<PkDetail> pks = appService.查询审核相册(page + 1);
+            List<PkDetail> pks = appService.查询用户主页(userId,page + 1,0);
             pkDetails.addAll(pks);
 
         }

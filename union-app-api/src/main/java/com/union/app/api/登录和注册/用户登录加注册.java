@@ -64,6 +64,7 @@ public class 用户登录加注册 {
             userEntity.setUserId(openId);
             userEntity.setPkTimes(0);
             userEntity.setPostTimes(0);
+            userEntity.setActivePkTimes(0);
             if(userService.canUserView(fromUser)){userEntity.setUserType(UserType.重点用户);}else{userEntity.setUserType(UserType.普通用户);}
             convert(userInfo,userEntity);
 //            userService.新增注册用户(userEntity,appName,pkId,userEntity.getUserId(),fromUser);
@@ -88,6 +89,7 @@ public class 用户登录加注册 {
             String name = new String(userEntity.getNickName());
             if(!org.apache.commons.lang.StringUtils.equals(name,userInfo.getNickName())){
                 userEntity.setNickName(userInfo.getNickName().getBytes());
+                userEntity.setAvatarUrl(userInfo.getAvatarUrl());
                 appDaoService.updateEntity(userEntity);
             }
 

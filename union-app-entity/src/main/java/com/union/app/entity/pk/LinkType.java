@@ -1,22 +1,10 @@
 package com.union.app.entity.pk;
 
-public enum PkType {
+public enum LinkType {
 
 
-
-    运营相册(2,"遗传相册"),
-    内置相册(3,"内置相册"),
-
-
-
-
-
-
-
-    审核相册(1,"审核相册"),
-
-
-
+    微店(1,"微店"),
+    淘宝(2,"淘宝")
 
 
 
@@ -24,10 +12,11 @@ public enum PkType {
 
     ;
 
-    private int type;
-    private String desc;
+    int type;
 
-    PkType(int type, String desc) {
+    String desc;
+
+    LinkType(int type, String desc) {
         this.type = type;
         this.desc = desc;
     }

@@ -105,4 +105,35 @@ public class 收款用户 {
         return AppResponse.buildResponse(PageAction.执行处理器("success",""));
 
     }
+
+
+    @RequestMapping(path="/uploadCashierLink",method = RequestMethod.GET)
+    @Transactional(rollbackOn = Exception.class)
+    public AppResponse 上传链接(@RequestParam("userId") String userId,@RequestParam("linkImg") String linkImg,@RequestParam("cashierId") String cashierId,@RequestParam("type") int type) throws AppException, IOException {
+        appService.上传收款链接(cashierId,type,linkImg);
+
+
+        return AppResponse.buildResponse(PageAction.执行处理器("success",""));
+
+    }
+
+
+    @RequestMapping(path="/deleteCashier",method = RequestMethod.GET)
+    @Transactional(rollbackOn = Exception.class)
+    public AppResponse 上传链接(@RequestParam("userId") String userId,@RequestParam("cashierId") String cashierId) throws AppException, IOException {
+        appService.删除收款人(cashierId);
+
+
+        return AppResponse.buildResponse(PageAction.执行处理器("success",""));
+
+    }
+
+
+
+
+
+
+
+
+
 }

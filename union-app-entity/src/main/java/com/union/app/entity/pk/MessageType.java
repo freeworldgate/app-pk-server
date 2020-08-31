@@ -1,28 +1,18 @@
 package com.union.app.entity.pk;
 
-public enum ApproveStatu {
+public enum MessageType {
 
 
+    收费(0,"收费"),
 
-//    处理过(1,"处理过"),
+    不收费(1,"不收费"),
+;
 
-    未处理(2,"未处理"),
-
-    驳回修改(3,"驳回修改"),
-
-    请求审核(4,"请求审核"),
-
-
-
-
-
-
-    ;
 
     private int statu;
     private String statuStr;
 
-    ApproveStatu(int statu, String statuStr) {
+    MessageType(int statu, String statuStr) {
         this.statu = statu;
         this.statuStr = statuStr;
     }

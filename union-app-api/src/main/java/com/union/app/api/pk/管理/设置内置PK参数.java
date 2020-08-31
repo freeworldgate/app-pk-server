@@ -8,6 +8,7 @@ import com.union.app.domain.pk.PkDetail;
 import com.union.app.domain.pk.审核.ApproveMessage;
 import com.union.app.domain.工具.RandomUtil;
 import com.union.app.entity.pk.HomePagePk;
+import com.union.app.entity.pk.InviteType;
 import com.union.app.entity.pk.PkEntity;
 import com.union.app.entity.pk.PkType;
 import com.union.app.plateform.data.resultcode.AppException;
@@ -77,38 +78,41 @@ public class 设置内置PK参数 {
 
 
 
-        EntityFilterChain filter2 = EntityFilterChain.newFilterChain(HomePagePk.class)
-                .compareFilter("pkId",CompareTag.Equal,pkId);
-        HomePagePk pk = daoService.querySingleEntity(HomePagePk.class,filter2);
-
-        if(ObjectUtils.isEmpty(pk))
+//        EntityFilterChain filter2 = EntityFilterChain.newFilterChain(HomePagePk.class)
+//                .compareFilter("pkId",CompareTag.Equal,pkId);
+//        HomePagePk pk = daoService.querySingleEntity(HomePagePk.class,filter2);
+//
+//        if(ObjectUtils.isEmpty(pk))
+//        {
+//            return AppResponse.buildResponse(PageAction.信息反馈框("相册未添加到预览","相册未添加到预览"));
+//        }
+        PkEntity pk = pkService.querySinglePkEntity(pkId);
+        if(!(pk.getPkType() == PkType.内置相册 && pk.getIsInvite() == InviteType.邀请))
         {
-            return AppResponse.buildResponse(PageAction.信息反馈框("相册未添加到预览","相册未添加到预览"));
-        }
-        if(pk.getPkType() != PkType.内置相册)
-        {
-            return AppResponse.buildResponse(PageAction.信息反馈框("非遗传相册","非遗传相册不能设置"));
+            return AppResponse.buildResponse(PageAction.信息反馈框("非内置相册","非内置仅邀请相册不能设置"));
         }
 
 
 
         if(type == 1)
         {
-            pk.setApproved(value);
+            dynamicService.更新内置相册已审核数量(pkId,value);
         }
         if(type == 2)
         {
-            pk.setApproving(value);
+            dynamicService.更新内置相册审核中数量(pkId,value);
         }
         if(type == 3)
         {
-            pk.setGroupStatu(pk.getGroupStatu() == 1?0:1);
+            dynamicService.更新内置相册群组状态(pkId);
         }
-        daoService.updateEntity(pk);
+
 
         PkDetail pkDetail = pkService.querySinglePk(pkId);
-        appService.vip包装(pkDetail,userId,"");
-        pkDetail.setPriority(appService.查询优先级(pkId));
+        pkDetail.setGeneticPriority(appService.查询优先级(pkId,1));
+        pkDetail.setNonGeneticPriority(appService.查询优先级(pkId,2));
+
+
 
 
         return AppResponse.buildResponse(PageAction.执行处理器("success",pkDetail));

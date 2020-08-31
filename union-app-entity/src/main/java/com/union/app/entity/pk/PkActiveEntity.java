@@ -12,39 +12,21 @@ import javax.persistence.*;
 @EqualsAndHashCode
 @ToString
 @Entity
-@Table(name="T_PK_ACTIVE")
+@Table(name="T_PK_ACTIVE_CODE")
 public class PkActiveEntity {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)//mysql数据库主键策略
-    private int id;
+    private String activeCode;
 
     private String pkId;
-
-    private String userId;
-
-    private String cashierId;
-
-    String groupId;
-
-    String feeCodeId;
-
-
-
-    //打赏截图
-
-    private String screenCutUrl;
-    private String screenCutMediaId;
-
-    private long screenCutTime;
 
     @Enumerated(EnumType.STRING)
     ActiveStatu statu;
 
-
-
-
+    public String tipId;
+    //驳回次数
+    public int rejectTime;
 
 
 }

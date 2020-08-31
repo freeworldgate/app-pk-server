@@ -54,7 +54,7 @@ public class 查询用户的POST {
             Date cureentDate = new Date();
 
         PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
-        if(org.apache.commons.lang.ObjectUtils.equals(pkEntity.getIsInvite(),InviteType.邀请)) {
+        if(pkEntity.getIsInvite()==InviteType.邀请) {
             InvitePkEntity invitePkEntity = appService.queryInvitePk(pkId, userId);
             if (!pkService.isPkCreator(pkId, userId) && ObjectUtils.isEmpty(invitePkEntity)) {
                 return AppResponse.buildResponse(PageAction.信息反馈框("非邀请用户", "仅邀请用户可见"));

@@ -26,7 +26,9 @@ import com.union.app.util.time.TimeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
+import sun.security.provider.certpath.PKIXExtendedParameters;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -79,33 +81,56 @@ public class MediaService {
     RedisSortSetService redisSortSetService;
 
     //所有媒体文件   提前六个小时更新
+    public <T> List<T> 查询分页表(Class<T> tClass,int page)
+    {
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(tClass)
+                .compareFilter("lastUpdateTime", CompareTag.Small, System.currentTimeMillis() - ((AppConfigService.getConfigAsInteger(ConfigItem.媒体图片最大过期时间)) * 3600 * 1000))
+                .pageLimitFilter(1, 20);
+        List<T> entities = daoService.queryEntities(tClass, filter);
 
-
-
-    public List<PkCashierGroupEntity> 查询需要更新的群组() {
-        //还剩6小时就过期的图片
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(PkCashierGroupEntity.class)
-                .compareFilter("lastUpdateTime",CompareTag.Small, System.currentTimeMillis() - ((AppConfigService.getConfigAsInteger(ConfigItem.媒体图片最大过期时间))*3600*1000))
-                .pageLimitFilter(1,20);
-        List<PkCashierGroupEntity> pkCashierGroupEntities = daoService.queryEntities(PkCashierGroupEntity.class,filter);
-        return pkCashierGroupEntities;
+        return entities;
     }
 
-    public List<PkCashierFeeCodeEntity> 查询需要更新的收款码() {
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(PkCashierFeeCodeEntity.class)
-                .compareFilter("lastUpdateTime",CompareTag.Small, System.currentTimeMillis() - ((AppConfigService.getConfigAsInteger(ConfigItem.媒体图片最大过期时间))*3600*1000))
-                .pageLimitFilter(1,20);
-        List<PkCashierFeeCodeEntity> pkCashierFeeCodeEntities = daoService.queryEntities(PkCashierFeeCodeEntity.class,filter);
-        return pkCashierFeeCodeEntities;
+
+
+    public <T> List<T> 查询需要更新的媒体图片(Class<T> tClass) {
+
+        List<T> pkEntities = new ArrayList<>();
+        int page = 1;
+        List<T> pks = null;
+        while(!CollectionUtils.isEmpty(pks = this.查询分页表(tClass,page)))
+        {
+            pkEntities.addAll(pks);
+            page++;
+        }
+        return pkEntities;
     }
 
-    public List<ApproveMessageEntity> 查询需要更新的公告() {
 
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(ApproveMessageEntity.class)
-                .compareFilter("lastUpdateTime",CompareTag.Small, System.currentTimeMillis() - ((AppConfigService.getConfigAsInteger(ConfigItem.媒体图片最大过期时间))*3600*1000))
-                .pageLimitFilter(1,20);
-        List<ApproveMessageEntity> approveMessageEntities = daoService.queryEntities(ApproveMessageEntity.class,filter);
+    public List<PkEntity> 查询需要更新Group的PK(int page) {
+
+
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(PkEntity.class)
+                .compareFilter("pkType",CompareTag.Equal, PkType.内置相册)
+                .andFilter()
+                .compareFilter("isInvite",CompareTag.Equal, InviteType.公开)
+                .pageLimitFilter(page,20);
+        List<PkEntity> approveMessageEntities = daoService.queryEntities(PkEntity.class,filter);
         return approveMessageEntities;
 
     }
+
+    public List<PkEntity> 查询需要更新的群组() {
+
+        List<PkEntity> pkEntities = new ArrayList<>();
+        int page = 1;
+        List<PkEntity> pks = null;
+        while(!CollectionUtils.isEmpty(pks = this.查询需要更新Group的PK(page)))
+        {
+            pkEntities.addAll(pks);
+            page++;
+        }
+        return pkEntities;
+    }
+
 }

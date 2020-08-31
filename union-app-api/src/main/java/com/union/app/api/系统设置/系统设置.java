@@ -2,7 +2,7 @@ package com.union.app.api.系统设置;
 
 import com.union.app.common.微信.WeChatUtil;
 import com.union.app.domain.user.User;
-import com.union.app.entity.pk.PkActiveEntity;
+
 import com.union.app.entity.pk.PkCashierFeeCodeEntity;
 import com.union.app.entity.pk.PkCashierGroupEntity;
 import com.union.app.plateform.data.resultcode.*;
