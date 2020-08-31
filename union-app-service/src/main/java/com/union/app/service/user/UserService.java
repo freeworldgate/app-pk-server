@@ -55,8 +55,8 @@ public class UserService {
         {
             return null;
         }
-        User user1 = users.get(userId);
-        if(!ObjectUtils.isEmpty(user1)){return user1;}
+//        User user1 = users.get(userId);
+//        if(!ObjectUtils.isEmpty(user1)){return user1;}
 
 
 
@@ -74,7 +74,7 @@ public class UserService {
             user.setPkTimes(result.getPkTimes());
             user.setPostTimes(result.getPostTimes());
             user.setInviteTimes(result.getInviteTimes());
-            user.setImgUrl(RandomUtil.getRandomImage());
+            user.setImgUrl(result.getAvatarUrl());
 
             users.put(user.getUserId(),user);
 

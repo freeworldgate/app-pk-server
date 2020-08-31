@@ -478,7 +478,7 @@ public class PostService {
     public void 用户转发审批(PostEntity postEntity) throws AppException {
         if(postEntity.getRejectTimes() > AppConfigService.getConfigAsInteger(ConfigItem.Post最大修改次数))
         {
-            throw AppException.buildException(PageAction.信息反馈框("修改次数过多","榜帖修改次数过多,不再支持审核榜帖..."));
+            throw AppException.buildException(PageAction.信息反馈框("修改次数过多","榜帖修改次数过多..."));
         }
         postEntity.setShareTime(System.currentTimeMillis());
         postEntity.setApproveStatu(ApproveStatu.请求审核);

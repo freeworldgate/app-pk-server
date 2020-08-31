@@ -66,12 +66,16 @@ public class 设置审核人员 {
         postService.用户转发审批(postEntity);
         dynamicService.设置帖子的审核用户(pkId,postId);
 
-
+        List<DataSet> dataSets = new ArrayList<>();
         ApproveButton approveButton = approveService.获取审核按钮(pkId,postId,userId);
+        dataSets.add(new DataSet("button",approveButton));
+        if(approveButton == ApproveButton.转发审核群){
+            dataSets.add(new DataSet("tip1","如群组已满，请选择"));
+            dataSets.add(new DataSet("tip2", org.apache.commons.lang.StringUtils.isBlank(dynamicService.查询审核用户(pkId,postId))?"在线审核":"审核中"));
+        }
 
 
-
-        return AppResponse.buildResponse(PageAction.前端数据更新("button",approveButton));
+        return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
 
     }
 
