@@ -35,7 +35,14 @@ public class PkCashierEntity {
 
     long time;
 
+    //总数
+    int activeCodes;
 
+    //已使用
+    int noActiveCode;
+
+    //已激活
+    int usedActiveCode;
 
 
 }

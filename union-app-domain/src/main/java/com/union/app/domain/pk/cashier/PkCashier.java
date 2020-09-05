@@ -27,4 +27,8 @@ public class PkCashier
 
     private String time;
 
+    private int activeCodes;
+    private int noActiveCodes;
+    private int usedActiveCodes;
+
 }

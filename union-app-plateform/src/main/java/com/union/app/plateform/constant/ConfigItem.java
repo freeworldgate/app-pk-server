@@ -23,7 +23,10 @@ public enum ConfigItem {
     内置相册公开("buttonPolicy2", "INNER_ALBUM_PUBLIC", "内置相册(公开)","1" ),
     内置相册邀请("buttonPolicy3", "INNER_ALBUM_INVITE", "内置相册(邀请)","1" ),
     VIP用户("buttonPolicy4", "VIP_USER", "VIP用户","1" ),
-    普通用户("buttonPolicy5", "COMMON_USER", "普通用户","1" );
+    普通用户("buttonPolicy5", "COMMON_USER", "普通用户","1" ),
+    激活码使用次数("activeCodeTimes","ACTIVE_CODE_TIMES" , "激活码使用次数", "5"),
+    非遗传用户默认榜单数量("defaultPostTimes", "DEFAULT_POST_TIMES", "非遗传用户默认榜单数量","5" );
+//    系统默认激活码("defaultActiveCode", "DEFAULT_ACTIVE_CODE", "系统默认激活码","E-000000000000");
 
 
     private String tag;

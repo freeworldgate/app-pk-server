@@ -385,7 +385,8 @@ public class PkService {
         EntityFilterChain filter = EntityFilterChain.newFilterChain(PkActiveEntity.class)
                 .compareFilter("pkId",CompareTag.Equal,pkId);
         PkActiveEntity pkActiveEntity = daoService.querySingleEntity(PkActiveEntity.class,filter);
-        daoService.deleteEntity(pkActiveEntity);
+        if(!ObjectUtils.isEmpty(pkActiveEntity)){daoService.deleteEntity(pkActiveEntity);}
+
 
     }
 

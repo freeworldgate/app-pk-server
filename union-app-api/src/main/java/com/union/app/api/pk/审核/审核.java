@@ -130,7 +130,7 @@ public class 审核 {
         postEntity.setRejectTextBytes(text.getBytes("UTF-8"));
         postEntity.setRejectTimes(postEntity.getRejectTimes() + 1);
         daoService.updateEntity(postEntity);
-
+        dynamicService.驳回用户审核(pkId,postId);
 
 
 
@@ -147,11 +147,18 @@ public class 审核 {
         dataSets.add(dataSet2);
         dataSets.add(dataSet8);
 
-        dynamicService.驳回用户审核(pkId,postId);
+
 
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
 
     }
+
+
+
+
+
+
+
     @RequestMapping(path="/rejectApprovingPost",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
     public AppResponse 驳回修改Post(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId,@RequestParam("userId") String userId,@RequestParam("text") String text) throws AppException, IOException {

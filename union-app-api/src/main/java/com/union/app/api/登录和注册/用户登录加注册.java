@@ -1,5 +1,6 @@
 package com.union.app.api.登录和注册;
 
+import com.union.app.common.config.AppConfigService;
 import com.union.app.common.微信.WeChatUtil;
 import com.union.app.dao.spi.AppDaoService;
 import com.union.app.dao.spi.filter.CompareTag;
@@ -9,6 +10,7 @@ import com.union.app.domain.wechat.WeChatUser;
 import com.union.app.entity.用户.UserEntity;
 import com.union.app.entity.用户.support.UserPostStatu;
 import com.union.app.entity.用户.support.UserType;
+import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.response.ApiResponse;
 import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.service.AppService;
@@ -65,7 +67,16 @@ public class 用户登录加注册 {
             userEntity.setPkTimes(0);
             userEntity.setPostTimes(0);
             userEntity.setActivePkTimes(0);
-            if(userService.canUserView(fromUser)){userEntity.setUserType(UserType.重点用户);}else{userEntity.setUserType(UserType.普通用户);}
+            if(userService.canUserView(fromUser))
+            {
+                userEntity.setUserType(UserType.重点用户);
+
+            }
+            else
+            {
+                userEntity.setUserType(UserType.普通用户);
+                userEntity.setPostTimes(AppConfigService.getConfigAsInteger(ConfigItem.非遗传用户默认榜单数量));
+            }
             convert(userInfo,userEntity);
 //            userService.新增注册用户(userEntity,appName,pkId,userEntity.getUserId(),fromUser);
 

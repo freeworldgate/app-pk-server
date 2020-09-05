@@ -87,4 +87,23 @@ public class 提交激活码 {
 
     }
 
+    @RequestMapping(path="/publishPk",method = RequestMethod.GET)
+    @Transactional(rollbackOn = Exception.class)
+    public AppResponse publishPk(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId) throws AppException, IOException {
+
+//
+        appService.提交非遗传用户激活码(pkId,userId);
+//
+//        List<DataSet> dataSets = new ArrayList<>();
+//        PkActive active = appService.查询激活信息(pkId);
+//        dataSets.add(new DataSet("pkActive", active));
+//        dataSets.add(new DataSet("icon1", "/images/waiting.png"));
+//        dataSets.add(new DataSet("approveText", "审核中"));
+
+
+        return AppResponse.buildResponse(PageAction.页面跳转("/pages/pk/selectPker/selectPker?pkId=" + pkId,true));
+
+    }
+
+
 }

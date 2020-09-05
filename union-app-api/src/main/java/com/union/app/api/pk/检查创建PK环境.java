@@ -66,7 +66,18 @@ public class 检查创建PK环境 {
             }
             else
             {
-                return AppResponse.buildResponse(PageAction.信息反馈框("榜单不足","当前没有可用榜单，你可以通过打榜获取更多榜单，成功发布一个榜帖即可获得一个榜单..."));
+                if(userService.是否是遗传用户(userId)){
+
+                    return AppResponse.buildResponse(PageAction.信息反馈框("榜单不足","当前没有可用榜单，你可以通过打榜获取更多榜单，成功发布一个榜帖即可获得一个榜单..."));
+                }
+                else
+                {
+
+                    return AppResponse.buildResponse(PageAction.信息反馈框("榜单已耗尽","您名下已经没有可用的榜单了..."));
+                }
+
+
+
             }
 
 

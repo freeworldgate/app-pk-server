@@ -105,14 +105,14 @@ public class 审核榜帖 {
 
     @RequestMapping(path="/hiddenPost",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse hiddenPost(@RequestParam("userId") String userId,@RequestParam("postId") String postId,@RequestParam("pkId") String pkId) throws AppException, IOException {
+    public AppResponse hiddenPost(@RequestParam("userId") String userId,@RequestParam("postId") String postId,@RequestParam("pkId") String pkId,@RequestParam("text") String text) throws AppException, IOException {
 
 
 
         PostEntity postEntity = postService.查询帖子ById(pkId,postId);
         postEntity.setApproveStatu(ApproveStatu.驳回修改);
         postEntity.setRejectTimes(postEntity.getRejectTimes() + 1);
-        postEntity.setRejectTextBytes("请按照审核样例要求编辑榜帖。".getBytes("UTF-8"));
+        postEntity.setRejectTextBytes(text.getBytes("UTF-8"));
         daoService.updateEntity(postEntity);
         List<DataSet> dataSets  = appService.查询下一个审核榜帖();
 

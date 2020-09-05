@@ -7,28 +7,27 @@ import lombok.ToString;
 
 import javax.persistence.*;
 
+
 @Setter
 @Getter
 @EqualsAndHashCode
 @ToString
 @Entity
-@Table(name="T_PK_ACTIVE_CODE_TABLE")
-public class PkActiveEntity {
-
+@Table(name="T_ACTIVE_CODE")
+public class ActiveCodeEntity {
 
 
     @Id
-    private String pkId;
-
     private String activeCode;
 
+    private String cashierId;
+
+    private String userId;
+
+    private int activeTimes;
 
     @Enumerated(EnumType.STRING)
-    ActiveStatu statu;
+    private CodeStatu codeStatu;
 
-    public String tipId;
-    //驳回次数
-    public int rejectTime;
-
-
+    private long time;
 }

@@ -77,11 +77,11 @@ public class 创建内置PK {
         //预置审核消息
 //        ApproveMessage approveMessage  = approveService.发布审核员消息(pk.getPkId(),pk.getUserId(),"编辑审核公告",RandomUtil.getRandomImage());
         //预置群组
-        Date today = new Date();
-        String groupUrl = RandomUtil.getRandomImage();
-        String mediaId = WeChatUtil.uploadImg2Wx(groupUrl);
-        dynamicService.设置PK群组二维码MediaId(pk.getPkId(),mediaId,today);
-        dynamicService.设置PK群组二维码Url(pk.getPkId(),groupUrl,today);
+//        Date today = new Date();
+//        String groupUrl = RandomUtil.getRandomImage();
+//        String mediaId = WeChatUtil.uploadImg2Wx(groupUrl);
+//        dynamicService.设置PK群组二维码MediaId(pk.getPkId(),mediaId,today);
+//        dynamicService.设置PK群组二维码Url(pk.getPkId(),groupUrl,today);
         PkDetail pkDetail = pkService.querySinglePk(pk.getPkId());
         pkDetail.setGeneticPriority(appService.查询优先级(pk.getPkId(),1));
         pkDetail.setNonGeneticPriority(appService.查询优先级(pk.getPkId(),2));

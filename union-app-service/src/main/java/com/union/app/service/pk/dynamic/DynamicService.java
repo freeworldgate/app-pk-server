@@ -727,11 +727,12 @@ public class DynamicService {
     }
 
     public void 更新内置相册参数(String pkId) {
-        if(RandomUtil.getRandomNumber()%4 == 0){
+        if(RandomUtil.getRandomNumber()%2 == 0){
             redisMapService.valueIncr(CacheKeyName.内置相册审核中(),pkId,1L);
+        }
+        if(RandomUtil.getRandomNumber()%2 == 0){
             redisMapService.valueIncr(CacheKeyName.内置相册已审核(),pkId,1L);
         }
-
 
 
 
