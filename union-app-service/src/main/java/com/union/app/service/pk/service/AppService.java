@@ -140,9 +140,9 @@ public class AppService {
         PkDetail pkDetail = new PkDetail();
         pkDetail.setPkId(pkEntity.getPkId());
         pkDetail.setPkType(pkEntity.getPkType().getDesc());
-        pkDetail.setTopic(new String(pkEntity.getTopic(),"UTF-8"));
+        pkDetail.setTopic(pkEntity.getTopic());
         pkDetail.setUser(userService.queryUser(pkEntity.getUserId()));
-        pkDetail.setWatchWord(new String(pkEntity.getWatchWord(),"UTF-8"));
+        pkDetail.setWatchWord(pkEntity.getWatchWord());
 //        pkDetail.setTotalApprover(new KeyNameValue(1,dynamicService.查询今日审核员数量(pkEntity.getPkId())));
 //        pkDetail.setTotalSort(new KeyNameValue(2,dynamicService.查询今日打榜用户数量(pkEntity.getPkId())));
         pkDetail.setTime(TimeUtils.translateTime(pkEntity.getCreateTime()));
@@ -848,9 +848,11 @@ public class AppService {
         for(String pkId:pageList)
         {
             PkDetail pkDetail =pkService.querySinglePk(pkId);
-            pkDetail.setGeneticPriority(appService.查询优先级(pkId,1));
-            pkDetail.setNonGeneticPriority(appService.查询优先级(pkId,2));
-            pks.add(pkDetail);
+            if(!ObjectUtils.isEmpty(pkDetail)){
+                pkDetail.setGeneticPriority(appService.查询优先级(pkId,1));
+                pkDetail.setNonGeneticPriority(appService.查询优先级(pkId,2));
+                pks.add(pkDetail);
+            }
 
         }
 
@@ -1023,7 +1025,7 @@ public class AppService {
         userEntity.setPkTimes(0);
         userEntity.setPostTimes(0);
         userEntity.setUserType(UserType.重点用户);
-        userEntity.setNickName(name.getBytes("UTF-8"));
+        userEntity.setNickName(name);
         daoService.insertEntity(userEntity);
 
         return preUserEntity;
@@ -1192,8 +1194,7 @@ public class AppService {
 
     }
 
-    public PkActive 查询激活信息(String pkId)
-    {
+    public PkActive 查询激活信息(String pkId) throws UnsupportedEncodingException {
         PkActiveEntity pkActiveEntity = appService.查询PK激活信息(pkId);
         if(ObjectUtils.isEmpty(pkActiveEntity))
         {
@@ -1207,7 +1208,7 @@ public class AppService {
 
     }
 
-    private PkActive translatePkActive(PkActiveEntity pkActiveEntity) {
+    private PkActive translatePkActive(PkActiveEntity pkActiveEntity) throws UnsupportedEncodingException {
         PkActive pkActive = new PkActive();
         pkActive.setActiveCode(pkActiveEntity.getActiveCode());
         pkActive.setPkId(pkActiveEntity.getPkId());
@@ -1220,7 +1221,7 @@ public class AppService {
     }
 
 
-    public PkActive 提交激活码(String pkId, String userId, String activeCode) throws AppException {
+    public PkActive 提交激活码(String pkId, String userId, String activeCode) throws AppException, UnsupportedEncodingException {
         PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
         if(!StringUtils.equals(userId,pkEntity.getUserId())){throw AppException.buildException(PageAction.信息反馈框("非法操作","只有榜主才可以激活榜单..."));}
         if(!appService.validActiveCode(userId,activeCode)){throw AppException.buildException(PageAction.信息反馈框("无效激活码","请获取有效激活码..."));}
@@ -1329,26 +1330,42 @@ public class AppService {
 
     }
 
-    public List<ActiveTipEntity> 查询所有提示信息() {
+    public List<ActiveTip> 查询所有提示信息() {
         EntityFilterChain filter =  EntityFilterChain.newFilterChain(ActiveTipEntity.class);
         List<ActiveTipEntity> activeTipEntities = daoService.queryEntities(ActiveTipEntity.class,filter);
-        return activeTipEntities;
+
+
+        List<ActiveTip> activeTips = new ArrayList<>();
+        activeTipEntities.forEach(tip ->{
+            ActiveTip activeTip = new ActiveTip();
+            activeTip.setId(tip.getId());
+            try {
+                activeTip.setTip(new String(tip.getTipStr(),"UTF-8"));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            activeTips.add(activeTip);
+        });
+
+
+
+        return activeTips;
     }
 
-    public void 添加Tip(String tip) {
+    public void 添加Tip(String tip) throws UnsupportedEncodingException {
         ActiveTipEntity activeTipEntity = new ActiveTipEntity();
         activeTipEntity.setId(com.union.app.util.idGenerator.IdGenerator.getActiveTipId());
-        activeTipEntity.setTip(tip);
+        activeTipEntity.setTipStr(tip.getBytes("UTF-8"));
         daoService.insertEntity(activeTipEntity);
 
     }
-    private String 查询Tip(String tipId) {
+    private String 查询Tip(String tipId) throws UnsupportedEncodingException {
         EntityFilterChain filter =  EntityFilterChain.newFilterChain(ActiveTipEntity.class)
                 .compareFilter("id",CompareTag.Equal,tipId);
         ActiveTipEntity activeTipEntity = daoService.querySingleEntity(ActiveTipEntity.class,filter);
         if(!ObjectUtils.isEmpty(activeTipEntity))
         {
-            return activeTipEntity.getTip();
+            return new String(activeTipEntity.getTipStr(),"UTF-8");
         }
         else
         {

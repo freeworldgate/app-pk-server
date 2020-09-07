@@ -47,25 +47,28 @@ public class 上传内置公开群二维码 {
     @Transactional(rollbackOn = Exception.class)
     public AppResponse 上传群内置公开二维码(@RequestParam("pkId") String pkId,@RequestParam("passwd") String passwd,@RequestParam("url") String url) throws IOException, AppException {
 
-
-
-
-
-
         String mediaId = WeChatUtil.uploadImg2Wx(url);
         dynamicService.设置内置公开PK群组二维码MediaId(pkId,mediaId);
         dynamicService.设置内置公开PK群组二维码Url(pkId,url);
-
-
-
-
-
-
 
 
         return AppResponse.buildResponse(PageAction.信息反馈框("更新群组成功","更新群组成功..."));
 
     }
 
+    @RequestMapping(value = "/uploadInnerPublicUserImg", method = RequestMethod.GET)
+    @Transactional(rollbackOn = Exception.class)
+    public AppResponse uploadInnerPublicUserImg(@RequestParam("pkId") String pkId,@RequestParam("url") String url) throws IOException, AppException {
+
+        User user = pkService.queryPkCreator(pkId);
+        userService.修改用户头像(user.getUserId(),url);
+        user = userService.queryUser(user.getUserId());
+
+
+
+
+        return AppResponse.buildResponse(PageAction.执行处理器("success",user));
+
+    }
 
 }

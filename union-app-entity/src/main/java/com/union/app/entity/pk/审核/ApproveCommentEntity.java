@@ -23,7 +23,7 @@ public class ApproveCommentEntity {
     private String pkId;
     private String postId;
     private String userId;
-    private byte[] text;
+    private String text;
     private String imgUrl;
     private long time;
     private String date;

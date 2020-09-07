@@ -23,6 +23,8 @@ public class PkDetail implements Serializable{
 
     private User user;
 
+    private String userBack;
+
     private String topic;
 
     private String watchWord;

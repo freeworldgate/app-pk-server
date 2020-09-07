@@ -1,6 +1,7 @@
 package com.union.app.api.pk.管理;
 
 import com.union.app.dao.spi.AppDaoService;
+import com.union.app.domain.pk.ActiveTip;
 import com.union.app.domain.pk.PkDetail;
 import com.union.app.entity.pk.ActiveTipEntity;
 import com.union.app.entity.pk.BackImgEntity;
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,7 +72,11 @@ public class 审核Tip管理 {
     @RequestMapping(path="/queryTips",method = RequestMethod.GET)
     public AppResponse 查询内置PK(@RequestParam("userId") String userId) throws AppException, IOException {
 
-        List<ActiveTipEntity> tips = appService.查询所有提示信息();
+        List<ActiveTip> tips = appService.查询所有提示信息();
+
+
+
+
 
         return AppResponse.buildResponse(PageAction.前端数据更新("tips",tips));
 

@@ -28,7 +28,7 @@ public class ApproveMessageEntity {
 
     private String approverUserId;
 
-    private byte[] text;
+    private String text;
 
     private String imgUrl;
 

@@ -21,7 +21,7 @@ public class ActiveTipEntity {
     @Id
     private String id;
 
-    private String tip;
+    private byte[] tipStr;
 
 
 

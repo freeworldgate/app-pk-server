@@ -21,8 +21,8 @@ public class PostEntity {
 
     private String userId;
 
-    private byte[] topic;
-    private byte[] selfComment;
+    private String topic;
+    private String selfComment;
     private long selfCommentTime;
 
     private int imgNum;
@@ -43,5 +43,5 @@ public class PostEntity {
 
 
     private int rejectTimes;
-    private byte[] rejectTextBytes;
+    private String rejectTextBytes;
 }

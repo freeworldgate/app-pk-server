@@ -29,6 +29,7 @@ import com.union.app.service.pk.dynamic.imp.RedisMapService;
 import com.union.app.service.pk.dynamic.imp.RedisSortSetService;
 import com.union.app.service.user.UserService;
 import com.union.app.util.time.TimeUtils;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -105,11 +106,13 @@ public class PkService {
         PkEntity pk = this.querySinglePkEntity(pkId);
         if(ObjectUtils.isEmpty(pk)){return null;}
         pkDetail.setPkId(pk.getPkId());
+        pkDetail.setUserBack(appService.查询背景(8));
         pkDetail.setPkTypeValue(pk.getPkType().getType());
         pkDetail.setPkType(pk.getPkType().getDesc());
-        pkDetail.setTopic(new String(pk.getTopic(),"UTF-8"));
+//        pkDetail.setTopic(new String(ArrayUtils.isEmpty(pk.getTopic())?"...".getBytes("UTF-8"):pk.getTopic(),"UTF-8"));
+        pkDetail.setTopic(pk.getTopic());
         pkDetail.setUser(userService.queryUser(pk.getUserId()));
-        pkDetail.setWatchWord(new String(pk.getWatchWord(),"UTF-8"));
+        pkDetail.setWatchWord(pk.getWatchWord());
         pkDetail.setTime(TimeUtils.translateTime(pk.getCreateTime()));
         pkDetail.setInvite(new KeyNameValue(pk.getIsInvite().getStatu(),pk.getIsInvite().getStatuStr()));
         pkDetail.setInviteType(pk.getIsInvite());
@@ -269,8 +272,8 @@ public class PkService {
         pkEntity.setCreateTime(TimeUtils.currentDateTime());
         pkEntity.setPkType(PkType.运营相册);
         pkEntity.setMessageType(MessageType.不收费);
-        pkEntity.setTopic(topic.getBytes("UTF-8"));
-        pkEntity.setWatchWord(watchWord.getBytes("UTF-8"));
+        pkEntity.setTopic(topic);
+        pkEntity.setWatchWord(watchWord);
         pkEntity.setIsInvite(invite?InviteType.邀请:InviteType.公开);
         pkEntity.setUserId(userId);
         pkEntity.setAlbumStatu(PkStatu.审核中);
@@ -285,8 +288,8 @@ public class PkService {
         pkEntity.setPkId(pkId);
         pkEntity.setCreateTime(TimeUtils.currentDateTime());
         pkEntity.setPkType(PkType.内置相册);
-        pkEntity.setTopic(topic.getBytes("UTF-8"));
-        pkEntity.setWatchWord(watchWord.getBytes("UTF-8"));
+        pkEntity.setTopic(topic);
+        pkEntity.setWatchWord(watchWord);
         pkEntity.setIsInvite(type != 2 ?InviteType.邀请:InviteType.公开);
         pkEntity.setMessageType(isCharge?MessageType.收费:MessageType.不收费);
         pkEntity.setUserId(appService.随机用户());
@@ -391,4 +394,18 @@ public class PkService {
     }
 
 
+    public void 修改PK(String pkId,String topic, String watchWord) throws AppException, UnsupportedEncodingException {
+        PkEntity pkEntity = this.querySinglePkEntity(pkId);
+        if(pkEntity.getAlbumStatu() == PkStatu.审核中)
+        {
+            pkEntity.setTopic(topic);
+            pkEntity.setWatchWord(watchWord);
+            daoService.updateEntity(pkEntity);
+            return ;
+        }
+
+        throw AppException.buildException(PageAction.信息反馈框("修改失败","榜单当前状态不支持修改榜帖内容..."));
+
+
+    }
 }

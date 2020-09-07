@@ -35,7 +35,7 @@ public class UserEntity {
 
     private String sessionId;
 
-    private byte[] nickName;
+    private String nickName;
 
     private String avatarUrl;
 

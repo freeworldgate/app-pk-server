@@ -112,7 +112,7 @@ public class 审核榜帖 {
         PostEntity postEntity = postService.查询帖子ById(pkId,postId);
         postEntity.setApproveStatu(ApproveStatu.驳回修改);
         postEntity.setRejectTimes(postEntity.getRejectTimes() + 1);
-        postEntity.setRejectTextBytes(text.getBytes("UTF-8"));
+        postEntity.setRejectTextBytes(text);
         daoService.updateEntity(postEntity);
         List<DataSet> dataSets  = appService.查询下一个审核榜帖();
 

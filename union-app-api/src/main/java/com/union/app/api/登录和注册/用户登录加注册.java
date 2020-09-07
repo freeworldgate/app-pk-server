@@ -99,7 +99,7 @@ public class 用户登录加注册 {
         {
             String name = new String(userEntity.getNickName());
             if(!org.apache.commons.lang.StringUtils.equals(name,userInfo.getNickName())){
-                userEntity.setNickName(userInfo.getNickName().getBytes());
+                userEntity.setNickName(userInfo.getNickName());
                 userEntity.setAvatarUrl(userInfo.getAvatarUrl());
                 appDaoService.updateEntity(userEntity);
             }
@@ -182,7 +182,7 @@ public class 用户登录加注册 {
     private void convert(UserInfo userInfo, UserEntity userEntity)
     {
         userEntity.setAvatarUrl(userInfo.getAvatarUrl());
-        userEntity.setNickName(userInfo.getNickName().getBytes());
+        userEntity.setNickName(userInfo.getNickName());
 
     }
 

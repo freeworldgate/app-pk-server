@@ -127,7 +127,7 @@ public class 审核 {
 
         PostEntity postEntity = postService.查询帖子ById(pkId,postId);
         postEntity.setApproveStatu(ApproveStatu.驳回修改);
-        postEntity.setRejectTextBytes(text.getBytes("UTF-8"));
+        postEntity.setRejectTextBytes(text);
         postEntity.setRejectTimes(postEntity.getRejectTimes() + 1);
         daoService.updateEntity(postEntity);
         dynamicService.驳回用户审核(pkId,postId);
@@ -172,7 +172,7 @@ public class 审核 {
 
         PostEntity postEntity = postService.查询帖子ById(pkId,postId);
         postEntity.setApproveStatu(ApproveStatu.驳回修改);
-        postEntity.setRejectTextBytes(text.getBytes("UTF-8"));
+        postEntity.setRejectTextBytes(text);
         postEntity.setRejectTimes(postEntity.getRejectTimes() + 1);
         daoService.updateEntity(postEntity);
 

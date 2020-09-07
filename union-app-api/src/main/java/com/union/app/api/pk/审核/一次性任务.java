@@ -91,7 +91,7 @@ public class 一次性任务 {
             }
             if(postEntity.getApproveStatu() == ApproveStatu.驳回修改)
             {
-                return AppResponse.buildResponse(PageAction.信息反馈框("榜帖修改建议","修改建议:" + postEntity.getRejectTextBytes() == null?"":new String(postEntity.getRejectTextBytes(),"UTF-8")));
+                return AppResponse.buildResponse(PageAction.信息反馈框("榜帖修改建议","修改建议:" + postEntity.getRejectTextBytes() == null?"":postEntity.getRejectTextBytes()));
             }
 
         }

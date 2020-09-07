@@ -19,9 +19,9 @@ public class PkEntity {
 
     private String userId;
 
-    private byte[] topic;
+    private String topic;
 
-    private byte[] watchWord;
+    private String watchWord;
 
 
     @Enumerated(EnumType.STRING)

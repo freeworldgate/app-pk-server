@@ -1,10 +1,7 @@
 package com.union.app.api.pk.管理;
 
 import com.union.app.dao.spi.AppDaoService;
-import com.union.app.domain.pk.ActivePk;
-import com.union.app.domain.pk.ApprovePost;
-import com.union.app.domain.pk.PkDetail;
-import com.union.app.domain.pk.Post;
+import com.union.app.domain.pk.*;
 import com.union.app.entity.pk.*;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
@@ -77,7 +74,7 @@ public class 激活榜 {
         if(!ObjectUtils.isEmpty(activePk))
         {
 
-            List<ActiveTipEntity> tips = appService.查询所有提示信息();
+            List<ActiveTip> tips = appService.查询所有提示信息();
             dataSets.add(new DataSet("tips",tips));
             dataSets.add(new DataSet("tipId",activePk.getTipId()));
         }

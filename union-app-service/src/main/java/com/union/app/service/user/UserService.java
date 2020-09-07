@@ -171,7 +171,7 @@ public class UserService {
                 wxSendMessage1.setTouser(fromUserName);
                 wxSendMessage1.setMsgtype("text");
                 WxText wxText1 = new WxText();
-                wxText1.setContent("确认获取群组二维码.\n来自榜主:" + userService.queryUser(sessions[1]).getUserName() + ".\n确认拉取     请回复 ：1");
+                wxText1.setContent("确认获取用户图片.\n来自榜主:" + userService.queryUser(sessions[1]).getUserName() + ".\n确认拉取     请回复 ：1");
                 wxSendMessage1.setText(wxText1);
                 sendMsToCustomer(wxSendMessage1);
 
@@ -384,6 +384,19 @@ public class UserService {
 
         result.setPkTimes(result.getPkTimes() - 1);
         appDaoService.updateEntity(result);
+
+
+    }
+
+    public void 修改用户头像(String userId, String url) {
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(UserEntity.class)
+                .compareFilter("userId",CompareTag.Equal,userId);
+        UserEntity result = appDaoService.querySingleEntity(UserEntity.class,filter);
+
+        result.setAvatarUrl(url);
+
+        appDaoService.updateEntity(result);
+
 
 
     }

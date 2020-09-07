@@ -151,7 +151,7 @@ public class ApproveService {
         approveComment.setImgUrl(approveCommentEntity.getImgUrl());
         approveComment.setPkId(approveCommentEntity.getPkId());
         approveComment.setPostId(approveCommentEntity.getPostId());
-        approveComment.setText(new String(approveCommentEntity.getText(),"UTF-8"));
+        approveComment.setText(approveCommentEntity.getText());
         approveComment.setUser(userService.queryUser(approveCommentEntity.getUserId()));
         approveComment.setTime("今天23:00");
         approveComment.setDate(approveCommentEntity.getDate());
@@ -204,7 +204,7 @@ public class ApproveService {
             approveCommentEntity.setPkId(pkId);
             approveCommentEntity.setPostId(postId);
             approveCommentEntity.setUserId(userId);
-            approveCommentEntity.setText(text.getBytes("UTF-8"));
+            approveCommentEntity.setText(text);
             approveCommentEntity.setImgUrl(this.getLegalImgUrl(imgUrl));
             approveCommentEntity.setTime(System.currentTimeMillis());
             approveCommentEntity.setDate(TimeUtils.currentDateTime());
@@ -213,7 +213,7 @@ public class ApproveService {
         }
         else
         {
-            approveCommentEntity.setText(text.getBytes("UTF-8"));
+            approveCommentEntity.setText(text);
             approveCommentEntity.setImgUrl(this.getLegalImgUrl(imgUrl));
             approveCommentEntity.setUserId(userId);
             approveCommentEntity.setTime(System.currentTimeMillis());
@@ -318,7 +318,7 @@ public class ApproveService {
     public ApproveMessage translate(ApproveMessageEntity approveMessageEntity) throws UnsupportedEncodingException {
         ApproveMessage approveMessage = new ApproveMessage();
         approveMessage.setUser(userService.queryUser(approveMessageEntity.getApproverUserId()));
-        approveMessage.setText(new String(approveMessageEntity.getText(), "UTF-8"));
+        approveMessage.setText(approveMessageEntity.getText());
         approveMessage.setImgeUrl(ImageUtils.添加水印(approveMessageEntity.getImgUrl()));
         approveMessage.setTime(TimeUtils.convertTime(approveMessageEntity.getTime()));
         approveMessage.setMediaId(approveMessageEntity.getMediaId());
@@ -362,7 +362,7 @@ public class ApproveService {
 //            approveMessageEntity.setDate(TimeUtils.dateStr(currentDate));
             approveMessageEntity.setTime(System.currentTimeMillis());
             approveMessageEntity.setImgUrl(imgUrl);
-            approveMessageEntity.setText(text.getBytes("UTF-8"));
+            approveMessageEntity.setText(text);
             approveMessageEntity.setMediaId(mediaId);
 
             daoService.insertEntity(approveMessageEntity);
@@ -374,7 +374,7 @@ public class ApproveService {
             String mediaId = WeChatUtil.uploadImg2Wx(imgUrl);
             approveMessageEntity.setMsgId(StringUtils.isBlank(approveMessageEntity.getMsgId())?UUID.randomUUID().toString():approveMessageEntity.getMsgId());
             approveMessageEntity.setImgUrl(imgUrl);
-            approveMessageEntity.setText(text.getBytes("UTF-8"));
+            approveMessageEntity.setText(text);
             approveMessageEntity.setMediaId(mediaId);
 //            appService.修改激活处理的状态(pkId);
             daoService.updateEntity(approveMessageEntity);

@@ -84,7 +84,7 @@ public class PostService {
         postEntity.setPkId(pkId);
         postEntity.setPostId(postId);
         postEntity.setUserId(userId);
-        postEntity.setTopic(noActiveTitle(title)?"...".getBytes("UTF-8"):title.getBytes(Charset.forName("UTF-8")));
+        postEntity.setTopic(noActiveTitle(title)?"...":title);
         postEntity.setImgNum(images.size());
         postEntity.setCreateTime(TimeUtils.currentTime());
         postEntity.setLastModifyTime(TimeUtils.currentTime());
@@ -165,15 +165,15 @@ public class PostService {
         post.setPostId(postEntity.getPostId());
         post.setRejectTimes(postEntity.getRejectTimes());
         post.setMaxRejectTimes(AppConfigService.getConfigAsInteger(ConfigItem.Post最大修改次数));
-        post.setRejectText(postEntity.getRejectTextBytes() == null?"":new String(postEntity.getRejectTextBytes(),"UTF-8"));
+        post.setRejectText(postEntity.getRejectTextBytes() == null?"":postEntity.getRejectTextBytes());
         post.setTime(TimeUtils.convertTime(postEntity.getCreateTime()));
         post.setCreator(userService.queryUser(postEntity.getUserId()));
-        post.setTopic(new String(postEntity.getTopic(),"UTF-8"));
+        post.setTopic(postEntity.getTopic());
         post.setDynamic(getPostDynamic(postEntity.getPostId(),postEntity.getPkId()));
         post.setPostImages(getPostImages(postEntity.getImgUrls()));
         post.setStatu(new KeyNameValue(postEntity.getStatu().getStatu(),postEntity.getStatu().getStatuStr()));
 //        post.setUserIntegral(dynamicService.查询用户打榜信息(postEntity.getPkId(),postEntity.getUserId()));
-        post.setSelfComment(ArrayUtils.isEmpty(postEntity.getSelfComment())? org.apache.commons.lang.StringUtils.EMPTY :new String(postEntity.getSelfComment(),"UTF-8"));
+        post.setSelfComment(org.apache.commons.lang.StringUtils.isBlank(postEntity.getSelfComment())? org.apache.commons.lang.StringUtils.EMPTY :postEntity.getSelfComment());
         post.setSelfCommentTime(TimeUtils.convertTime(postEntity.getSelfCommentTime()));
         return post;
     }
@@ -274,7 +274,7 @@ public class PostService {
         postEntity.setLastModifyTime(TimeUtils.currentTime());
 //        String oldTitle = new String(postEntity.getTopic(),Charset.forName("UTF-8"));
 
-        postEntity.setTopic(noActiveTitle(title) ? postEntity.getTopic() : title.getBytes("UTF-8"));
+        postEntity.setTopic(noActiveTitle(title) ? postEntity.getTopic() : title);
 
         for(String img:images){
             PostImageEntity postImageEntity = new PostImageEntity();
@@ -311,7 +311,7 @@ public class PostService {
             post.setPkId(postEntity.getPkId());
             post.setPostId(postEntity.getPostId());
             post.setCreator(userService.queryUser(postEntity.getUserId()));
-            post.setTopic(new String(postEntity.getTopic(),"UTF-8"));
+            post.setTopic(postEntity.getTopic());
             post.setDynamic(getPostDynamic(postEntity.getPostId(),postEntity.getPkId()));
             post.setPostImages(getPostImages(new String(postEntity.getImgUrls())));
             post.setStatu(new KeyNameValue(postEntity.getStatu().getStatu(), postEntity.getStatu().getStatuStr()));
@@ -443,7 +443,7 @@ public class PostService {
             throw AppException.buildException(PageAction.消息级别提示框(Level.错误消息,"非法操作"));
         }
 
-        postEntity.setTopic(text.getBytes("UTF-8"));
+        postEntity.setTopic(text);
 
         daoService.updateEntity(postEntity);
 
@@ -451,7 +451,7 @@ public class PostService {
     }
 
     public void 设置自评(String pkId, PostEntity postEntity, String text) {
-        postEntity.setSelfComment(text.getBytes(Charset.forName("UTF-8")));
+        postEntity.setSelfComment(text);
 
         postEntity.setSelfCommentTime(System.currentTimeMillis());
         daoService.updateEntity(postEntity);
