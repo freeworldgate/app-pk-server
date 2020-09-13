@@ -55,7 +55,7 @@ public class 主页预览 {
 
 
     @RequestMapping(path="/queryPreHomePage",method = RequestMethod.GET)
-    public AppResponse 查询单个PK(@RequestParam("userId") String userId,@RequestParam("type") int type) throws AppException, IOException {
+    public AppResponse 查询单个PK(@RequestParam("password") String password,@RequestParam("type") int type) throws AppException, IOException {
 
 
 
@@ -73,7 +73,7 @@ public class 主页预览 {
     }
 
     @RequestMapping(path="/morePreHomePage",method = RequestMethod.GET)
-    public AppResponse 查询单个PK(@RequestParam("userId") String userId,@RequestParam("page") int page,@RequestParam("type") int type) throws AppException, IOException {
+    public AppResponse 查询单个PK(@RequestParam("password") String password,@RequestParam("page") int page,@RequestParam("type") int type) throws AppException, IOException {
         List<PkDetail> pkDetails = new ArrayList<>();
 
 

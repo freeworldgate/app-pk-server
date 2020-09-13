@@ -54,7 +54,7 @@ public class 收款用户 {
 
 
     @RequestMapping(path="/allCashiers",method = RequestMethod.GET)
-    public AppResponse 用户相册(@RequestParam("userId") String userId) throws AppException, IOException {
+    public AppResponse 用户相册(@RequestParam("password") String password) throws AppException, IOException {
 
 
 
@@ -65,7 +65,7 @@ public class 收款用户 {
 
     }
     @RequestMapping(path="/nextPageCashiers",method = RequestMethod.GET)
-    public AppResponse 查询单个PK(@RequestParam("userId") String userId,@RequestParam("page") int page) throws AppException, IOException {
+    public AppResponse 查询单个PK(@RequestParam("password") String password,@RequestParam("page") int page) throws AppException, IOException {
 
 
         List<PkCashier> cashiers = appService.查询收款列表(page+1);
@@ -83,7 +83,7 @@ public class 收款用户 {
 
     @RequestMapping(path="/createCashier",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse 创建用户(@RequestParam("userId") String userId,@RequestParam("name") String name) throws AppException, IOException {
+    public AppResponse 创建用户(@RequestParam("password") String password,@RequestParam("name") String name) throws AppException, IOException {
         appService.新建收款用户(name);
 
 
@@ -95,7 +95,7 @@ public class 收款用户 {
 
     @RequestMapping(path="/changeCahierStatu",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse 修改用户状态(@RequestParam("userId") String userId,@RequestParam("cashierId") String cashierId) throws AppException, IOException {
+    public AppResponse 修改用户状态(@RequestParam("password") String password,@RequestParam("cashierId") String cashierId) throws AppException, IOException {
         appService.修改用户状态(cashierId);
 
 
@@ -106,7 +106,7 @@ public class 收款用户 {
 
     @RequestMapping(path="/uploadCashierLink",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse 上传链接(@RequestParam("userId") String userId,@RequestParam("linkImg") String linkImg,@RequestParam("cashierId") String cashierId,@RequestParam("type") int type) throws AppException, IOException {
+    public AppResponse 上传链接(@RequestParam("password") String password,@RequestParam("linkImg") String linkImg,@RequestParam("cashierId") String cashierId,@RequestParam("type") int type) throws AppException, IOException {
         appService.上传收款链接(cashierId,type,linkImg);
 
 
@@ -117,7 +117,7 @@ public class 收款用户 {
 
     @RequestMapping(path="/deleteCashier",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse 上传链接(@RequestParam("userId") String userId,@RequestParam("cashierId") String cashierId) throws AppException, IOException {
+    public AppResponse 上传链接(@RequestParam("password") String password,@RequestParam("cashierId") String cashierId) throws AppException, IOException {
         appService.删除收款人(cashierId);
 
 

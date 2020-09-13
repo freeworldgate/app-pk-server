@@ -23,9 +23,9 @@ public class PreUserEntity {
 
     private String imgUrl;
 
-    private byte[]  name;
+    private String  userName;
 
-    private String userName;
+
 
 
 

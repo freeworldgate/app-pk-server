@@ -51,7 +51,7 @@ public class 查询排名 {
 
 
     @RequestMapping(path="/querySort",method = RequestMethod.GET)
-    public AppResponse 查询排名信息(@RequestParam("userId") String userId) throws AppException, IOException {
+    public AppResponse 查询排名信息(@RequestParam("password") String password) throws AppException, IOException {
 
 //        List<PkDetail> pkDetails = new ArrayList<>();
 
@@ -66,7 +66,7 @@ public class 查询排名 {
     }
 
     @RequestMapping(path="/nextSortPage",method = RequestMethod.GET)
-    public AppResponse 查询排名信息(@RequestParam("userId") String userId,@RequestParam("page") int page) throws AppException, IOException {
+    public AppResponse 查询排名信息(@RequestParam("password") String password,@RequestParam("page") int page) throws AppException, IOException {
 
 
         List<PkDetail> pks = appService.查询PK排名(page);

@@ -64,7 +64,7 @@ public class 设置内置PK参数 {
 
     @RequestMapping(path="/setAlbumType",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse 设置预置PK参数(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId,@RequestParam("type") int type,@RequestParam("value") int value) throws AppException, IOException {
+    public AppResponse 设置预置PK参数(@RequestParam("pkId") String pkId,@RequestParam("password") String password,@RequestParam("type") int type,@RequestParam("value") int value) throws AppException, IOException {
 
 
 

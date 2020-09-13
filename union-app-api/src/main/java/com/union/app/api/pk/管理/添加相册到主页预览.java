@@ -61,7 +61,7 @@ public class 添加相册到主页预览 {
 
     @RequestMapping(path="/addToGeneticHome",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse addToGeneticHome(@RequestParam("pkId") String pkId,@RequestParam("value") int value,@RequestParam("userId") String userId) throws AppException, IOException {
+    public AppResponse addToGeneticHome(@RequestParam("pkId") String pkId,@RequestParam("value") int value,@RequestParam("password") String password) throws AppException, IOException {
 
         appService.添加到主页预览(pkId,value,1);
         PkDetail pkDetail = pkService.querySinglePk(pkId);
@@ -73,7 +73,7 @@ public class 添加相册到主页预览 {
 
     @RequestMapping(path="/addToNonGeneticHome",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse addToNonGeneticHome(@RequestParam("pkId") String pkId,@RequestParam("value") int value,@RequestParam("userId") String userId) throws AppException, IOException {
+    public AppResponse addToNonGeneticHome(@RequestParam("pkId") String pkId,@RequestParam("value") int value,@RequestParam("password") String password) throws AppException, IOException {
 
         appService.添加到主页预览(pkId,value,2);
         PkDetail pkDetail = pkService.querySinglePk(pkId);
@@ -88,7 +88,7 @@ public class 添加相册到主页预览 {
 
     @RequestMapping(path="/removePkFromHomPage",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse removePkFromHomPage(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId,@RequestParam("type") int type) throws AppException, IOException {
+    public AppResponse removePkFromHomPage(@RequestParam("pkId") String pkId,@RequestParam("password") String password,@RequestParam("type") int type) throws AppException, IOException {
 
         appService.移除主页预览(pkId,type);
 

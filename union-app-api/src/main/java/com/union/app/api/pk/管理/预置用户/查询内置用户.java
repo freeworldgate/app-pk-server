@@ -63,7 +63,7 @@ public class 查询内置用户 {
 
 
     @RequestMapping(path="/queryPreUsers",method = RequestMethod.GET)
-    public AppResponse 查询内置PK(@RequestParam("userId") String userId) throws AppException, IOException {
+    public AppResponse 查询内置PK(@RequestParam("password") String password) throws AppException, IOException {
 
         List<PreUserEntity> users = appService.查询内置用户(1);
 
@@ -75,7 +75,7 @@ public class 查询内置用户 {
     }
 
     @RequestMapping(path="/morePreUsers",method = RequestMethod.GET)
-    public AppResponse 查询内置PK(@RequestParam("userId") String userId,@RequestParam("page") int page) throws AppException, IOException {
+    public AppResponse 查询内置PK(@RequestParam("password") String password,@RequestParam("page") int page) throws AppException, IOException {
 
 
         List<PreUserEntity> users = appService.查询内置用户(page+1);

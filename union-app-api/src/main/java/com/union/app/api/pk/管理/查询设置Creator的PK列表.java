@@ -67,7 +67,7 @@ public class 查询设置Creator的PK列表 {
 
 
     @RequestMapping(path="/queryPkCreators",method = RequestMethod.GET)
-    public AppResponse 查询内置PK() throws AppException, IOException {
+    public AppResponse 查询内置PK(@RequestParam("password") String password) throws AppException, IOException {
 
         List<PkCreator> pks = appService.查询Creator设置(1);
 
@@ -78,7 +78,7 @@ public class 查询设置Creator的PK列表 {
     }
 
     @RequestMapping(path="/morePkCreators",method = RequestMethod.GET)
-    public AppResponse 查询内置PK(@RequestParam("page") int page) throws AppException, IOException {
+    public AppResponse 查询内置PK(@RequestParam("password") String password,@RequestParam("page") int page) throws AppException, IOException {
 
 
         List<PkCreator> pks = appService.查询Creator设置(page+1);
@@ -96,7 +96,7 @@ public class 查询设置Creator的PK列表 {
 
     @RequestMapping(path="/switchBit",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse switchBit(@RequestParam("pkId") String pkId) throws AppException, IOException {
+    public AppResponse switchBit(@RequestParam("password") String password,@RequestParam("pkId") String pkId) throws AppException, IOException {
 
         PkCreator pk = appService.设置PK开关(pkId);
 

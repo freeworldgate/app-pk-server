@@ -63,7 +63,7 @@ public class 查询激活码 {
 
     @RequestMapping(path="/queryActiveCode",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse activeCode(@RequestParam("applyCode") String applyCode) throws AppException, IOException {
+    public AppResponse activeCode(@RequestParam("password") String password,@RequestParam("applyCode") String applyCode) throws AppException, IOException {
 
         String code = appService.获取收款码(applyCode);
 
@@ -72,7 +72,7 @@ public class 查询激活码 {
     }
     @RequestMapping(path="/gennerateCodes",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse gennerateCode(@RequestParam("cashierId") String cashierId) throws AppException, IOException {
+    public AppResponse gennerateCode(@RequestParam("password") String password,@RequestParam("cashierId") String cashierId) throws AppException, IOException {
 
         appService.生成激活码(cashierId);
         appService.新增储备激活码(cashierId);

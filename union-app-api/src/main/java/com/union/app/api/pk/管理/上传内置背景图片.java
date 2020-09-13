@@ -63,7 +63,7 @@ public class 上传内置背景图片 {
 
     @RequestMapping(path="/uploadBackImg",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse 查询内置PK(@RequestParam("userId") String userId,@RequestParam("type") int type,@RequestParam("imgUrl") String imgUrl) throws AppException, IOException {
+    public AppResponse 查询内置PK(@RequestParam("password") String password,@RequestParam("type") int type,@RequestParam("imgUrl") String imgUrl) throws AppException, IOException {
 
         BackImgEntity pk = appService.设置内置背景图片(type,imgUrl);
 

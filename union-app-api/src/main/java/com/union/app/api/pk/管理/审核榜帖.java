@@ -65,7 +65,7 @@ public class 审核榜帖 {
     public static Map<String,PkDetail> pkDetailMap = new HashMap<>();
 
     @RequestMapping(path="/manageApprovingPosts",method = RequestMethod.GET)
-    public AppResponse 查询审核榜帖(@RequestParam("userId") String userId) throws AppException, IOException {
+    public AppResponse 查询审核榜帖(@RequestParam("password") String password) throws AppException, IOException {
         List<ApprovePost> approvePosts = new ArrayList<>();
 
         List<DataSet> dataSets  = appService.查询下一个审核榜帖();
@@ -80,7 +80,7 @@ public class 审核榜帖 {
 
     @RequestMapping(path="/approvePost",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse approvePost(@RequestParam("userId") String userId,@RequestParam("postId") String postId,@RequestParam("pkId") String pkId) throws AppException, IOException {
+    public AppResponse approvePost(@RequestParam("password") String password,@RequestParam("postId") String postId,@RequestParam("pkId") String pkId) throws AppException, IOException {
         //User认证
 
 
@@ -99,7 +99,7 @@ public class 审核榜帖 {
 
     @RequestMapping(path="/hiddenPost",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse hiddenPost(@RequestParam("userId") String userId,@RequestParam("postId") String postId,@RequestParam("pkId") String pkId,@RequestParam("text") String text) throws AppException, IOException {
+    public AppResponse hiddenPost(@RequestParam("password") String password,@RequestParam("postId") String postId,@RequestParam("pkId") String pkId,@RequestParam("text") String text) throws AppException, IOException {
 
 
 

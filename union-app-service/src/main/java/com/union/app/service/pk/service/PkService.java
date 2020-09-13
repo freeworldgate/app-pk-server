@@ -9,6 +9,7 @@ import com.union.app.domain.pk.*;
 import com.union.app.domain.pk.PkDynamic.FactualInfo;
 import com.union.app.domain.pk.PkDynamic.FeeTask;
 import com.union.app.domain.pk.apply.KeyNameValue;
+import com.union.app.domain.pk.审核.ApproveComment;
 import com.union.app.domain.user.User;
 import com.union.app.entity.pk.*;
 import com.union.app.plateform.data.resultcode.AppException;
@@ -83,6 +84,30 @@ public class PkService {
     public static Map<String,List<FeeTask>> taskCache = new ConcurrentHashMap<>();
 
     public static Map<String,List<FactualInfo>> factualCache = new ConcurrentHashMap<>();
+
+
+
+    public List<Post> queryPrePkPost(String pkId,int page) throws IOException {
+
+        List<Post> posts = new ArrayList<>();
+        List<String> pageList = redisSortSetService.queryPage(CacheKeyName.榜主已审核列表(pkId),page);
+        for(String postId:pageList)
+        {
+            Post post = postService.查询帖子(pkId,postId,"");
+            if(!ObjectUtils.isEmpty(post)) {
+                ApproveComment approveComment = approveService.获取留言信息(pkId,postId);
+
+                post.setApproveComment(approveComment);
+
+                posts.add(post);
+            }
+        }
+
+        Collections.shuffle(posts);
+
+
+        return posts;
+    }
 
 
 

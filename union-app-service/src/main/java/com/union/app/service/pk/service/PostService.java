@@ -10,6 +10,8 @@ import com.union.app.dao.spi.filter.EntityFilterChain;
 import com.union.app.domain.pk.*;
 import com.union.app.common.id.KeyGetter;
 import com.union.app.domain.pk.apply.KeyNameValue;
+import com.union.app.domain.pk.审核.ApproveComment;
+import com.union.app.domain.工具.RandomUtil;
 import com.union.app.entity.pk.*;
 import com.union.app.entity.pk.审核.ApproveCommentEntity;
 import com.union.app.plateform.constant.ConfigItem;
@@ -57,13 +59,58 @@ public class PostService {
     @Autowired
     PkService pkService;
 
+    @Autowired
+    AppService appService;
 
     @Autowired
     ApproveService approveService;
 
     @Autowired
     PkCacheService pkCacheService;
+    public String 预置帖子(String pkId,String title,List<String> images) throws IOException, AppException
+    {
 
+        String postId = IdGenerator.getPostId();
+        PostEntity postEntity = new PostEntity();
+
+        postEntity.setPkId(pkId);
+        postEntity.setPostId(postId);
+        postEntity.setUserId(appService.随机用户());
+        postEntity.setTopic(noActiveTitle(title)?"...":title);
+        postEntity.setImgNum(images.size());
+        postEntity.setCreateTime(TimeUtils.currentTime());
+        postEntity.setLastModifyTime(TimeUtils.currentTime());
+        postEntity.setStatu(PostStatu.审核中);
+        postEntity.setRejectTimes(0);
+
+        postEntity.setApproveStatu(ApproveStatu.未处理);
+        StringBuffer stringBuffer = new StringBuffer();
+        for(String img:images){
+            stringBuffer.append(getLegalImgUrl(img));
+            stringBuffer.append(";");
+
+        }
+        postEntity.setImgUrls(stringBuffer.toString());
+        daoService.insertEntity(postEntity);
+
+//        转发审核
+
+        this.用户转发审批(postEntity);
+        dynamicService.设置帖子的审核用户(pkId,postId);
+
+
+//          审核通过
+        this.上线帖子(pkId,postId);
+        dynamicService.已审核(pkId,postId);
+
+
+
+
+
+
+
+        return postId;
+    }
 
     public String 创建帖子(String pkId,String userId,String title,List<String> images) throws IOException, AppException
     {
@@ -90,9 +137,7 @@ public class PostService {
         }
         postEntity.setImgUrls(stringBuffer.toString());
         daoService.insertEntity(postEntity);
-//        if(!userService.canUserView(userId)) {
-//            dynamicService.设置帖子的审核用户(pkId, postId);
-//        }
+
         return postId;
     }
 
@@ -478,5 +523,14 @@ public class PostService {
         postEntity.setApproveStatu(ApproveStatu.请求审核);
 //        postEntity.setApproveUserId(postEntity.getPkId());
         daoService.updateEntity(postEntity);
+    }
+
+    public Post 查询预置帖子(String postId) throws UnsupportedEncodingException {
+        PostEntity postEntity = this.查询帖子ById(postId);
+        ApproveComment approveComment = approveService.获取留言信息(postEntity.getPkId(),postEntity.getPostId());
+        Post post = this.translate(postEntity);
+        post.setApproveComment(approveComment);
+
+        return post;
     }
 }

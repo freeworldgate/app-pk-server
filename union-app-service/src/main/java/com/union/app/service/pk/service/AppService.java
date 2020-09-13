@@ -150,7 +150,7 @@ public class AppService {
 
         return pkDetail;
     }
-    public List<PkDetail> 查询内置相册(String userId, int page,int type) throws IOException {
+    public List<PkDetail> 查询内置相册( int page,int type) throws IOException {
 
         Date current = new Date();
         List<PkDetail> pkDetails = new ArrayList<>();
@@ -1012,7 +1012,7 @@ public class AppService {
         PreUserEntity preUserEntity = new PreUserEntity();
         preUserEntity.setUserId(userId);
         preUserEntity.setImgUrl(imgUrl);
-        preUserEntity.setName(name.getBytes("UTF-8"));
+        preUserEntity.setUserName(name);
         daoService.insertEntity(preUserEntity);
         UserEntity userEntity = new UserEntity();
 
@@ -1037,7 +1037,7 @@ public class AppService {
         List<PreUserEntity> pkEntities = daoService.queryEntities(PreUserEntity.class,filter);
         for(PreUserEntity userEntity:pkEntities)
         {
-            userEntity.setUserName(new String(userEntity.getName(),"UTF-8"));
+            userEntity.setUserName(userEntity.getUserName());
         }
         return pkEntities;
 
@@ -1051,8 +1051,16 @@ public class AppService {
         EntityFilterChain filter = EntityFilterChain.newFilterChain(PreUserEntity.class)
                 .compareFilter("userId",CompareTag.Equal,userId);
         PreUserEntity preUserEntity = daoService.querySingleEntity(PreUserEntity.class,filter);
-        preUserEntity.setName(name.getBytes("UTF-8"));
+        preUserEntity.setUserName(name);
+        UserEntity userEntity = userService.queryUserEntity(userId);
+        userEntity.setNickName(name);
+
+        daoService.updateEntity(userEntity);
         daoService.updateEntity(preUserEntity);
+
+
+
+
         return preUserEntity;
 
     }
@@ -1062,6 +1070,11 @@ public class AppService {
                 .compareFilter("userId",CompareTag.Equal,userId);
         PreUserEntity preUserEntity = daoService.querySingleEntity(PreUserEntity.class,filter);
         preUserEntity.setImgUrl(imgUrl);
+
+
+        UserEntity userEntity = userService.queryUserEntity(userId);
+        userEntity.setAvatarUrl(imgUrl);
+        daoService.updateEntity(userEntity);
         daoService.updateEntity(preUserEntity);
         return preUserEntity;
     }
