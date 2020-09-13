@@ -1,17 +1,12 @@
 package com.union.app.service.quartz;
 
 import com.union.app.common.微信.WeChatUtil;
-import com.union.app.dao.spi.AppDaoService;
+import com.union.app.common.dao.AppDaoService;
 import com.union.app.entity.pk.PkCashierEntity;
-import com.union.app.entity.pk.PkCashierFeeCodeEntity;
-import com.union.app.entity.pk.PkCashierGroupEntity;
 import com.union.app.entity.pk.PkEntity;
 import com.union.app.entity.pk.审核.ApproveMessageEntity;
 import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.service.MediaService;
-import com.union.app.service.pk.service.UserInfoService;
-import com.union.app.util.time.TimeUtils;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -29,9 +24,6 @@ public class 更新微信缓存媒体文件 {
 
     @Autowired
     AppDaoService daoService;
-
-    @Autowired
-    UserInfoService userInfoService;
 
     @Autowired
     MediaService mediaService;

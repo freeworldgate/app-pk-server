@@ -1,57 +1,24 @@
 package com.union.app.service.pk.complain;
 
-import com.union.app.common.OSS存储.CacheStorage;
-import com.union.app.common.OSS存储.OssStorage;
-import com.union.app.common.OSS存储.SceneType;
-import com.union.app.common.config.AppConfigService;
-import com.union.app.dao.spi.AppDaoService;
+import com.union.app.common.dao.AppDaoService;
 import com.union.app.dao.spi.filter.CompareTag;
 import com.union.app.dao.spi.filter.EntityFilterChain;
-import com.union.app.domain.pk.PkDetail;
-import com.union.app.domain.pk.PkDynamic.FactualInfo;
-import com.union.app.domain.pk.PkDynamic.FeeTask;
-import com.union.app.domain.pk.Post;
-import com.union.app.domain.pk.UserCode;
-import com.union.app.domain.pk.apply.ApplyOrder;
 import com.union.app.domain.pk.complain.Complain;
-import com.union.app.domain.user.User;
-import com.union.app.entity.pk.OrderEntity;
-import com.union.app.entity.pk.PkDynamicEntity;
-import com.union.app.entity.pk.PkEntity;
-import com.union.app.entity.pk.UserDynamicEntity;
-import com.union.app.entity.pk.apply.PayOrderEntity;
 import com.union.app.entity.pk.complain.ComplainEntity;
 import com.union.app.entity.pk.complain.ComplainStatu;
-import com.union.app.entity.pk.complain.ComplainType;
-import com.union.app.entity.pk.task.PkTaskEntity;
-import com.union.app.entity.pk.task.TaskStatu;
-import com.union.app.plateform.constant.常量值;
-import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
-import com.union.app.service.pk.dynamic.DynamicItem;
 import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.service.PkService;
-import com.union.app.service.pk.service.PostCacheService;
 import com.union.app.service.pk.service.PostService;
-import com.union.app.service.pk.service.UserInfoService;
 import com.union.app.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class ComplainService {
 
 
-    @Autowired
-    UserInfoService userInfoService;
 
     @Autowired
     AppDaoService daoService;

@@ -66,7 +66,7 @@ public class 发布Post {
         }
         else
         {
-            return AppResponse.buildResponse(PageAction.消息级别提示框(Level.错误消息,"榜帖已存在"));
+            return AppResponse.buildResponse(PageAction.消息级别提示框(Level.错误消息,"图贴已存在"));
         }
 
 
@@ -119,10 +119,10 @@ public class 发布Post {
     public AppResponse 查询榜帖状态(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId) throws AppException, IOException {
         Date cureentDate = new Date();
 
-        PostEntity postEntity = postService.查询帖子ById(pkId,postId);
+        PostEntity postEntity = postService.查询帖子ById(postId);
         if(postEntity.getStatu() == PostStatu.上线)
         {
-            return AppResponse.buildResponse(PageAction.信息反馈框("提示","榜帖已发布，不支持修改榜帖内容"));
+            return AppResponse.buildResponse(PageAction.信息反馈框("提示","图贴已发布，不支持修改图贴内容"));
 //            return AppResponse.buildResponse(PageAction.执行处理器("online",""));
         }
         return AppResponse.buildResponse(PageAction.执行处理器("offline",""));

@@ -1,6 +1,6 @@
 package com.union.app.api.pk.管理;
 
-import com.union.app.dao.spi.AppDaoService;
+import com.union.app.common.dao.AppDaoService;
 import com.union.app.domain.pk.*;
 import com.union.app.entity.pk.*;
 import com.union.app.plateform.data.resultcode.AppException;
@@ -54,8 +54,6 @@ public class 激活榜 {
     @Autowired
     OrderService orderService;
 
-    @Autowired
-    UserInfoService userInfoService;
 
     @Autowired
     DynamicService dynamicService;

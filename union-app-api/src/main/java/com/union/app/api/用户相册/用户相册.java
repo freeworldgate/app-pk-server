@@ -49,9 +49,6 @@ public class 用户相册 {
     OrderService orderService;
 
     @Autowired
-    UserInfoService userInfoService;
-
-    @Autowired
     DynamicService dynamicService;
 
     @Autowired
@@ -61,7 +58,6 @@ public class 用户相册 {
     @RequestMapping(path="/userPks",method = RequestMethod.GET)
     public AppResponse 用户相册(@RequestParam("userId") String userId) throws AppException, IOException {
 
-//        List<PkDetail> pkDetails = new ArrayList<>();
 
         List<PkDetail> pks = appService.查询用户相册(userId,1);
 
@@ -69,7 +65,8 @@ public class 用户相册 {
         List<DataSet> dataSets = new ArrayList<>();
 
         if(CollectionUtils.isEmpty(pks))
-        {dataSets.add(new DataSet("pkEnd",true));}
+        {
+            dataSets.add(new DataSet("pkEnd",true));}
         else
         {
             dataSets.add(new DataSet("pks",pks));

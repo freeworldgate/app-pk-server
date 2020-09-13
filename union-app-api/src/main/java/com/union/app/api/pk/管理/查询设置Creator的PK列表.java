@@ -1,6 +1,7 @@
 package com.union.app.api.pk.管理;
 
 import com.union.app.common.dao.AppDaoService;
+import com.union.app.domain.pk.PkCreator;
 import com.union.app.domain.pk.PkDetail;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
@@ -19,11 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping(path="/pk")
-public class 查询激活码 {
+public class 查询设置Creator的PK列表 {
 
     @Autowired
     AppService appService;
@@ -49,7 +51,6 @@ public class 查询激活码 {
     @Autowired
     OrderService orderService;
 
-
     @Autowired
     DynamicService dynamicService;
 
@@ -61,25 +62,48 @@ public class 查询激活码 {
 
 
 
-    @RequestMapping(path="/queryActiveCode",method = RequestMethod.GET)
-    @Transactional(rollbackOn = Exception.class)
-    public AppResponse activeCode(@RequestParam("applyCode") String applyCode) throws AppException, IOException {
 
-        String code = appService.获取收款码(applyCode);
 
-        return AppResponse.buildResponse(PageAction.前端数据更新("code",code));
 
-    }
-    @RequestMapping(path="/gennerateCodes",method = RequestMethod.GET)
-    @Transactional(rollbackOn = Exception.class)
-    public AppResponse gennerateCode(@RequestParam("cashierId") String cashierId) throws AppException, IOException {
 
-        appService.生成激活码(cashierId);
-        appService.新增储备激活码(cashierId);
+    @RequestMapping(path="/queryPkCreators",method = RequestMethod.GET)
+    public AppResponse 查询内置PK() throws AppException, IOException {
 
-        return AppResponse.buildResponse(PageAction.执行处理器("success",""));
+        List<PkCreator> pks = appService.查询Creator设置(1);
+
+
+
+        return AppResponse.buildResponse(PageAction.执行处理器("success",pks));
 
     }
+
+    @RequestMapping(path="/morePkCreators",method = RequestMethod.GET)
+    public AppResponse 查询内置PK(@RequestParam("page") int page) throws AppException, IOException {
+
+
+        List<PkCreator> pks = appService.查询Creator设置(page+1);
+
+
+        if(pks.size() == 0)
+        {
+            return AppResponse.buildResponse(PageAction.前端数据更新("pkEnd",true));
+
+        }
+
+        return AppResponse.buildResponse(PageAction.执行处理器("success",pks));
+
+    }
+
+    @RequestMapping(path="/switchBit",method = RequestMethod.GET)
+    @Transactional(rollbackOn = Exception.class)
+    public AppResponse switchBit(@RequestParam("pkId") String pkId) throws AppException, IOException {
+
+        PkCreator pk = appService.设置PK开关(pkId);
+
+        return AppResponse.buildResponse(PageAction.执行处理器("success",pk));
+
+    }
+
 
 
 

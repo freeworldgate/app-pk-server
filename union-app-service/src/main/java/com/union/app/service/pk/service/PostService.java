@@ -1,27 +1,18 @@
 package com.union.app.service.pk.service;
 
-import com.mchange.v1.lang.BooleanUtils;
 import com.union.app.common.OSS存储.CacheStorage;
 import com.union.app.common.OSS存储.OssStorage;
 import com.union.app.common.config.AppConfigService;
-import com.union.app.dao.spi.AppDaoService;
+import com.union.app.common.dao.AppDaoService;
+import com.union.app.common.dao.PkCacheService;
 import com.union.app.dao.spi.filter.CompareTag;
 import com.union.app.dao.spi.filter.EntityFilterChain;
-import com.union.app.dao.spi.filter.OrderTag;
 import com.union.app.domain.pk.*;
 import com.union.app.common.id.KeyGetter;
-import com.union.app.domain.pk.apply.ApproveCode;
 import com.union.app.domain.pk.apply.KeyNameValue;
-import com.union.app.domain.pk.审核.ApproveComment;
-import com.union.app.domain.user.User;
-import com.union.app.domain.工具.RandomUtil;
-import com.union.app.entity.ImgStatu;
 import com.union.app.entity.pk.*;
-import com.union.app.entity.pk.apply.PayOrderEntity;
-import com.union.app.entity.pk.助力浏览评论分享.UserLikeEntity;
 import com.union.app.entity.pk.审核.ApproveCommentEntity;
 import com.union.app.plateform.constant.ConfigItem;
-import com.union.app.plateform.constant.常量值;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.Level;
 import com.union.app.plateform.data.resultcode.PageAction;
@@ -30,7 +21,6 @@ import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.user.UserService;
 import com.union.app.util.idGenerator.IdGenerator;
 import com.union.app.util.time.TimeUtils;
-import org.apache.commons.lang.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -39,8 +29,6 @@ import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
-import java.sql.Time;
 import java.util.*;
 
 @Service
@@ -73,6 +61,8 @@ public class PostService {
     @Autowired
     ApproveService approveService;
 
+    @Autowired
+    PkCacheService pkCacheService;
 
 
     public String 创建帖子(String pkId,String userId,String title,List<String> images) throws IOException, AppException
@@ -151,7 +141,7 @@ public class PostService {
 
     public Post 查询帖子(String pkId,String postId,String queryerId) throws UnsupportedEncodingException {
 
-        PostEntity postEntity = this.查询帖子ById(pkId,postId);
+        PostEntity postEntity = this.查询帖子ById(postId);
         if(ObjectUtils.isEmpty(postEntity)){return null;}
         Post post = translate(postEntity);
 
@@ -353,7 +343,7 @@ public class PostService {
 
         KeyNameValue keyNameValue = null;
 
-        PostEntity postEntity = this.查询帖子ById(pkId,postId);
+        PostEntity postEntity = this.查询帖子ById(postId);
         if(PostStatu.上线 == postEntity.getStatu()){
             postEntity.setStatu(PostStatu.下线);
         }
@@ -366,8 +356,8 @@ public class PostService {
     }
     public void 上线帖子(String pkId, String postId) throws AppException {
 
-        PostEntity postEntity = this.查询帖子ById(pkId,postId);
-        if(postEntity.getStatu() == PostStatu.上线){throw AppException.buildException(PageAction.信息反馈框("榜帖已审核","榜帖已上线,不能重复审核"));}
+        PostEntity postEntity = this.查询帖子ById(postId);
+        if(postEntity.getStatu() == PostStatu.上线){throw AppException.buildException(PageAction.信息反馈框("图贴已审核","图贴已上线,不能重复审核"));}
         postEntity.setStatu(PostStatu.上线);
         daoService.updateEntity(postEntity);
         ApproveCommentEntity approveCommentEntity = approveService.查询留言(pkId,postId);
@@ -396,18 +386,22 @@ public class PostService {
     }
 
 
-    public PostEntity 查询帖子ById(String pkId, String postId) {
-        EntityFilterChain filter1 = EntityFilterChain.newFilterChain(PostEntity.class)
-                .compareFilter("pkId",CompareTag.Equal,pkId)
-                .andFilter()
-                .compareFilter("postId",CompareTag.Equal,postId);
-        PostEntity postEntity = daoService.querySingleEntity(PostEntity.class,filter1);
+    public PostEntity 查询帖子ById(String postId) {
+        PostEntity postEntity = pkCacheService.get(postId,PostEntity.class);
+        if(ObjectUtils.isEmpty(postEntity))
+        {
+            EntityFilterChain filter1 = EntityFilterChain.newFilterChain(PostEntity.class)
+                    .compareFilter("postId",CompareTag.Equal,postId);
+            postEntity = daoService.querySingleEntity(PostEntity.class,filter1);
+
+        }
+
         return postEntity;
     }
 
     public void 替换指定图片(String pkId, String postId, String imgUrl, int index, String userId,Date date) throws AppException {
 
-        PostEntity postEntity = 查询帖子ById(pkId,postId);
+        PostEntity postEntity = 查询帖子ById(postId);
         if(!org.apache.commons.lang.StringUtils.equals(postEntity.getUserId(),userId)){
             throw AppException.buildException(PageAction.消息级别提示框(Level.错误消息,"非法操作"));
         }
@@ -438,7 +432,7 @@ public class PostService {
 
     public void 替换Topic(String pkId, String postId, String text, String userId) throws AppException, UnsupportedEncodingException {
 
-        PostEntity postEntity = 查询帖子ById(pkId,postId);
+        PostEntity postEntity = 查询帖子ById(postId);
         if(!org.apache.commons.lang.StringUtils.equals(userId,postEntity.getUserId())){
             throw AppException.buildException(PageAction.消息级别提示框(Level.错误消息,"非法操作"));
         }
@@ -478,7 +472,7 @@ public class PostService {
     public void 用户转发审批(PostEntity postEntity) throws AppException {
         if(postEntity.getRejectTimes() > AppConfigService.getConfigAsInteger(ConfigItem.Post最大修改次数))
         {
-            throw AppException.buildException(PageAction.信息反馈框("修改次数过多","榜帖修改次数过多..."));
+            throw AppException.buildException(PageAction.信息反馈框("修改次数过多","图贴修改次数过多..."));
         }
         postEntity.setShareTime(System.currentTimeMillis());
         postEntity.setApproveStatu(ApproveStatu.请求审核);

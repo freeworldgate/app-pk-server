@@ -1,16 +1,8 @@
 package com.union.app.api.pk.投诉;
 
-import com.union.app.domain.pk.apply.ApplyOrder;
 import com.union.app.domain.pk.complain.Complain;
 import com.union.app.plateform.data.resultcode.*;
-import com.union.app.plateform.storgae.redis.RedisStringUtil;
-import com.union.app.service.pk.click.ClickService;
 import com.union.app.service.pk.complain.ComplainService;
-import com.union.app.service.pk.service.OrderService;
-import com.union.app.service.pk.service.PkService;
-import com.union.app.service.pk.service.PostService;
-import com.union.app.service.pk.service.UserInfoService;
-import com.union.app.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,8 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequestMapping(path="/pk")

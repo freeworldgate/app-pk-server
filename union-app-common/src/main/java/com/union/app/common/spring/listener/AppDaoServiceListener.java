@@ -1,7 +1,7 @@
 package com.union.app.common.spring.listener;
 
 
-import com.union.app.dao.spi.AppDaoService;
+import com.union.app.common.dao.AppDaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;

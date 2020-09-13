@@ -1,7 +1,7 @@
 package com.union.app.service.pk.service;
 
 import com.union.app.common.OSS存储.OssStorage;
-import com.union.app.dao.spi.AppDaoService;
+import com.union.app.common.dao.AppDaoService;
 import com.union.app.domain.pk.share.CreatorInfo;
 import com.union.app.domain.pk.share.PosterInfo;
 import com.union.app.domain.pk.share.ShareInfo;

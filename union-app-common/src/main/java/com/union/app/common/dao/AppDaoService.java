@@ -1,4 +1,4 @@
-package com.union.app.dao.spi;
+package com.union.app.common.dao;
 
 import com.union.app.dao.jpa.JpaTransactionUtil;
 import com.union.app.dao.spi.filter.EntityFilterChain;
@@ -27,6 +27,10 @@ public class AppDaoService
     @Autowired
     JpaTransactionUtil jpaTransactionUtil;
 
+
+    @Autowired
+    PkCacheService pkCacheService;
+
     /**
      * 查询单个实体
      * @param tClass
@@ -35,6 +39,9 @@ public class AppDaoService
      * @return
      */
     public <T> T querySingleEntity(Class<T> tClass,EntityFilterChain entityFilterChain){
+
+
+
 
         List<T> entities;
         if(entityFilterChain == null){
@@ -56,8 +63,9 @@ public class AppDaoService
         }
 
         if(entities == null || entities.isEmpty()){return null;}
-
-        return entities.get(0);
+        T t = entities.get(0);
+        pkCacheService.save(t);
+        return t;
     }
 
     /**
@@ -108,6 +116,9 @@ public class AppDaoService
      * @param <T>
      */
     public <T> void updateEntity(T t){
+
+        pkCacheService.remove(t);
+
         entityManager.merge(t);
     }
 
@@ -117,6 +128,7 @@ public class AppDaoService
      * @param <T>
      */
     public <T> void deleteEntity(T t){
+        pkCacheService.remove(t);
         entityManager.remove(t);
     }
 

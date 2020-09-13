@@ -73,18 +73,25 @@ public class 进入PK {
 
         if(pkService.isPkCreator(pkId,userId))
         {
-            //创建者未更新今日审核群 && (对所有用户展示审核系统 或者  遗传用户)
+
             if(!pkService.是否更新今日审核群(pkEntity))
             {
                 String url = "/pages/pk/message/message?pkId=" + pkId + "&type=1" + "&userId=" + userId;
-                ValueStr valueStr = new ValueStr(url,"更新今日管理群","更新今日管理群");
+                ValueStr valueStr = null;
+                if(userService.是否是遗传用户(userId)) {
+                     valueStr = new ValueStr(url, "更新审核群", "更新今日审核群...");
+                }
+                else
+                {
+                    valueStr = new ValueStr(url, "更新主题群", "更新今日主题群组");
+                }
                 return AppResponse.buildResponse(PageAction.执行处理器("group",valueStr));
             }
             //遗传用户创建者未更新今日公告
             if(!pkService.是否更新今日公告(pkId))
             {
                 String url = "/pages/pk/messageInfo/messageInfo?pkId=" + pkId;
-                ValueStr valueStr = new ValueStr(url,"榜帖样例","请按要求上传榜帖样例...");
+                ValueStr valueStr = new ValueStr(url,"图贴样例","请按要求上传图贴样例...");
                 return AppResponse.buildResponse(PageAction.执行处理器("message",valueStr));
             }
 

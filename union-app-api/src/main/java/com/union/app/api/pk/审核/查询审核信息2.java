@@ -48,9 +48,6 @@ public class 查询审核信息2 {
     UserService userService;
 
     @Autowired
-    UserInfoService userInfoService;
-
-    @Autowired
     ApproveService approveService;
     @Autowired
     AppService appService;
@@ -73,12 +70,7 @@ public class 查询审核信息2 {
         Post post = postService.查询帖子(pkId,postId,null);
         ApproveComment pkComment = approveService.获取留言信息(pkId, postId);
         ApproveButton approveButton = approveService.获取审核按钮(pkId,postId,userId);
-        if(approveButton == ApproveButton.转发审核群){
-            dataSets.add(new DataSet("tip1","如群组已满，请选择"));
-            dataSets.add(new DataSet("tip2", org.apache.commons.lang.StringUtils.isBlank(dynamicService.查询审核用户(pkId,postId))?"在线审核":"审核中"));
-
-
-        }
+        dataSets.add(new DataSet("t1","审核图贴"));
         dataSets.add(new DataSet("button",approveButton));
         dataSets.add(new DataSet("userPost",post));
         dataSets.add(new DataSet("pkComment",pkComment));
@@ -90,7 +82,15 @@ public class 查询审核信息2 {
         dataSets.add(new DataSet("t2","审核留言"));
         dataSets.add(new DataSet("t3","留言"));
         dataSets.add(new DataSet("t4","编辑留言"));
-        dataSets.add(new DataSet("t5","审核榜帖"));
+        dataSets.add(new DataSet("t5","审核图贴"));
+
+        if(approveButton == ApproveButton.转发审核群){
+            dataSets.add(new DataSet("tip1","如群组已满，请选择"));
+            dataSets.add(new DataSet("tip2", org.apache.commons.lang.StringUtils.isBlank(dynamicService.查询审核用户(pkId,postId))?"在线审核":"审核中"));
+            dataSets.add(new DataSet("t1","转发审核群"));
+        }
+
+
 
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
 

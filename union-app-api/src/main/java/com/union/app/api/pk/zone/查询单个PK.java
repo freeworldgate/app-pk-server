@@ -59,9 +59,6 @@ public class 查询单个PK {
     OrderService orderService;
 
     @Autowired
-    UserInfoService userInfoService;
-
-    @Autowired
     DynamicService dynamicService;
 
     @Autowired
@@ -81,7 +78,8 @@ public class 查询单个PK {
 
         //查询PK详情
         PkDetail pkDetail = pkService.querySinglePk(pkId);
-        List<Post> posts = pkService.queryPkPost(userId,pkId,1);
+        pkDetail.setUserBack(appService.查询背景(8));
+        List<Post> posts = pkService.queryPkPost(userId,pkId,0);
 
         dataSets.add(new DataSet("group",appService.显示按钮(PkButtonType.群组)));
         dataSets.add(new DataSet("post",appService.显示按钮(PkButtonType.榜帖)));
@@ -91,7 +89,7 @@ public class 查询单个PK {
         dataSets.add(new DataSet("pk",pkDetail));
         dataSets.add(new DataSet("imgBack",appService.查询背景(0)));
         dataSets.add(new DataSet("posts",posts));
-        dataSets.add(new DataSet("page",1));
+        dataSets.add(new DataSet("page",0));
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
 
     }

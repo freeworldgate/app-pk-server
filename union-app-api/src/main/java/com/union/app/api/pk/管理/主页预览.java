@@ -48,9 +48,6 @@ public class 主页预览 {
     OrderService orderService;
 
     @Autowired
-    UserInfoService userInfoService;
-
-    @Autowired
     DynamicService dynamicService;
 
     @Autowired

@@ -47,9 +47,6 @@ public class 收款用户 {
     OrderService orderService;
 
     @Autowired
-    UserInfoService userInfoService;
-
-    @Autowired
     DynamicService dynamicService;
 
     @Autowired

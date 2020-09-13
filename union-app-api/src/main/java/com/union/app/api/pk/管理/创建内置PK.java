@@ -1,15 +1,8 @@
 package com.union.app.api.pk.管理;
 
-import com.union.app.common.微信.WeChatUtil;
-import com.union.app.dao.spi.AppDaoService;
-import com.union.app.domain.pk.ActivePk;
+import com.union.app.common.dao.AppDaoService;
 import com.union.app.domain.pk.PkDetail;
-import com.union.app.domain.pk.审核.ApproveMessage;
-import com.union.app.domain.工具.RandomUtil;
-import com.union.app.entity.pk.ActiveStatu;
-import com.union.app.entity.pk.PkActiveEntity;
 import com.union.app.entity.pk.PkEntity;
-import com.union.app.entity.pk.PkStatu;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.PageAction;
@@ -55,9 +48,6 @@ public class 创建内置PK {
 
     @Autowired
     OrderService orderService;
-
-    @Autowired
-    UserInfoService userInfoService;
 
     @Autowired
     DynamicService dynamicService;

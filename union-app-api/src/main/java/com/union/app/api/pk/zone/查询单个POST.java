@@ -64,10 +64,10 @@ public class 查询单个POST {
         dataSets.add(new DataSet("t1","修改标题"));
         dataSets.add(new DataSet("t2","留言"));
         dataSets.add(new DataSet("t3","审核"));
-        dataSets.add(new DataSet("t4","检测到当前榜帖处于未审核状态，请前往审核页面,榜主通过审核后方可发布该榜帖内容..."));
+        dataSets.add(new DataSet("t4","检测到当前图贴处于未审核状态，请前往审核页面,榜主通过审核后方可发布该图贴内容..."));
         dataSets.add(new DataSet("t5","修改主题"));
         dataSets.add(new DataSet("t6","修改主题内容"));
-        dataSets.add(new DataSet("t7","修改图片需要重新审核榜帖内容..."));
+        dataSets.add(new DataSet("t7","修改图片需要重新审核图贴内容..."));
         dataSets.add(new DataSet("t3","审核"));
         dataSets.add(new DataSet("t3","审核"));
         dataSets.add(new DataSet("imgBack",appService.查询背景(4)));

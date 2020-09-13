@@ -53,9 +53,6 @@ public class 群组列表 {
     OrderService orderService;
 
     @Autowired
-    UserInfoService userInfoService;
-
-    @Autowired
     DynamicService dynamicService;
 
     @Autowired

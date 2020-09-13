@@ -1,11 +1,13 @@
-package com.union.app.api.share;
+package com.union.app.api.pk.zone;
 
+import com.union.app.common.OSS存储.OssStorage;
+import com.union.app.domain.pk.PkDetail;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.service.pk.click.ClickService;
-import com.union.app.service.pk.service.OrderService;
+import com.union.app.service.pk.service.AppService;
 import com.union.app.service.pk.service.PkService;
 import com.union.app.service.pk.service.PostService;
 import com.union.app.service.user.UserService;
@@ -20,7 +22,7 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping(path="/pk")
-public class 判断是否可以创建审核订单 {
+public class 修改PK创建者 {
 
 
     @Autowired
@@ -33,32 +35,31 @@ public class 判断是否可以创建审核订单 {
     RedisStringUtil redisStringUtil;
 
     @Autowired
-    PostService postService;
-
-    @Autowired
     UserService userService;
 
     @Autowired
-    OrderService orderService;
+    OssStorage ossStorage;
+
+    @Autowired
+    PostService postService;
 
 
 
+    @Autowired
+    AppService appService;
 
-
-    @RequestMapping(path="/applyOrder",method = RequestMethod.GET)
+    @RequestMapping(path="/setPkUser",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse getApplyOrder(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId) throws AppException, IOException {
+    public AppResponse 创建单个PK(@RequestParam("userId") String userId,@RequestParam("pkId") String pkId) throws AppException, IOException {
 
-        String creatorId = pkService.querySinglePkEntity(pkId).getUserId();
-        return AppResponse.buildResponse(PageAction.执行处理器("createPayOrder",creatorId));
-
-
-//        String creatorId = pkService.querySinglePkEntity(pkId).getUserId();
-//        ApplyOrder applyOrder = userInfoService.查询或创建订单(pkId,userId,creatorId);
+        pkService.修改Creator(pkId,userId);
 
 
+
+
+
+
+        return AppResponse.buildResponse(PageAction.前端数据更新("hello",""));
     }
-
-
 
 }

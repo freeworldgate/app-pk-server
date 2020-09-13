@@ -17,7 +17,7 @@ import java.io.Serializable;
 @ToString
 public class PkDetail implements Serializable{
 
-    private String publishName = "审核样例";
+    private String publishName = "图贴样例";
 
     private String pkId;
 
@@ -54,7 +54,6 @@ public class PkDetail implements Serializable{
     private String approved;
     private String approving;
     private GroupInfo groupInfo;
-
 
     private long nonGeneticPriority;
     private long geneticPriority;

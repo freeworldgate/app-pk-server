@@ -13,6 +13,7 @@ import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.service.*;
 import com.union.app.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -49,9 +50,6 @@ public class 查询邀请 {
     OrderService orderService;
 
     @Autowired
-    UserInfoService userInfoService;
-
-    @Autowired
     DynamicService dynamicService;
 
     @Autowired
@@ -66,9 +64,15 @@ public class 查询邀请 {
         List<PkDetail> pks = appService.查询用户邀请(userId,1);
 
         List<DataSet> dataSets = new ArrayList<>();
-
-
-        dataSets.add(new DataSet("pks",pks));
+        if(CollectionUtils.isEmpty(pks))
+        {
+            dataSets.add(new DataSet("pkEnd",true));}
+        else
+        {
+            dataSets.add(new DataSet("pks",pks));
+            dataSets.add(new DataSet("pkEnd",false));
+        }
+;
         dataSets.add(new DataSet("page",1));
         dataSets.add(new DataSet("imgBack",appService.查询背景(3)));
 

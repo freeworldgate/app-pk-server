@@ -2,13 +2,12 @@ package com.union.app.api.登录和注册;
 
 import com.union.app.common.config.AppConfigService;
 import com.union.app.common.微信.WeChatUtil;
-import com.union.app.dao.spi.AppDaoService;
+import com.union.app.common.dao.AppDaoService;
 import com.union.app.dao.spi.filter.CompareTag;
 import com.union.app.dao.spi.filter.EntityFilterChain;
 import com.union.app.domain.wechat.UserInfo;
 import com.union.app.domain.wechat.WeChatUser;
 import com.union.app.entity.用户.UserEntity;
-import com.union.app.entity.用户.support.UserPostStatu;
 import com.union.app.entity.用户.support.UserType;
 import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.response.ApiResponse;

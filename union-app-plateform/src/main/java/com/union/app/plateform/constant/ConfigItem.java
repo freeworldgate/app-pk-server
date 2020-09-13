@@ -11,7 +11,7 @@ public enum ConfigItem {
     系统当前是否客服模式("isWechatMsgService","SYSTEM_MSG_MODE","系统当前是否客服模式,图片是拉取还是下载","true"),
     系统展示的模式("mode","SYSTEM_SHOW_MODE","审查模式/运营模式/开放模式","1"),
 //    审核榜帖最大等待时间("approveWaitingTime","APPROVE_WAITING_TIME","审核榜帖最大等待时间单位分钟","120"),
-    榜帖可发起投诉的等待时间("canComplainWaitingTime","CAN_COMPLAIN_WAITING_TIME","榜帖可发起投诉的等待时间","60"),
+    榜帖可发起投诉的等待时间("canComplainWaitingTime","CAN_COMPLAIN_WAITING_TIME","图贴可发起投诉的等待时间","60"),
 //    对所有用户展示审核系统("showApproveSys", "SHOW_APPROVE_SYS", "对所有用户展示审核系统","true"),
     用户最大建榜数量("maxPksUserCreate", "MAX_PKS_USER_CREATE", "用户最大建榜数量","3"),
 
@@ -25,8 +25,29 @@ public enum ConfigItem {
     VIP用户("buttonPolicy4", "VIP_USER", "VIP用户","1" ),
     普通用户("buttonPolicy5", "COMMON_USER", "普通用户","1" ),
     激活码使用次数("activeCodeTimes","ACTIVE_CODE_TIMES" , "激活码使用次数", "5"),
-    非遗传用户默认榜单数量("defaultPostTimes", "DEFAULT_POST_TIMES", "非遗传用户默认榜单数量","5" );
+    非遗传用户默认榜单数量("defaultPostTimes", "DEFAULT_POST_TIMES", "非遗传用户默认榜单数量","5" ),
+    单个PK页面的帖子数("singlePkPagePosts", "SINGLE_PK_PAGE_POSTS", "单个PK页面的帖子数","50" ),
+
+
+
+    PKEntity缓存数量("pkentityCacheSize", "PKENTITY_CACHE_SIZE", "PKEntity缓存数量", "1000"),
+    POSTEntity缓存数量("postentityCacheSize", "POSTENTITY_CACHE_SIZE", "POSTEntity缓存数量", "1000"),
+    USEREntity缓存数量("userentityCacheSize", "USERENTITY_CACHE_SIZE", "USEREntity缓存数量", "1000"),
+    APPROVEMESSAGEEntity缓存数量("approveMessageentityCacheSize", "APPROVEMESSAGEENTITY_CACHE_SIZE", "APPROVEMESSAGE缓存数量", "1000"),
+    APPROVECOMMENTEntity缓存数量("approveCommententityCacheSize", "APPROVECOMMENTENTITY_CACHE_SIZE", "APPROVEMESSAGE缓存数量", "1000");
+
+
+
+
+
+
+
+
+
+
+
 //    系统默认激活码("defaultActiveCode", "DEFAULT_ACTIVE_CODE", "系统默认激活码","E-000000000000");
+
 
 
     private String tag;

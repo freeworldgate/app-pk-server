@@ -59,8 +59,6 @@ public class 查询PK认证 {
     @Autowired
     OrderService orderService;
 
-    @Autowired
-    UserInfoService userInfoService;
 
     @Autowired
     DynamicService dynamicService;

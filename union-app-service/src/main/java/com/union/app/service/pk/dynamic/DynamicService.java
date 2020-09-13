@@ -2,32 +2,22 @@ package com.union.app.service.pk.dynamic;
 
 import com.alibaba.fastjson.JSON;
 import com.union.app.common.config.AppConfigService;
-import com.union.app.dao.spi.AppDaoService;
+import com.union.app.common.dao.AppDaoService;
 import com.union.app.domain.pk.OperType;
 import com.union.app.domain.pk.PkDynamic.*;
 import com.union.app.domain.pk.Post;
 import com.union.app.domain.pk.apply.KeyNameValue;
-import com.union.app.domain.pk.integral.UserIntegral;
-import com.union.app.domain.pk.审核.ApproveMessage;
-import com.union.app.domain.user.User;
 import com.union.app.domain.工具.RandomUtil;
 import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.constant.常量值;
-import com.union.app.plateform.data.resultcode.AppException;
-import com.union.app.plateform.data.resultcode.AppResponse;
-import com.union.app.plateform.data.resultcode.Level;
-import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.service.pk.dynamic.imp.RedisMapService;
 import com.union.app.service.pk.dynamic.imp.RedisSortSetService;
 import com.union.app.service.pk.service.ApproveService;
 import com.union.app.service.pk.service.PkService;
 import com.union.app.service.pk.service.PostService;
-import com.union.app.service.pk.service.UserInfoService;
 import com.union.app.service.user.UserService;
-import com.union.app.util.time.TimeUtils;
 import org.apache.commons.lang.StringUtils;
-import org.bouncycastle.pqc.crypto.rainbow.util.RainbowUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
@@ -51,8 +41,6 @@ public class DynamicService {
     @Autowired
     UserService userService;
 
-    @Autowired
-    UserInfoService userInfoService;
 
     @Autowired
     PostService postService;
@@ -532,7 +520,7 @@ public class DynamicService {
 
 
 
-    public List<Post> 查询已审核指定范围的Post(String pkId,int page,String userId) throws UnsupportedEncodingException {
+    public List<Post> 查询已审核指定范围的Post(String pkId,int page) throws UnsupportedEncodingException {
 
 
         List<Post> posts = new ArrayList<>();

@@ -4,7 +4,7 @@ import com.union.app.common.OSS存储.CacheStorage;
 import com.union.app.common.OSS存储.OssStorage;
 import com.union.app.common.config.AppConfigService;
 import com.union.app.common.微信.WeChatUtil;
-import com.union.app.dao.spi.AppDaoService;
+import com.union.app.common.dao.AppDaoService;
 import com.union.app.dao.spi.filter.CompareTag;
 import com.union.app.dao.spi.filter.EntityFilterChain;
 import com.union.app.dao.spi.filter.OrderTag;
@@ -44,9 +44,6 @@ public class AppService {
 
 
 
-
-    @Autowired
-    UserInfoService userInfoService;
 
     @Autowired
     AppDaoService daoService;
@@ -175,7 +172,7 @@ public class AppService {
         List<PkEntity>  invites = queryUserInvitePks(userId,page);
         for(PkEntity pkEntity:invites)
         {
-            PkDetail pkDetail = pkService.querySinglePk(pkEntity.getPkId());
+            PkDetail pkDetail = pkService.querySinglePk(pkEntity);
             pkDetails.add(pkDetail);
         }
         return pkDetails;
@@ -239,7 +236,7 @@ public class AppService {
         List<PkEntity>  pkEntities = queryUserPks(userId,page);
         for(PkEntity pkEntity:pkEntities)
         {
-            PkDetail pkDetail = pkService.querySinglePk(pkEntity.getPkId());
+            PkDetail pkDetail = pkService.querySinglePk(pkEntity);
             pkDetails.add(pkDetail);
         }
 
@@ -1539,5 +1536,43 @@ public class AppService {
 
     private String 获取系统默认激活码() {
         return UUID.randomUUID().toString();
+    }
+
+    public List<PkCreator> 查询Creator设置(int page) throws IOException {
+
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(PkCreatorEntity.class)
+                .pageLimitFilter(page,20);
+        List<PkCreatorEntity> pkCreatorEntities = daoService.queryEntities(PkCreatorEntity.class,filter);
+        List<PkCreator> pkCreators = new ArrayList<>();
+        for(PkCreatorEntity pk:pkCreatorEntities)
+        {
+            PkCreator pkCreator = new PkCreator();
+            pkCreator.setPk(pkService.querySinglePk(pk.getPkId()));
+            pkCreator.getPk().setUser(userService.queryUser(pk.getUserId()));
+            pkCreator.setSwitchBit(pk.isSwitchBit());
+            pkCreators.add(pkCreator);
+        }
+        return pkCreators;
+    }
+
+    public PkCreator 设置PK开关(String pkId) throws IOException {
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(PkCreatorEntity.class)
+                .compareFilter("pkId",CompareTag.Equal,pkId);
+        PkCreatorEntity pkCreatorEntity = daoService.querySingleEntity(PkCreatorEntity.class,filter);
+        pkCreatorEntity.setSwitchBit(!pkCreatorEntity.isSwitchBit());
+        if(!pkCreatorEntity.isSwitchBit())
+        {
+            pkService.修改PKUser(pkCreatorEntity.getPkId(),pkCreatorEntity.getUserId());
+        }
+        daoService.updateEntity(pkCreatorEntity);
+
+        PkCreator pkCreator = new PkCreator();
+        pkCreator.setPk(pkService.querySinglePk(pkId));
+        pkCreator.getPk().setUser(userService.queryUser(pkCreatorEntity.getUserId()));
+        pkCreator.setSwitchBit(pkCreatorEntity.isSwitchBit());
+
+
+        return pkCreator;
+
     }
 }

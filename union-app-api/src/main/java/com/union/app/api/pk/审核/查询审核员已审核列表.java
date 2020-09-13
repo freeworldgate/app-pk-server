@@ -10,7 +10,6 @@ import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.service.ApproveService;
 import com.union.app.service.pk.service.PkService;
 import com.union.app.service.pk.service.PostService;
-import com.union.app.service.pk.service.UserInfoService;
 import com.union.app.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
@@ -45,9 +44,6 @@ public class 查询审核员已审核列表 {
     UserService userService;
 
     @Autowired
-    UserInfoService userInfoService;
-
-    @Autowired
     ApproveService approveService;
 
     @RequestMapping(path="/queryApprovedPost",method = RequestMethod.GET)
@@ -60,7 +56,7 @@ public class 查询审核员已审核列表 {
 
         List<DataSet> dataSets = new ArrayList<>();
 
-        List<Post> posts = dynamicService.查询已审核指定范围的Post(pkId,0,userId);
+        List<Post> posts = dynamicService.查询已审核指定范围的Post(pkId,0);
         DataSet dataSet2 = new DataSet("approvedPosts",posts);
         DataSet dataSet4 = new DataSet("currentApprovedPage",1);
 
@@ -83,7 +79,7 @@ public class 查询审核员已审核列表 {
     public AppResponse 查询审核信息More(@RequestParam("pkId") String pkId,@RequestParam("currentApprovedPage") int page,@RequestParam("userId") String userId) throws AppException, IOException {
 
 
-        List<Post> posts = dynamicService.查询已审核指定范围的Post(pkId,page,userId);
+        List<Post> posts = dynamicService.查询已审核指定范围的Post(pkId,page);
         if(CollectionUtils.isEmpty(posts)){
             return AppResponse.buildResponse(PageAction.前端数据更新("approvedEnd",true));
         }

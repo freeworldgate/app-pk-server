@@ -1,7 +1,7 @@
 package com.union.app.common.config;
 
 import com.union.app.common.spring.context.SpringContextUtil;
-import com.union.app.dao.spi.AppDaoService;
+import com.union.app.common.dao.AppDaoService;
 import com.union.app.dao.spi.filter.CompareTag;
 import com.union.app.dao.spi.filter.EntityFilterChain;
 import com.union.app.entity.配置表.ColumSwitch;

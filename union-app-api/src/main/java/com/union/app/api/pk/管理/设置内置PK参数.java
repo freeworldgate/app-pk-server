@@ -1,13 +1,7 @@
 package com.union.app.api.pk.管理;
 
-import com.union.app.common.微信.WeChatUtil;
-import com.union.app.dao.spi.AppDaoService;
-import com.union.app.dao.spi.filter.CompareTag;
-import com.union.app.dao.spi.filter.EntityFilterChain;
+import com.union.app.common.dao.AppDaoService;
 import com.union.app.domain.pk.PkDetail;
-import com.union.app.domain.pk.审核.ApproveMessage;
-import com.union.app.domain.工具.RandomUtil;
-import com.union.app.entity.pk.HomePagePk;
 import com.union.app.entity.pk.InviteType;
 import com.union.app.entity.pk.PkEntity;
 import com.union.app.entity.pk.PkType;
@@ -20,7 +14,6 @@ import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.service.*;
 import com.union.app.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -60,8 +52,6 @@ public class 设置内置PK参数 {
     @Autowired
     OrderService orderService;
 
-    @Autowired
-    UserInfoService userInfoService;
 
     @Autowired
     DynamicService dynamicService;

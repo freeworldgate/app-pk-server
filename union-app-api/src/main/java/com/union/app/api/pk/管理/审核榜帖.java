@@ -1,10 +1,8 @@
 package com.union.app.api.pk.管理;
 
-import com.union.app.dao.spi.AppDaoService;
+import com.union.app.common.dao.AppDaoService;
 import com.union.app.domain.pk.ApprovePost;
-import com.union.app.domain.pk.CashierGroup;
 import com.union.app.domain.pk.PkDetail;
-import com.union.app.domain.pk.Post;
 import com.union.app.entity.pk.ApproveStatu;
 import com.union.app.entity.pk.PostEntity;
 import com.union.app.plateform.data.resultcode.AppException;
@@ -17,8 +15,6 @@ import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.service.*;
 import com.union.app.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.CollectionUtils;
-import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -59,8 +55,6 @@ public class 审核榜帖 {
     @Autowired
     OrderService orderService;
 
-    @Autowired
-    UserInfoService userInfoService;
 
     @Autowired
     DynamicService dynamicService;
@@ -109,7 +103,7 @@ public class 审核榜帖 {
 
 
 
-        PostEntity postEntity = postService.查询帖子ById(pkId,postId);
+        PostEntity postEntity = postService.查询帖子ById(postId);
         postEntity.setApproveStatu(ApproveStatu.驳回修改);
         postEntity.setRejectTimes(postEntity.getRejectTimes() + 1);
         postEntity.setRejectTextBytes(text);

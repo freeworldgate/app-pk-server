@@ -42,9 +42,6 @@ public class 提交激活码 {
     UserService userService;
 
     @Autowired
-    UserInfoService userInfoService;
-
-    @Autowired
     ApproveService approveService;
 
     @Autowired

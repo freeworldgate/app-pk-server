@@ -1,9 +1,8 @@
 package com.union.app.api.pk.审核;
 
-import com.union.app.dao.spi.AppDaoService;
+import com.union.app.common.dao.AppDaoService;
 import com.union.app.domain.pk.Post;
 import com.union.app.domain.pk.审核.ApproveComment;
-import com.union.app.domain.pk.审核.ApproveUser;
 import com.union.app.entity.pk.ApproveStatu;
 import com.union.app.entity.pk.PostEntity;
 import com.union.app.plateform.data.resultcode.*;
@@ -12,12 +11,8 @@ import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.service.ApproveService;
 import com.union.app.service.pk.service.PkService;
 import com.union.app.service.pk.service.PostService;
-import com.union.app.service.pk.service.UserInfoService;
 import com.union.app.service.user.UserService;
-import com.union.app.util.time.TimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -52,9 +46,6 @@ public class 审核 {
 
     @Autowired
     UserService userService;
-
-    @Autowired
-    UserInfoService userInfoService;
 
     @Autowired
     ApproveService approveService;
@@ -125,7 +116,7 @@ public class 审核 {
             throw AppException.buildException(PageAction.消息级别提示框(Level.错误消息,"非榜主用户"));
         }
 
-        PostEntity postEntity = postService.查询帖子ById(pkId,postId);
+        PostEntity postEntity = postService.查询帖子ById(postId);
         postEntity.setApproveStatu(ApproveStatu.驳回修改);
         postEntity.setRejectTextBytes(text);
         postEntity.setRejectTimes(postEntity.getRejectTimes() + 1);
@@ -170,7 +161,7 @@ public class 审核 {
             throw AppException.buildException(PageAction.消息级别提示框(Level.错误消息,"非榜主用户"));
         }
 
-        PostEntity postEntity = postService.查询帖子ById(pkId,postId);
+        PostEntity postEntity = postService.查询帖子ById(postId);
         postEntity.setApproveStatu(ApproveStatu.驳回修改);
         postEntity.setRejectTextBytes(text);
         postEntity.setRejectTimes(postEntity.getRejectTimes() + 1);

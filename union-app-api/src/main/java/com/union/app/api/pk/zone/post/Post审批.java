@@ -1,7 +1,6 @@
 package com.union.app.api.pk.zone.post;
 
 import com.union.app.domain.pk.Post;
-import com.union.app.domain.pk.apply.ApplyOrder;
 import com.union.app.domain.pk.apply.KeyNameValue;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
@@ -11,7 +10,6 @@ import com.union.app.service.pk.click.ClickService;
 import com.union.app.service.pk.service.OrderService;
 import com.union.app.service.pk.service.PkService;
 import com.union.app.service.pk.service.PostService;
-import com.union.app.service.pk.service.UserInfoService;
 import com.union.app.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,9 +42,6 @@ public class Post审批 {
 
     @Autowired
     OrderService orderService;
-
-    @Autowired
-    UserInfoService userInfoService;
 
 
 

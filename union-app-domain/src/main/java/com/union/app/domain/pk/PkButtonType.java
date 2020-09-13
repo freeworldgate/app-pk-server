@@ -9,13 +9,13 @@ import java.io.Serializable;
 
 public enum PkButtonType {
 
-    群组("/images/group.png","审核群组","groupCode"),
+    群组("/images/group1.png","主题群","groupCode"),
 
-    榜帖("/images/dabang.png","我的榜帖","publish"),
+    榜帖("/images/mypic.png","我的图帖","publish"),
 
-    审核("/images/approve4.png","审核记录","approveList"),
+    审核("/images/appro.png","记录","approveList"),
 
-    审核中("/images/approving.png","审核榜帖","approvingList"),
+    审核中("/images/waiting1.png","待审核","approvingList"),
 
 
     ;

@@ -62,13 +62,13 @@ public class 检查创建PK环境 {
             User user = userService.queryUser(userId);
             if (user.getPostTimes() > user.getPkTimes())
             {
-                return AppResponse.buildResponse(PageAction.执行处理器("create", "消耗一张榜单，确定要创建榜单吗?"));
+                return AppResponse.buildResponse(PageAction.执行处理器("create", "消耗一张图贴，确定要创建主题吗?"));
             }
             else
             {
                 if(userService.是否是遗传用户(userId)){
 
-                    return AppResponse.buildResponse(PageAction.信息反馈框("榜单不足","当前没有可用榜单，你可以通过打榜获取更多榜单，成功发布一个榜帖即可获得一个榜单..."));
+                    return AppResponse.buildResponse(PageAction.信息反馈框("榜单不足","当前没有可用榜单，你可以通过打榜获取更多榜单，成功发布一个图贴即可获得一个榜单..."));
                 }
                 else
                 {

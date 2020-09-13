@@ -3,31 +3,30 @@ package com.union.app.service.pk.service;
 import com.union.app.common.OSS存储.CacheStorage;
 import com.union.app.common.OSS存储.OssStorage;
 import com.union.app.common.config.AppConfigService;
-import com.union.app.dao.spi.AppDaoService;
+import com.union.app.common.dao.AppDaoService;
 import com.union.app.dao.spi.filter.CompareTag;
 import com.union.app.dao.spi.filter.EntityFilterChain;
 import com.union.app.dao.spi.filter.OrderTag;
 import com.union.app.domain.pk.Post;
-import com.union.app.common.id.KeyGetter;
 import com.union.app.entity.pk.PkPageCacheEntity;
 import com.union.app.entity.pk.PkPageRefreshTimeEntity;
 import com.union.app.entity.pk.PostEntity;
 import com.union.app.entity.pk.UserCollectionEntity;
+import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.constant.常量值;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
-import io.netty.util.internal.StringUtil;
+import com.union.app.service.pk.dynamic.DynamicService;
+import com.union.app.service.pk.dynamic.imp.PkDynamicService;
 import org.apache.commons.collections4.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class PostCacheService {
@@ -55,6 +54,25 @@ public class PostCacheService {
     @Autowired
     AppDaoService daoService;
 
+    @Autowired
+    DynamicService dynamicService;
+
+    /**
+     * 查询指定页的POST数据
+     * @param pkId
+     * @param page
+     * @return
+     */
+    public List<Post> getPosts(String pkId,int page) throws IOException {
+
+        List<Post> pagePosts = new ArrayList<>();
+
+
+
+
+
+        return pagePosts;
+    }
 
 
 
@@ -66,51 +84,51 @@ public class PostCacheService {
      * @return
      */
     public List<Post> getPostPage(String userId,String pkId,int page) throws IOException {
-        return getRandomPage(pkId);
+//        return getRandomPage(pkId);
 //
-//        List<Post> pagePosts = new ArrayList<>();
-//
-//
-//
-//        String pkPage = "PAGE-" + String.valueOf(page);
-//        Map<String,String> pageRefreshTime = postCacheTime.get(pkId);
-//        if(MapUtils.isEmpty(pageRefreshTime)){
-//            pageRefreshTime = new HashMap<>();
-//            postCacheTime.put(pkId,pageRefreshTime);
-//        }
-//        Map<String,List<Post>> pkAllPages = postCache.get(pkId);
-//        if(MapUtils.isEmpty(pkAllPages)){
-//            pkAllPages = new HashMap<>();
-//            postCache.put(pkId,pkAllPages);
-//        }
-//
-//        String localLastRefreshTime = pageRefreshTime.get(pkPage);
-//        String lastRefreshTime = queryPageLastModifyTime(pkId,pkPage);
-//
-//        if(org.apache.commons.lang.StringUtils.equals(lastRefreshTime,localLastRefreshTime)){
-//
-//
-//            List<Post> posts = pkAllPages.get(pkPage);
-//            if(CollectionUtils.isEmpty(posts)){
-//                posts = getRandomPage(pkId);
-//                pkAllPages.put(pkPage,posts);
-//            }
-//            pagePosts.addAll(posts);
-//        }
-//        else
-//        {
-//            //更新时间不一致，查询数据库更新页面
-//            List<Post> posts = syncRefreshCachePost(pkId,pkPage);
-//            pagePosts.addAll(posts);
-//            pkAllPages.put(pkPage,posts);
-//            Map<String,String> refreshTime = postCacheTime.get(pkId);
-//            refreshTime.put(pkPage,lastRefreshTime);
-//        }
-//
+        List<Post> pagePosts = new ArrayList<>();
 
 
 
-//        return pagePosts;
+        String pkPage = "PAGE-" + String.valueOf(page);
+        Map<String,String> pageRefreshTime = postCacheTime.get(pkId);
+        if(MapUtils.isEmpty(pageRefreshTime)){
+            pageRefreshTime = new HashMap<>();
+            postCacheTime.put(pkId,pageRefreshTime);
+        }
+        Map<String,List<Post>> pkAllPages = postCache.get(pkId);
+        if(MapUtils.isEmpty(pkAllPages)){
+            pkAllPages = new HashMap<>();
+            postCache.put(pkId,pkAllPages);
+        }
+
+        String localLastRefreshTime = pageRefreshTime.get(pkPage);
+        String lastRefreshTime = queryPageLastModifyTime(pkId,pkPage);
+
+        if(org.apache.commons.lang.StringUtils.equals(lastRefreshTime,localLastRefreshTime)){
+
+
+            List<Post> posts = pkAllPages.get(pkPage);
+            if(CollectionUtils.isEmpty(posts)){
+                posts = getRandomPage(pkId);
+                pkAllPages.put(pkPage,posts);
+            }
+            pagePosts.addAll(posts);
+        }
+        else
+        {
+            //更新时间不一致，查询数据库更新页面
+            List<Post> posts = syncRefreshCachePost(pkId,pkPage);
+            pagePosts.addAll(posts);
+            pkAllPages.put(pkPage,posts);
+            Map<String,String> refreshTime = postCacheTime.get(pkId);
+            refreshTime.put(pkPage,lastRefreshTime);
+        }
+
+
+
+
+        return pagePosts;
     }
 
     private List<Post> syncRefreshCachePost(String pkId, String pkPage) throws UnsupportedEncodingException {
@@ -162,9 +180,8 @@ public class PostCacheService {
         List<Post> posts = new ArrayList<>();
         EntityFilterChain filterChain = EntityFilterChain.newFilterChain(PostEntity.class)
                 .compareFilter("pkId",CompareTag.Equal,pkId)
-                .pageLimitFilter(1,AppConfigService.getConfigAsInteger(常量值.单个PK页面的帖子数,50))
+                .pageLimitFilter(1,AppConfigService.getConfigAsInteger(ConfigItem.单个PK页面的帖子数))
                 .orderByRandomFilter();
-
         List<PostEntity> postEntities = daoService.queryEntities(PostEntity.class,filterChain);
         for(PostEntity postEntity:postEntities){
             Post post = postService.查询帖子(pkId,postEntity.getPostId(), org.apache.commons.lang.StringUtils.EMPTY);

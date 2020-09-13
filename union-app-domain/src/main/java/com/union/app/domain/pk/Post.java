@@ -47,4 +47,6 @@ public class Post {
     private int rejectTimes;
     private String rejectText;
 
+
+    private boolean flag = false;
 }

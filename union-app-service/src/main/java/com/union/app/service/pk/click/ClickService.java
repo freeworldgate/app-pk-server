@@ -1,6 +1,6 @@
 package com.union.app.service.pk.click;
 
-import com.union.app.dao.spi.AppDaoService;
+import com.union.app.common.dao.AppDaoService;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.PageAction;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,11 +1,7 @@
 package com.union.app.api.pk.管理;
 
-import com.union.app.common.微信.WeChatUtil;
-import com.union.app.dao.spi.AppDaoService;
+import com.union.app.common.dao.AppDaoService;
 import com.union.app.domain.pk.PkDetail;
-import com.union.app.domain.pk.审核.ApproveMessage;
-import com.union.app.domain.工具.RandomUtil;
-import com.union.app.entity.pk.PkEntity;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.PageAction;
@@ -20,9 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.transaction.Transactional;
 import java.io.IOException;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,9 +48,6 @@ public class 查询内置PK {
 
     @Autowired
     OrderService orderService;
-
-    @Autowired
-    UserInfoService userInfoService;
 
     @Autowired
     DynamicService dynamicService;

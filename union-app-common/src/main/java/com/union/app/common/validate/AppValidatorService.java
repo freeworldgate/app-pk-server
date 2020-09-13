@@ -4,7 +4,7 @@ import com.union.app.common.config.AppConfigService;
 import com.union.app.common.spring.context.SpringContextUtil;
 import com.union.app.common.validate.validators.ValidateTypeSupport;
 import com.union.app.common.validate.validators.Validator;
-import com.union.app.dao.spi.AppDaoService;
+import com.union.app.common.dao.AppDaoService;
 import com.union.app.dao.spi.filter.CompareTag;
 import com.union.app.dao.spi.filter.EntityFilterChain;
 import com.union.app.entity.校验表.ValidateClassType;

@@ -173,7 +173,9 @@ public class 上传群二维码 {
                 dataSet5 = new DataSet("mode", "upload");
                 if(StringUtils.isBlank(url)){
                     dataSet6 = new DataSet("t1", "上传群名片");
-                    dataSet7 = new DataSet("t2", "群成员满200，及时更换群名片...");
+                    if(userService.是否是遗传用户(userId)) {
+                        dataSet7 = new DataSet("t2", "群成员满200，及时更换群名片...");
+                    }
                 }
 
             }

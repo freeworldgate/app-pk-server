@@ -42,8 +42,6 @@ public class 查询审核页面 {
     @Autowired
     UserService userService;
 
-    @Autowired
-    UserInfoService userInfoService;
 
     @Autowired
     ApproveService approveService;
@@ -95,7 +93,7 @@ public class 查询审核页面 {
         dataSets.add(new DataSet("t1","审核通过"));
         dataSets.add(new DataSet("t2","审核中"));
         dataSets.add(new DataSet("t3","审核留言"));
-        dataSets.add(new DataSet("t4","审核榜帖"));
+        dataSets.add(new DataSet("t4","审核图贴"));
         dataSets.add(new DataSet("imgBack",appService.查询背景(4)));
 
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));

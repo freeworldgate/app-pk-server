@@ -3,28 +3,23 @@ package com.union.app.service.user;
 
 import com.alibaba.fastjson.JSON;
 import com.union.app.common.config.AppConfigService;
+import com.union.app.common.dao.PkCacheService;
 import com.union.app.common.微信.WeChatUtil;
-import com.union.app.dao.spi.AppDaoService;
+import com.union.app.common.dao.AppDaoService;
 import com.union.app.dao.spi.filter.CompareTag;
 import com.union.app.dao.spi.filter.EntityFilterChain;
-import com.union.app.domain.pk.wechat.AccessToken;
 import com.union.app.domain.pk.客服消息.WxImage;
-import com.union.app.domain.pk.客服消息.WxLink;
 import com.union.app.domain.pk.客服消息.WxSendMessage;
 import com.union.app.domain.pk.客服消息.WxText;
-import com.union.app.domain.user.City;
 import com.union.app.domain.工具.RandomUtil;
 import com.union.app.domain.user.User;
 import com.union.app.entity.用户.UserEntity;
-import com.union.app.entity.用户.UserSex;
-import com.union.app.entity.用户.support.UserPostStatu;
 import com.union.app.entity.用户.support.UserType;
 import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.service.pk.dynamic.DynamicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
@@ -41,9 +36,26 @@ public class UserService {
 
 
     @Autowired
+    PkCacheService pkCacheService;
+
+    @Autowired
     UserService userService;
 
     private Map<String,User> users = new HashMap<>();
+
+
+    public UserEntity queryUserEntity(String userId){
+        UserEntity userEntity = pkCacheService.get(userId,UserEntity.class);
+        if(ObjectUtils.isEmpty(userEntity))
+        {
+            EntityFilterChain filter = EntityFilterChain.newFilterChain(UserEntity.class)
+                    .compareFilter("userId",CompareTag.Equal,userId);
+            userEntity = appDaoService.querySingleEntity(UserEntity.class,filter);
+        }
+        return userEntity;
+    }
+
+
     /**
      * 查询用户
      * @param userId
@@ -60,14 +72,12 @@ public class UserService {
 
 
 
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(UserEntity.class)
-                .compareFilter("userId",CompareTag.Equal,userId);
-        UserEntity result = appDaoService.querySingleEntity(UserEntity.class,filter);
+        UserEntity result  = queryUserEntity(userId);
         if(!ObjectUtils.isEmpty(result))
         {
             User user = new User();
-//            user.setUserName(new String(result.getNickName()));
-            user.setUserName(RandomUtil.getRandomName());
+            user.setUserName(new String(result.getNickName()));
+//            user.setUserName(RandomUtil.getRandomName());
             user.setUserId(result.getUserId());
             user.setUserType(ObjectUtils.isEmpty(result.getUserType())?UserType.普通用户.getType():result.getUserType().getType());
 //            user.setImgUrl(result.getAvatarUrl());
@@ -271,9 +281,7 @@ public class UserService {
     }
 
     public void 用户已打榜(String userId) {
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(UserEntity.class)
-                .compareFilter("userId",CompareTag.Equal,userId);
-        UserEntity result = appDaoService.querySingleEntity(UserEntity.class,filter);
+        UserEntity result  = queryUserEntity(userId);
         result.setPostTimes(result.getPostTimes() + 1);
             appDaoService.updateEntity(result);
 
@@ -291,17 +299,13 @@ public class UserService {
 
 
     public int queryUserPkTimes(String userId) {
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(UserEntity.class)
-                .compareFilter("userId",CompareTag.Equal,userId);
-        UserEntity result = appDaoService.querySingleEntity(UserEntity.class,filter);
+        UserEntity result  = queryUserEntity(userId);
 
         return result.getPkTimes();
     }
 
     public void 创建榜次数加1(String userId) {
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(UserEntity.class)
-                .compareFilter("userId",CompareTag.Equal,userId);
-        UserEntity result = appDaoService.querySingleEntity(UserEntity.class,filter);
+        UserEntity result  = queryUserEntity(userId);
         result.setPkTimes(result.getPkTimes() + 1);
         appDaoService.updateEntity(result);
 
@@ -309,49 +313,37 @@ public class UserService {
 
     public void 邀请次数加一(String userId) {
 
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(UserEntity.class)
-                .compareFilter("userId",CompareTag.Equal,userId);
-        UserEntity result = appDaoService.querySingleEntity(UserEntity.class,filter);
+        UserEntity result  = queryUserEntity(userId);
         result.setInviteTimes(result.getInviteTimes() + 1);
         appDaoService.updateEntity(result);
 
     }
 
     public int 查询用户剩余榜单(String userId) {
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(UserEntity.class)
-                .compareFilter("userId",CompareTag.Equal,userId);
-        UserEntity result = appDaoService.querySingleEntity(UserEntity.class,filter);
+        UserEntity result  = queryUserEntity(userId);
         return result.getPostTimes() - result.getPkTimes();
     }
 
     public int 查询邀请次数(String userId) {
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(UserEntity.class)
-                .compareFilter("userId",CompareTag.Equal,userId);
-        UserEntity result = appDaoService.querySingleEntity(UserEntity.class,filter);
+        UserEntity result  = queryUserEntity(userId);
         return result.getInviteTimes();
     }
 
     public int 查询建榜次数(String userId) {
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(UserEntity.class)
-                .compareFilter("userId",CompareTag.Equal,userId);
-        UserEntity result = appDaoService.querySingleEntity(UserEntity.class,filter);
+        UserEntity result  = queryUserEntity(userId);
         return result.getPkTimes();
     }
 
 
     public void 确认开通PK次数加1(String userId) {
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(UserEntity.class)
-                .compareFilter("userId",CompareTag.Equal,userId);
-        UserEntity result = appDaoService.querySingleEntity(UserEntity.class,filter);
+        UserEntity result  = queryUserEntity(userId);
         result.setActivePkTimes(result.getActivePkTimes() + 1);
 
     }
 
     public boolean 用户未激活榜单超限(String userId) {
 
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(UserEntity.class)
-                .compareFilter("userId",CompareTag.Equal,userId);
-        UserEntity result = appDaoService.querySingleEntity(UserEntity.class,filter);
+        UserEntity result  = queryUserEntity(userId);
         int noActivePks = result.getPkTimes() - result.getActivePkTimes();
         if(noActivePks >= AppConfigService.getConfigAsInteger(ConfigItem.用户最多未激活榜单数量))
         {
@@ -365,9 +357,7 @@ public class UserService {
 
     public boolean 是否已经打榜(String userId) {
         if(org.apache.commons.lang.StringUtils.isBlank(userId)){return false;}
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(UserEntity.class)
-                .compareFilter("userId",CompareTag.Equal,userId);
-        UserEntity result = appDaoService.querySingleEntity(UserEntity.class,filter);
+        UserEntity result  = queryUserEntity(userId);
         if(!ObjectUtils.isEmpty(result))
         {
             return result.getPostTimes() > 0;
@@ -378,9 +368,7 @@ public class UserService {
     }
 
     public void 删除一个未激活榜单(String userId) {
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(UserEntity.class)
-                .compareFilter("userId",CompareTag.Equal,userId);
-        UserEntity result = appDaoService.querySingleEntity(UserEntity.class,filter);
+        UserEntity result  = queryUserEntity(userId);
 
         result.setPkTimes(result.getPkTimes() - 1);
         appDaoService.updateEntity(result);
@@ -389,9 +377,7 @@ public class UserService {
     }
 
     public void 修改用户头像(String userId, String url) {
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(UserEntity.class)
-                .compareFilter("userId",CompareTag.Equal,userId);
-        UserEntity result = appDaoService.querySingleEntity(UserEntity.class,filter);
+        UserEntity result  = queryUserEntity(userId);
 
         result.setAvatarUrl(url);
 
@@ -399,5 +385,8 @@ public class UserService {
 
 
 
+    }
+
+    public void 修改PKUser(String pkId, String userId) {
     }
 }
