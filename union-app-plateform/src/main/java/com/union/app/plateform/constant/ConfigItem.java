@@ -34,7 +34,8 @@ public enum ConfigItem {
     POSTEntity缓存数量("postentityCacheSize", "POSTENTITY_CACHE_SIZE", "POSTEntity缓存数量", "1000"),
     USEREntity缓存数量("userentityCacheSize", "USERENTITY_CACHE_SIZE", "USEREntity缓存数量", "1000"),
     APPROVEMESSAGEEntity缓存数量("approveMessageentityCacheSize", "APPROVEMESSAGEENTITY_CACHE_SIZE", "APPROVEMESSAGE缓存数量", "1000"),
-    APPROVECOMMENTEntity缓存数量("approveCommententityCacheSize", "APPROVECOMMENTENTITY_CACHE_SIZE", "APPROVEMESSAGE缓存数量", "1000");
+    APPROVECOMMENTEntity缓存数量("approveCommententityCacheSize", "APPROVECOMMENTENTITY_CACHE_SIZE", "APPROVEMESSAGE缓存数量", "1000"),
+    刷新主题个数("pageTopics", "REFRESH_PAGE_TOPICS", "刷新主题个数", "5");
 
 
 

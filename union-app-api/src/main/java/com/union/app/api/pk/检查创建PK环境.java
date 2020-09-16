@@ -3,6 +3,7 @@ package com.union.app.api.pk;
 import com.union.app.common.OSS存储.OssStorage;
 import com.union.app.common.config.AppConfigService;
 import com.union.app.domain.pk.PkDetail;
+import com.union.app.domain.pk.ValueStr;
 import com.union.app.domain.user.User;
 import com.union.app.entity.用户.support.UserPostStatu;
 import com.union.app.plateform.constant.ConfigItem;
@@ -55,7 +56,10 @@ public class 检查创建PK环境 {
     @Transactional(rollbackOn = Exception.class)
     public AppResponse checkPk(@RequestParam("userId") String userId) throws AppException, IOException {
 
-            if(!userService.是否是遗传用户(userId)){return AppResponse.buildResponse(PageAction.执行处理器("create", "确定要创建主题吗?"));}
+
+            ValueStr valueStr = new ValueStr("","创建主题","确定创建主题?");
+
+            if(!userService.是否是遗传用户(userId)){return AppResponse.buildResponse(PageAction.执行处理器("create", valueStr));}
 
 
             if(userService.用户未激活榜单超限(userId))

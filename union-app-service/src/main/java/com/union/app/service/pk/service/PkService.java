@@ -208,7 +208,7 @@ public class PkService {
                 pkDetail.setGroupInfo(groupInfo);
 
         }
-
+        pkDetail.setUserBack(appService.查询背景(0));
         return pkDetail;
     }
 
@@ -290,7 +290,7 @@ public class PkService {
             pkDetail.setGroupInfo(groupInfo);
 
         }
-
+        pkDetail.setUserBack(appService.查询背景(0));
         return pkDetail;
     }
 
@@ -358,8 +358,8 @@ public class PkService {
         pkEntity.setPkType(PkType.内置相册);
         pkEntity.setTopic(topic);
         pkEntity.setWatchWord(watchWord);
-        pkEntity.setIsInvite(type != 2 ?InviteType.邀请:InviteType.公开);
-        pkEntity.setMessageType(isCharge?MessageType.收费:MessageType.不收费);
+        pkEntity.setIsInvite(InviteType.公开);
+        pkEntity.setMessageType(MessageType.不收费);
         pkEntity.setUserId(appService.随机用户());
         pkEntity.setAlbumStatu(PkStatu.已审核);
         daoService.insertEntity(pkEntity);
@@ -444,7 +444,13 @@ public class PkService {
 
 
     }
+    public void 修改PrePK(String pkId,String topic, String watchWord) throws AppException, UnsupportedEncodingException {
+        PkEntity pkEntity = this.querySinglePkEntity(pkId);
+        pkEntity.setTopic(topic);
+        pkEntity.setWatchWord(watchWord);
+        daoService.updateEntity(pkEntity);
 
+    }
 
     public void 修改PK(String pkId,String topic, String watchWord) throws AppException, UnsupportedEncodingException {
         PkEntity pkEntity = this.querySinglePkEntity(pkId);

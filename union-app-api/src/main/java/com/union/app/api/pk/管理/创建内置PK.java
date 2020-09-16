@@ -91,5 +91,15 @@ public class 创建内置PK {
         return AppResponse.buildResponse(PageAction.执行处理器("success",""));
     }
 
+    @RequestMapping(path="/updatePrePk",method = RequestMethod.GET)
+    @Transactional(rollbackOn = Exception.class)
+    public AppResponse updatePk(@RequestParam("password") String password,@RequestParam("topic") String topic,@RequestParam("watchWord") String watchWord,@RequestParam("pkId") String pkId) throws AppException, IOException {
 
+        appService.验证Password(password);
+
+        pkService.修改PrePK(pkId,topic,watchWord);
+        PkDetail pkDetail = pkService.querySinglePk(pkId);
+        return AppResponse.buildResponse(PageAction.执行处理器("success",pkDetail));
+
+    }
 }

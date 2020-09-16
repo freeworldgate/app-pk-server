@@ -71,19 +71,25 @@ public class 查询主页 {
 
 
 
-        if(userService.canUserView(userId,fromUser))
-        {
-            List<PkDetail> pks = appService.查询用户主页(userId,1,1);
-            pkDetails.addAll(pks);
 
-        }
-        else
-        {
 
-            List<PkDetail> pks = appService.查询用户主页(userId,1,0);
-            pkDetails.addAll(pks);
+        List<PkDetail> pks = appService.随机主题(userId,fromUser);
+        pkDetails.addAll(pks);
 
-        }
+
+//        if(userService.canUserView(userId,fromUser))
+//        {
+//            List<PkDetail> pks = appService.查询用户主页(userId,1,1);
+//            pkDetails.addAll(pks);
+//
+//        }
+//        else
+//        {
+//
+//            List<PkDetail> pks = appService.查询用户主页(userId,1,0);
+//            pkDetails.addAll(pks);
+//
+//        }
 
 
 //        appService.vip包装(pkDetails,userId,fromUser);

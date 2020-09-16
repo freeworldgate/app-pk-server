@@ -1642,4 +1642,9 @@ public class AppService {
 
 
     }
+
+    public List<PkDetail> 随机主题(String userId,String fromUser) {
+        return pkDataService.随机列表(userId,fromUser);
+
+    }
 }

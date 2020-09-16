@@ -35,7 +35,7 @@ public class 登录 {
 
         appService.验证Password(password);
 
-        return AppResponse.buildResponse(PageAction.前端数据更新("password",password));
+        return AppResponse.buildResponse(PageAction.执行处理器("success",password));
 
     }
 
