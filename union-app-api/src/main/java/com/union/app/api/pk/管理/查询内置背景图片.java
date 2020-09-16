@@ -63,6 +63,7 @@ public class 查询内置背景图片 {
 
     @RequestMapping(path="/queryBackImgs",method = RequestMethod.GET)
     public AppResponse 查询内置PK(@RequestParam("password") String password,@RequestParam("type") int type) throws AppException, IOException {
+        appService.验证Password(password);
 
         List<BackImgEntity> pks = appService.查询内置背景图片(1,type);
 
@@ -76,6 +77,7 @@ public class 查询内置背景图片 {
     @RequestMapping(path="/moreBackImgs",method = RequestMethod.GET)
     public AppResponse 查询内置PK(@RequestParam("password") String password,@RequestParam("page") int page,@RequestParam("type") int type) throws AppException, IOException {
 
+        appService.验证Password(password);
 
         List<BackImgEntity> pks = appService.查询内置背景图片(page+1,type);
 

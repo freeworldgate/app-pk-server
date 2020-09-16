@@ -65,7 +65,7 @@ public class 激活榜 {
 
     @RequestMapping(path="/activePks",method = RequestMethod.GET)
     public AppResponse 查询审核榜帖(@RequestParam("password") String password) throws AppException, IOException {
-
+        appService.验证Password(password);
         ActivePk activePk = appService.查询需要激活的PK();
         List<DataSet> dataSets = new ArrayList<>();
         dataSets.add(new DataSet("pk",activePk));
@@ -87,7 +87,7 @@ public class 激活榜 {
     @RequestMapping(path="/activePk",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
     public AppResponse activePk(@RequestParam("password") String password,@RequestParam("pkId") String pkId) throws AppException, IOException {
-
+        appService.验证Password(password);
         PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
         pkEntity.setAlbumStatu(PkStatu.已审核);
         PkActiveEntity pkActiveEntity = appService.查询PK激活信息(pkId);
@@ -106,7 +106,7 @@ public class 激活榜 {
     @Transactional(rollbackOn = Exception.class)
     public AppResponse hiddenPk(@RequestParam("password") String password,@RequestParam("pkId") String pkId,@RequestParam("tipId") String tipId) throws AppException, IOException {
 
-
+        appService.验证Password(password);
         PkActiveEntity pkActiveEntity = appService.查询PK激活信息(pkId);
         pkActiveEntity.setStatu(ActiveStatu.处理过);
         pkActiveEntity.setTipId(tipId);

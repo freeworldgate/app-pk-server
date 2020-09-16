@@ -66,13 +66,9 @@ public class 审核榜帖 {
 
     @RequestMapping(path="/manageApprovingPosts",method = RequestMethod.GET)
     public AppResponse 查询审核榜帖(@RequestParam("password") String password) throws AppException, IOException {
-        List<ApprovePost> approvePosts = new ArrayList<>();
+        appService.验证Password(password);
 
         List<DataSet> dataSets  = appService.查询下一个审核榜帖();
-
-
-
-
 
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
 
@@ -82,6 +78,7 @@ public class 审核榜帖 {
     @Transactional(rollbackOn = Exception.class)
     public AppResponse approvePost(@RequestParam("password") String password,@RequestParam("postId") String postId,@RequestParam("pkId") String pkId) throws AppException, IOException {
         //User认证
+        appService.验证Password(password);
 
 
         postService.上线帖子(pkId,postId);
@@ -100,6 +97,7 @@ public class 审核榜帖 {
     @RequestMapping(path="/hiddenPost",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
     public AppResponse hiddenPost(@RequestParam("password") String password,@RequestParam("postId") String postId,@RequestParam("pkId") String pkId,@RequestParam("text") String text) throws AppException, IOException {
+        appService.验证Password(password);
 
 
 

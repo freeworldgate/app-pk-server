@@ -64,6 +64,7 @@ public class 上传内置背景图片 {
     @RequestMapping(path="/uploadBackImg",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
     public AppResponse 查询内置PK(@RequestParam("password") String password,@RequestParam("type") int type,@RequestParam("imgUrl") String imgUrl) throws AppException, IOException {
+        appService.验证Password(password);
 
         BackImgEntity pk = appService.设置内置背景图片(type,imgUrl);
 
@@ -78,7 +79,8 @@ public class 上传内置背景图片 {
 
     @RequestMapping(path="/removeImg",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse removeImg(@RequestParam("userId") String userId,@RequestParam("id") String id) throws AppException, IOException {
+    public AppResponse removeImg(@RequestParam("password") String password,@RequestParam("userId") String userId,@RequestParam("id") String id) throws AppException, IOException {
+        appService.验证Password(password);
 
         appService.删除内置背景图片(id);
 

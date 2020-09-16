@@ -66,6 +66,7 @@ public class 用户登录加注册 {
             userEntity.setPkTimes(0);
             userEntity.setPostTimes(0);
             userEntity.setActivePkTimes(0);
+            userEntity.setPostTimes(0);
             if(userService.canUserView(fromUser))
             {
                 userEntity.setUserType(UserType.重点用户);
@@ -74,7 +75,7 @@ public class 用户登录加注册 {
             else
             {
                 userEntity.setUserType(UserType.普通用户);
-                userEntity.setPostTimes(AppConfigService.getConfigAsInteger(ConfigItem.非遗传用户默认榜单数量));
+//                userEntity.setPostTimes(AppConfigService.getConfigAsInteger(ConfigItem.非遗传用户默认榜单数量));
             }
             convert(userInfo,userEntity);
 //            userService.新增注册用户(userEntity,appName,pkId,userEntity.getUserId(),fromUser);

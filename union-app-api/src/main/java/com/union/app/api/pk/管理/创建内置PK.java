@@ -61,6 +61,7 @@ public class 创建内置PK {
     @RequestMapping(path="/preCreatePk",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
     public AppResponse 创建预置PK(@RequestParam("password") String password,@RequestParam("topic") String topic,@RequestParam("watchWord") String watchWord,@RequestParam("isCharge") boolean isCharge,@RequestParam("type") int type) throws AppException, IOException {
+        appService.验证Password(password);
 
         //用户校验
         PkEntity pk = pkService.创建预置PK(topic,watchWord,isCharge,type);
@@ -81,6 +82,8 @@ public class 创建内置PK {
     @RequestMapping(path="/removePk",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
     public AppResponse 删除预置PK(@RequestParam("password") String password,@RequestParam("pkId") String pkId) throws AppException, IOException {
+        appService.验证Password(password);
+
         appService.移除主页预览(pkId);
         appService.移除预置表(pkId);
 //        pkService.删除预置的PK(pkId);

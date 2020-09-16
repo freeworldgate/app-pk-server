@@ -28,6 +28,10 @@ public class ComplainEntity {
     @Enumerated(EnumType.STRING)
     ComplainStatu complainStatu;
 
+    String text;
+
+    long updateTime;
+
 
 
 }

@@ -253,7 +253,7 @@ public class PostService {
     }
 
 
-    public Post 查询用户帖子(String pkId, String userId,Date date) throws UnsupportedEncodingException {
+    public Post 查询用户帖子(String pkId, String userId) throws UnsupportedEncodingException {
 
             PostEntity userPostEntity = 查询用户帖(pkId,userId);
             if(ObjectUtils.isEmpty(userPostEntity)){
@@ -402,7 +402,7 @@ public class PostService {
     public void 上线帖子(String pkId, String postId) throws AppException {
 
         PostEntity postEntity = this.查询帖子ById(postId);
-        if(postEntity.getStatu() == PostStatu.上线){throw AppException.buildException(PageAction.信息反馈框("图贴已审核","图贴已上线,不能重复审核"));}
+        if(postEntity.getStatu() == PostStatu.上线){return;}
         postEntity.setStatu(PostStatu.上线);
         daoService.updateEntity(postEntity);
         ApproveCommentEntity approveCommentEntity = approveService.查询留言(pkId,postId);

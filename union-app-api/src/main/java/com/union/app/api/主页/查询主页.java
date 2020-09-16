@@ -88,7 +88,9 @@ public class 查询主页 {
 
 //        appService.vip包装(pkDetails,userId,fromUser);
 
-
+        pkDetails.forEach(pk->{
+            pk.setUserBack(appService.查询背景(0));
+        });
 
 
 

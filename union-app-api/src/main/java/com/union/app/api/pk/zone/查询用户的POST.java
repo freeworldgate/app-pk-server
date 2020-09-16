@@ -62,7 +62,7 @@ public class 查询用户的POST {
         }
 
 
-            Post post = postService.查询用户帖子(pkId,userId,cureentDate);
+            Post post = postService.查询用户帖子(pkId,userId);
 
 //            return AppResponse.buildResponse(PageAction.执行处理器("uploadImgs",""));
 

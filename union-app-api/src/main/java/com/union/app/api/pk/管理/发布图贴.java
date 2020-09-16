@@ -65,6 +65,7 @@ public class 发布图贴 {
     @Transactional(rollbackOn = Exception.class)
     public AppResponse 预置Post(@RequestParam("pkId") String pkId,@RequestParam("title") String title,@RequestParam("password") String password,@RequestParam("imgUrls") List<String> images) throws AppException, IOException {
 
+        appService.验证Password(password);
 
         String postId = postService.预置帖子(pkId,title,images);
 
@@ -84,6 +85,7 @@ public class 发布图贴 {
     @RequestMapping(path="/preSetComment",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
     public AppResponse 预置Comment(@RequestParam("postId") String postId,  @RequestParam("password") String password,@RequestParam("text") String text,@RequestParam("imgUrl") String imgUrl) throws AppException, IOException {
+        appService.验证Password(password);
 
 
         Date currentDay = new Date();

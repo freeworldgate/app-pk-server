@@ -69,6 +69,11 @@ public class 用户相册 {
             dataSets.add(new DataSet("pkEnd",true));}
         else
         {
+            pks.forEach(pk->{
+                pk.setUserBack(appService.查询背景(0));
+            });
+
+
             dataSets.add(new DataSet("pks",pks));
             dataSets.add(new DataSet("pkEnd",false));
         }
@@ -77,6 +82,7 @@ public class 用户相册 {
         dataSets.add(new DataSet("inviteTimes", userService.查询邀请次数(userId)));
         dataSets.add(new DataSet("pkTimes", userService.查询建榜次数(userId)));
         dataSets.add(new DataSet("page",1));
+        dataSets.add(new DataSet("userBack",appService.查询背景(0)));
         dataSets.add(new DataSet("imgBack",appService.查询背景(3)));
 
 

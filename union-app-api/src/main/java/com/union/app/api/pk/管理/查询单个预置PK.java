@@ -57,8 +57,8 @@ public class 查询单个预置PK {
 
 
     @RequestMapping(path="/queryPreInnerPk",method = RequestMethod.GET)
-    public AppResponse 查询单个PK(@RequestParam("pkId") String pkId,@RequestParam("fromUser") String fromUser) throws AppException, IOException, InterruptedException {
-
+    public AppResponse 查询单个PK(@RequestParam("password") String password,@RequestParam("pkId") String pkId,@RequestParam("fromUser") String fromUser) throws AppException, IOException, InterruptedException {
+        appService.验证Password(password);
         List<DataSet> dataSets = new ArrayList<>();
 
         //榜单有可能被关闭
@@ -83,8 +83,8 @@ public class 查询单个预置PK {
     }
 
     @RequestMapping(path="/nextPreInnerPage",method = RequestMethod.GET)
-    public AppResponse 查询单个PK(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId,@RequestParam("page") int page) throws AppException, IOException {
-
+    public AppResponse 查询单个PK(@RequestParam("password") String password,@RequestParam("pkId") String pkId,@RequestParam("userId") String userId,@RequestParam("page") int page) throws AppException, IOException {
+        appService.验证Password(password);
         //页数不断递增，但是只有一百页。
         List<Post> posts = pkService.queryPrePkPost(pkId,page+1);
         if(CollectionUtils.isEmpty(posts))

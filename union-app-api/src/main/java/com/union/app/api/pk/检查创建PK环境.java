@@ -54,6 +54,10 @@ public class 检查创建PK环境 {
     @RequestMapping(path="/checkPk",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
     public AppResponse checkPk(@RequestParam("userId") String userId) throws AppException, IOException {
+
+            if(!userService.是否是遗传用户(userId)){return AppResponse.buildResponse(PageAction.执行处理器("create", "确定要创建主题吗?"));}
+
+
             if(userService.用户未激活榜单超限(userId))
             {
                 return AppResponse.buildResponse(PageAction.信息反馈框("您名下未激活榜单过多","请至少激活一个榜单..."));

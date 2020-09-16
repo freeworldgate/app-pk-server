@@ -56,6 +56,7 @@ public class 收款用户 {
     @RequestMapping(path="/allCashiers",method = RequestMethod.GET)
     public AppResponse 用户相册(@RequestParam("password") String password) throws AppException, IOException {
 
+        appService.验证Password(password);
 
 
         List<PkCashier> cashiers = appService.查询收款列表(1);
@@ -67,6 +68,7 @@ public class 收款用户 {
     @RequestMapping(path="/nextPageCashiers",method = RequestMethod.GET)
     public AppResponse 查询单个PK(@RequestParam("password") String password,@RequestParam("page") int page) throws AppException, IOException {
 
+        appService.验证Password(password);
 
         List<PkCashier> cashiers = appService.查询收款列表(page+1);
 
@@ -84,6 +86,8 @@ public class 收款用户 {
     @RequestMapping(path="/createCashier",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
     public AppResponse 创建用户(@RequestParam("password") String password,@RequestParam("name") String name) throws AppException, IOException {
+        appService.验证Password(password);
+
         appService.新建收款用户(name);
 
 
@@ -96,6 +100,8 @@ public class 收款用户 {
     @RequestMapping(path="/changeCahierStatu",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
     public AppResponse 修改用户状态(@RequestParam("password") String password,@RequestParam("cashierId") String cashierId) throws AppException, IOException {
+        appService.验证Password(password);
+
         appService.修改用户状态(cashierId);
 
 
@@ -107,6 +113,8 @@ public class 收款用户 {
     @RequestMapping(path="/uploadCashierLink",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
     public AppResponse 上传链接(@RequestParam("password") String password,@RequestParam("linkImg") String linkImg,@RequestParam("cashierId") String cashierId,@RequestParam("type") int type) throws AppException, IOException {
+        appService.验证Password(password);
+
         appService.上传收款链接(cashierId,type,linkImg);
 
 
@@ -118,6 +126,8 @@ public class 收款用户 {
     @RequestMapping(path="/deleteCashier",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
     public AppResponse 上传链接(@RequestParam("password") String password,@RequestParam("cashierId") String cashierId) throws AppException, IOException {
+        appService.验证Password(password);
+
         appService.删除收款人(cashierId);
 
 

@@ -48,7 +48,7 @@ public class 处理投诉信息 {
 
     @RequestMapping(path="/complain",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse 查询投诉信息(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId) throws AppException, IOException {
+    public AppResponse 查询投诉信息(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId,@RequestParam("text") String text) throws AppException, IOException {
         Date date = new Date();
 
         PostEntity postEntity = postService.查询用户帖(pkId,userId);
@@ -68,7 +68,7 @@ public class 处理投诉信息 {
 
         if(postEntity.getRejectTimes() > 0)
         {
-            complainService.添加投诉(pkId,userId);
+            complainService.添加投诉(pkId,userId,text);
 //            return AppResponse.buildResponse(PageAction.信息反馈框("提示","已收到您的投诉信息，如若榜主违反主题规则，我们会尽快处理..."));
             return AppResponse.buildResponse(PageAction.信息反馈框("消息通知","已收到您的投诉信息，如若榜主违反主题规则，我们会尽快处理..."));
         }
@@ -76,7 +76,8 @@ public class 处理投诉信息 {
         {
             if(dynamicService.审核等待时间过长(pkId,postEntity.getPostId()))
             {
-                complainService.添加投诉(pkId,userId);
+
+                complainService.添加投诉(pkId,userId,text);
                 return AppResponse.buildResponse(PageAction.信息反馈框("消息通知","已收到您的投诉信息，如若榜主违反主题规则，我们会尽快处理..."));
             }
             else
@@ -117,12 +118,12 @@ public class 处理投诉信息 {
 
     @RequestMapping(path="/confirmComplain",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse confirmComplain(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId) throws AppException, IOException {
+    public AppResponse confirmComplain(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId,@RequestParam("text") String text) throws AppException, IOException {
 
 
 
 
-        complainService.添加投诉(pkId,userId);
+        complainService.添加投诉(pkId,userId,text);
 
 
 

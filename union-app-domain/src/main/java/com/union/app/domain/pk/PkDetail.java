@@ -58,6 +58,7 @@ public class PkDetail implements Serializable{
     private long nonGeneticPriority;
     private long geneticPriority;
 
+    private int complainTimes;
 
 
 }

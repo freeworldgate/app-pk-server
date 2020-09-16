@@ -62,7 +62,7 @@ public class 群组列表 {
     @RequestMapping(path="/allCashierGroups",method = RequestMethod.GET)
     public AppResponse 用户相册(@RequestParam("password") String password,@RequestParam("cashierId") String cashierId) throws AppException, IOException {
 
-
+        appService.验证Password(password);
 
         List<CashierGroup> groups = appService.查询用户群组(cashierId,1);
 
@@ -73,7 +73,7 @@ public class 群组列表 {
     @RequestMapping(path="/nextPageCashierGroups",method = RequestMethod.GET)
     public AppResponse 查询单个PK(@RequestParam("password") String password,@RequestParam("cashierId") String cashierId,@RequestParam("page") int page) throws AppException, IOException {
 
-
+        appService.验证Password(password);
         List<CashierGroup> groups = appService.查询用户群组(cashierId,page+1);
 
 
@@ -90,7 +90,7 @@ public class 群组列表 {
     @RequestMapping(path="/uploadCashierGroup",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
     public AppResponse 上传群组(@RequestParam("password") String password,@RequestParam("cashierId") String cashierId,@RequestParam("imgUrl") String imgUrl) throws AppException, IOException {
-
+        appService.验证Password(password);
         appService.上传群组(cashierId,imgUrl);
 
         return AppResponse.buildResponse(PageAction.执行处理器("success",""));
@@ -100,7 +100,7 @@ public class 群组列表 {
     @RequestMapping(path="/changeGroupStatu",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
     public AppResponse 修改状态(@RequestParam("password") String password,@RequestParam("cashierId") String cashierId,@RequestParam("groupId") String groupId) throws AppException, IOException {
-
+        appService.验证Password(password);
         appService.修改群组状态(cashierId,groupId);
 
         return AppResponse.buildResponse(PageAction.执行处理器("success",""));
@@ -111,7 +111,7 @@ public class 群组列表 {
     @RequestMapping(path="/deleteGroup",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
     public AppResponse deleteGroup(@RequestParam("password") String password,@RequestParam("cashierId") String cashierId,@RequestParam("groupId") String groupId) throws AppException, IOException {
-
+        appService.验证Password(password);
         appService.删除群组(cashierId,groupId);
 
         return AppResponse.buildResponse(PageAction.执行处理器("success",""));
@@ -125,8 +125,8 @@ public class 群组列表 {
      */
     @RequestMapping(value = "/replaceCashierGroup", method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse 更新群二维码(@RequestParam("password") String password,@RequestParam("cashierId") String cashierId,@RequestParam("groupId") String groupId,@RequestParam("imgUrl") String imgUrl) throws IOException {
-
+    public AppResponse 更新群二维码(@RequestParam("password") String password,@RequestParam("cashierId") String cashierId,@RequestParam("groupId") String groupId,@RequestParam("imgUrl") String imgUrl) throws IOException, AppException {
+        appService.验证Password(password);
         appService.更新群组(cashierId,groupId,imgUrl);
         return AppResponse.buildResponse(PageAction.执行处理器("success",""));
     }

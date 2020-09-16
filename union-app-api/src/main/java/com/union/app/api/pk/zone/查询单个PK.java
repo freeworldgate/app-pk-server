@@ -10,6 +10,7 @@ package com.union.app.api.pk.zone;
         import com.union.app.domain.pk.审核.ApproveUser;
         import com.union.app.domain.user.User;
         import com.union.app.domain.工具.RandomUtil;
+        import com.union.app.entity.pk.PostEntity;
         import com.union.app.plateform.data.resultcode.AppException;
         import com.union.app.plateform.data.resultcode.AppResponse;
         import com.union.app.plateform.data.resultcode.DataSet;
@@ -85,6 +86,18 @@ public class 查询单个PK {
         dataSets.add(new DataSet("post",appService.显示按钮(PkButtonType.榜帖)));
         dataSets.add(new DataSet("approve",appService.显示按钮(PkButtonType.审核)));
         if(pkService.isPkCreator(pkId,userId)){dataSets.add(new DataSet("approving",appService.显示按钮(PkButtonType.审核中)));}
+
+        PostEntity postEntity = postService.查询用户帖(pkId,userId);
+        if(ObjectUtils.isEmpty(postEntity))
+        {
+            dataSets.add(new DataSet("publish",true));
+        }
+        else
+        {
+            dataSets.add(new DataSet("publish",false));
+        }
+
+
 
         dataSets.add(new DataSet("pk",pkDetail));
         dataSets.add(new DataSet("imgBack",appService.查询背景(0)));

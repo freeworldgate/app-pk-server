@@ -78,7 +78,7 @@ public class 查询审核信息2 {
         dataSets.add(new DataSet("date",TimeUtils.currentDate()));
         dataSets.add(new DataSet("pkId",pkId));
         dataSets.add(new DataSet("imgBack",appService.查询背景(4)));
-        dataSets.add(new DataSet("t1","转发审核群"));
+        dataSets.add(new DataSet("t1","发布图贴"));
         dataSets.add(new DataSet("t2","审核留言"));
         dataSets.add(new DataSet("t3","留言"));
         dataSets.add(new DataSet("t4","编辑留言"));

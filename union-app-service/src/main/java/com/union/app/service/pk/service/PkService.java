@@ -141,6 +141,7 @@ public class PkService {
         pkDetail.setUser(userService.queryUser(pk.getUserId()));
         pkDetail.setWatchWord(pk.getWatchWord());
         pkDetail.setTime(TimeUtils.translateTime(pk.getCreateTime()));
+        pkDetail.setComplainTimes(pk.getComplainTimes());
         pkDetail.setInvite(new KeyNameValue(pk.getIsInvite().getStatu(),pk.getIsInvite().getStatuStr()));
         pkDetail.setInviteType(pk.getIsInvite());
         if(!ObjectUtils.isEmpty(pk.getMessageType())){pkDetail.setCharge(new KeyNameValue(pk.getMessageType().getStatu(),pk.getMessageType().getStatuStr()));}
@@ -148,8 +149,8 @@ public class PkService {
         pkDetail.setApproveMessage(approveService.查询PK公告消息(pkId));
         if(pk.getPkType()==PkType.内置相册 && pk.getIsInvite() == InviteType.邀请 )
         {
-                pkDetail.setApproved(dynamicService.查看内置相册已审核榜帖(pkId) + "已审核");
-                pkDetail.setApproving(dynamicService.查看内置相册审核中榜帖(pkId) + "审核中");
+                pkDetail.setApproved(  "已审核(" + dynamicService.查看内置相册已审核榜帖(pkId) + ")");
+                pkDetail.setApproving( "审核中" + dynamicService.查看内置相册审核中榜帖(pkId) + ")");
                 GroupInfo groupInfo = new GroupInfo();
                 groupInfo.setName("群组");
                 if(dynamicService.查看内置相册群组状态(pkId))
@@ -167,8 +168,8 @@ public class PkService {
         }
         else if(pk.getPkType()==PkType.内置相册 && pk.getIsInvite() == InviteType.公开 )
         {
-            pkDetail.setApproved(redisSortSetService.size(CacheKeyName.榜主已审核列表(pkDetail.getPkId())) + "已审核");
-            pkDetail.setApproving(redisSortSetService.size(CacheKeyName.榜主审核中列表(pkDetail.getPkId())) + "审核中");
+            pkDetail.setApproved( "已审核(" + redisSortSetService.size(CacheKeyName.榜主已审核列表(pkDetail.getPkId())) + ")");
+            pkDetail.setApproving("审核中(" + redisSortSetService.size(CacheKeyName.榜主审核中列表(pkDetail.getPkId())) + ")");
 
             GroupInfo groupInfo = new GroupInfo();
             boolean hasGroup = !StringUtils.isBlank(dynamicService.查询内置公开PK群组二维码MediaId(pkDetail.getPkId() ));
@@ -188,8 +189,8 @@ public class PkService {
         }
         else
         {
-            pkDetail.setApproved(redisSortSetService.size(CacheKeyName.榜主已审核列表(pkDetail.getPkId())) + "已审核");
-            pkDetail.setApproving(redisSortSetService.size(CacheKeyName.榜主审核中列表(pkDetail.getPkId())) + "审核中");
+            pkDetail.setApproved( "已审核(" + redisSortSetService.size(CacheKeyName.榜主已审核列表(pkDetail.getPkId())) +")");
+            pkDetail.setApproving("审核中(" + redisSortSetService.size(CacheKeyName.榜主审核中列表(pkDetail.getPkId())) + ")");
 
                 GroupInfo groupInfo = new GroupInfo();
                 boolean hasGroup = !StringUtils.isBlank(dynamicService.查询PK群组二维码MediaId(pkDetail.getPkId(),new Date() ));
@@ -343,6 +344,7 @@ public class PkService {
         pkEntity.setIsInvite(invite?InviteType.邀请:InviteType.公开);
         pkEntity.setUserId(userId);
         pkEntity.setAlbumStatu(PkStatu.审核中);
+        pkEntity.setComplainTimes(0);
         daoService.insertEntity(pkEntity);
         userService.创建榜次数加1(userId);
         return pkId;

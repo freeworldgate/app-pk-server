@@ -12,6 +12,8 @@ import com.union.app.domain.pk.*;
 import com.union.app.domain.pk.apply.KeyNameValue;
 import com.union.app.domain.pk.cashier.PkCashier;
 import com.union.app.entity.pk.*;
+import com.union.app.entity.pk.complain.ComplainEntity;
+import com.union.app.entity.pk.complain.ComplainStatu;
 import com.union.app.entity.用户.UserEntity;
 import com.union.app.entity.用户.support.UserType;
 import com.union.app.entity.配置表.ColumSwitch;
@@ -202,7 +204,7 @@ public class AppService {
 
     public void 添加邀请(String pkId, String userId) {
 
-        if(pkService.isPkCreator(pkId,userId)){return;}
+        if(StringUtils.isBlank(pkId) || pkService.isPkCreator(pkId,userId)){return;}
 
 
 
@@ -1290,9 +1292,9 @@ public class AppService {
             activeCodeEntity.setUserId(userId);
             activeCodeEntity.setActiveTimes(activeCodeEntity.getActiveTimes() + 1);
             daoService.updateEntity(activeCodeEntity);
-            PkCashierEntity cashierEntity = this.查询收款人(activeCodeEntity.getCashierId());
-            cashierEntity.setUsedActiveCode(cashierEntity.getUsedActiveCode() + 1);
-            daoService.updateEntity(cashierEntity);
+//            PkCashierEntity cashierEntity = this.查询收款人(activeCodeEntity.getCashierId());
+//            cashierEntity.setUsedActiveCode(cashierEntity.getUsedActiveCode() + 1);
+//            daoService.updateEntity(cashierEntity);
             return true;
         }
         else
@@ -1396,6 +1398,41 @@ public class AppService {
 
 
     }
+    public List<DataSet> 查询投诉榜帖() throws IOException {
+        List<DataSet> dataSets = new ArrayList<>();
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(ComplainEntity.class)
+                .compareFilter("complainStatu",CompareTag.Equal,ComplainStatu.处理中);
+        ComplainEntity entity = daoService.querySingleEntity(ComplainEntity.class,filter);
+        if(!ObjectUtils.isEmpty(entity))
+        {
+            Post post = postService.查询用户帖子(entity.getPkId(),entity.getUserId());
+
+            dataSets.add(new DataSet("complainId",entity.getId()));
+            PkDetail pkDetail = pkService.querySinglePk(post.getPkId());
+
+            pkDetail.setApproveMessage(approveService.获取审核人员消息(post.getPkId()));
+            dataSets.add(new DataSet("pk",pkDetail));
+            dataSets.add(new DataSet("post",post));
+            dataSets.add(new DataSet("text",entity.getText()));
+
+
+
+        }
+        else
+        {
+            dataSets.add(new DataSet("pk",null));
+            dataSets.add(new DataSet("post",null));
+        }
+
+
+
+
+
+        return dataSets;
+    }
+
+
+
 
     public List<DataSet> 查询下一个审核榜帖() throws IOException {
         Post post = postService.查询需要审核的帖子();
@@ -1427,18 +1464,7 @@ public class AppService {
     }
 
 
-    private ActiveCodeEntity 查询激活码(String cashierId)
-    {
-        EntityFilterChain filter1 = EntityFilterChain.newFilterChain(ActiveCodeEntity.class)
-                .compareFilter("cashierId",CompareTag.Equal,cashierId)
-                .andFilter()
-                .compareFilter("codeStatu",CompareTag.Equal,CodeStatu.未启用)
-                .orderByFilter("time",OrderTag.ASC);
-        ActiveCodeEntity activeCodeEntity = daoService.querySingleEntity(ActiveCodeEntity.class,filter1);
 
-        return activeCodeEntity;
-
-    }
     private ActiveCodeEntity 查询激活码ById(String activeCode)
     {
         EntityFilterChain filter1 = EntityFilterChain.newFilterChain(ActiveCodeEntity.class)
@@ -1455,60 +1481,39 @@ public class AppService {
         PkCashierEntity pkCashierEntity = daoService.querySingleEntity(PkCashierEntity.class,filter);
         return pkCashierEntity;
     }
-    public String 获取收款码(String applyCode) throws AppException {
-        PkCashierEntity pkCashierEntity = this.查询收款人(applyCode);
-        if(ObjectUtils.isEmpty(pkCashierEntity)){
-            throw AppException.buildException(PageAction.信息反馈框("无效口令","无效口令"));
-        }
-        if(pkCashierEntity.getStatu() != CashierStatu.启用)
-        {
-            throw AppException.buildException(PageAction.信息反馈框("用户未启用","用户未启用，启用后可以获取激活码"));
-        }
-        ActiveCodeEntity activeCodeEntity = this.查询激活码(applyCode);
-        if(ObjectUtils.isEmpty(activeCodeEntity))
-        {
-            throw AppException.buildException(PageAction.信息反馈框("没有可用激活码","没有可用激活码，联系管理员储备更多激活码"));
-        }
-        activeCodeEntity.setCodeStatu(CodeStatu.已启用);
-        pkCashierEntity.setNoActiveCode(pkCashierEntity.getNoActiveCode() + 1);
-        daoService.updateEntity(activeCodeEntity);
+    public List<String> 获取收款码(String password) throws AppException {
 
-        return activeCodeEntity.getActiveCode();
+        List<String> activeCodeEntities = this.生成激活码(password);
+
+        return activeCodeEntities;
 
 
     }
 
-    public void 生成激活码(String cashierId) {
+    public List<String> 生成激活码(String password) {
         int i=0;
-
-        while(i<100)
+        List<String> codes = new ArrayList<>();
+        while(i<50)
         {
             String code = IdGenerator.getActiveCode();
             ActiveCodeEntity activeCodeEntity = 查询激活码ById(code);
             if(ObjectUtils.isEmpty(activeCodeEntity))
             {
                 activeCodeEntity = new ActiveCodeEntity();
-                activeCodeEntity.setCashierId(cashierId);
+                activeCodeEntity.setCashierId(password);
                 activeCodeEntity.setCodeStatu(CodeStatu.未启用);
                 activeCodeEntity.setActiveCode(code);
                 activeCodeEntity.setActiveTimes(0);
                 activeCodeEntity.setTime(System.currentTimeMillis());
                 daoService.insertEntity(activeCodeEntity);
                 i++;
+                codes.add(code);
             }
+
         }
 
 
-
-
-
-
-
-
-
-
-
-
+        return codes;
     }
 
     public void 新增储备激活码(String cashierId) {
@@ -1586,6 +1591,55 @@ public class AppService {
 
 
         return pkCreator;
+
+    }
+
+    public void 有效投诉(String id) throws AppException {
+
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(ComplainEntity.class)
+                .compareFilter("id",CompareTag.Equal,Integer.valueOf(id));
+        ComplainEntity entity = daoService.querySingleEntity(ComplainEntity.class,filter);
+        PostEntity postEntity = postService.查询用户帖(entity.getPkId(),entity.getUserId());
+
+
+        postService.上线帖子(postEntity.getPkId(),postEntity.getPostId());
+        dynamicService.已审核(postEntity.getPkId(),postEntity.getPostId());
+
+
+        //记录一次有效投诉。
+        PkEntity pkEntity = pkService.querySinglePkEntity(entity.getPkId());
+        pkEntity.setComplainTimes(pkEntity.getComplainTimes() + 1);
+        daoService.updateEntity(pkEntity);
+        entity.setComplainStatu(ComplainStatu.已处理);
+        daoService.updateEntity(entity);
+
+
+    }
+
+    public void 无效投诉(String id) {
+
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(ComplainEntity.class)
+                .compareFilter("id",CompareTag.Equal,Integer.valueOf(id));
+        ComplainEntity entity = daoService.querySingleEntity(ComplainEntity.class,filter);
+        if(!ObjectUtils.isEmpty(entity)){
+            entity.setComplainStatu(ComplainStatu.已处理);
+            daoService.updateEntity(entity);
+        }
+
+
+    }
+
+
+    public void 验证Password(String password) throws AppException {
+
+        if(!StringUtils.equalsIgnoreCase(password,"fenghaoapp1"))
+        {
+            throw AppException.buildException(PageAction.信息反馈框("登录错误","登录错误"));
+
+        }
+
+
+
 
     }
 }

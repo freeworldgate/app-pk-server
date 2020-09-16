@@ -321,7 +321,7 @@ public class UserService {
 
     public int 查询用户剩余榜单(String userId) {
         UserEntity result  = queryUserEntity(userId);
-        return result.getPostTimes() - result.getPkTimes();
+        return result.getPostTimes();
     }
 
     public int 查询邀请次数(String userId) {

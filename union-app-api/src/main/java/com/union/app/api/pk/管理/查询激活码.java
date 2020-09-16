@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -59,27 +60,26 @@ public class 查询激活码 {
     public static Map<String,PkDetail> pkDetailMap = new HashMap<>();
 
 
+    @RequestMapping(path="/gennerateCodes",method = RequestMethod.GET)
+    @Transactional(rollbackOn = Exception.class)
+    public List<String> gennerateCodes(@RequestParam("password") String password) throws AppException, IOException {
+        appService.验证Password(password);
+        List<String> codes = appService.获取收款码(password);
 
+        return codes;
+
+    }
 
     @RequestMapping(path="/queryActiveCode",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse activeCode(@RequestParam("password") String password,@RequestParam("applyCode") String applyCode) throws AppException, IOException {
+    public AppResponse activeCode(@RequestParam("password") String password) throws AppException, IOException {
+        appService.验证Password(password);
+        List<String> codes = appService.获取收款码(password);
 
-        String code = appService.获取收款码(applyCode);
-
-        return AppResponse.buildResponse(PageAction.前端数据更新("code",code));
-
-    }
-    @RequestMapping(path="/gennerateCodes",method = RequestMethod.GET)
-    @Transactional(rollbackOn = Exception.class)
-    public AppResponse gennerateCode(@RequestParam("password") String password,@RequestParam("cashierId") String cashierId) throws AppException, IOException {
-
-        appService.生成激活码(cashierId);
-        appService.新增储备激活码(cashierId);
-
-        return AppResponse.buildResponse(PageAction.执行处理器("success",""));
+        return AppResponse.buildResponse(PageAction.前端数据更新("codes",codes));
 
     }
+
 
 
 

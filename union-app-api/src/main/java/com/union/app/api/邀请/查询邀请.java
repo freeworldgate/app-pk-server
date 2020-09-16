@@ -69,6 +69,10 @@ public class 查询邀请 {
             dataSets.add(new DataSet("pkEnd",true));}
         else
         {
+            pks.forEach(pk->{
+                pk.setUserBack(appService.查询背景(0));
+            });
+
             dataSets.add(new DataSet("pks",pks));
             dataSets.add(new DataSet("pkEnd",false));
         }

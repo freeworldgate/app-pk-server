@@ -62,7 +62,7 @@ public class 添加相册到主页预览 {
     @RequestMapping(path="/addToGeneticHome",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
     public AppResponse addToGeneticHome(@RequestParam("pkId") String pkId,@RequestParam("value") int value,@RequestParam("password") String password) throws AppException, IOException {
-
+        appService.验证Password(password);
         appService.添加到主页预览(pkId,value,1);
         PkDetail pkDetail = pkService.querySinglePk(pkId);
         pkDetail.setGeneticPriority(appService.查询优先级(pkId,1));
@@ -74,7 +74,7 @@ public class 添加相册到主页预览 {
     @RequestMapping(path="/addToNonGeneticHome",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
     public AppResponse addToNonGeneticHome(@RequestParam("pkId") String pkId,@RequestParam("value") int value,@RequestParam("password") String password) throws AppException, IOException {
-
+        appService.验证Password(password);
         appService.添加到主页预览(pkId,value,2);
         PkDetail pkDetail = pkService.querySinglePk(pkId);
         pkDetail.setGeneticPriority(appService.查询优先级(pkId,1));
@@ -89,7 +89,7 @@ public class 添加相册到主页预览 {
     @RequestMapping(path="/removePkFromHomPage",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
     public AppResponse removePkFromHomPage(@RequestParam("pkId") String pkId,@RequestParam("password") String password,@RequestParam("type") int type) throws AppException, IOException {
-
+        appService.验证Password(password);
         appService.移除主页预览(pkId,type);
 
 

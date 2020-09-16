@@ -57,7 +57,7 @@ public class PkEntity {
 
     private String selectCashierId;
 
-
+    private int complainTimes;
 
 
 

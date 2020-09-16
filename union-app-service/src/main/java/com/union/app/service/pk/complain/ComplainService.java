@@ -6,6 +6,9 @@ import com.union.app.dao.spi.filter.EntityFilterChain;
 import com.union.app.domain.pk.complain.Complain;
 import com.union.app.entity.pk.complain.ComplainEntity;
 import com.union.app.entity.pk.complain.ComplainStatu;
+import com.union.app.plateform.data.resultcode.AppException;
+import com.union.app.plateform.data.resultcode.AppResponse;
+import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.service.PkService;
@@ -55,7 +58,7 @@ public class ComplainService {
     public void 查询投诉信息(String pkId, String approverUserId, String userId) {
     }
 
-    public void 添加投诉(String pkId, String userId) {
+    public void 添加投诉(String pkId, String userId,String text) throws AppException {
         EntityFilterChain filter = EntityFilterChain.newFilterChain(ComplainEntity.class)
                 .compareFilter("pkId",CompareTag.Equal,pkId)
                 .andFilter()
@@ -64,11 +67,20 @@ public class ComplainService {
         if(ObjectUtils.isEmpty(complainEntity))
         {
             ComplainEntity newComplain = new ComplainEntity();
-
+            newComplain.setText(text);
             newComplain.setUserId(userId);
+
             newComplain.setPkId(pkId);
             newComplain.setComplainStatu(ComplainStatu.处理中);
+            newComplain.setUpdateTime(System.currentTimeMillis());
             daoService.insertEntity(newComplain);
+
+        }
+        else
+        {
+
+             throw AppException.buildException(PageAction.信息反馈框("错误","已投诉,不能重复投诉..."));
+
         }
 
 

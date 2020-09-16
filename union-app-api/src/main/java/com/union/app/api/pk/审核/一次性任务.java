@@ -100,8 +100,8 @@ public class 一次性任务 {
             {
                 valueStr = new ValueStr("", "没有找到您的图贴", "您可以在主题下分享您的图贴...");
             }
-
-            return AppResponse.buildResponse(PageAction.执行处理器("publish",valueStr));
+            return AppResponse.buildResponse(PageAction.前端数据更新("publish",true));
+//            return AppResponse.buildResponse(PageAction.执行处理器("publish",valueStr));
         }
 
         if(postEntity.getStatu() == PostStatu.审核中)
