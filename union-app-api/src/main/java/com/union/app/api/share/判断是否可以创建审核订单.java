@@ -45,20 +45,20 @@ public class 判断是否可以创建审核订单 {
 
 
 
-    @RequestMapping(path="/applyOrder",method = RequestMethod.GET)
-    @Transactional(rollbackOn = Exception.class)
-    public AppResponse getApplyOrder(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId) throws AppException, IOException {
-
-        String creatorId = pkService.querySinglePkEntity(pkId).getUserId();
-        return AppResponse.buildResponse(PageAction.执行处理器("createPayOrder",creatorId));
-
-
+//    @RequestMapping(path="/applyOrder",method = RequestMethod.GET)
+//    @Transactional(rollbackOn = Exception.class)
+//    public AppResponse getApplyOrder(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId) throws AppException, IOException {
+//
 //        String creatorId = pkService.querySinglePkEntity(pkId).getUserId();
-//        ApplyOrder applyOrder = userInfoService.查询或创建订单(pkId,userId,creatorId);
-
-
-    }
-
+//        return AppResponse.buildResponse(PageAction.执行处理器("createPayOrder",creatorId));
+//
+//
+////        String creatorId = pkService.querySinglePkEntity(pkId).getUserId();
+////        ApplyOrder applyOrder = userInfoService.查询或创建订单(pkId,userId,creatorId);
+//
+//
+//    }
+//
 
 
 }

@@ -35,7 +35,9 @@ public enum ConfigItem {
     USEREntity缓存数量("userentityCacheSize", "USERENTITY_CACHE_SIZE", "USEREntity缓存数量", "1000"),
     APPROVEMESSAGEEntity缓存数量("approveMessageentityCacheSize", "APPROVEMESSAGEENTITY_CACHE_SIZE", "APPROVEMESSAGE缓存数量", "1000"),
     APPROVECOMMENTEntity缓存数量("approveCommententityCacheSize", "APPROVECOMMENTENTITY_CACHE_SIZE", "APPROVEMESSAGE缓存数量", "1000"),
-    刷新主题个数("pageTopics", "REFRESH_PAGE_TOPICS", "刷新主题个数", "5");
+    刷新主题个数("pageTopics", "REFRESH_PAGE_TOPICS", "刷新主题个数", "5"),
+    遗传用户需发帖后解锁("allUserRealease", "USER_MODE_REALEASE","遗传用户需发帖后解锁" , "true"),
+    留言方式("commentStyle", "COMMENT_STYLE", "留言方式", "0");
 
 
 

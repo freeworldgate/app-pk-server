@@ -84,6 +84,9 @@ public class 创建内置PK {
     public AppResponse 删除预置PK(@RequestParam("password") String password,@RequestParam("pkId") String pkId) throws AppException, IOException {
         appService.验证Password(password);
 
+
+
+
         appService.移除主页预览(pkId);
         appService.移除预置表(pkId);
 //        pkService.删除预置的PK(pkId);

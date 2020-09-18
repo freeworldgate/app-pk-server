@@ -77,6 +77,7 @@ public class 设置内置PK参数 {
 //            return AppResponse.buildResponse(PageAction.信息反馈框("相册未添加到预览","相册未添加到预览"));
 //        }
         PkEntity pk = pkService.querySinglePkEntity(pkId);
+
         if(!(pk.getPkType() == PkType.内置相册 && pk.getIsInvite() == InviteType.邀请))
         {
             return AppResponse.buildResponse(PageAction.信息反馈框("非内置相册","非内置仅邀请相册不能设置"));

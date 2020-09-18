@@ -1,10 +1,12 @@
 package com.union.app.api.pk.审核;
 
+import com.union.app.common.config.AppConfigService;
 import com.union.app.domain.pk.ApproveButton;
 import com.union.app.domain.pk.Post;
 import com.union.app.domain.pk.审核.ApproveComment;
 import com.union.app.domain.pk.审核.ApproveUser;
 import com.union.app.entity.pk.PostEntity;
+import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.DataSet;
@@ -72,12 +74,18 @@ public class 查询审核信息2 {
         ApproveButton approveButton = approveService.获取审核按钮(pkId,postId,userId);
         dataSets.add(new DataSet("t1","审核图贴"));
         dataSets.add(new DataSet("button",approveButton));
-        dataSets.add(new DataSet("userPost",post));
+        dataSets.add(new DataSet("post",post));
         dataSets.add(new DataSet("pkComment",pkComment));
         dataSets.add(new DataSet("creator",pkService.queryPkCreator(pkId)));
         dataSets.add(new DataSet("date",TimeUtils.currentDate()));
         dataSets.add(new DataSet("pkId",pkId));
         dataSets.add(new DataSet("imgBack",appService.查询背景(4)));
+
+        dataSets.add(new DataSet("commentStyle",appService.获取留言方式(userId,pkId)));
+
+
+
+
         dataSets.add(new DataSet("t1","发布图贴"));
         dataSets.add(new DataSet("t2","审核留言"));
         dataSets.add(new DataSet("t3","留言"));

@@ -104,7 +104,7 @@ public class 查询审核信息1 {
         User creator = pkService.queryPkCreator(pkId);
 
 
-        String mediaId = dynamicService.查询PK群组二维码MediaId(pkId,currentDate);
+        String mediaId = dynamicService.查询PK群组二维码MediaId(pkId);
         DataSet dataSet8 = new DataSet("creator",creator);
         DataSet dataSet7 = new DataSet("mediaId",mediaId);
         DataSet dataSet9 = new DataSet("pkId",pkId);

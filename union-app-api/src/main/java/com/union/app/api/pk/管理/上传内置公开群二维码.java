@@ -48,8 +48,8 @@ public class 上传内置公开群二维码 {
     public AppResponse 上传群内置公开二维码(@RequestParam("password") String password,@RequestParam("pkId") String pkId,@RequestParam("passwd") String passwd,@RequestParam("url") String url) throws IOException, AppException {
         appService.验证Password(password);
         String mediaId = WeChatUtil.uploadImg2Wx(url);
-        dynamicService.设置内置公开PK群组二维码MediaId(pkId,mediaId);
-        dynamicService.设置内置公开PK群组二维码Url(pkId,url);
+        dynamicService.设置PK群组二维码MediaId(pkId,mediaId);
+        dynamicService.设置PK群组二维码Url(pkId,url);
 
 
         return AppResponse.buildResponse(PageAction.信息反馈框("更新群组成功","更新群组成功..."));

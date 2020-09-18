@@ -866,10 +866,10 @@ public class AppService {
         if(!approveService.是否已发布审核消息(pkId)){throw AppException.buildException(PageAction.信息反馈框("添加错误","榜单未初始化审核公告"));}
         PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
 
-        if(pkEntity.getMessageType() == MessageType.收费 && type == 2)
-        {
-            throw AppException.buildException(PageAction.信息反馈框("添加错误","收费榜单不可以添加到非遗传用户首页"));
-        }
+//        if(pkEntity.getMessageType() == MessageType.收费 && type == 2)
+//        {
+//            throw AppException.buildException(PageAction.信息反馈框("添加错误","收费榜单不可以添加到非遗传用户首页"));
+//        }
 
 
         EntityFilterChain filter2 = EntityFilterChain.newFilterChain(HomePagePk.class)
@@ -1600,16 +1600,17 @@ public class AppService {
                 .compareFilter("id",CompareTag.Equal,Integer.valueOf(id));
         ComplainEntity entity = daoService.querySingleEntity(ComplainEntity.class,filter);
         PostEntity postEntity = postService.查询用户帖(entity.getPkId(),entity.getUserId());
+        if(postEntity.getStatu() != PostStatu.上线)
+        {
+            postService.上线帖子(postEntity.getPkId(),postEntity.getPostId());
+            dynamicService.已审核(postEntity.getPkId(),postEntity.getPostId());
+            //记录一次有效投诉。
+            PkEntity pkEntity = pkService.querySinglePkEntity(entity.getPkId());
+            pkEntity.setComplainTimes(pkEntity.getComplainTimes() + 1);
+            daoService.updateEntity(pkEntity);
+        }
 
 
-        postService.上线帖子(postEntity.getPkId(),postEntity.getPostId());
-        dynamicService.已审核(postEntity.getPkId(),postEntity.getPostId());
-
-
-        //记录一次有效投诉。
-        PkEntity pkEntity = pkService.querySinglePkEntity(entity.getPkId());
-        pkEntity.setComplainTimes(pkEntity.getComplainTimes() + 1);
-        daoService.updateEntity(pkEntity);
         entity.setComplainStatu(ComplainStatu.已处理);
         daoService.updateEntity(entity);
 
@@ -1645,6 +1646,32 @@ public class AppService {
 
     public List<PkDetail> 随机主题(String userId,String fromUser) {
         return pkDataService.随机列表(userId,fromUser);
+
+    }
+
+    public int 获取留言方式(String userId, String pkId) {
+        int commentStyle = AppConfigService.getConfigAsInteger(ConfigItem.留言方式);
+        if(commentStyle == 3)
+        {
+//            PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
+            if(userService.是否是遗传用户(userId))
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
+
+        }
+        else if(commentStyle == 2)
+        {
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }
 
     }
 }

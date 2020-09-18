@@ -13,6 +13,7 @@ import com.union.app.domain.pk.审核.ApproveComment;
 import com.union.app.domain.user.User;
 import com.union.app.entity.pk.*;
 import com.union.app.plateform.data.resultcode.AppException;
+import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.common.dao.PkCacheService;
@@ -147,67 +148,88 @@ public class PkService {
         if(!ObjectUtils.isEmpty(pk.getMessageType())){pkDetail.setCharge(new KeyNameValue(pk.getMessageType().getStatu(),pk.getMessageType().getStatuStr()));}
         pkDetail.setPkStatu(ObjectUtils.isEmpty(pk.getAlbumStatu())?new KeyNameValue(PkStatu.审核中.getStatu(),PkStatu.审核中.getStatuStr()):new KeyNameValue(pk.getAlbumStatu().getStatu(),pk.getAlbumStatu().getStatuStr()));
         pkDetail.setApproveMessage(approveService.查询PK公告消息(pkId));
-        if(pk.getPkType()==PkType.内置相册 && pk.getIsInvite() == InviteType.邀请 )
+
+        pkDetail.setApproved( "已发布(" + redisSortSetService.size(CacheKeyName.榜主已审核列表(pkDetail.getPkId())) +")");
+        pkDetail.setApproving("发布中(" + redisSortSetService.size(CacheKeyName.榜主审核中列表(pkDetail.getPkId())) + ")");
+
+        GroupInfo groupInfo = new GroupInfo();
+        boolean hasGroup = !StringUtils.isBlank(dynamicService.查询PK群组二维码MediaId(pkDetail.getPkId()));
+        groupInfo.setName("群组");
+        if(hasGroup)
         {
-                pkDetail.setApproved(  "已审核(" + dynamicService.查看内置相册已审核榜帖(pkId) + ")");
-                pkDetail.setApproving( "审核中" + dynamicService.查看内置相册审核中榜帖(pkId) + ")");
-                GroupInfo groupInfo = new GroupInfo();
-                groupInfo.setName("群组");
-                if(dynamicService.查看内置相册群组状态(pkId))
-                {
-                    groupInfo.setMode(1);
-                    groupInfo.setIconUrl(IconUrl.有效微信标识.getUrl());
-                }
-                else
-                {
-                    groupInfo.setMode(2);
-                    groupInfo.setIconUrl(IconUrl.无效微信标识.getUrl());
-                }
-                pkDetail.setGroupInfo(groupInfo);
-
-        }
-        else if(pk.getPkType()==PkType.内置相册 && pk.getIsInvite() == InviteType.公开 )
-        {
-            pkDetail.setApproved( "已审核(" + redisSortSetService.size(CacheKeyName.榜主已审核列表(pkDetail.getPkId())) + ")");
-            pkDetail.setApproving("审核中(" + redisSortSetService.size(CacheKeyName.榜主审核中列表(pkDetail.getPkId())) + ")");
-
-            GroupInfo groupInfo = new GroupInfo();
-            boolean hasGroup = !StringUtils.isBlank(dynamicService.查询内置公开PK群组二维码MediaId(pkDetail.getPkId() ));
-            groupInfo.setName("群组");
-            if(hasGroup)
-            {
-                groupInfo.setMode(1);
-                groupInfo.setIconUrl(IconUrl.有效微信标识.getUrl());
-            }
-            else
-            {
-                groupInfo.setMode(2);
-                groupInfo.setIconUrl(IconUrl.无效微信标识.getUrl());
-            }
-            pkDetail.setGroupInfo(groupInfo);
-
+            groupInfo.setMode(1);
+            groupInfo.setIconUrl(IconUrl.有效微信标识.getUrl());
         }
         else
         {
-            pkDetail.setApproved( "已审核(" + redisSortSetService.size(CacheKeyName.榜主已审核列表(pkDetail.getPkId())) +")");
-            pkDetail.setApproving("审核中(" + redisSortSetService.size(CacheKeyName.榜主审核中列表(pkDetail.getPkId())) + ")");
-
-                GroupInfo groupInfo = new GroupInfo();
-                boolean hasGroup = !StringUtils.isBlank(dynamicService.查询PK群组二维码MediaId(pkDetail.getPkId(),new Date() ));
-                groupInfo.setName("群组");
-                if(hasGroup)
-                {
-                    groupInfo.setMode(1);
-                    groupInfo.setIconUrl(IconUrl.有效微信标识.getUrl());
-                }
-                else
-                {
-                    groupInfo.setMode(2);
-                    groupInfo.setIconUrl(IconUrl.无效微信标识.getUrl());
-                }
-                pkDetail.setGroupInfo(groupInfo);
-
+            groupInfo.setMode(2);
+            groupInfo.setIconUrl(IconUrl.无效微信标识.getUrl());
         }
+        pkDetail.setGroupInfo(groupInfo);
+
+
+
+//        if(pk.getPkType()==PkType.内置相册 && pk.getIsInvite() == InviteType.邀请 )
+//        {
+////                pkDetail.setApproved(  "已发布(" + dynamicService.查看内置相册已审核榜帖(pkId) + ")");
+////                pkDetail.setApproving( "发布中" + dynamicService.查看内置相册审核中榜帖(pkId) + ")");
+////                GroupInfo groupInfo = new GroupInfo();
+////                groupInfo.setName("群组");
+////                if(dynamicService.查看内置相册群组状态(pkId))
+////                {
+////                    groupInfo.setMode(1);
+////                    groupInfo.setIconUrl(IconUrl.有效微信标识.getUrl());
+////                }
+////                else
+////                {
+////                    groupInfo.setMode(2);
+////                    groupInfo.setIconUrl(IconUrl.无效微信标识.getUrl());
+////                }
+////                pkDetail.setGroupInfo(groupInfo);
+//
+//        }
+//        else if(pk.getPkType()==PkType.内置相册 && pk.getIsInvite() == InviteType.公开 )
+//        {
+////            pkDetail.setApproved( "已发布(" + redisSortSetService.size(CacheKeyName.榜主已审核列表(pkDetail.getPkId())) + ")");
+////            pkDetail.setApproving("发布中(" + redisSortSetService.size(CacheKeyName.榜主审核中列表(pkDetail.getPkId())) + ")");
+////
+////            GroupInfo groupInfo = new GroupInfo();
+////            boolean hasGroup = !StringUtils.isBlank(dynamicService.查询内置公开PK群组二维码MediaId(pkDetail.getPkId() ));
+////            groupInfo.setName("群组");
+////            if(hasGroup)
+////            {
+////                groupInfo.setMode(1);
+////                groupInfo.setIconUrl(IconUrl.有效微信标识.getUrl());
+////            }
+////            else
+////            {
+////                groupInfo.setMode(2);
+////                groupInfo.setIconUrl(IconUrl.无效微信标识.getUrl());
+////            }
+////            pkDetail.setGroupInfo(groupInfo);
+//
+//        }
+//        else
+//        {
+////            pkDetail.setApproved( "已发布(" + redisSortSetService.size(CacheKeyName.榜主已审核列表(pkDetail.getPkId())) +")");
+////            pkDetail.setApproving("发布中(" + redisSortSetService.size(CacheKeyName.榜主审核中列表(pkDetail.getPkId())) + ")");
+////
+////                GroupInfo groupInfo = new GroupInfo();
+////                boolean hasGroup = !StringUtils.isBlank(dynamicService.查询PK群组二维码MediaId(pkDetail.getPkId()));
+////                groupInfo.setName("群组");
+////                if(hasGroup)
+////                {
+////                    groupInfo.setMode(1);
+////                    groupInfo.setIconUrl(IconUrl.有效微信标识.getUrl());
+////                }
+////                else
+////                {
+////                    groupInfo.setMode(2);
+////                    groupInfo.setIconUrl(IconUrl.无效微信标识.getUrl());
+////                }
+////                pkDetail.setGroupInfo(groupInfo);
+//
+//        }
         pkDetail.setUserBack(appService.查询背景(0));
         return pkDetail;
     }
@@ -229,67 +251,92 @@ public class PkService {
         if(!ObjectUtils.isEmpty(pk.getMessageType())){pkDetail.setCharge(new KeyNameValue(pk.getMessageType().getStatu(),pk.getMessageType().getStatuStr()));}
         pkDetail.setPkStatu(ObjectUtils.isEmpty(pk.getAlbumStatu())?new KeyNameValue(PkStatu.审核中.getStatu(),PkStatu.审核中.getStatuStr()):new KeyNameValue(pk.getAlbumStatu().getStatu(),pk.getAlbumStatu().getStatuStr()));
         pkDetail.setApproveMessage(approveService.查询PK公告消息(pkId));
-        if(pk.getPkType()==PkType.内置相册 && pk.getIsInvite() == InviteType.邀请 )
+
+        pkDetail.setApproved( "已发布(" + redisSortSetService.size(CacheKeyName.榜主已审核列表(pkDetail.getPkId())) + ")");
+        pkDetail.setApproving("发布中(" + redisSortSetService.size(CacheKeyName.榜主审核中列表(pkDetail.getPkId())) + ")");
+
+        GroupInfo groupInfo = new GroupInfo();
+        boolean hasGroup = !StringUtils.isBlank(dynamicService.查询PK群组二维码MediaId(pkDetail.getPkId()));
+        groupInfo.setName("群组");
+        if(hasGroup)
         {
-            pkDetail.setApproved(dynamicService.查看内置相册已审核榜帖(pkId) + "已审核");
-            pkDetail.setApproving(dynamicService.查看内置相册审核中榜帖(pkId) + "审核中");
-            GroupInfo groupInfo = new GroupInfo();
-            groupInfo.setName("群组");
-            if(dynamicService.查看内置相册群组状态(pkId))
-            {
-                groupInfo.setMode(1);
-                groupInfo.setIconUrl(IconUrl.有效微信标识.getUrl());
-            }
-            else
-            {
-                groupInfo.setMode(2);
-                groupInfo.setIconUrl(IconUrl.无效微信标识.getUrl());
-            }
-            pkDetail.setGroupInfo(groupInfo);
-
-        }
-        else if(pk.getPkType()==PkType.内置相册 && pk.getIsInvite() == InviteType.公开 )
-        {
-            pkDetail.setApproved(redisSortSetService.size(CacheKeyName.榜主已审核列表(pkDetail.getPkId())) + "已审核");
-            pkDetail.setApproving(redisSortSetService.size(CacheKeyName.榜主审核中列表(pkDetail.getPkId())) + "审核中");
-
-            GroupInfo groupInfo = new GroupInfo();
-            boolean hasGroup = !StringUtils.isBlank(dynamicService.查询内置公开PK群组二维码MediaId(pkDetail.getPkId() ));
-            groupInfo.setName("群组");
-            if(hasGroup)
-            {
-                groupInfo.setMode(1);
-                groupInfo.setIconUrl(IconUrl.有效微信标识.getUrl());
-            }
-            else
-            {
-                groupInfo.setMode(2);
-                groupInfo.setIconUrl(IconUrl.无效微信标识.getUrl());
-            }
-            pkDetail.setGroupInfo(groupInfo);
-
+            groupInfo.setMode(1);
+            groupInfo.setIconUrl(IconUrl.有效微信标识.getUrl());
         }
         else
         {
-            pkDetail.setApproved(redisSortSetService.size(CacheKeyName.榜主已审核列表(pkDetail.getPkId())) + "已审核");
-            pkDetail.setApproving(redisSortSetService.size(CacheKeyName.榜主审核中列表(pkDetail.getPkId())) + "审核中");
-
-            GroupInfo groupInfo = new GroupInfo();
-            boolean hasGroup = !StringUtils.isBlank(dynamicService.查询PK群组二维码MediaId(pkDetail.getPkId(),new Date() ));
-            groupInfo.setName("群组");
-            if(hasGroup)
-            {
-                groupInfo.setMode(1);
-                groupInfo.setIconUrl(IconUrl.有效微信标识.getUrl());
-            }
-            else
-            {
-                groupInfo.setMode(2);
-                groupInfo.setIconUrl(IconUrl.无效微信标识.getUrl());
-            }
-            pkDetail.setGroupInfo(groupInfo);
-
+            groupInfo.setMode(2);
+            groupInfo.setIconUrl(IconUrl.无效微信标识.getUrl());
         }
+        pkDetail.setGroupInfo(groupInfo);
+
+
+
+//        if(pk.getPkType()==PkType.内置相册 && pk.getIsInvite() == InviteType.邀请 )
+//        {
+//            pkDetail.setApproved( "已发布(" + dynamicService.查看内置相册已审核榜帖(pkId) + ")");
+//            pkDetail.setApproving("发布中(" + dynamicService.查看内置相册审核中榜帖(pkId)+ ")");
+//            GroupInfo groupInfo = new GroupInfo();
+//            groupInfo.setName("群组");
+//            if(dynamicService.查看内置相册群组状态(pkId))
+//            {
+//                groupInfo.setMode(1);
+//                groupInfo.setIconUrl(IconUrl.有效微信标识.getUrl());
+//            }
+//            else
+//            {
+//                groupInfo.setMode(2);
+//                groupInfo.setIconUrl(IconUrl.无效微信标识.getUrl());
+//            }
+//            pkDetail.setGroupInfo(groupInfo);
+//
+//        }
+//        else if(pk.getPkType()==PkType.内置相册 && pk.getIsInvite() == InviteType.公开 )
+//        {
+//
+//            pkDetail.setApproved( "已发布(" + redisSortSetService.size(CacheKeyName.榜主已审核列表(pkDetail.getPkId())) + ")");
+//            pkDetail.setApproving("发布中(" + redisSortSetService.size(CacheKeyName.榜主审核中列表(pkDetail.getPkId())) + ")");
+//
+//            GroupInfo groupInfo = new GroupInfo();
+//            boolean hasGroup = !StringUtils.isBlank(dynamicService.查询内置公开PK群组二维码MediaId(pkDetail.getPkId() ));
+//            groupInfo.setName("群组");
+//            if(hasGroup)
+//            {
+//                groupInfo.setMode(1);
+//                groupInfo.setIconUrl(IconUrl.有效微信标识.getUrl());
+//            }
+//            else
+//            {
+//                groupInfo.setMode(2);
+//                groupInfo.setIconUrl(IconUrl.无效微信标识.getUrl());
+//            }
+//            pkDetail.setGroupInfo(groupInfo);
+//
+//        }
+//        else
+//        {
+////            pkDetail.setApproved(redisSortSetService.size(CacheKeyName.榜主已审核列表(pkDetail.getPkId())) + "已审核");
+////            pkDetail.setApproving(redisSortSetService.size(CacheKeyName.榜主审核中列表(pkDetail.getPkId())) + "审核中");
+//
+//            pkDetail.setApproved( "已发布(" + redisSortSetService.size(CacheKeyName.榜主已审核列表(pkDetail.getPkId())) + ")");
+//            pkDetail.setApproving("发布中(" + redisSortSetService.size(CacheKeyName.榜主审核中列表(pkDetail.getPkId())) + ")");
+//
+//            GroupInfo groupInfo = new GroupInfo();
+//            boolean hasGroup = !StringUtils.isBlank(dynamicService.查询PK群组二维码MediaId(pkDetail.getPkId()));
+//            groupInfo.setName("群组");
+//            if(hasGroup)
+//            {
+//                groupInfo.setMode(1);
+//                groupInfo.setIconUrl(IconUrl.有效微信标识.getUrl());
+//            }
+//            else
+//            {
+//                groupInfo.setMode(2);
+//                groupInfo.setIconUrl(IconUrl.无效微信标识.getUrl());
+//            }
+//            pkDetail.setGroupInfo(groupInfo);
+//
+//        }
         pkDetail.setUserBack(appService.查询背景(0));
         return pkDetail;
     }
@@ -298,6 +345,7 @@ public class PkService {
 
     public User queryPkCreator(String pkId){
         PkEntity pkEntity =  querySinglePkEntity(pkId);
+
         User user = userService.queryUser(pkEntity.getUserId());
         return user;
     }
@@ -359,7 +407,7 @@ public class PkService {
         pkEntity.setTopic(topic);
         pkEntity.setWatchWord(watchWord);
         pkEntity.setIsInvite(InviteType.公开);
-        pkEntity.setMessageType(MessageType.不收费);
+        pkEntity.setMessageType(isCharge?MessageType.收费:MessageType.不收费);
         pkEntity.setUserId(appService.随机用户());
         pkEntity.setAlbumStatu(PkStatu.已审核);
         daoService.insertEntity(pkEntity);
@@ -386,11 +434,11 @@ public class PkService {
 
 
     public boolean 是否更新今日审核群(PkEntity pkEntity) {
-        if(pkEntity.getPkType() == PkType.内置相册 && pkEntity.getIsInvite() == InviteType.公开)
-        {
-            return !StringUtils.isBlank(dynamicService.查询内置公开PK群组二维码MediaId(pkEntity.getPkId()));
-        }
-        return !StringUtils.isBlank(dynamicService.查询PK群组二维码MediaId(pkEntity.getPkId(),new Date()));
+//        if(pkEntity.getPkType() == PkType.内置相册 && pkEntity.getIsInvite() == InviteType.公开)
+//        {
+//            return !StringUtils.isBlank(dynamicService.查询内置公开PK群组二维码MediaId(pkEntity.getPkId()));
+//        }
+        return !StringUtils.isBlank(dynamicService.查询PK群组二维码MediaId(pkEntity.getPkId()));
     }
 
     public boolean 是否更新今日公告(String pkId) throws UnsupportedEncodingException {
@@ -418,6 +466,10 @@ public class PkService {
 
     public void 删除PK(String userId, String pkId) throws AppException {
         PkEntity pkEntity = this.querySinglePkEntity(pkId);
+        //如果去掉此步骤，则可能要删除两次PK才能成功，因为JPA的原因
+        pkCacheService.remove(pkEntity);
+        pkEntity = this.querySinglePkEntity(pkId);
+
         if(pkEntity.getAlbumStatu() == PkStatu.审核中)
         {
             daoService.deleteEntity(pkEntity);
@@ -446,9 +498,14 @@ public class PkService {
     }
     public void 修改PrePK(String pkId,String topic, String watchWord) throws AppException, UnsupportedEncodingException {
         PkEntity pkEntity = this.querySinglePkEntity(pkId);
-        pkEntity.setTopic(topic);
-        pkEntity.setWatchWord(watchWord);
-        daoService.updateEntity(pkEntity);
+
+            pkEntity.setTopic(topic);
+            pkEntity.setWatchWord(watchWord);
+            daoService.updateEntity(pkEntity);
+            return ;
+
+
+
 
     }
 

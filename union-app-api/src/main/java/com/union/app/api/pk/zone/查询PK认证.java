@@ -98,11 +98,11 @@ public class 查询PK认证 {
                 PkCashierEntity taobaoUrl = appService.获取淘宝(pkId);
 
                 dataSets.add(new DataSet("link1Name", "微店"));
-                dataSets.add(new DataSet("link1Icon", weidianUrl.getLinkUrl()));
+                dataSets.add(new DataSet("link1Icon", ObjectUtils.isEmpty(weidianUrl)?"":weidianUrl.getLinkUrl()));
                 dataSets.add(new DataSet("link1Url", "/pages/pk/message/message?pkId=" + pkId + "&userId=" + userId + "&type=2"));
 
                 dataSets.add(new DataSet("link2Name", "淘宝"));
-                dataSets.add(new DataSet("link2Icon", taobaoUrl.getLinkUrl()));
+                dataSets.add(new DataSet("link2Icon", ObjectUtils.isEmpty(taobaoUrl)?"":taobaoUrl.getLinkUrl()));
                 dataSets.add(new DataSet("link2Url", "/pages/pk/message/message?pkId=" + pkId + "&userId=" + userId + "&type=3"));
             }
 

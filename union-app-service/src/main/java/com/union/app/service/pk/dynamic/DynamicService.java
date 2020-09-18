@@ -8,6 +8,8 @@ import com.union.app.domain.pk.PkDynamic.*;
 import com.union.app.domain.pk.Post;
 import com.union.app.domain.pk.apply.KeyNameValue;
 import com.union.app.domain.工具.RandomUtil;
+import com.union.app.entity.pk.PkEntity;
+import com.union.app.entity.pk.PkType;
 import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.constant.常量值;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
@@ -520,7 +522,7 @@ public class DynamicService {
 
 
 
-    public List<Post> 查询已审核指定范围的Post(String pkId,int page) throws UnsupportedEncodingException {
+    public List<Post> 查询已审核指定范围的Post(String userId,String pkId,int page) throws UnsupportedEncodingException {
 
 
         List<Post> posts = new ArrayList<>();
@@ -537,13 +539,10 @@ public class DynamicService {
                 posts.add(post);
             }
         }
-
-
-        for(Post post:posts)
-        {
-            post.setApproveComment(approveService.获取留言信息(pkId,post.getPostId()));
+        PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
+        for (Post post : posts) {
+            post.setApproveComment(approveService.获取留言信息(pkId, post.getPostId()));
         }
-
         return posts;
 
 
@@ -601,28 +600,28 @@ public class DynamicService {
 
     }
 
-    public void 设置PK群组二维码MediaId(String pkId, String mediaId,Date date) {
-        redisMapService.setStringValue(CacheKeyName.群组二维码(date),pkId,mediaId);
+    public void 设置PK群组二维码MediaId(String pkId, String mediaId) {
+        redisMapService.setStringValue(CacheKeyName.群组二维码(),pkId,mediaId);
     }
-    public void 设置内置公开PK群组二维码MediaId(String pkId, String mediaId) {
-        redisMapService.setStringValue(CacheKeyName.内置公开PK群组二维码(),pkId,mediaId);
+//    public void 设置内置公开PK群组二维码MediaId(String pkId, String mediaId) {
+//        redisMapService.setStringValue(CacheKeyName.内置公开PK群组二维码(),pkId,mediaId);
+//    }
+    public String 查询PK群组二维码MediaId(String pkId) {
+        return redisMapService.getStringValue(CacheKeyName.群组二维码(),pkId);
     }
-    public String 查询PK群组二维码MediaId(String pkId,Date date) {
-        return redisMapService.getStringValue(CacheKeyName.群组二维码(date),pkId);
+    public void 设置PK群组二维码Url(String pkId, String url) {
+        redisMapService.setStringValue(CacheKeyName.群组URL(),pkId,url);
     }
-    public void 设置PK群组二维码Url(String pkId, String url,Date date) {
-        redisMapService.setStringValue(CacheKeyName.群组URL(date),pkId,url);
-    }
-    public void 设置内置公开PK群组二维码Url(String pkId, String url) {
-        redisMapService.setStringValue(CacheKeyName.内置公开PK群组URL(),pkId,url);
-    }
-    public String 查询PK群组二维码Url(String pkId,Date date) {
-        return redisMapService.getStringValue(CacheKeyName.群组URL(date),pkId);
+//    public void 设置内置公开PK群组二维码Url(String pkId, String url) {
+//        redisMapService.setStringValue(CacheKeyName.内置公开PK群组URL(),pkId,url);
+//    }
+    public String 查询PK群组二维码Url(String pkId) {
+        return redisMapService.getStringValue(CacheKeyName.群组URL(),pkId);
     }
 
-    public String 查询内置公开PK群组二维码Url(String pkId) {
-        return redisMapService.getStringValue(CacheKeyName.内置公开PK群组URL(),pkId);
-    }
+//    public String 查询内置公开PK群组二维码Url(String pkId) {
+////        return redisMapService.getStringValue(CacheKeyName.内置公开PK群组URL(),pkId);
+////    }
     public String 获取当前拉取图片(String fromUserName) {
 
         return redisMapService.getStringValue(CacheKeyName.拉取资源图片(),fromUserName);
@@ -710,9 +709,9 @@ public class DynamicService {
 
     }
 
-    public String 查询内置公开PK群组二维码MediaId(String pkId) {
-        return redisMapService.getStringValue(CacheKeyName.内置公开PK群组二维码(),pkId);
-    }
+//    public String 查询内置公开PK群组二维码MediaId(String pkId) {
+//        return redisMapService.getStringValue(CacheKeyName.内置公开PK群组二维码(),pkId);
+//    }
 
     public void 更新内置相册参数(String pkId) {
         if(RandomUtil.getRandomNumber()%2 == 0){

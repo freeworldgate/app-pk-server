@@ -404,6 +404,7 @@ public class PostService {
         PostEntity postEntity = this.查询帖子ById(postId);
         if(postEntity.getStatu() == PostStatu.上线){return;}
         postEntity.setStatu(PostStatu.上线);
+        postEntity.setApproveStatu(ApproveStatu.已处理);
         daoService.updateEntity(postEntity);
         ApproveCommentEntity approveCommentEntity = approveService.查询留言(pkId,postId);
         if(!ObjectUtils.isEmpty(approveCommentEntity))

@@ -3,10 +3,7 @@ package com.union.app.api.pk.zone;
 import com.union.app.common.OSS存储.CacheStorage;
 import com.union.app.common.OSS存储.OssStorage;
 import com.union.app.domain.pk.Post;
-import com.union.app.entity.pk.InvitePkEntity;
-import com.union.app.entity.pk.InviteType;
-import com.union.app.entity.pk.PkEntity;
-import com.union.app.entity.pk.PkType;
+import com.union.app.entity.pk.*;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.PageAction;
@@ -64,26 +61,40 @@ public class 查询群组二维码 {
     @RequestMapping(path="/viewGroupCode",method = RequestMethod.GET)
     public AppResponse 查询用户的POST(@RequestParam("pkId") String pkId, @RequestParam("userId") String userId) throws AppException, IOException {
         PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
-        if(pkEntity.getPkType()==PkType.内置相册 && pkEntity.getIsInvite() == InviteType.邀请 )
-        {
-            return AppResponse.buildResponse(PageAction.信息反馈框("仅邀请用户可见","您不是邀请用户"));
-        }
+
+
+//        if(pkEntity.getPkType()==PkType.内置相册 && pkEntity.getIsInvite() == InviteType.邀请 )
+//        {
+//            return AppResponse.buildResponse(PageAction.信息反馈框("仅邀请用户可见","您不是邀请用户"));
+//        }
         if(pkService.isPkCreator(pkId,userId)){return AppResponse.buildResponse(PageAction.页面跳转("/pages/pk/message/message?pkId=" + pkId + "&type=1",true));}
 
 
-        if(!pkService.是否更新今日审核群(pkEntity)){return AppResponse.buildResponse(PageAction.信息反馈框("未更新今日审核群","请稍后再试..."));}
+        if(!pkService.是否更新今日审核群(pkEntity)){return AppResponse.buildResponse(PageAction.信息反馈框("未上传主题群","请稍后再试..."));}
 
-
-
-        if(pkEntity.getIsInvite() == InviteType.邀请)
+        PostEntity postEntity = postService.查询用户帖(pkId,userId);
+        if(ObjectUtils.isEmpty(postEntity))
         {
-            InvitePkEntity invitePkEntity = appService.queryInvitePk(pkId,userId);
-            if(ObjectUtils.isEmpty(invitePkEntity))
-            {
-                return AppResponse.buildResponse(PageAction.信息反馈框("非邀请用户","仅邀请用户可见"));
-            }
-
+            return AppResponse.buildResponse(PageAction.信息反馈框("用户不可见","仅发布图贴用户可见..."));
         }
+        if(postEntity.getStatu() != PostStatu.上线)
+        {
+            return AppResponse.buildResponse(PageAction.信息反馈框("用户不可见","您的图贴尚未发布，请发布后再查看主题群..."));
+        }
+
+
+
+
+//
+//        if(pkEntity.getIsInvite() == InviteType.邀请)
+//        {
+//            InvitePkEntity invitePkEntity = appService.queryInvitePk(pkId,userId);
+//            if(ObjectUtils.isEmpty(invitePkEntity))
+//            {
+//                return AppResponse.buildResponse(PageAction.信息反馈框("非邀请用户","仅邀请用户可见"));
+//            }
+//
+//        }
 
 
 

@@ -16,6 +16,8 @@ import com.union.app.domain.user.User;
 import com.union.app.entity.用户.UserEntity;
 import com.union.app.entity.用户.support.UserType;
 import com.union.app.plateform.constant.ConfigItem;
+import com.union.app.plateform.data.resultcode.AppResponse;
+import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.service.pk.dynamic.DynamicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -388,5 +390,35 @@ public class UserService {
     }
 
     public void 修改PKUser(String pkId, String userId) {
+    }
+
+    public boolean 用户解锁(String userId) {
+        if(!AppConfigService.getConfigAsBoolean(ConfigItem.遗传用户需发帖后解锁)){return true;}
+
+
+
+        UserEntity userEntity = userService.queryUserEntity(userId);
+        if(userEntity.getUserType() == UserType.重点用户 && userEntity.getPostTimes() < 1)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+
+
+    }
+
+    public boolean 是否有可用图贴(String userId) {
+        UserEntity userEntity = userService.queryUserEntity(userId);
+        if(userEntity.getPostTimes() > userEntity.getPkTimes())
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }

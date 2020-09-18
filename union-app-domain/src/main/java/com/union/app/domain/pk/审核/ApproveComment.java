@@ -10,6 +10,7 @@ import lombok.Setter;
 public class ApproveComment {
 
     private User user;
+    private User creator;
     private String pkId;
     private String postId;
     private String approverId;

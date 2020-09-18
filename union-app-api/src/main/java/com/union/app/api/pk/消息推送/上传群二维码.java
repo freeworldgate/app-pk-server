@@ -81,10 +81,19 @@ public class 上传群二维码 {
 //                String oldMediaId = dynamicService.查询PK群组二维码MediaId(pkId,currentDate);
 //                if(!StringUtils.isBlank(oldMediaId)){ return AppResponse.buildResponse(PageAction.消息级别提示框(Level.错误消息,"今日已更新")); }
             String mediaId = WeChatUtil.uploadImg2Wx(url);
+//            PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
 
-            dynamicService.设置PK群组二维码MediaId(pkId,mediaId,currentDate);
-            dynamicService.设置PK群组二维码Url(pkId,url,currentDate);
+            dynamicService.设置PK群组二维码MediaId(pkId, mediaId);
+            dynamicService.设置PK群组二维码Url(pkId, url);
 
+
+//            if(pkEntity.getPkType() == PkType.内置相册 && pkEntity.getIsInvite() == InviteType.公开) {
+//                dynamicService.设置内置公开PK群组二维码MediaId(pkId, mediaId);
+//                dynamicService.设置内置公开PK群组二维码Url(pkId, url);
+//            }else {
+//                dynamicService.设置PK群组二维码MediaId(pkId, mediaId);
+//                dynamicService.设置PK群组二维码Url(pkId, url);
+//            }
 
 
 
@@ -151,22 +160,26 @@ public class 上传群二维码 {
             String url ="";
             String mediaId ="";
             PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
-            if(pkEntity.getPkType() == PkType.内置相册 && pkEntity.getIsInvite() == InviteType.公开)
-            {
-                url = dynamicService.查询内置公开PK群组二维码Url(pkId);
-                mediaId = dynamicService.查询内置公开PK群组二维码MediaId(pkId);
-            }
-            else
-            {
-                 url = dynamicService.查询PK群组二维码Url(pkId,currentDate);
-                 mediaId = dynamicService.查询PK群组二维码MediaId(pkId,currentDate);
-            }
+            url = dynamicService.查询PK群组二维码Url(pkId);
+            mediaId = dynamicService.查询PK群组二维码MediaId(pkId);
+
+
+//            if(pkEntity.getPkType() == PkType.内置相册 && pkEntity.getIsInvite() == InviteType.公开)
+//            {
+//                url = dynamicService.查询内置公开PK群组二维码Url(pkId);
+//                mediaId = dynamicService.查询内置公开PK群组二维码MediaId(pkId);
+//            }
+//            else
+//            {
+//                 url = dynamicService.查询PK群组二维码Url(pkId);
+//                 mediaId = dynamicService.查询PK群组二维码MediaId(pkId);
+//            }
 
 
 
             dataSet2 = new DataSet("imgUrl",url);
             dataSet3 = new DataSet("mediaId",mediaId);
-            dataSet4 = new DataSet("title",TimeUtils.currentDate() + "日审核群");
+            dataSet4 = new DataSet("title","主题群");
 
             if(StringUtils.equals(userId,creator.getUserId()))
             {
@@ -186,7 +199,7 @@ public class 上传群二维码 {
 
                     dataSet5 = new DataSet("mode", "");
                     dataSet6 = new DataSet("t1", "空空如也");
-                    dataSet7 = new DataSet("t2", "等待用户更新今日审核群...");
+                    dataSet7 = new DataSet("t2", "等待用户更新主题群...");
 
 
 

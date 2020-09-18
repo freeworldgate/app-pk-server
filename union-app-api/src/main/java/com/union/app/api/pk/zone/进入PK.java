@@ -7,6 +7,7 @@ import com.union.app.domain.pk.PkDetail;
 import com.union.app.domain.pk.TipConstant;
 import com.union.app.domain.pk.ValueStr;
 import com.union.app.entity.pk.*;
+import com.union.app.entity.用户.UserEntity;
 import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
@@ -99,7 +100,7 @@ public class 进入PK {
 
                 if(userService.是否是遗传用户(userId)) {
                     String url = "/pages/pk/selectPker/selectPker?pkId=" + pkId;
-                    ValueStr valueStr = new ValueStr(url, "激活榜单", "激活榜单，审核通过后可以使用...");
+                    ValueStr valueStr = new ValueStr(url, "激活主题", "确定要激活主题?,审核通过后可以使用...");
                     return AppResponse.buildResponse(PageAction.执行处理器("approve", valueStr));
                 }
                 else
@@ -108,7 +109,7 @@ public class 进入PK {
                     if(org.springframework.util.ObjectUtils.isEmpty(active))
                     {
                         String url = "";
-                        ValueStr valueStr = new ValueStr(url, "发布榜单", "确定发布榜单...");
+                        ValueStr valueStr = new ValueStr(url, "发布主题", "确定发布主题...");
                         return AppResponse.buildResponse(PageAction.执行处理器("doApprove", valueStr));
                     }
                     else
@@ -124,19 +125,46 @@ public class 进入PK {
         else
         {
 
-            if(ObjectUtils.equals(pkEntity.getAlbumStatu(),PkStatu.审核中)){
 
-                return AppResponse.buildResponse(PageAction.信息反馈框("相册未激活","相册未激活,请稍后再试"));
-
-            }
-            if(ObjectUtils.equals(pkEntity.getIsInvite(),InviteType.邀请))
+            if(userService.用户解锁(userId))
             {
-                InvitePkEntity invitePkEntity = appService.queryInvitePk(pkId,userId);
-                if(org.springframework.util.ObjectUtils.isEmpty(invitePkEntity))
-                {
-                    return AppResponse.buildResponse(PageAction.信息反馈框("仅邀请用户可见","您不是邀请用户"));
-                }
+                return AppResponse.buildResponse(PageAction.页面跳转("/pages/pk/pk/pk?pkId=" + pkId,true));
+
             }
+            else
+            {
+                return AppResponse.buildResponse(PageAction.信息反馈框("用户未解锁","至少发布一次图贴，解锁后可以查看和发布主题"));
+            }
+
+
+
+
+//
+//
+//            if(!userService.是否是遗传用户(userId))
+//            {
+//                return AppResponse.buildResponse(PageAction.页面跳转("/pages/pk/pk/pk?pkId=" + pkId,true));
+//            }
+//            else
+//            {
+//                  UserEntity userEntity = userService.queryUserEntity(userId);
+//                 if(userEntity.getPostTimes() < 1)
+//                 {
+//                     return AppResponse.buildResponse(PageAction.信息反馈框("用户未解锁","至少发布一次图贴，解锁后可以查看和发布主题"));
+//                 }
+//                 else
+//                 {
+//                     return AppResponse.buildResponse(PageAction.页面跳转("/pages/pk/pk/pk?pkId=" + pkId,true));
+//                 }
+//
+//
+//
+//
+//
+//
+//
+//            }
+
         }
 
 

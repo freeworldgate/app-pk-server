@@ -62,7 +62,7 @@ public class 一次性任务 {
 
         if(pkService.isPkCreator(pkId, userId))
         {
-                if(StringUtils.isBlank(dynamicService.查询PK群组二维码MediaId(pkId, current))){
+                if(StringUtils.isBlank(dynamicService.查询PK群组二维码MediaId(pkId))){
                     ValueStr valueStr = null;
                     if(userService.是否是遗传用户(userId)) {
                         valueStr = new ValueStr("", "更新审核群", "更新今日审核群,审核图贴，每天24:00请及时更新当日审核群...");
