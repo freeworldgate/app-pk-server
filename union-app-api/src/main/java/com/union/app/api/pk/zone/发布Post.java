@@ -1,8 +1,11 @@
 package com.union.app.api.pk.zone;
 
+import com.union.app.common.dao.AppDaoService;
+import com.union.app.domain.pk.PayPolicy;
 import com.union.app.domain.pk.Post;
 import com.union.app.entity.pk.PostEntity;
 import com.union.app.entity.pk.PostStatu;
+import com.union.app.entity.用户.UserEntity;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.Level;
@@ -31,6 +34,9 @@ public class 发布Post {
 
 
     @Autowired
+    AppDaoService daoService;
+
+    @Autowired
     ClickService clickService;
 
     @Autowired
@@ -53,7 +59,6 @@ public class 发布Post {
     public AppResponse 发布Post(@RequestParam("pkId") String pkId,@RequestParam("title") String title,@RequestParam("userId") String userId,@RequestParam("imgUrls") List<String> images) throws AppException, IOException {
 
 
-        Date cureentDate = new Date();
 
 
         String postId = null;
@@ -61,12 +66,17 @@ public class 发布Post {
         PostEntity postEntity = postService.查询用户帖(pkId,userId);
         if(ObjectUtils.isEmpty(postEntity)){
             postId = postService.创建帖子(pkId,userId,title,images);
-
+            appService.添加邀请(pkId,userId);
+            if(appService.是否收费(userId)) {
+                UserEntity userEntity = userService.queryUserEntity(userId);
+                userEntity.setUsedTimes(userEntity.getUsedTimes() + 1);
+                daoService.updateEntity(userEntity);
+            }
 
         }
         else
         {
-            return AppResponse.buildResponse(PageAction.消息级别提示框(Level.错误消息,"图贴已存在"));
+            return AppResponse.buildResponse(PageAction.消息级别提示框(Level.错误消息,"图册已存在"));
         }
 
 
@@ -122,7 +132,7 @@ public class 发布Post {
         PostEntity postEntity = postService.查询帖子ById(postId);
         if(postEntity.getStatu() == PostStatu.上线)
         {
-            return AppResponse.buildResponse(PageAction.信息反馈框("提示","图贴已发布，不支持修改图贴内容"));
+            return AppResponse.buildResponse(PageAction.信息反馈框("提示","图册已发布，不支持修改图册内容"));
 //            return AppResponse.buildResponse(PageAction.执行处理器("online",""));
         }
         return AppResponse.buildResponse(PageAction.执行处理器("offline",""));

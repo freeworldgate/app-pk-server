@@ -29,10 +29,10 @@ public class 查询投诉信息 {
 
     @RequestMapping(path="/nextComplain",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse 查询投诉信息(@RequestParam("password") String password) throws AppException, IOException {
+    public AppResponse 查询投诉信息(@RequestParam("password") String password,@RequestParam("type") int type) throws AppException, IOException {
         appService.验证Password(password);
 
-        List<DataSet> dataSets  = appService.查询投诉榜帖();
+        List<DataSet> dataSets  = appService.查询投诉榜帖(type);
 
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
 
@@ -41,11 +41,11 @@ public class 查询投诉信息 {
 
     @RequestMapping(path="/approveComplain",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse 有效投诉(@RequestParam("password") String password,@RequestParam("id") String id) throws AppException, IOException {
+    public AppResponse 有效投诉(@RequestParam("password") String password,@RequestParam("id") String id,@RequestParam("type") int type) throws AppException, IOException {
 
         appService.验证Password(password);
         appService.有效投诉(id);
-        List<DataSet> dataSets  = appService.查询投诉榜帖();
+        List<DataSet> dataSets  = appService.查询投诉榜帖(type);
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
 
     }
@@ -53,11 +53,11 @@ public class 查询投诉信息 {
 
     @RequestMapping(path="/hiddenComplain",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse 无效投诉(@RequestParam("password") String password,@RequestParam("id") String id) throws AppException, IOException {
+    public AppResponse 无效投诉(@RequestParam("password") String password,@RequestParam("id") String id,@RequestParam("type") int type) throws AppException, IOException {
         appService.验证Password(password);
 
         appService.无效投诉(id);
-        List<DataSet> dataSets  = appService.查询投诉榜帖();
+        List<DataSet> dataSets  = appService.查询投诉榜帖(type);
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
 
     }

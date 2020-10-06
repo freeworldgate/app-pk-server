@@ -3,9 +3,9 @@ package com.union.app.entity.pk;
 public enum MessageType {
 
 
-    收费(0,"收费"),
+    收费(0,"收"),
 
-    不收费(1,"不收费"),
+    不收费(1,"不收"),
 ;
 
 

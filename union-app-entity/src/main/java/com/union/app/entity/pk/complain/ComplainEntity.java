@@ -1,6 +1,7 @@
 package com.union.app.entity.pk.complain;
 
 import com.union.app.entity.pk.OrderStatu;
+import com.union.app.entity.pk.PkType;
 import com.union.app.entity.pk.apply.OrderType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -22,6 +23,9 @@ public class ComplainEntity {
     int id;
 
     String pkId;
+
+    @Enumerated(EnumType.STRING)
+    PkType pkType;
 
     String userId;
 

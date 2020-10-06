@@ -177,17 +177,12 @@ public class ApproveService {
     }
 
     public ApproveCommentEntity 查询留言(String pkId, String postId){
-        ApproveCommentEntity approveCommentEntity = pkCacheService.get(pkId + "-" + postId,ApproveCommentEntity.class);
-        if(org.springframework.util.ObjectUtils.isEmpty(approveCommentEntity))
-        {
-            EntityFilterChain filter = EntityFilterChain.newFilterChain(ApproveCommentEntity.class)
-                    .compareFilter("pkId",CompareTag.Equal,pkId)
-                    .andFilter()
-                    .compareFilter("postId",CompareTag.Equal,postId)
-                    ;
-            approveCommentEntity = daoService.querySingleEntity(ApproveCommentEntity.class,filter);
-        }
-
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(ApproveCommentEntity.class)
+                .compareFilter("pkId",CompareTag.Equal,pkId)
+                .andFilter()
+                .compareFilter("postId",CompareTag.Equal,postId)
+                ;
+        ApproveCommentEntity approveCommentEntity = daoService.querySingleEntity(ApproveCommentEntity.class,filter);
         return approveCommentEntity;
     }
 
@@ -238,13 +233,9 @@ public class ApproveService {
     }
 
     public ApproveMessageEntity 获取审核人员消息Entity(String pkId) throws UnsupportedEncodingException {
-        ApproveMessageEntity approveMessageEntity = pkCacheService.get(pkId,ApproveMessageEntity.class);
-        if(org.springframework.util.ObjectUtils.isEmpty(approveMessageEntity))
-        {
-            EntityFilterChain filter = EntityFilterChain.newFilterChain(ApproveMessageEntity.class)
-                    .compareFilter("pkId",CompareTag.Equal,pkId);
-            approveMessageEntity = daoService.querySingleEntity(ApproveMessageEntity.class,filter);
-        }
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(ApproveMessageEntity.class)
+                .compareFilter("pkId",CompareTag.Equal,pkId);
+        ApproveMessageEntity approveMessageEntity = daoService.querySingleEntity(ApproveMessageEntity.class,filter);
         return approveMessageEntity;
     }
 
@@ -335,35 +326,28 @@ public class ApproveService {
     }
 
     public ApproveButton 获取审核按钮(String pkId,String postId, String userId) {
-        PostEntity postEntity = postService.查询帖子ById(postId);
+
         PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
-        int policy2 = AppConfigService.getConfigAsInteger(ConfigItem.内置相册公开);
-        int policy3 = AppConfigService.getConfigAsInteger(ConfigItem.内置相册邀请);
-        int policy1 = AppConfigService.getConfigAsInteger(ConfigItem.遗传相册);
-        int policy4 = AppConfigService.getConfigAsInteger(ConfigItem.VIP用户);
-        int policy5 = AppConfigService.getConfigAsInteger(ConfigItem.普通用户);
+
+        boolean policy1 = AppConfigService.getConfigAsBoolean(ConfigItem.遗传相册);
+        boolean policy2 = AppConfigService.getConfigAsBoolean(ConfigItem.内置相册);
+        boolean policy3 = AppConfigService.getConfigAsBoolean(ConfigItem.普通相册);
+
+//        boolean policy4 = AppConfigService.getConfigAsBoolean(ConfigItem.VIP用户);
+//        boolean policy5 = AppConfigService.getConfigAsBoolean(ConfigItem.普通用户);
 
 
 
-        boolean pkType = false;
-        if((pkEntity.getPkType() == PkType.运营相册 && policy1==0) || (pkEntity.getPkType() == PkType.内置相册 && pkEntity.getIsInvite() == InviteType.公开 && policy2 == 0) ||(pkEntity.getPkType() == PkType.内置相册 && pkEntity.getIsInvite() == InviteType.邀请 && policy3 == 0)  )
+        if((pkEntity.getPkType()==PkType.内置相册 && policy2) || (pkEntity.getPkType()==PkType.运营相册 && policy1) || (pkEntity.getPkType()==PkType.审核相册 && policy3) )
         {
-            pkType = true;
+
+            return ApproveButton.转发审核群;
         }
 
 
-        boolean userType = false;
 
 
-        boolean isVipUser = userService.是否是遗传用户(pkEntity.getUserId());
-
-
-        if((isVipUser && policy4==0) || (!isVipUser && policy5==0) )
-        {
-            userType = true;
-        }
-        if(pkType && userType){return ApproveButton.转发审核群;}
-
+        PostEntity postEntity = postService.查询帖子ById(postId);
         if(postEntity.getApproveStatu() == ApproveStatu.请求审核 ){
             return ApproveButton.请求审核无效 ;
         }

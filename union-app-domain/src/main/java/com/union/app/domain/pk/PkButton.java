@@ -19,6 +19,17 @@ public class PkButton implements Serializable {
 
     private int num;
 
+    private String style;
+
+    private String type;
+
+    public PkButton(String icon, String name, String linkMethod, String style, String type) {
+        this.icon = icon;
+        this.name = name;
+        this.linkMethod = linkMethod;
+        this.style = style;
+        this.type = type;
+    }
 
     public PkButton(String icon, String name, String linkMethod) {
         this.icon = icon;

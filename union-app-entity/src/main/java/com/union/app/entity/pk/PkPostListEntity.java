@@ -1,6 +1,5 @@
 package com.union.app.entity.pk;
 
-import com.union.app.entity.用户.support.UserType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,28 +12,17 @@ import javax.persistence.*;
 @EqualsAndHashCode
 @ToString
 @Entity
-@Table(name="T_Pre_User")
-public class PreUserEntity {
-
-
+@Table(name="T_Post_List")
+public class PkPostListEntity {
     @Id
-    private String userId;
+    private String postId;
 
-    private String imgUrl;
-
-    private String  userName;
+    private String pkId;
 
     @Enumerated(EnumType.STRING)
-    private UserType userType;
+    private PostStatu statu;
 
-
-
-
-
-
-
-
-
+    private long time;
 
 
 }

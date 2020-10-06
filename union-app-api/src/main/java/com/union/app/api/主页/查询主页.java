@@ -1,8 +1,7 @@
 package com.union.app.api.主页;
 
 import com.union.app.common.config.AppConfigService;
-import com.union.app.domain.pk.PkDetail;
-import com.union.app.domain.pk.Post;
+import com.union.app.domain.pk.*;
 import com.union.app.domain.pk.审核.ApproveMessage;
 import com.union.app.domain.user.User;
 import com.union.app.domain.工具.RandomUtil;
@@ -65,39 +64,21 @@ public class 查询主页 {
 
 
     @RequestMapping(path="/queryHomePage",method = RequestMethod.GET)
-    public AppResponse 查询主页(@RequestParam("userId") String userId,@RequestParam("fromUser") String fromUser) throws AppException, IOException {
-
-        List<PkDetail> pkDetails = new ArrayList<>();
+    public AppResponse 查询主页(@RequestParam("userId") String userId,@RequestParam("pkId") String pkId)  {
 
 
 
+        List<PkDetail> pks = appService.随机主题(userId,pkId);
 
 
-        List<PkDetail> pks = appService.随机主题(userId,fromUser);
-        pkDetails.addAll(pks);
-
-
-//        if(userService.canUserView(userId,fromUser))
-//        {
-//            List<PkDetail> pks = appService.查询用户主页(userId,1,1);
-//            pkDetails.addAll(pks);
-//
-//        }
-//        else
-//        {
-//
-//            List<PkDetail> pks = appService.查询用户主页(userId,1,0);
-//            pkDetails.addAll(pks);
-//
-//        }
-
-
-//        appService.vip包装(pkDetails,userId,fromUser);
-
-        pkDetails.forEach(pk->{
-            pk.setUserBack(appService.查询背景(0));
-        });
-
+        if(!pkService.isVipView(userId,pkId)  && !AppConfigService.getConfigAsBoolean(ConfigItem.普通用户主题是否显示分享按钮和群组按钮))
+        {
+            pks.forEach(pk ->{
+                PkButton pkButton = appService.显示按钮(PkButtonType.时间);
+                pkButton.setName(pk.getTime());
+                pk.setGroupInfo(pkButton);
+            });
+        }
 
 
 
@@ -105,19 +86,8 @@ public class 查询主页 {
 
         List<DataSet> dataSets = new ArrayList<>();
 
-        dataSets.add(new DataSet("pks",pkDetails));
+        dataSets.add(new DataSet("pks",pks));
         dataSets.add(new DataSet("page",1));
-
-        if( userService.canUserView(userId,fromUser))
-        {
-            dataSets.add(new DataSet("t1","进入榜单"));
-        }
-        else
-        {
-            dataSets.add(new DataSet("t1","进入相册"));
-        }
-
-
 
         User user = userService.queryUser(userId);
         if(ObjectUtils.isEmpty(user))
@@ -129,31 +99,31 @@ public class 查询主页 {
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
 
     }
-
-    @RequestMapping(path="/nextHomePage",method = RequestMethod.GET)
-    public AppResponse 查询主页(@RequestParam("userId") String userId,@RequestParam("fromUser") String fromUser,@RequestParam("page") int page) throws AppException, IOException {
-        List<PkDetail> pkDetails = new ArrayList<>();
-
-        if(userService.canUserView(userId,fromUser))
-        {
-            List<PkDetail> pks = appService.查询用户主页(userId,page + 1,1);
-            pkDetails.addAll(pks);
-        }
-        else
-        {
-            List<PkDetail> pks = appService.查询用户主页(userId,page + 1,0);
-            pkDetails.addAll(pks);
-
-        }
-
-        if(pkDetails.size() == 0)
-        {
-            return AppResponse.buildResponse(PageAction.前端数据更新("pkEnd",true));
-
-        }
-
-        return AppResponse.buildResponse(PageAction.执行处理器("success",pkDetails));
-
-    }
+//
+//    @RequestMapping(path="/nextHomePage",method = RequestMethod.GET)
+//    public AppResponse 查询主页(@RequestParam("userId") String userId,@RequestParam("fromUser") String fromUser,@RequestParam("page") int page) throws AppException, IOException {
+//        List<PkDetail> pkDetails = new ArrayList<>();
+//
+//        if(userService.canUserView(userId,fromUser))
+//        {
+//            List<PkDetail> pks = appService.查询用户主页(userId,page + 1,1);
+//            pkDetails.addAll(pks);
+//        }
+//        else
+//        {
+//            List<PkDetail> pks = appService.查询用户主页(userId,page + 1,0);
+//            pkDetails.addAll(pks);
+//
+//        }
+//
+//        if(pkDetails.size() == 0)
+//        {
+//            return AppResponse.buildResponse(PageAction.前端数据更新("pkEnd",true));
+//
+//        }
+//
+//        return AppResponse.buildResponse(PageAction.执行处理器("success",pkDetails));
+//
+//    }
 
 }

@@ -3,6 +3,7 @@ package com.union.app.api.pk.管理;
 import com.union.app.domain.pk.PkButtonType;
 import com.union.app.domain.pk.PkDetail;
 import com.union.app.domain.pk.Post;
+import com.union.app.entity.pk.PostStatu;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.DataSet;
@@ -14,6 +15,7 @@ import com.union.app.service.pk.service.*;
 import com.union.app.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -57,17 +59,23 @@ public class 查询单个预置PK {
 
 
     @RequestMapping(path="/queryPreInnerPk",method = RequestMethod.GET)
-    public AppResponse 查询单个PK(@RequestParam("password") String password,@RequestParam("pkId") String pkId,@RequestParam("fromUser") String fromUser) throws AppException, IOException, InterruptedException {
+    public AppResponse 查询单个PK(@RequestParam("password") String password,@RequestParam("pkId") String pkId) throws AppException, IOException, InterruptedException {
         appService.验证Password(password);
         List<DataSet> dataSets = new ArrayList<>();
 
         //榜单有可能被关闭
-        pkService.checkPk(pkId);
+        pkService.checkPk(pkId,"");
 
         //查询PK详情
         PkDetail pkDetail = pkService.querySinglePk(pkId);
         pkDetail.setUserBack(appService.查询背景(8));
         List<Post> posts = pkService.queryPrePkPost(pkId,0);
+
+
+
+
+        Post post = postService.查询用户帖子(pkId,pkService.queryPkCreator(pkId).getUserId());
+        dataSets.add(new DataSet("cpost", post));
 
         dataSets.add(new DataSet("group",appService.显示按钮(PkButtonType.群组)));
         dataSets.add(new DataSet("post",appService.显示按钮(PkButtonType.榜帖)));

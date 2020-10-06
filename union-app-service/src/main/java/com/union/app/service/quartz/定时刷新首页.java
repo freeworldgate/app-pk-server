@@ -2,7 +2,7 @@ package com.union.app.service.quartz;
 
 import com.union.app.common.dao.AppDaoService;
 import com.union.app.service.data.PkDataService;
-import com.union.app.service.pk.dynamic.imp.RedisMapService;
+import com.union.app.common.redis.RedisMapService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;

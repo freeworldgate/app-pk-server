@@ -5,6 +5,7 @@ import com.union.app.common.OSS存储.OssStorage;
 import com.union.app.common.dao.AppDaoService;
 import com.union.app.dao.spi.filter.CompareTag;
 import com.union.app.dao.spi.filter.EntityFilterChain;
+import com.union.app.dao.spi.filter.OrderTag;
 import com.union.app.domain.pk.*;
 import com.union.app.domain.pk.PkDynamic.FactualInfo;
 import com.union.app.domain.pk.PkDynamic.FeeTask;
@@ -12,15 +13,16 @@ import com.union.app.domain.pk.apply.KeyNameValue;
 import com.union.app.domain.pk.审核.ApproveComment;
 import com.union.app.domain.user.User;
 import com.union.app.entity.pk.*;
+import com.union.app.entity.用户.UserEntity;
+import com.union.app.entity.用户.support.UserType;
 import com.union.app.plateform.data.resultcode.AppException;
-import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.common.dao.PkCacheService;
 import com.union.app.service.pk.dynamic.CacheKeyName;
 import com.union.app.service.pk.dynamic.DynamicService;
-import com.union.app.service.pk.dynamic.imp.RedisMapService;
-import com.union.app.service.pk.dynamic.imp.RedisSortSetService;
+import com.union.app.common.redis.RedisMapService;
+import com.union.app.common.redis.RedisSortSetService;
 import com.union.app.service.user.UserService;
 import com.union.app.util.time.TimeUtils;
 import org.apache.commons.lang.StringUtils;
@@ -91,7 +93,8 @@ public class PkService {
     public List<Post> queryPrePkPost(String pkId,int page) throws IOException {
 
         List<Post> posts = new ArrayList<>();
-        List<String> pageList = redisSortSetService.queryPage(CacheKeyName.榜主已审核列表(pkId),page);
+//        List<String> pageList = redisSortSetService.queryPage(CacheKeyName.榜主已审核列表(pkId),page);
+        List<String> pageList =  pkService.查询已审核页(pkId,page);
         for(String postId:pageList)
         {
             Post post = postService.查询帖子(pkId,postId,"");
@@ -115,7 +118,8 @@ public class PkService {
     public List<Post> queryPkPost(String userId,String pkId,int page) throws IOException {
 
         List<Post> posts = new ArrayList<>();
-        List<String> pageList = redisSortSetService.queryPage(CacheKeyName.榜主已审核列表(pkId),page);
+        List<String> pageList =  pkService.查询已审核页(pkId,page);
+//        List<String> pageList = redisSortSetService.queryPage(CacheKeyName.榜主已审核列表(pkId),page);
         for(String postId:pageList)
         {
             Post post = postService.查询帖子(pkId,postId,"");
@@ -132,220 +136,60 @@ public class PkService {
 
 
     public PkDetail querySinglePk(String pkId) throws IOException {
-        PkDetail pkDetail = new PkDetail();
         PkEntity pk = this.querySinglePkEntity(pkId);
+        return this.querySinglePk(pk);
+    }
+
+
+    public PkButton 查询群组(String pkId)
+    {
+
+        boolean hasGroup = !StringUtils.isBlank(dynamicService.查询PK群组二维码MediaId(pkId));
+
+        if(hasGroup)
+        {
+            return appService.显示按钮(PkButtonType.群组已更新);
+        }
+        else
+        {
+            return appService.显示按钮(PkButtonType.群组未更新);
+        }
+
+    }
+
+
+
+    public PkDetail querySinglePk(PkEntity pk) throws IOException {
         if(ObjectUtils.isEmpty(pk)){return null;}
+        String pkId = pk.getPkId();
+        PkDetail pkDetail = new PkDetail();
         pkDetail.setPkId(pk.getPkId());
         pkDetail.setPkTypeValue(pk.getPkType().getType());
         pkDetail.setPkType(pk.getPkType().getDesc());
         pkDetail.setTopic(pk.getTopic());
         pkDetail.setUser(userService.queryUser(pk.getUserId()));
         pkDetail.setWatchWord(pk.getWatchWord());
-        pkDetail.setTime(TimeUtils.translateTime(pk.getCreateTime()));
+        pkDetail.setTime(TimeUtils.convertTime(pk.getCreateTime()));
         pkDetail.setComplainTimes(pk.getComplainTimes());
         pkDetail.setInvite(new KeyNameValue(pk.getIsInvite().getStatu(),pk.getIsInvite().getStatuStr()));
         pkDetail.setInviteType(pk.getIsInvite());
         if(!ObjectUtils.isEmpty(pk.getMessageType())){pkDetail.setCharge(new KeyNameValue(pk.getMessageType().getStatu(),pk.getMessageType().getStatuStr()));}
         pkDetail.setPkStatu(ObjectUtils.isEmpty(pk.getAlbumStatu())?new KeyNameValue(PkStatu.审核中.getStatu(),PkStatu.审核中.getStatuStr()):new KeyNameValue(pk.getAlbumStatu().getStatu(),pk.getAlbumStatu().getStatuStr()));
-        pkDetail.setApproveMessage(approveService.查询PK公告消息(pkId));
-
-        pkDetail.setApproved( "已发布(" + redisSortSetService.size(CacheKeyName.榜主已审核列表(pkDetail.getPkId())) +")");
-        pkDetail.setApproving("发布中(" + redisSortSetService.size(CacheKeyName.榜主审核中列表(pkDetail.getPkId())) + ")");
-
-        GroupInfo groupInfo = new GroupInfo();
-        boolean hasGroup = !StringUtils.isBlank(dynamicService.查询PK群组二维码MediaId(pkDetail.getPkId()));
-        groupInfo.setName("群组");
-        if(hasGroup)
-        {
-            groupInfo.setMode(1);
-            groupInfo.setIconUrl(IconUrl.有效微信标识.getUrl());
-        }
-        else
-        {
-            groupInfo.setMode(2);
-            groupInfo.setIconUrl(IconUrl.无效微信标识.getUrl());
-        }
-        pkDetail.setGroupInfo(groupInfo);
-
-
-
-//        if(pk.getPkType()==PkType.内置相册 && pk.getIsInvite() == InviteType.邀请 )
-//        {
-////                pkDetail.setApproved(  "已发布(" + dynamicService.查看内置相册已审核榜帖(pkId) + ")");
-////                pkDetail.setApproving( "发布中" + dynamicService.查看内置相册审核中榜帖(pkId) + ")");
-////                GroupInfo groupInfo = new GroupInfo();
-////                groupInfo.setName("群组");
-////                if(dynamicService.查看内置相册群组状态(pkId))
-////                {
-////                    groupInfo.setMode(1);
-////                    groupInfo.setIconUrl(IconUrl.有效微信标识.getUrl());
-////                }
-////                else
-////                {
-////                    groupInfo.setMode(2);
-////                    groupInfo.setIconUrl(IconUrl.无效微信标识.getUrl());
-////                }
-////                pkDetail.setGroupInfo(groupInfo);
-//
-//        }
-//        else if(pk.getPkType()==PkType.内置相册 && pk.getIsInvite() == InviteType.公开 )
-//        {
-////            pkDetail.setApproved( "已发布(" + redisSortSetService.size(CacheKeyName.榜主已审核列表(pkDetail.getPkId())) + ")");
-////            pkDetail.setApproving("发布中(" + redisSortSetService.size(CacheKeyName.榜主审核中列表(pkDetail.getPkId())) + ")");
-////
-////            GroupInfo groupInfo = new GroupInfo();
-////            boolean hasGroup = !StringUtils.isBlank(dynamicService.查询内置公开PK群组二维码MediaId(pkDetail.getPkId() ));
-////            groupInfo.setName("群组");
-////            if(hasGroup)
-////            {
-////                groupInfo.setMode(1);
-////                groupInfo.setIconUrl(IconUrl.有效微信标识.getUrl());
-////            }
-////            else
-////            {
-////                groupInfo.setMode(2);
-////                groupInfo.setIconUrl(IconUrl.无效微信标识.getUrl());
-////            }
-////            pkDetail.setGroupInfo(groupInfo);
-//
-//        }
-//        else
-//        {
-////            pkDetail.setApproved( "已发布(" + redisSortSetService.size(CacheKeyName.榜主已审核列表(pkDetail.getPkId())) +")");
-////            pkDetail.setApproving("发布中(" + redisSortSetService.size(CacheKeyName.榜主审核中列表(pkDetail.getPkId())) + ")");
-////
-////                GroupInfo groupInfo = new GroupInfo();
-////                boolean hasGroup = !StringUtils.isBlank(dynamicService.查询PK群组二维码MediaId(pkDetail.getPkId()));
-////                groupInfo.setName("群组");
-////                if(hasGroup)
-////                {
-////                    groupInfo.setMode(1);
-////                    groupInfo.setIconUrl(IconUrl.有效微信标识.getUrl());
-////                }
-////                else
-////                {
-////                    groupInfo.setMode(2);
-////                    groupInfo.setIconUrl(IconUrl.无效微信标识.getUrl());
-////                }
-////                pkDetail.setGroupInfo(groupInfo);
-//
-//        }
+//        pkDetail.setApproveMessage(approveService.查询PK公告消息(pkId));
+        pkDetail.setBackUrl(StringUtils.isBlank(pk.getBackUrl())?appService.查询背景(10):pk.getBackUrl());
+        pkDetail.setApproved( "已发布(" +   pk.getApproved()  + ")");
+        pkDetail.setApproving("发布中(" +   pk.getApproving()  + ")");
+        pkDetail.setGroupInfo(this.查询群组(pkDetail.getPkId()));
         pkDetail.setUserBack(appService.查询背景(0));
         return pkDetail;
     }
 
-
-    public PkDetail querySinglePk(PkEntity pk) throws IOException {
-        String pkId = pk.getPkId();
-        PkDetail pkDetail = new PkDetail();
-        if(ObjectUtils.isEmpty(pk)){return null;}
-        pkDetail.setPkId(pk.getPkId());
-        pkDetail.setPkTypeValue(pk.getPkType().getType());
-        pkDetail.setPkType(pk.getPkType().getDesc());
-        pkDetail.setTopic(pk.getTopic());
-        pkDetail.setUser(userService.queryUser(pk.getUserId()));
-        pkDetail.setWatchWord(pk.getWatchWord());
-        pkDetail.setTime(TimeUtils.translateTime(pk.getCreateTime()));
-        pkDetail.setInvite(new KeyNameValue(pk.getIsInvite().getStatu(),pk.getIsInvite().getStatuStr()));
-        pkDetail.setInviteType(pk.getIsInvite());
-        if(!ObjectUtils.isEmpty(pk.getMessageType())){pkDetail.setCharge(new KeyNameValue(pk.getMessageType().getStatu(),pk.getMessageType().getStatuStr()));}
-        pkDetail.setPkStatu(ObjectUtils.isEmpty(pk.getAlbumStatu())?new KeyNameValue(PkStatu.审核中.getStatu(),PkStatu.审核中.getStatuStr()):new KeyNameValue(pk.getAlbumStatu().getStatu(),pk.getAlbumStatu().getStatuStr()));
-        pkDetail.setApproveMessage(approveService.查询PK公告消息(pkId));
-
-        pkDetail.setApproved( "已发布(" + redisSortSetService.size(CacheKeyName.榜主已审核列表(pkDetail.getPkId())) + ")");
-        pkDetail.setApproving("发布中(" + redisSortSetService.size(CacheKeyName.榜主审核中列表(pkDetail.getPkId())) + ")");
-
-        GroupInfo groupInfo = new GroupInfo();
-        boolean hasGroup = !StringUtils.isBlank(dynamicService.查询PK群组二维码MediaId(pkDetail.getPkId()));
-        groupInfo.setName("群组");
-        if(hasGroup)
-        {
-            groupInfo.setMode(1);
-            groupInfo.setIconUrl(IconUrl.有效微信标识.getUrl());
-        }
-        else
-        {
-            groupInfo.setMode(2);
-            groupInfo.setIconUrl(IconUrl.无效微信标识.getUrl());
-        }
-        pkDetail.setGroupInfo(groupInfo);
-
-
-
-//        if(pk.getPkType()==PkType.内置相册 && pk.getIsInvite() == InviteType.邀请 )
-//        {
-//            pkDetail.setApproved( "已发布(" + dynamicService.查看内置相册已审核榜帖(pkId) + ")");
-//            pkDetail.setApproving("发布中(" + dynamicService.查看内置相册审核中榜帖(pkId)+ ")");
-//            GroupInfo groupInfo = new GroupInfo();
-//            groupInfo.setName("群组");
-//            if(dynamicService.查看内置相册群组状态(pkId))
-//            {
-//                groupInfo.setMode(1);
-//                groupInfo.setIconUrl(IconUrl.有效微信标识.getUrl());
-//            }
-//            else
-//            {
-//                groupInfo.setMode(2);
-//                groupInfo.setIconUrl(IconUrl.无效微信标识.getUrl());
-//            }
-//            pkDetail.setGroupInfo(groupInfo);
-//
-//        }
-//        else if(pk.getPkType()==PkType.内置相册 && pk.getIsInvite() == InviteType.公开 )
-//        {
-//
-//            pkDetail.setApproved( "已发布(" + redisSortSetService.size(CacheKeyName.榜主已审核列表(pkDetail.getPkId())) + ")");
-//            pkDetail.setApproving("发布中(" + redisSortSetService.size(CacheKeyName.榜主审核中列表(pkDetail.getPkId())) + ")");
-//
-//            GroupInfo groupInfo = new GroupInfo();
-//            boolean hasGroup = !StringUtils.isBlank(dynamicService.查询内置公开PK群组二维码MediaId(pkDetail.getPkId() ));
-//            groupInfo.setName("群组");
-//            if(hasGroup)
-//            {
-//                groupInfo.setMode(1);
-//                groupInfo.setIconUrl(IconUrl.有效微信标识.getUrl());
-//            }
-//            else
-//            {
-//                groupInfo.setMode(2);
-//                groupInfo.setIconUrl(IconUrl.无效微信标识.getUrl());
-//            }
-//            pkDetail.setGroupInfo(groupInfo);
-//
-//        }
-//        else
-//        {
-////            pkDetail.setApproved(redisSortSetService.size(CacheKeyName.榜主已审核列表(pkDetail.getPkId())) + "已审核");
-////            pkDetail.setApproving(redisSortSetService.size(CacheKeyName.榜主审核中列表(pkDetail.getPkId())) + "审核中");
-//
-//            pkDetail.setApproved( "已发布(" + redisSortSetService.size(CacheKeyName.榜主已审核列表(pkDetail.getPkId())) + ")");
-//            pkDetail.setApproving("发布中(" + redisSortSetService.size(CacheKeyName.榜主审核中列表(pkDetail.getPkId())) + ")");
-//
-//            GroupInfo groupInfo = new GroupInfo();
-//            boolean hasGroup = !StringUtils.isBlank(dynamicService.查询PK群组二维码MediaId(pkDetail.getPkId()));
-//            groupInfo.setName("群组");
-//            if(hasGroup)
-//            {
-//                groupInfo.setMode(1);
-//                groupInfo.setIconUrl(IconUrl.有效微信标识.getUrl());
-//            }
-//            else
-//            {
-//                groupInfo.setMode(2);
-//                groupInfo.setIconUrl(IconUrl.无效微信标识.getUrl());
-//            }
-//            pkDetail.setGroupInfo(groupInfo);
-//
-//        }
-        pkDetail.setUserBack(appService.查询背景(0));
-        return pkDetail;
-    }
 
 
 
     public User queryPkCreator(String pkId){
         PkEntity pkEntity =  querySinglePkEntity(pkId);
-
+        if(ObjectUtils.isEmpty(pkEntity)){return null;}
         User user = userService.queryUser(pkEntity.getUserId());
         return user;
     }
@@ -358,13 +202,9 @@ public class PkService {
 
     public PkEntity querySinglePkEntity(String pkId)
     {
-        PkEntity  pkEntity = pkCacheService.get(pkId,PkEntity.class);
-        if(ObjectUtils.isEmpty(pkEntity))
-        {
-            EntityFilterChain filter = EntityFilterChain.newFilterChain(PkEntity.class)
-                    .compareFilter("pkId",CompareTag.Equal,pkId);
-            pkEntity= daoService.querySingleEntity(PkEntity.class,filter);
-        }
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(PkEntity.class)
+                .compareFilter("pkId",CompareTag.Equal,pkId);
+        PkEntity  pkEntity = daoService.querySingleEntity(PkEntity.class,filter);
         return pkEntity;
     }
 
@@ -377,6 +217,7 @@ public class PkService {
 
     public boolean isPkCreator(String pkId, String userId) {
         User creator = this.queryPkCreator(pkId);
+        if(ObjectUtils.isEmpty(creator)){return false;}
         return org.apache.commons.lang.StringUtils.equals(userId,creator.getUserId())? Boolean.TRUE:Boolean.FALSE;
     }
 
@@ -384,8 +225,16 @@ public class PkService {
         String pkId = UUID.randomUUID().toString();
         PkEntity pkEntity = new PkEntity();
         pkEntity.setPkId(pkId);
-        pkEntity.setCreateTime(TimeUtils.currentDateTime());
-        pkEntity.setPkType(PkType.运营相册);
+        pkEntity.setCreateTime(System.currentTimeMillis());
+        if(userService.是否是遗传用户(userId))
+        {
+            pkEntity.setPkType(PkType.运营相册);
+        }
+        else
+        {
+            pkEntity.setPkType(PkType.审核相册);
+        }
+
         pkEntity.setMessageType(MessageType.不收费);
         pkEntity.setTopic(topic);
         pkEntity.setWatchWord(watchWord);
@@ -393,6 +242,9 @@ public class PkService {
         pkEntity.setUserId(userId);
         pkEntity.setAlbumStatu(PkStatu.审核中);
         pkEntity.setComplainTimes(0);
+        pkEntity.setApproving(0);
+        pkEntity.setApproved(0);
+//        pkEntity.setTotalComplainTimes(0);
         daoService.insertEntity(pkEntity);
         userService.创建榜次数加1(userId);
         return pkId;
@@ -402,14 +254,16 @@ public class PkService {
         String pkId = UUID.randomUUID().toString();
         PkEntity pkEntity = new PkEntity();
         pkEntity.setPkId(pkId);
-        pkEntity.setCreateTime(TimeUtils.currentDateTime());
+        pkEntity.setCreateTime(System.currentTimeMillis());
         pkEntity.setPkType(PkType.内置相册);
         pkEntity.setTopic(topic);
         pkEntity.setWatchWord(watchWord);
         pkEntity.setIsInvite(InviteType.公开);
         pkEntity.setMessageType(isCharge?MessageType.收费:MessageType.不收费);
-        pkEntity.setUserId(appService.随机用户());
+        pkEntity.setUserId(appService.随机用户(type));
         pkEntity.setAlbumStatu(PkStatu.已审核);
+        pkEntity.setApproving(0);
+        pkEntity.setApproved(0);
         daoService.insertEntity(pkEntity);
 
         BuildInPkEntity buildInPkEntity = new BuildInPkEntity();
@@ -448,12 +302,35 @@ public class PkService {
     }
 
 
+    public boolean isVipView(String userId,String pkId)
+    {
 
-    public void checkPk(String pkId) throws AppException {
+        if(userService.是否是遗传用户(userId)){return true;}
+        if(!userService.isUserExist(userId))
+        {
+            return pkService.isCreatedByVip(pkId);
+        }
+        return false;
+
+
+    }
+
+
+
+
+    public void checkPk(String pkId,String userId) throws AppException {
         PkEntity pkEntity = this.querySinglePkEntity(pkId);
         if(ObjectUtils.isEmpty(pkEntity)){throw AppException.buildException(PageAction.执行处理器("error","榜单不存在，是否返回主页?"));}
         PkStatu pkStatu = pkEntity.getAlbumStatu();
         if(pkStatu == PkStatu.已关闭){
+            PostEntity postEntity = postService.查询用户帖(pkId,userId);
+            //关闭榜单所有未审核的榜帖全变为上线
+            if(!ObjectUtils.isEmpty(postEntity) && postEntity.getStatu() != PostStatu.上线)
+            {
+                postEntity.setStatu(PostStatu.上线);
+                daoService.updateEntity(postEntity);
+            }
+
             throw AppException.buildException(PageAction.执行处理器("error","榜单关闭，是否返回主页?"));
         }
 
@@ -467,7 +344,6 @@ public class PkService {
     public void 删除PK(String userId, String pkId) throws AppException {
         PkEntity pkEntity = this.querySinglePkEntity(pkId);
         //如果去掉此步骤，则可能要删除两次PK才能成功，因为JPA的原因
-        pkCacheService.remove(pkEntity);
         pkEntity = this.querySinglePkEntity(pkId);
 
         if(pkEntity.getAlbumStatu() == PkStatu.审核中)
@@ -519,46 +395,144 @@ public class PkService {
             return ;
         }
 
-        throw AppException.buildException(PageAction.信息反馈框("修改失败","榜单当前状态不支持修改榜帖内容..."));
+        throw AppException.buildException(PageAction.信息反馈框("修改失败","榜单当前状态不支持修改图册内容..."));
 
 
     }
-
-    public void 修改Creator(String pkId, String userId) {
-        PkEntity pkEntity = this.querySinglePkEntity(pkId);
-        if(pkEntity.getPkType() == PkType.内置相册 && pkEntity.getIsInvite() == InviteType.公开)
+    public void 修改PkCreator(String userId,String value) {
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(PkCodeEntity.class)
+                .compareFilter("code",CompareTag.Equal,value);
+        PkCodeEntity entity = daoService.querySingleEntity(PkCodeEntity.class,filter);
+        if(!ObjectUtils.isEmpty(entity))
         {
-            EntityFilterChain filter = EntityFilterChain.newFilterChain(PkCreatorEntity.class)
-                    .compareFilter("pkId",CompareTag.Equal,pkId);
-            PkCreatorEntity pkCreatorEntity = daoService.querySingleEntity(PkCreatorEntity.class,filter);
-            if(ObjectUtils.isEmpty(pkCreatorEntity))
-            {
-                PkCreatorEntity pkCreatorEntity1 = new PkCreatorEntity();
-                pkCreatorEntity1.setPkId(pkId);
-                pkCreatorEntity1.setUserId(userId);
-                pkCreatorEntity1.setSwitchBit(true);
-                daoService.insertEntity(pkCreatorEntity1);
-            }
-            else
-            {
-                if(pkCreatorEntity.isSwitchBit())
-                {
-                    pkCreatorEntity.setUserId(userId);
-                    daoService.updateEntity(pkCreatorEntity);
-                }
 
-            }
-
-
+            PkEntity pkEntity = this.querySinglePkEntity( entity.getPkId());
+            pkEntity.setUserId(userId);
+            daoService.updateEntity(pkEntity);
+            daoService.deleteEntity(entity);
         }
 
     }
 
-    public void 修改PKUser(String pkId, String userId) {
+    
+    public void 更新群组时间(String pkId) {
+        PkEntity pkEntity = this.querySinglePkEntity(pkId);
+        pkEntity.setUpdateTime(System.currentTimeMillis());
+        daoService.updateEntity(pkEntity);
+    }
+
+    public void 修改封面(String pkId, String imgUrl) {
 
         PkEntity pkEntity = this.querySinglePkEntity(pkId);
-        pkEntity.setUserId(userId);
+        pkEntity.setBackUrl(imgUrl);
         daoService.updateEntity(pkEntity);
+
+    }
+    public PkPostListEntity 查询图册排列(String pkId, String postId)
+    {
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(PkPostListEntity.class)
+                .compareFilter("postId",CompareTag.Equal,postId)
+                .andFilter()
+                .compareFilter("pkId",CompareTag.Equal,pkId);
+        PkPostListEntity entity = daoService.querySingleEntity(PkPostListEntity.class,filter);
+        return entity;
+    }
+    public void 更新图册状态列表(String pkId, String postId) {
+        PkPostListEntity pkPostListEntity = 查询图册排列(pkId,postId);
+        pkPostListEntity.setStatu(PostStatu.上线);
+        this.更新PK审核数量(pkId);
+        daoService.updateEntity(pkPostListEntity);
+
+    }
+
+    private void 更新PK审核数量(String pkId) {
+        PkEntity pkEntity = this.querySinglePkEntity(pkId);
+        pkEntity.setApproved(pkEntity.getApproved() + 1);
+        pkEntity.setApproving(pkEntity.getApproving() - 1);
+        daoService.updateEntity(pkEntity);
+
+    }
+
+    public void 删除审核中Post(String pkId, String postId) {
+
+        PkPostListEntity pkPostListEntity = 查询图册排列(pkId,postId);
+        if(!ObjectUtils.isEmpty(pkPostListEntity))
+        {
+            daoService.deleteEntity(pkPostListEntity);
+            this.减少一个审核中(pkId);
+        }
+
+
+    }
+
+    public void 添加一个审核中(String pkId) {
+        PkEntity pkEntity = this.querySinglePkEntity(pkId);
+        pkEntity.setApproving(pkEntity.getApproving() + 1);
+        daoService.updateEntity(pkEntity);
+    }
+
+    public void 减少一个审核中(String pkId) {
+        PkEntity pkEntity = this.querySinglePkEntity(pkId);
+        pkEntity.setApproving(pkEntity.getApproving() - 1);
+        daoService.updateEntity(pkEntity);
+    }
+
+
+    public long 查询POST审核时间(String pkId, String postId) {
+
+        PkPostListEntity pkPostListEntity = 查询图册排列(pkId,postId);
+
+        return pkPostListEntity.getTime();
+    }
+
+    public String 获取一个审核中Post(String pkId) {
+
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(PkPostListEntity.class)
+                .compareFilter("pkId",CompareTag.Equal,pkId)
+                .andFilter()
+                .compareFilter("statu",CompareTag.Equal,PostStatu.审核中)
+                .orderByFilter("time",OrderTag.DESC);
+        PkPostListEntity entity = daoService.querySingleEntity(PkPostListEntity.class,filter);
+        return ObjectUtils.isEmpty(entity)?"":entity.getPostId();
+
+
+
+    }
+
+    public List<String> 查询已审核页(String pkId, int page) {
+
+        List<String> ids = new ArrayList<>();
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(PkPostListEntity.class)
+                .compareFilter("pkId",CompareTag.Equal,pkId)
+                .andFilter()
+                .compareFilter("statu",CompareTag.Equal,PostStatu.上线)
+                .pageLimitFilter(page+1,30)
+                .orderByFilter("time",OrderTag.DESC);
+
+        List<PkPostListEntity> entities = daoService.queryEntities(PkPostListEntity.class,filter);
+        entities.forEach(t->{
+            ids.add(t.getPostId());
+        });
+        return ids;
+
+    }
+
+    public boolean 是否审核中(String pkId, String postId) {
+        PkPostListEntity pkPostListEntity = this.查询图册排列(pkId,postId);
+        if(!ObjectUtils.isEmpty(pkPostListEntity) && pkPostListEntity.getStatu() == PostStatu.审核中 ){return true;}else{return false;}
+
+
+    }
+
+    public boolean isCreatedByVip(String pkId) {
+        if(StringUtils.isBlank(pkId)){return false;}
+        if(StringUtils.equalsIgnoreCase("undefined",pkId) || StringUtils.equalsIgnoreCase("null",pkId) || StringUtils.equalsIgnoreCase("Nan",pkId)) {return false;}
+        PkEntity pkEntity =  querySinglePkEntity(pkId);
+        if(ObjectUtils.isEmpty(pkEntity)){return false;}
+        UserEntity creator = userService.queryUserEntity(pkEntity.getUserId());
+        if(ObjectUtils.isEmpty(creator)){return false;}
+        return org.apache.commons.lang.ObjectUtils.equals(creator.getUserType(),UserType.重点用户);
+
 
 
 

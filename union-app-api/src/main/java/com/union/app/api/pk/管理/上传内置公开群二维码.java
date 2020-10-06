@@ -50,7 +50,7 @@ public class 上传内置公开群二维码 {
         String mediaId = WeChatUtil.uploadImg2Wx(url);
         dynamicService.设置PK群组二维码MediaId(pkId,mediaId);
         dynamicService.设置PK群组二维码Url(pkId,url);
-
+        pkService.更新群组时间(pkId);
 
         return AppResponse.buildResponse(PageAction.信息反馈框("更新群组成功","更新群组成功..."));
 

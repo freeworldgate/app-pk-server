@@ -4,6 +4,7 @@ import com.union.app.common.dao.AppDaoService;
 import com.union.app.dao.spi.filter.CompareTag;
 import com.union.app.dao.spi.filter.EntityFilterChain;
 import com.union.app.domain.pk.complain.Complain;
+import com.union.app.entity.pk.PkEntity;
 import com.union.app.entity.pk.complain.ComplainEntity;
 import com.union.app.entity.pk.complain.ComplainStatu;
 import com.union.app.plateform.data.resultcode.AppException;
@@ -55,22 +56,29 @@ public class ComplainService {
         return null;
     }
 
-    public void 查询投诉信息(String pkId, String approverUserId, String userId) {
-    }
-
-    public void 添加投诉(String pkId, String userId,String text) throws AppException {
+    public ComplainEntity 查询投诉信息(String pkId, String userId) {
         EntityFilterChain filter = EntityFilterChain.newFilterChain(ComplainEntity.class)
                 .compareFilter("pkId",CompareTag.Equal,pkId)
                 .andFilter()
                 .compareFilter("userId",CompareTag.Equal,userId);
         ComplainEntity complainEntity = daoService.querySingleEntity(ComplainEntity.class,filter);
+        return complainEntity;
+    }
+
+    public void 添加投诉(String pkId, String userId,String text) throws AppException {
+
+        ComplainEntity complainEntity = this.查询投诉信息(pkId,userId);
+
         if(ObjectUtils.isEmpty(complainEntity))
         {
+            PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
             ComplainEntity newComplain = new ComplainEntity();
+
             newComplain.setText(text);
             newComplain.setUserId(userId);
 
             newComplain.setPkId(pkId);
+            newComplain.setPkType(pkEntity.getPkType());
             newComplain.setComplainStatu(ComplainStatu.处理中);
             newComplain.setUpdateTime(System.currentTimeMillis());
             daoService.insertEntity(newComplain);

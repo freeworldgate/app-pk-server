@@ -80,6 +80,12 @@ public class EntityFilterChain
         return this;
     }
 
+    /**
+     * 页数从1开始
+     * @param page
+     * @param limit
+     * @return
+     */
     public EntityFilterChain pageLimitFilter(int page,int limit)
     {
         logger.debug("sqlUniqued|{}|ACTION|add PageLimitFilter|page={}|limit={}" ,sqlUniqued,page,limit);

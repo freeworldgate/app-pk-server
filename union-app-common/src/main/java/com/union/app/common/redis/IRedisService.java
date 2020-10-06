@@ -1,4 +1,4 @@
-package com.union.app.service.pk.dynamic.imp;
+package com.union.app.common.redis;
 
 import org.springframework.stereotype.Service;
 

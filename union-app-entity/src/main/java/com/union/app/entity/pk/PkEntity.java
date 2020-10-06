@@ -31,7 +31,7 @@ public class PkEntity {
     private String time;
 
     //创建时间
-    private String createTime;
+    private long createTime;
 
     private String appName;
 
@@ -60,7 +60,13 @@ public class PkEntity {
     private int complainTimes;
 
 
+    private long updateTime;
+
+    private String backUrl;
 
 
+    private int approving;
+
+    private int approved;
 
 }

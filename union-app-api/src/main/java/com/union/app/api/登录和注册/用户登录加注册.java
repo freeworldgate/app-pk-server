@@ -13,6 +13,7 @@ import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.response.ApiResponse;
 import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.service.AppService;
+import com.union.app.service.pk.service.PkService;
 import com.union.app.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
@@ -38,9 +39,12 @@ public class 用户登录加注册 {
     @Autowired
     AppService appService;
 
+    @Autowired
+    PkService pkService;
+
     @RequestMapping(path="/login",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public ApiResponse 登录(@RequestParam(value="code") String code, @RequestParam(value="encryptedData")String encryptedData, @RequestParam(value="iv")String iv, @RequestParam(value="appName")String appName, @RequestParam(value="fromUser")String fromUser, @RequestParam(value="pkId")String pkId) throws UnsupportedEncodingException, InvalidAlgorithmParameterException {
+    public ApiResponse 登录(@RequestParam(value="code") String code, @RequestParam(value="encryptedData")String encryptedData, @RequestParam(value="iv")String iv, @RequestParam(value="appName")String appName, @RequestParam(value="pkId")String pkId) throws UnsupportedEncodingException, InvalidAlgorithmParameterException {
         System.out.println("---------------login----------------");
         WeChatUser weChatUser = WeChatUtil.login(code);
         String openId = weChatUser.getOpenid();
@@ -58,7 +62,7 @@ public class 用户登录加注册 {
         {
             userEntity = new UserEntity();
 
-            userEntity.setFromUser(fromUser);
+//            userEntity.setFromUser(fromUser);
             userEntity.setOpenId(openId);
             userEntity.setSessionId(weChatUser.getSession_key());
             userEntity.setAppName(appName);
@@ -67,7 +71,9 @@ public class 用户登录加注册 {
             userEntity.setPostTimes(0);
             userEntity.setActivePkTimes(0);
             userEntity.setPostTimes(0);
-            if(userService.canUserView(fromUser))
+            userEntity.setUsedTimes(0);
+            userEntity.setFeeTimes(0);
+            if(pkService.isCreatedByVip(pkId))
             {
                 userEntity.setUserType(UserType.重点用户);
 

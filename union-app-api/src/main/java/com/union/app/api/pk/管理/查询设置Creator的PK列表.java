@@ -66,45 +66,14 @@ public class 查询设置Creator的PK列表 {
 
 
 
-    @RequestMapping(path="/queryPkCreators",method = RequestMethod.GET)
-    public AppResponse 查询内置PK(@RequestParam("password") String password) throws AppException, IOException {
-        appService.验证Password(password);
-        List<PkCreator> pks = appService.查询Creator设置(1);
-
-
-
-        return AppResponse.buildResponse(PageAction.执行处理器("success",pks));
-
-    }
-
-    @RequestMapping(path="/morePkCreators",method = RequestMethod.GET)
-    public AppResponse 查询内置PK(@RequestParam("password") String password,@RequestParam("page") int page) throws AppException, IOException {
-        appService.验证Password(password);
-
-        List<PkCreator> pks = appService.查询Creator设置(page+1);
-
-
-        if(pks.size() == 0)
-        {
-            return AppResponse.buildResponse(PageAction.前端数据更新("pkEnd",true));
-
-        }
-
-        return AppResponse.buildResponse(PageAction.执行处理器("success",pks));
-
-    }
-
-    @RequestMapping(path="/switchBit",method = RequestMethod.GET)
+    @RequestMapping(path="/setUserCode",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse switchBit(@RequestParam("password") String password,@RequestParam("pkId") String pkId) throws AppException, IOException {
+    public AppResponse setUserCode(@RequestParam("password") String password,@RequestParam("pkId") String pkId,@RequestParam("value") String value) throws AppException, IOException {
         appService.验证Password(password);
-        PkCreator pk = appService.设置PK开关(pkId);
+        appService.设置主题标识码(pkId,value);
 
-        return AppResponse.buildResponse(PageAction.执行处理器("success",pk));
+        return AppResponse.buildResponse(PageAction.信息反馈框("设置标记成功","标记:"+value));
 
     }
-
-
-
 
 }

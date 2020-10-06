@@ -59,29 +59,29 @@ public class 收款用户 {
         appService.验证Password(password);
 
 
-        List<PkCashier> cashiers = appService.查询收款列表(1);
+        List<PkCashier> cashiers = appService.查询收款列表();
 
 
         return AppResponse.buildResponse(PageAction.执行处理器("success",cashiers));
 
     }
-    @RequestMapping(path="/nextPageCashiers",method = RequestMethod.GET)
-    public AppResponse 查询单个PK(@RequestParam("password") String password,@RequestParam("page") int page) throws AppException, IOException {
-
-        appService.验证Password(password);
-
-        List<PkCashier> cashiers = appService.查询收款列表(page+1);
-
-
-        if(CollectionUtils.isEmpty(cashiers))
-        {
-            return AppResponse.buildResponse(PageAction.前端数据更新("pkEnd",true));
-
-        }
-
-        return AppResponse.buildResponse(PageAction.执行处理器("success",cashiers));
-
-    }
+//    @RequestMapping(path="/nextPageCashiers",method = RequestMethod.GET)
+//    public AppResponse 查询单个PK(@RequestParam("password") String password,@RequestParam("page") int page) throws AppException, IOException {
+//
+//        appService.验证Password(password);
+//
+//        List<PkCashier> cashiers = appService.查询收款列表(page+1);
+//
+//
+//        if(CollectionUtils.isEmpty(cashiers))
+//        {
+//            return AppResponse.buildResponse(PageAction.前端数据更新("pkEnd",true));
+//
+//        }
+//
+//        return AppResponse.buildResponse(PageAction.执行处理器("success",cashiers));
+//
+//    }
 
     @RequestMapping(path="/createCashier",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)

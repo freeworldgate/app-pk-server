@@ -51,7 +51,6 @@ public class 上传群二维码 {
     public AppResponse 上传群二维码(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId,@RequestParam("url") String url,@RequestParam("type") int type) throws IOException, AppException {
 
         List<DataSet> dataSets = new ArrayList<>();
-        Date currentDate = new Date();
         User creator = pkService.queryPkCreator(pkId);
         DataSet dataSet1 = new DataSet("creator",creator);
         DataSet dataSet5 = new DataSet("mode", "show");
@@ -63,53 +62,27 @@ public class 上传群二维码 {
         DataSet dataSet6 = new DataSet("t1","");
         DataSet dataSet7 = new DataSet("t2","");
 
-
         //无权限
         if(!StringUtils.equals(creator.getUserId(),userId)) {
             return AppResponse.buildResponse(PageAction.消息级别提示框(Level.错误消息,"非法操作"));
         }
 
-
-
-
-
-
-
         if(type == 1)
         {
-//
-//                String oldMediaId = dynamicService.查询PK群组二维码MediaId(pkId,currentDate);
-//                if(!StringUtils.isBlank(oldMediaId)){ return AppResponse.buildResponse(PageAction.消息级别提示框(Level.错误消息,"今日已更新")); }
+
             String mediaId = WeChatUtil.uploadImg2Wx(url);
-//            PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
 
             dynamicService.设置PK群组二维码MediaId(pkId, mediaId);
             dynamicService.设置PK群组二维码Url(pkId, url);
-
-
-//            if(pkEntity.getPkType() == PkType.内置相册 && pkEntity.getIsInvite() == InviteType.公开) {
-//                dynamicService.设置内置公开PK群组二维码MediaId(pkId, mediaId);
-//                dynamicService.设置内置公开PK群组二维码Url(pkId, url);
-//            }else {
-//                dynamicService.设置PK群组二维码MediaId(pkId, mediaId);
-//                dynamicService.设置PK群组二维码Url(pkId, url);
-//            }
-
-
-
-
-
+            pkService.更新群组时间(pkId);
 
             dataSet2 = new DataSet("imgUrl",url);
             dataSet3 = new DataSet("mediaId",mediaId);
-            dataSet4 = new DataSet("title",TimeUtils.currentDate() + "日审核群");
+            dataSet4 = new DataSet("title",  "主题群");
 
         }
         else
         {
-
-
-
 
         }
         dataSets.add(dataSet1);
@@ -145,17 +118,13 @@ public class 上传群二维码 {
         DataSet dataSet7 = new DataSet("t2","");
 
 
-//        boolean download = AppConfigService.getConfigAsBoolean(ConfigItem.系统当前是否客服模式);
-//        dataSets.add(new DataSet("download",download));
-
         dataSets.add(new DataSet("buttonStr1","获取图片"));
         dataSets.add(new DataSet("buttonStr2","保存图片到相册"));
 
 
 
 
-        if(type == 1)
-        {
+
             //查询打榜群。
             String url ="";
             String mediaId ="";
@@ -213,33 +182,6 @@ public class 上传群二维码 {
 
 
 
-        }
-        else if(type == 2)
-        {
-            //查询激活群。
-            PkCashierEntity weidianUrl = appService.获取微店(pkId);
-
-//            PkCashierGroupEntity pkCashierGroupEntity = appService.查询可用群组(pkId,userId);
-            dataSet2 = new DataSet("imgUrl",weidianUrl.getLinkUrl());
-            dataSet3 = new DataSet("mediaId",weidianUrl.getMediaId());
-            dataSet4 = new DataSet("title",TimeUtils.currentDate() + "日激活群");
-
-        }
-        else if(type == 3)
-        {
-            PkCashierEntity taobaoUrl = appService.获取淘宝(pkId);
-
-
-            dataSet2 = new DataSet("imgUrl",taobaoUrl.getLinkUrl());
-            dataSet3 = new DataSet("mediaId",taobaoUrl.getMediaId());
-            dataSet4 = new DataSet("title", "打赏码");
-
-        }
-        else
-        {
-
-        }
-
 
 
 
@@ -250,8 +192,11 @@ public class 上传群二维码 {
         dataSets.add(dataSet5);
         dataSets.add(dataSet6);
         dataSets.add(dataSet7);
+        boolean msgChat = AppConfigService.getConfigAsBoolean(ConfigItem.是否允许客服会话);
+        dataSets.add(new DataSet("session", msgChat));
+
         dataSets.add(new DataSet("upload","上传"));
-        DataSet dataSet8 = new DataSet("word3", "客服消息回复1获取图片");
+        DataSet dataSet8 = new DataSet("word3", msgChat?"客服消息回复1获取图片":"");
         dataSets.add(dataSet8);
 
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));

@@ -65,7 +65,7 @@ public class 一次性任务 {
                 if(StringUtils.isBlank(dynamicService.查询PK群组二维码MediaId(pkId))){
                     ValueStr valueStr = null;
                     if(userService.是否是遗传用户(userId)) {
-                        valueStr = new ValueStr("", "更新审核群", "更新今日审核群,审核图贴，每天24:00请及时更新当日审核群...");
+                        valueStr = new ValueStr("", "更新审核群", "更新今日审核群,审核图册，每天24:00请及时更新当日审核群...");
                     }
                     else
                     {
@@ -81,11 +81,11 @@ public class 一次性任务 {
                 if (org.springframework.util.ObjectUtils.isEmpty(approveMessage)) {
                     ValueStr valueStr = null;
                     if(userService.是否是遗传用户(userId)) {
-                        valueStr = new ValueStr("", "发布图贴样例", "制作图贴样例并发布...");
+                        valueStr = new ValueStr("", "发布图册封面", "制作图册封面并发布...");
                     }
                     else
                     {
-                        valueStr = new ValueStr("", "发布图贴样例", "制作图贴样例并发布...");
+                        valueStr = new ValueStr("", "发布图册封面", "制作图册封面并发布...");
                     }
                     return AppResponse.buildResponse(PageAction.执行处理器("editApproverMessage", valueStr));
                 }
@@ -94,11 +94,11 @@ public class 一次性任务 {
 
             ValueStr valueStr = null;
             if(userService.是否是遗传用户(userId)) {
-                valueStr = new ValueStr("", "没有找到您的图贴", "您可以在主题下分享您的图贴...");
+                valueStr = new ValueStr("", "没有找到您的图册", "您可以在主题下分享您的图册...");
             }
             else
             {
-                valueStr = new ValueStr("", "没有找到您的图贴", "您可以在主题下分享您的图贴...");
+                valueStr = new ValueStr("", "没有找到您的图册", "您可以在主题下分享您的图册...");
             }
             return AppResponse.buildResponse(PageAction.前端数据更新("publish",true));
 //            return AppResponse.buildResponse(PageAction.执行处理器("publish",valueStr));
@@ -110,18 +110,18 @@ public class 一次性任务 {
             {
                 ValueStr valueStr = null;
                 if(userService.是否是遗传用户(userId)) {
-                    valueStr = new ValueStr(postEntity.getPostId(), "图贴未发布", "您的图贴暂未审核,审核通过后才可以发布......");
+                    valueStr = new ValueStr(postEntity.getPostId(), "图册未发布", "您的图册暂未审核,审核通过后才可以发布......");
                 }
                 else
                 {
-                    valueStr = new ValueStr(postEntity.getPostId(), "图贴未发布", "您的图贴暂未审核,审核通过后才可以发布......");
+                    valueStr = new ValueStr(postEntity.getPostId(), "图册未发布", "您的图册暂未审核,审核通过后才可以发布......");
                 }
 
                 return AppResponse.buildResponse(PageAction.执行处理器("select", valueStr));
             }
             if(postEntity.getApproveStatu() == ApproveStatu.驳回修改)
             {
-                return AppResponse.buildResponse(PageAction.信息反馈框("管理员驳回您的图贴","修改建议:" + (postEntity.getRejectTextBytes() == null?"":postEntity.getRejectTextBytes())));
+                return AppResponse.buildResponse(PageAction.信息反馈框("管理员驳回您的图册","修改建议:" + (postEntity.getRejectTextBytes() == null?"":postEntity.getRejectTextBytes())));
             }
 
         }

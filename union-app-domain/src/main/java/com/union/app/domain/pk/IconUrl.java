@@ -3,8 +3,8 @@ package com.union.app.domain.pk;
 public enum IconUrl {
 
 
-    有效微信标识("https://fenghao211.oss-cn-beijing.aliyuncs.com/png/wechat1.png"),
-    无效微信标识("https://fenghao211.oss-cn-beijing.aliyuncs.com/png/wechat2.png"),
+    有效微信标识("/images/group1.png"),
+    无效微信标识("/images/group.png"),
 
 
 

@@ -22,6 +22,7 @@ import com.union.app.service.pk.dynamic.DynamicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
@@ -47,13 +48,9 @@ public class UserService {
 
 
     public UserEntity queryUserEntity(String userId){
-        UserEntity userEntity = pkCacheService.get(userId,UserEntity.class);
-        if(ObjectUtils.isEmpty(userEntity))
-        {
-            EntityFilterChain filter = EntityFilterChain.newFilterChain(UserEntity.class)
-                    .compareFilter("userId",CompareTag.Equal,userId);
-            userEntity = appDaoService.querySingleEntity(UserEntity.class,filter);
-        }
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(UserEntity.class)
+                .compareFilter("userId",CompareTag.Equal,userId);
+        UserEntity userEntity = appDaoService.querySingleEntity(UserEntity.class,filter);
         return userEntity;
     }
 
@@ -110,31 +107,13 @@ public class UserService {
     }
 
 
-    public boolean canUserView(String userId,String fromUserId)
-    {
-        if(this.isUserExist(userId))
-        {
-            return this.isUserVip(userId);
-        }
-        else
-        {
-            return this.isUserVip(fromUserId);
-        }
-    }
+
 
     public boolean 是否是遗传用户(String userId)
     {
         return this.isUserVip(userId);
-
     }
 
-    public boolean canUserView(String userId)
-    {
-
-        return this.isUserVip(userId);
-
-
-    }
 
 
 
@@ -285,17 +264,7 @@ public class UserService {
     public void 用户已打榜(String userId) {
         UserEntity result  = queryUserEntity(userId);
         result.setPostTimes(result.getPostTimes() + 1);
-            appDaoService.updateEntity(result);
-
-
-
-
-
-
-
-
-
-
+        appDaoService.updateEntity(result);
 
     }
 
@@ -343,19 +312,7 @@ public class UserService {
 
     }
 
-    public boolean 用户未激活榜单超限(String userId) {
 
-        UserEntity result  = queryUserEntity(userId);
-        int noActivePks = result.getPkTimes() - result.getActivePkTimes();
-        if(noActivePks >= AppConfigService.getConfigAsInteger(ConfigItem.用户最多未激活榜单数量))
-        {
-            return true;
-        }
-        return false;
-
-
-
-    }
 
     public boolean 是否已经打榜(String userId) {
         if(org.apache.commons.lang.StringUtils.isBlank(userId)){return false;}
@@ -393,7 +350,7 @@ public class UserService {
     }
 
     public boolean 用户解锁(String userId) {
-        if(!AppConfigService.getConfigAsBoolean(ConfigItem.遗传用户需发帖后解锁)){return true;}
+//        if(!AppConfigService.getConfigAsBoolean(ConfigItem.普通用户发帖后解锁开关)){return true;}
 
 
 
@@ -410,15 +367,38 @@ public class UserService {
 
     }
 
-    public boolean 是否有可用图贴(String userId) {
-        UserEntity userEntity = userService.queryUserEntity(userId);
-        if(userEntity.getPostTimes() > userEntity.getPkTimes())
+    public boolean 是否可以创建主题(String userId) {
+        //普通用户且不要求主题和榜帖数量绑定时返回可以创建
+        if(!AppConfigService.getConfigAsBoolean(ConfigItem.主题和榜帖数量绑定) && !this.是否是遗传用户(userId))
         {
+
             return true;
+
+
         }
         else
         {
-            return false;
+
+            UserEntity userEntity = userService.queryUserEntity(userId);
+            if(userEntity.getPostTimes() > userEntity.getPkTimes())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+
         }
+
+
+
+    }
+
+    public void 用户激活一个主题(String userId) {
+
+
+
     }
 }

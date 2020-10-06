@@ -1,5 +1,6 @@
 package com.union.app.entity.pk;
 
+import com.union.app.entity.用户.support.UserType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,10 +20,15 @@ public class PostEntity {
 
     private String pkId;
 
+    @Enumerated(EnumType.STRING)
+    private PkType pkType;
+
     private String userId;
 
     private String topic;
+
     private String selfComment;
+
     private long selfCommentTime;
 
     private int imgNum;
@@ -35,6 +41,8 @@ public class PostEntity {
     private PostStatu statu;
 
     private String imgUrls;
+
+    private String wxCode;
 
     private long shareTime;
 

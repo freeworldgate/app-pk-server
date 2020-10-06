@@ -11,14 +11,17 @@ import com.union.app.domain.pk.*;
 import com.union.app.common.id.KeyGetter;
 import com.union.app.domain.pk.apply.KeyNameValue;
 import com.union.app.domain.pk.审核.ApproveComment;
+import com.union.app.domain.user.User;
 import com.union.app.domain.工具.RandomUtil;
 import com.union.app.entity.pk.*;
+import com.union.app.entity.pk.complain.ComplainEntity;
 import com.union.app.entity.pk.审核.ApproveCommentEntity;
 import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.Level;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
+import com.union.app.service.pk.complain.ComplainService;
 import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.user.UserService;
 import com.union.app.util.idGenerator.IdGenerator;
@@ -66,22 +69,33 @@ public class PostService {
     ApproveService approveService;
 
     @Autowired
+    ComplainService complainService;
+
+
+    @Autowired
     PkCacheService pkCacheService;
     public String 预置帖子(String pkId,String title,List<String> images) throws IOException, AppException
     {
+        PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
+        User creator = pkService.queryPkCreator(pkId);
+        PostEntity creatorPostEntity = this.查询用户帖(pkId,creator.getUserId());
 
         String postId = IdGenerator.getPostId();
+        String wxCode = appService.生成二维码(pkId,postId);
         PostEntity postEntity = new PostEntity();
 
         postEntity.setPkId(pkId);
+        postEntity.setPkType(pkEntity.getPkType());
+        postEntity.setWxCode(wxCode);
         postEntity.setPostId(postId);
-        postEntity.setUserId(appService.随机用户());
+        postEntity.setUserId(ObjectUtils.isEmpty(creatorPostEntity)?creator.getUserId():appService.随机用户());
         postEntity.setTopic(noActiveTitle(title)?"...":title);
         postEntity.setImgNum(images.size());
         postEntity.setCreateTime(TimeUtils.currentTime());
         postEntity.setLastModifyTime(TimeUtils.currentTime());
         postEntity.setStatu(PostStatu.审核中);
         postEntity.setRejectTimes(0);
+
 
         postEntity.setApproveStatu(ApproveStatu.未处理);
         StringBuffer stringBuffer = new StringBuffer();
@@ -95,10 +109,13 @@ public class PostService {
 
 //        转发审核
 
+
+
+
+
+
         this.用户转发审批(postEntity);
         dynamicService.设置帖子的审核用户(pkId,postId);
-
-
 //          审核通过
         this.上线帖子(pkId,postId);
         dynamicService.已审核(pkId,postId);
@@ -116,9 +133,12 @@ public class PostService {
     {
 
         String postId = IdGenerator.getPostId();
+        String wxCode = appService.生成二维码(pkId,postId);
         PostEntity postEntity = new PostEntity();
-
+        PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
         postEntity.setPkId(pkId);
+        postEntity.setWxCode(wxCode);
+        postEntity.setPkType(pkEntity.getPkType());
         postEntity.setPostId(postId);
         postEntity.setUserId(userId);
         postEntity.setTopic(noActiveTitle(title)?"...":title);
@@ -189,7 +209,7 @@ public class PostService {
         PostEntity postEntity = this.查询帖子ById(postId);
         if(ObjectUtils.isEmpty(postEntity)){return null;}
         Post post = translate(postEntity);
-
+//        post.setBackUrl(appService.查询背景(4));
         return post;
     }
 
@@ -198,6 +218,7 @@ public class PostService {
         Post post = new Post();
         post.setPkId(postEntity.getPkId());
         post.setPostId(postEntity.getPostId());
+        post.setWxCode(StringUtils.isEmpty(postEntity.getWxCode())?appService.查询背景(9):postEntity.getWxCode());
         post.setRejectTimes(postEntity.getRejectTimes());
         post.setMaxRejectTimes(AppConfigService.getConfigAsInteger(ConfigItem.Post最大修改次数));
         post.setRejectText(postEntity.getRejectTextBytes() == null?"":postEntity.getRejectTextBytes());
@@ -205,11 +226,16 @@ public class PostService {
         post.setCreator(userService.queryUser(postEntity.getUserId()));
         post.setTopic(postEntity.getTopic());
         post.setDynamic(getPostDynamic(postEntity.getPostId(),postEntity.getPkId()));
-        post.setPostImages(getPostImages(postEntity.getImgUrls()));
+        List<PostImage> imgs =  getPostImages(postEntity.getImgUrls());
+        if(postEntity.getStatu() == PostStatu.上线) {
+            Collections.shuffle(imgs);
+        }
+        post.setPostImages(imgs);
         post.setStatu(new KeyNameValue(postEntity.getStatu().getStatu(),postEntity.getStatu().getStatuStr()));
 //        post.setUserIntegral(dynamicService.查询用户打榜信息(postEntity.getPkId(),postEntity.getUserId()));
         post.setSelfComment(org.apache.commons.lang.StringUtils.isBlank(postEntity.getSelfComment())? org.apache.commons.lang.StringUtils.EMPTY :postEntity.getSelfComment());
         post.setSelfCommentTime(TimeUtils.convertTime(postEntity.getSelfCommentTime()));
+        post.setScan(dynamicService.查询扫码次数(postEntity.getPkId(),postEntity.getPostId()));
         return post;
     }
 
@@ -228,6 +254,7 @@ public class PostService {
             postImage.setTime("");
             postImages.add(postImage);
         }
+//        Collections.shuffle(postImages);
         return postImages;
     }
 
@@ -268,11 +295,7 @@ public class PostService {
 
 
 
-    public boolean 帖子是否存在(String postId) {
-        String detail = KeyGetter.Post的Key(PostPart.POST信息,postId);
-        if(!ossStorage.isKeyExist(detail)){return false;}
-        return true;
-    }
+
 
 
     public void 删除帖子指定图片(String postId, String imgId, String userId) throws AppException {
@@ -433,24 +456,36 @@ public class PostService {
 
 
     public PostEntity 查询帖子ById(String postId) {
-        PostEntity postEntity = pkCacheService.get(postId,PostEntity.class);
-        if(ObjectUtils.isEmpty(postEntity))
-        {
-            EntityFilterChain filter1 = EntityFilterChain.newFilterChain(PostEntity.class)
-                    .compareFilter("postId",CompareTag.Equal,postId);
-            postEntity = daoService.querySingleEntity(PostEntity.class,filter1);
-
-        }
+        EntityFilterChain filter1 = EntityFilterChain.newFilterChain(PostEntity.class)
+                .compareFilter("postId",CompareTag.Equal,postId);
+        PostEntity postEntity = daoService.querySingleEntity(PostEntity.class,filter1);
 
         return postEntity;
     }
 
     public void 替换指定图片(String pkId, String postId, String imgUrl, int index, String userId,Date date) throws AppException {
 
+
+
+
+
         PostEntity postEntity = 查询帖子ById(postId);
         if(!org.apache.commons.lang.StringUtils.equals(postEntity.getUserId(),userId)){
             throw AppException.buildException(PageAction.消息级别提示框(Level.错误消息,"非法操作"));
         }
+        if(postEntity.getStatu() == PostStatu.上线){
+            throw AppException.buildException(PageAction.消息级别提示框(Level.错误消息,"非法操作"));
+        }
+
+        ComplainEntity complainEntity = complainService.查询投诉信息(pkId,postEntity.getUserId());
+        if(!ObjectUtils.isEmpty(complainEntity))
+        {
+            throw AppException.buildException(PageAction.信息反馈框("投诉信息处理中","不能修改图册内容..."));
+        }
+
+
+
+
         String[] imgs = postEntity.getImgUrls().split(";");
         imgs[index] = imgUrl;
         StringBuffer stringBuffer = new StringBuffer();
@@ -473,7 +508,7 @@ public class PostService {
 
         daoService.updateEntity(postEntity);
 
-        dynamicService.榜帖恢复到审核中状态(pkId,postId);
+//        dynamicService.榜帖恢复到审核中状态(pkId,postId);
     }
 
     public void 替换Topic(String pkId, String postId, String text, String userId) throws AppException, UnsupportedEncodingException {
@@ -498,14 +533,38 @@ public class PostService {
 
     }
 
-    public Post 查询需要审核的帖子() throws UnsupportedEncodingException {
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(PostEntity.class)
-                .compareFilter("statu",CompareTag.Equal,PostStatu.审核中)
-                .andFilter()
-                .compareFilter("approveStatu",CompareTag.Equal,ApproveStatu.请求审核)
-                .andFilter()
-                .compareFilter("shareTime",CompareTag.Small,System.currentTimeMillis() - AppConfigService.getConfigAsInteger(ConfigItem.榜帖可发起投诉的等待时间)*60*1000)
-                .orderByRandomFilter();
+    public Post 查询需要审核的帖子(int type) throws UnsupportedEncodingException {
+        EntityFilterChain filter = null;
+        if(type == 1)
+        {
+            filter = EntityFilterChain.newFilterChain(PostEntity.class)
+                    .compareFilter("statu",CompareTag.Equal,PostStatu.审核中)
+                    .andFilter()
+                    .compareFilter("pkType",CompareTag.Equal,PkType.运营相册)
+                    .andFilter()
+                    .compareFilter("approveStatu",CompareTag.Equal,ApproveStatu.请求审核)
+                    .andFilter()
+                    .compareFilter("shareTime",CompareTag.Small,System.currentTimeMillis() - AppConfigService.getConfigAsInteger(ConfigItem.榜帖可发起投诉的等待时间)*60*1000)
+                    .orderByRandomFilter();
+        }
+        else
+        {
+            filter = EntityFilterChain.newFilterChain(PostEntity.class)
+                    .compareFilter("statu",CompareTag.Equal,PostStatu.审核中)
+                    .andFilter()
+                    .compareFilter("pkType",CompareTag.Equal,PkType.审核相册)
+                    .andFilter()
+                    .compareFilter("approveStatu",CompareTag.Equal,ApproveStatu.请求审核)
+                    .andFilter()
+                    .compareFilter("shareTime",CompareTag.Small,System.currentTimeMillis() - AppConfigService.getConfigAsInteger(ConfigItem.榜帖可发起投诉的等待时间)*60*1000)
+                    .orderByRandomFilter();
+
+        }
+
+
+
+
+
         PostEntity postEntity = daoService.querySingleEntity(PostEntity.class,filter);
         if(ObjectUtils.isEmpty(postEntity)){return null;}
         Post post = this.translate(postEntity);
@@ -518,7 +577,7 @@ public class PostService {
     public void 用户转发审批(PostEntity postEntity) throws AppException {
         if(postEntity.getRejectTimes() > AppConfigService.getConfigAsInteger(ConfigItem.Post最大修改次数))
         {
-            throw AppException.buildException(PageAction.信息反馈框("修改次数过多","图贴修改次数过多..."));
+            throw AppException.buildException(PageAction.信息反馈框("修改次数过多","图册修改次数过多..."));
         }
         postEntity.setShareTime(System.currentTimeMillis());
         postEntity.setApproveStatu(ApproveStatu.请求审核);

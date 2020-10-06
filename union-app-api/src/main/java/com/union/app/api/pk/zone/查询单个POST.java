@@ -1,13 +1,17 @@
 package com.union.app.api.pk.zone;
 
 import com.union.app.domain.pk.*;
+import com.union.app.domain.pk.cashier.PkCashier;
 import com.union.app.domain.user.User;
+import com.union.app.entity.pk.PkEntity;
+import com.union.app.entity.pk.PostStatu;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.common.OSS存储.OssStorage;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.DataSet;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.service.pk.click.ClickService;
+import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.service.AppService;
 import com.union.app.service.pk.service.PkService;
 import com.union.app.service.pk.service.PostService;
@@ -47,6 +51,10 @@ public class 查询单个POST {
     @Autowired
     AppService appService;
 
+    @Autowired
+    DynamicService dynamicService;
+
+
     @RequestMapping(path="/queryPostById",method = RequestMethod.GET)
     public AppResponse 查询单个POSTById(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId,@RequestParam("userId") String userId) throws AppException, IOException {
 
@@ -64,16 +72,55 @@ public class 查询单个POST {
         dataSets.add(new DataSet("t1","修改标题"));
         dataSets.add(new DataSet("t2","留言"));
         dataSets.add(new DataSet("t3","审核"));
-        dataSets.add(new DataSet("t4","检测到当前图贴处于未审核状态，请前往审核页面,榜主通过审核后方可发布该图贴内容..."));
+        dataSets.add(new DataSet("t4","检测到当前图册处于未审核状态，请前往审核页面,榜主通过审核后方可发布该图册内容..."));
         dataSets.add(new DataSet("t5","修改主题"));
         dataSets.add(new DataSet("t6","修改主题内容"));
-        dataSets.add(new DataSet("t7","修改图片需要重新审核图贴内容..."));
+        dataSets.add(new DataSet("t7","修改图片需要重新审核图册内容..."));
         dataSets.add(new DataSet("t3","审核"));
         dataSets.add(new DataSet("t3","审核"));
         dataSets.add(new DataSet("imgBack",appService.查询背景(4)));
 
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
     }
+
+    @RequestMapping(path="/queryPostByPostId",method = RequestMethod.GET)
+    public AppResponse 查询单个queryPostByPostId(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId) throws AppException, IOException {
+
+
+        Post post = postService.查询帖子(pkId,postId,"");
+        if(post.getStatu().getKey() != PostStatu.上线.getStatu())
+        {
+            return AppResponse.buildResponse(PageAction.页面跳转("/pages/pk/pk/pk?pkId="+pkId+"&fromUser="+post.getCreator().getUserId(),false));
+        }
+        dynamicService.扫描次数加1(pkId,postId);
+
+
+        List<DataSet> dataSets = new ArrayList<>();
+        DataSet dataSet1 = new DataSet("post",post);
+
+
+        dataSets.add(dataSet1);
+
+
+        dataSets.add(new DataSet("imgBack",appService.查询背景(4)));
+
+        return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
+    }
+
+    @RequestMapping(path="/importPost",method = RequestMethod.GET)
+    public AppResponse 查询单个POSTById(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId) throws AppException, IOException {
+
+        PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
+        List<PkCashier> tips = appService.查询有效收款列表();
+
+        return AppResponse.buildResponse(PageAction.执行处理器("success",new ImportPost(pkEntity.getTopic(),tips)));
+    }
+
+
+
+
+
+
 
 
 

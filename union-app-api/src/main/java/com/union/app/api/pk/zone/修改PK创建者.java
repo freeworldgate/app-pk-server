@@ -48,16 +48,13 @@ public class 修改PK创建者 {
     @Autowired
     AppService appService;
 
-    @RequestMapping(path="/setPkUser",method = RequestMethod.GET)
+
+
+    @RequestMapping(path="/setPkCode",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse 创建单个PK(@RequestParam("userId") String userId,@RequestParam("pkId") String pkId) throws AppException, IOException {
+    public AppResponse setPkCode(@RequestParam("userId") String userId,@RequestParam("value") String value) throws AppException, IOException {
 
-        pkService.修改Creator(pkId,userId);
-
-
-
-
-
+        pkService.修改PkCreator(userId,value);
 
         return AppResponse.buildResponse(PageAction.前端数据更新("hello",""));
     }

@@ -1,8 +1,6 @@
-package com.union.app.service.pk.dynamic.imp;
+package com.union.app.common.redis;
 
 
-import com.alibaba.fastjson.JSON;
-import com.union.app.domain.pk.integral.UserIntegral;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;

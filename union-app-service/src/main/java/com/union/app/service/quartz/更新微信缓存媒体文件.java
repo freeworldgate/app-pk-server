@@ -7,6 +7,8 @@ import com.union.app.entity.pk.PkEntity;
 import com.union.app.entity.pk.审核.ApproveMessageEntity;
 import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.service.MediaService;
+import com.union.app.service.pk.service.PkService;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -28,6 +30,10 @@ public class 更新微信缓存媒体文件 {
     @Autowired
     MediaService mediaService;
 
+
+    @Autowired
+    PkService pkService;
+
     @Scheduled(cron = "0 0 5 * * ?") //每天5点执行一次
     @Transactional(rollbackOn = Exception.class)
     public void work() throws Exception {
@@ -36,13 +42,28 @@ public class 更新微信缓存媒体文件 {
 
 
 
+        List<PkEntity> pks = null;
+        int page = 1;
+        while(!CollectionUtils.isEmpty(pks=mediaService.查询需要更新的群组(page)))
+        {
 
+            for(PkEntity pk:pks)
+            {
+                String mediaId = WeChatUtil.uploadImg2Wx(dynamicService.查询PK群组二维码Url(pk.getPkId()));
+                dynamicService.设置PK群组二维码MediaId(pk.getPkId(),mediaId);
+                pkService.更新群组时间(pk.getPkId());
+
+            }
+            page++;
+
+
+        }
 
 
 
 //        List<PkCashierEntity> pkCashiers = mediaService.查询需要更新的媒体图片(PkCashierEntity.class);
 //        List<ApproveMessageEntity> messages = mediaService.查询需要更新的媒体图片(ApproveMessageEntity.class);
-        List<PkEntity> pks = mediaService.查询需要更新的群组();
+//        List<PkEntity> pks = mediaService.查询需要更新的群组();
 
 
 //        for(PkCashierEntity cashier:pkCashiers)
@@ -69,7 +90,7 @@ public class 更新微信缓存媒体文件 {
 //            dynamicService.设置内置公开PK群组二维码MediaId(pk.getPkId(),mediaId);
 //
 //        }
-
+//
 
 
 

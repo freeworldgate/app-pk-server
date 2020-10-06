@@ -1,8 +1,9 @@
 package com.union.app.api.pk.审核;
 
+import com.union.app.common.dao.AppDaoService;
+import com.union.app.domain.pk.ActivePk;
 import com.union.app.domain.pk.PkActive;
-import com.union.app.entity.pk.PkActiveEntity;
-import com.union.app.entity.pk.PostEntity;
+import com.union.app.entity.pk.*;
 import com.union.app.plateform.data.resultcode.*;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.service.pk.dynamic.DynamicService;
@@ -25,6 +26,9 @@ import java.util.List;
 @RequestMapping(path="/pk")
 public class 提交激活码 {
 
+
+    @Autowired
+    AppDaoService daoService;
 
     @Autowired
     PkService pkService;
@@ -89,16 +93,25 @@ public class 提交激活码 {
     public AppResponse publishPk(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId) throws AppException, IOException {
 
 //
-        appService.提交非遗传用户激活码(pkId,userId);
-//
-//        List<DataSet> dataSets = new ArrayList<>();
-//        PkActive active = appService.查询激活信息(pkId);
-//        dataSets.add(new DataSet("pkActive", active));
-//        dataSets.add(new DataSet("icon1", "/images/waiting.png"));
-//        dataSets.add(new DataSet("approveText", "审核中"));
+//        appService.提交非遗传用户激活码(pkId,userId);
+////
+//        if(!userService.是否是遗传用户(userId))
+//        {
+
+            PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
+            pkEntity.setAlbumStatu(PkStatu.已审核);
+//            PkActiveEntity pkActiveEntity = appService.查询PK激活信息(pkId);
+//            pkActiveEntity.setStatu(ActiveStatu.处理过);
+            daoService.updateEntity(pkEntity);
+//            daoService.updateEntity(pkActiveEntity);
+            userService.确认开通PK次数加1(pkEntity.getUserId());
+            return AppResponse.buildResponse(PageAction.页面跳转("/pages/pk/pk/pk?pkId=" + pkId,true));
+
+//        }
 
 
-        return AppResponse.buildResponse(PageAction.页面跳转("/pages/pk/selectPker/selectPker?pkId=" + pkId,true));
+
+//        return AppResponse.buildResponse(PageAction.页面跳转("/pages/pk/selectPker/selectPker?pkId=" + pkId,true));
 
     }
 

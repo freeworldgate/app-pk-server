@@ -10,7 +10,7 @@ import com.union.app.entity.pk.*;
 import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.service.pk.dynamic.DynamicService;
-import com.union.app.service.pk.dynamic.imp.RedisSortSetService;
+import com.union.app.common.redis.RedisSortSetService;
 import com.union.app.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -93,26 +93,16 @@ public class MediaService {
 
 
         EntityFilterChain filter = EntityFilterChain.newFilterChain(PkEntity.class)
-                .compareFilter("pkType",CompareTag.Equal, PkType.内置相册)
-                .andFilter()
-                .compareFilter("isInvite",CompareTag.Equal, InviteType.公开)
+                .compareFilter("updateTime",CompareTag.Small, System.currentTimeMillis() - AppConfigService.getConfigAsInteger(ConfigItem.媒体图片最大过期时间) * 3600 * 1000)
                 .pageLimitFilter(page,20);
         List<PkEntity> approveMessageEntities = daoService.queryEntities(PkEntity.class,filter);
         return approveMessageEntities;
 
     }
 
-    public List<PkEntity> 查询需要更新的群组() {
+    public List<PkEntity> 查询需要更新的群组(int page) {
 
-        List<PkEntity> pkEntities = new ArrayList<>();
-        int page = 1;
-        List<PkEntity> pks = null;
-        while(!CollectionUtils.isEmpty(pks = this.查询需要更新Group的PK(page)))
-        {
-            pkEntities.addAll(pks);
-            page++;
-        }
-        return pkEntities;
+        return this.查询需要更新Group的PK(page);
     }
 
 }

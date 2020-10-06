@@ -1,5 +1,6 @@
 package com.union.app.service.pk.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.union.app.common.OSS存储.CacheStorage;
 import com.union.app.common.OSS存储.OssStorage;
 import com.union.app.common.config.AppConfigService;
@@ -26,18 +27,24 @@ import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.service.data.PkDataService;
 import com.union.app.service.pk.dynamic.CacheKeyName;
 import com.union.app.service.pk.dynamic.DynamicService;
-import com.union.app.service.pk.dynamic.imp.RedisSortSetService;
+import com.union.app.common.redis.RedisSortSetService;
 import com.union.app.service.user.UserService;
 import com.union.app.util.idGenerator.IdGenerator;
 import com.union.app.util.time.TimeUtils;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 @Service
@@ -46,6 +53,8 @@ public class AppService {
 
 
 
+    @Autowired
+    PayService payService;
 
     @Autowired
     AppDaoService daoService;
@@ -119,7 +128,9 @@ public class AppService {
 
         EntityFilterChain filter = EntityFilterChain.newFilterChain(BuildInPkEntity.class)
                 .compareFilter("isInvite",CompareTag.Equal,type != 2 ? InviteType.邀请:InviteType.公开)
-                .pageLimitFilter(page,20);
+                .pageLimitFilter(page,20)
+                .orderByFilter("createTime",OrderTag.DESC);
+
         List<BuildInPkEntity> buildInPkEntities = daoService.queryEntities(BuildInPkEntity.class,filter);
         List<Object> buildInPks = new ArrayList<>();
         buildInPkEntities.forEach(pk->{buildInPks.add(pk.getPkId());});
@@ -135,23 +146,7 @@ public class AppService {
 
 
 
-    public PkDetail translate(PkEntity pkEntity) throws UnsupportedEncodingException {
-        PkDetail pkDetail = new PkDetail();
-        pkDetail.setPkId(pkEntity.getPkId());
-        pkDetail.setPkType(pkEntity.getPkType().getDesc());
-        pkDetail.setTopic(pkEntity.getTopic());
-        pkDetail.setUser(userService.queryUser(pkEntity.getUserId()));
-        pkDetail.setWatchWord(pkEntity.getWatchWord());
-//        pkDetail.setTotalApprover(new KeyNameValue(1,dynamicService.查询今日审核员数量(pkEntity.getPkId())));
-//        pkDetail.setTotalSort(new KeyNameValue(2,dynamicService.查询今日打榜用户数量(pkEntity.getPkId())));
-        pkDetail.setTime(TimeUtils.translateTime(pkEntity.getCreateTime()));
-        pkDetail.setInvite(new KeyNameValue(pkEntity.getIsInvite().getStatu(),pkEntity.getIsInvite().getStatuStr()));
-        pkDetail.setPkStatu(new KeyNameValue(ObjectUtils.isEmpty(pkEntity.getAlbumStatu())?PkStatu.审核中.getStatu():pkEntity.getAlbumStatu().getStatu(),ObjectUtils.isEmpty(pkEntity.getAlbumStatu())?PkStatu.审核中.getStatuStr():pkEntity.getAlbumStatu().getStatuStr()));
 
-
-
-        return pkDetail;
-    }
     public List<PkDetail> 查询内置相册( int page,int type) throws IOException {
 
         Date current = new Date();
@@ -189,7 +184,8 @@ public class AppService {
         List<PkEntity> pkEntities = new ArrayList<>();
         EntityFilterChain filter = EntityFilterChain.newFilterChain(InvitePkEntity.class)
                 .compareFilter("userId",CompareTag.Equal,userId)
-                .pageLimitFilter(page,20);
+                .pageLimitFilter(page,20)
+                .orderByFilter("time",OrderTag.DESC);
         List<InvitePkEntity> invites = daoService.queryEntities(InvitePkEntity.class,filter);
 
         for(InvitePkEntity invitePkEntity:invites)
@@ -250,7 +246,8 @@ public class AppService {
 
         EntityFilterChain filter = EntityFilterChain.newFilterChain(PkEntity.class)
                 .compareFilter("userId",CompareTag.Equal,userId)
-                .pageLimitFilter(page,20);;
+                .pageLimitFilter(page,20)
+                .orderByFilter("createTime",OrderTag.DESC);
         List<PkEntity> pkEntities = daoService.queryEntities(PkEntity.class,filter);
 
         return pkEntities;
@@ -348,37 +345,60 @@ public class AppService {
 //    }
 
 
-
-
-    private List<PkCashierEntity> queryPkCashiers(int page) {
+    private List<PkCashierEntity> queryActivePkCashiers() {
 
         EntityFilterChain filter = EntityFilterChain.newFilterChain(PkCashierEntity.class)
-                .pageLimitFilter(page,20);;
+                .compareFilter("statu",CompareTag.Equal,CashierStatu.启用)
+                .orderByFilter("time",OrderTag.DESC);
+        List<PkCashierEntity> pkCashierEntities = daoService.queryEntities(PkCashierEntity.class,filter);
+        return pkCashierEntities;
+    }
+
+    private List<PkCashierEntity> queryPkCashiers() {
+
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(PkCashierEntity.class)
+                .orderByFilter("time",OrderTag.DESC);
         List<PkCashierEntity> pkCashierEntities = daoService.queryEntities(PkCashierEntity.class,filter);
 
         return pkCashierEntities;
     }
-    public List<PkCashier> 查询收款列表(int page) throws IOException {
+    public List<PkCashier> 查询收款列表() throws IOException {
 
 
         List<PkCashier> pkCashiers = new ArrayList<>();
 
-        List<PkCashierEntity>  pkCashierEntities = queryPkCashiers(page);
+        List<PkCashierEntity>  pkCashierEntities = queryPkCashiers();
         for(PkCashierEntity pkCashierEntity:pkCashierEntities)
         {
             PkCashier pkCashier = new PkCashier();
             pkCashier.setCashierId(pkCashierEntity.getCashierId());
             pkCashier.setCashierName(pkCashierEntity.getRealName());
-            pkCashier.setSelectTimes(pkCashierEntity.getSelectTimes());
-            pkCashier.setActiveCodes(pkCashierEntity.getActiveCodes());
-            pkCashier.setNoActiveCodes(pkCashierEntity.getNoActiveCode());
-            pkCashier.setUsedActiveCodes(pkCashierEntity.getUsedActiveCode());
             pkCashier.setStatu(new KeyNameValue(pkCashierEntity.getStatu().getStatu(),pkCashierEntity.getStatu().getStatuStr()));
-            if(!ObjectUtils.isEmpty(pkCashierEntity.getLinkType()))
-            {
-                pkCashier.setType(new KeyNameValue(pkCashierEntity.getLinkType().getType(),pkCashierEntity.getLinkType().getDesc()));
-                pkCashier.setLinkImg(pkCashierEntity.getLinkUrl());
-            }
+            pkCashier.setImg(pkCashierEntity.getImg());
+            pkCashier.setBackPng(pkCashierEntity.getBackPng());
+            pkCashier.setTime(TimeUtils.convertTime(pkCashierEntity.getTime()));
+            pkCashiers.add(pkCashier);
+
+        }
+
+        return pkCashiers;
+
+    }
+
+    public List<PkCashier> 查询有效收款列表() throws IOException {
+
+
+        List<PkCashier> pkCashiers = new ArrayList<>();
+
+        List<PkCashierEntity>  pkCashierEntities = queryActivePkCashiers();
+        for(PkCashierEntity pkCashierEntity:pkCashierEntities)
+        {
+            PkCashier pkCashier = new PkCashier();
+            pkCashier.setCashierId(pkCashierEntity.getCashierId());
+            pkCashier.setCashierName(pkCashierEntity.getRealName());
+            pkCashier.setStatu(new KeyNameValue(pkCashierEntity.getStatu().getStatu(),pkCashierEntity.getStatu().getStatuStr()));
+            pkCashier.setImg(pkCashierEntity.getImg());
+            pkCashier.setBackPng(pkCashierEntity.getBackPng());
             pkCashier.setTime(TimeUtils.convertTime(pkCashierEntity.getTime()));
             pkCashiers.add(pkCashier);
 
@@ -394,8 +414,8 @@ public class AppService {
         PkCashierEntity pkCashierEntity = new PkCashierEntity();
         pkCashierEntity.setCashierId(com.union.app.util.idGenerator.IdGenerator.收款用户ID());
         pkCashierEntity.setRealName(name);
-        pkCashierEntity.setSelectTimes(0);
         pkCashierEntity.setStatu(CashierStatu.停用);
+        pkCashierEntity.setTime(System.currentTimeMillis());
         daoService.insertEntity(pkCashierEntity);
 
 
@@ -561,62 +581,20 @@ public class AppService {
         }
         else
         {
-            if(!StringUtils.isBlank(pkCashierEntity.getLinkUrl())) {
+            if(!StringUtils.isBlank(pkCashierEntity.getBackPng()) && !StringUtils.isBlank(pkCashierEntity.getImg())  ) {
                 pkCashierEntity.setStatu(CashierStatu.启用);
             }
             else
             {
-                throw AppException.buildException(PageAction.执行处理器("init",""));
+                throw AppException.buildException(PageAction.信息反馈框("图片和PNG背景不全","请上传图片和PNG背景"));
             }
 
         }
         daoService.updateEntity(pkCashierEntity);
     }
 
-    private void 全部收款码启用确认(String cashierId) throws AppException {
-        for(FeeNumber feeNumber:FeeNumber.values())
-        {
-            EntityFilterChain filter = EntityFilterChain.newFilterChain(PkCashierFeeCodeEntity.class)
-                    .compareFilter("cashierId",CompareTag.Equal,cashierId)
-                    .andFilter()
-                    .compareFilter("feeNumber",CompareTag.Equal,feeNumber);
-            PkCashierFeeCodeEntity pkCashierFeeCodeEntity = daoService.querySingleEntity(PkCashierFeeCodeEntity.class,filter);
-            if(ObjectUtils.isEmpty(pkCashierFeeCodeEntity))
-            {
-                throw AppException.buildException(PageAction.执行处理器("init",""));
-            }
 
 
-        }
-
-
-    }
-
-//    private void 禁用用户所有收款码(String cashierId) {
-//
-//        EntityFilterChain filter = EntityFilterChain.newFilterChain(PkCashierFeeCodeEntity.class)
-//                .compareFilter("cashierId",CompareTag.Equal,cashierId);
-//        List<PkCashierFeeCodeEntity> pkCashierFeeCodeEntities = daoService.queryEntities(PkCashierFeeCodeEntity.class,filter);
-//        for(PkCashierFeeCodeEntity feeCode:pkCashierFeeCodeEntities)
-//        {
-//            feeCode.setStatu(FeeCodeStatu.停用);
-//            daoService.updateEntity(feeCode);
-//        }
-//    }
-
-    private void 禁用用户所有群(String cashierId) {
-
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(PkCashierGroupEntity.class)
-                .compareFilter("cashierId",CompareTag.Equal,cashierId);
-        List<PkCashierGroupEntity> pkCashierGroupEntities = daoService.queryEntities(PkCashierGroupEntity.class,filter);
-        for(PkCashierGroupEntity group:pkCashierGroupEntities)
-        {
-            group.setStatu(GroupStatu.停用);
-            daoService.updateEntity(group);
-        }
-
-
-    }
 
 
     public void 修改群组状态(String cashierId, String groupId) throws AppException {
@@ -779,11 +757,11 @@ public class AppService {
     }
 
     public PkButton 显示按钮(PkButtonType pkButtonType) {
-        if(pkButtonType == PkButtonType.榜帖){return new PkButton(PkButtonType.榜帖.getIcon(),PkButtonType.榜帖.getName(),PkButtonType.榜帖.getLinkMethod());}
-        if(pkButtonType == PkButtonType.审核){return new PkButton(PkButtonType.审核.getIcon(),PkButtonType.审核.getName(),PkButtonType.审核.getLinkMethod());}
-        if(pkButtonType == PkButtonType.群组){return new PkButton(PkButtonType.群组.getIcon(),PkButtonType.群组.getName(),PkButtonType.群组.getLinkMethod());}
-        if(pkButtonType == PkButtonType.审核中){return new PkButton(PkButtonType.审核中.getIcon(),PkButtonType.审核中.getName(),PkButtonType.审核中.getLinkMethod());}
-        return null;
+//        if(pkButtonType == PkButtonType.榜帖){return new PkButton(PkButtonType.榜帖.getIcon(),PkButtonType.榜帖.getName(),PkButtonType.榜帖.getLinkMethod());}
+//        if(pkButtonType == PkButtonType.审核){return new PkButton(PkButtonType.审核.getIcon(),PkButtonType.审核.getName(),PkButtonType.审核.getLinkMethod());}
+//        if(pkButtonType == PkButtonType.群组){return new PkButton(PkButtonType.群组.getIcon(),PkButtonType.群组.getName(),PkButtonType.群组.getLinkMethod());}
+//        if(pkButtonType == PkButtonType.审核中){return new PkButton(PkButtonType.审核中.getIcon(),PkButtonType.审核中.getName(),PkButtonType.审核中.getLinkMethod());}
+        return new PkButton(pkButtonType.getIcon(),pkButtonType.getName(),pkButtonType.getLinkMethod(),pkButtonType.getStyle(),pkButtonType.getType());
 
     }
 
@@ -863,8 +841,8 @@ public class AppService {
 
 
     public void 添加到主页预览(String pkId, int value, int type) throws AppException, UnsupportedEncodingException {
-        if(!approveService.是否已发布审核消息(pkId)){throw AppException.buildException(PageAction.信息反馈框("添加错误","榜单未初始化审核公告"));}
-        PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
+//        if(!approveService.是否已发布审核消息(pkId)){throw AppException.buildException(PageAction.信息反馈框("添加错误","榜单未初始化审核公告"));}
+
 
 //        if(pkEntity.getMessageType() == MessageType.收费 && type == 2)
 //        {
@@ -877,7 +855,7 @@ public class AppService {
         HomePagePk pk = daoService.querySingleEntity(HomePagePk.class,filter2);
         if(ObjectUtils.isEmpty(pk))
         {
-
+            PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
             pk = new HomePagePk();
             pk.setPkId(pkId);
             pk.setPkType(pkEntity.getPkType());
@@ -1007,7 +985,7 @@ public class AppService {
 
 
     }
-
+    private boolean userType = true;
     public PreUserEntity 新增内置用户(String name, String imgUrl) throws UnsupportedEncodingException {
 
         String userId = com.union.app.util.idGenerator.IdGenerator.生成用户ID();
@@ -1015,7 +993,8 @@ public class AppService {
         preUserEntity.setUserId(userId);
         preUserEntity.setImgUrl(imgUrl);
         preUserEntity.setUserName(name);
-        daoService.insertEntity(preUserEntity);
+
+
         UserEntity userEntity = new UserEntity();
 
         userEntity.setOpenId(userId);
@@ -1023,8 +1002,23 @@ public class AppService {
         userEntity.setAvatarUrl(imgUrl);
         userEntity.setPkTimes(0);
         userEntity.setPostTimes(0);
-        userEntity.setUserType(UserType.重点用户);
+
         userEntity.setNickName(name);
+
+        if(userType)
+        {
+            preUserEntity.setUserType(UserType.重点用户);
+            userEntity.setUserType(UserType.重点用户);
+
+        }
+        else
+        {
+            preUserEntity.setUserType(UserType.普通用户);
+            userEntity.setUserType(UserType.普通用户);
+        }
+        userType = !userType;
+
+        daoService.insertEntity(preUserEntity);
         daoService.insertEntity(userEntity);
 
         return preUserEntity;
@@ -1080,11 +1074,30 @@ public class AppService {
         daoService.updateEntity(preUserEntity);
         return preUserEntity;
     }
-
     public String 随机用户() {
-
         EntityFilterChain filter = EntityFilterChain.newFilterChain(PreUserEntity.class)
-                .orderByRandomFilter();
+                    .orderByRandomFilter();
+
+        PreUserEntity preUserEntity = daoService.querySingleEntity(PreUserEntity.class,filter);
+        return preUserEntity.getUserId();
+
+    }
+
+    public String 随机用户(int type) {
+        EntityFilterChain filter = null;
+        if(type==2)
+        {
+            filter = EntityFilterChain.newFilterChain(PreUserEntity.class)
+                    .compareFilter("userType",CompareTag.Equal,UserType.重点用户)
+                    .orderByRandomFilter();
+        }
+        else
+        {
+            filter = EntityFilterChain.newFilterChain(PreUserEntity.class)
+                    .compareFilter("userType",CompareTag.Equal,UserType.普通用户)
+                    .orderByRandomFilter();
+        }
+
         PreUserEntity preUserEntity = daoService.querySingleEntity(PreUserEntity.class,filter);
         return preUserEntity.getUserId();
 
@@ -1138,18 +1151,15 @@ public class AppService {
         EntityFilterChain filter = EntityFilterChain.newFilterChain(PkCashierEntity.class)
                 .compareFilter("cashierId",CompareTag.Equal,cashierId);;
         PkCashierEntity pkCashierEntity = daoService.querySingleEntity(PkCashierEntity.class,filter);
-        String mediaId = WeChatUtil.uploadImg2Wx(linkImg);
-        pkCashierEntity.setMediaId(mediaId);
-        pkCashierEntity.setLastUpdateTime(System.currentTimeMillis());
+
+
         if(type == 1)
         {
-            pkCashierEntity.setLinkType(LinkType.微店);
-            pkCashierEntity.setLinkUrl(linkImg);
+            pkCashierEntity.setImg(linkImg);
         }
         if(type == 2)
         {
-            pkCashierEntity.setLinkType(LinkType.淘宝);
-            pkCashierEntity.setLinkUrl(linkImg);
+            pkCashierEntity.setBackPng(linkImg);
         }
 
         daoService.updateEntity(pkCashierEntity);
@@ -1398,15 +1408,32 @@ public class AppService {
 
 
     }
-    public List<DataSet> 查询投诉榜帖() throws IOException {
+    public List<DataSet> 查询投诉榜帖(int type) throws IOException {
         List<DataSet> dataSets = new ArrayList<>();
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(ComplainEntity.class)
-                .compareFilter("complainStatu",CompareTag.Equal,ComplainStatu.处理中);
+        EntityFilterChain filter = null;
+
+        if(type == 1)
+        {
+             filter = EntityFilterChain.newFilterChain(ComplainEntity.class)
+                     .compareFilter("complainStatu",CompareTag.Equal,ComplainStatu.处理中)
+                     .andFilter()
+                     .compareFilter("pkType",CompareTag.Equal,PkType.运营相册);
+        }
+        else
+        {
+            filter = EntityFilterChain.newFilterChain(ComplainEntity.class)
+                    .compareFilter("complainStatu",CompareTag.Equal,ComplainStatu.处理中)
+                    .andFilter()
+                    .compareFilter("pkType",CompareTag.NotEqual,PkType.运营相册);
+        }
+
+
+
         ComplainEntity entity = daoService.querySingleEntity(ComplainEntity.class,filter);
         if(!ObjectUtils.isEmpty(entity))
         {
             Post post = postService.查询用户帖子(entity.getPkId(),entity.getUserId());
-
+            post.setApproveComment(approveService.获取留言信息(post.getPkId(),post.getPostId()));
             dataSets.add(new DataSet("complainId",entity.getId()));
             PkDetail pkDetail = pkService.querySinglePk(post.getPkId());
 
@@ -1434,8 +1461,8 @@ public class AppService {
 
 
 
-    public List<DataSet> 查询下一个审核榜帖() throws IOException {
-        Post post = postService.查询需要审核的帖子();
+    public List<DataSet> 查询下一个审核榜帖(int type) throws IOException {
+        Post post = postService.查询需要审核的帖子(type);
         List<DataSet> dataSets = new ArrayList<>();
 
 
@@ -1516,41 +1543,7 @@ public class AppService {
         return codes;
     }
 
-    public void 新增储备激活码(String cashierId) {
-        PkCashierEntity pkCashierEntity = 查询收款人(cashierId);
-        if(!ObjectUtils.isEmpty(pkCashierEntity))
-        {
-            pkCashierEntity.setActiveCodes(pkCashierEntity.getActiveCodes() + 100);
-            daoService.updateEntity(pkCashierEntity);
-        }
 
-
-
-    }
-
-    public void 提交非遗传用户激活码(String pkId, String userId) throws AppException {
-        PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
-        if(!StringUtils.equals(userId,pkEntity.getUserId())){throw AppException.buildException(PageAction.信息反馈框("非法操作","只有榜主才可以激活榜单..."));}
-        if(userService.是否是遗传用户(userId)){throw AppException.buildException(PageAction.信息反馈框("系统错误","服务器出现错误，请您稍后重试..."));}
-        EntityFilterChain filter =  EntityFilterChain.newFilterChain(PkActiveEntity.class)
-                .compareFilter("pkId",CompareTag.Equal,pkId);
-        PkActiveEntity activeEntity = daoService.querySingleEntity(PkActiveEntity.class,filter);
-
-        if(ObjectUtils.isEmpty(activeEntity))
-        {
-            activeEntity = new PkActiveEntity();
-            activeEntity.setPkId(pkId);
-            activeEntity.setActiveCode(this.获取系统默认激活码());
-            activeEntity.setStatu(ActiveStatu.待处理);
-            activeEntity.setRejectTime(0);
-            activeEntity.setTipId("");
-            daoService.insertEntity(activeEntity);
-        }
-
-
-
-
-    }
 
     private String 获取系统默认激活码() {
         return UUID.randomUUID().toString();
@@ -1573,27 +1566,6 @@ public class AppService {
         return pkCreators;
     }
 
-    public PkCreator 设置PK开关(String pkId) throws IOException {
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(PkCreatorEntity.class)
-                .compareFilter("pkId",CompareTag.Equal,pkId);
-        PkCreatorEntity pkCreatorEntity = daoService.querySingleEntity(PkCreatorEntity.class,filter);
-        pkCreatorEntity.setSwitchBit(!pkCreatorEntity.isSwitchBit());
-        if(!pkCreatorEntity.isSwitchBit())
-        {
-            pkService.修改PKUser(pkCreatorEntity.getPkId(),pkCreatorEntity.getUserId());
-        }
-        daoService.updateEntity(pkCreatorEntity);
-
-        PkCreator pkCreator = new PkCreator();
-        pkCreator.setPk(pkService.querySinglePk(pkId));
-        pkCreator.getPk().setUser(userService.queryUser(pkCreatorEntity.getUserId()));
-        pkCreator.setSwitchBit(pkCreatorEntity.isSwitchBit());
-
-
-        return pkCreator;
-
-    }
-
     public void 有效投诉(String id) throws AppException {
 
         EntityFilterChain filter = EntityFilterChain.newFilterChain(ComplainEntity.class)
@@ -1607,6 +1579,10 @@ public class AppService {
             //记录一次有效投诉。
             PkEntity pkEntity = pkService.querySinglePkEntity(entity.getPkId());
             pkEntity.setComplainTimes(pkEntity.getComplainTimes() + 1);
+            if(pkEntity.getComplainTimes() > AppConfigService.getConfigAsInteger(ConfigItem.PK有效投诉最大数量))
+            {
+                pkEntity.setAlbumStatu(PkStatu.已关闭);
+            }
             daoService.updateEntity(pkEntity);
         }
 
@@ -1623,8 +1599,14 @@ public class AppService {
                 .compareFilter("id",CompareTag.Equal,Integer.valueOf(id));
         ComplainEntity entity = daoService.querySingleEntity(ComplainEntity.class,filter);
         if(!ObjectUtils.isEmpty(entity)){
+            PkEntity pkEntity = pkService.querySinglePkEntity(entity.getPkId());
+
+
+
             entity.setComplainStatu(ComplainStatu.已处理);
             daoService.updateEntity(entity);
+            daoService.updateEntity(pkEntity);
+
         }
 
 
@@ -1644,8 +1626,8 @@ public class AppService {
 
     }
 
-    public List<PkDetail> 随机主题(String userId,String fromUser) {
-        return pkDataService.随机列表(userId,fromUser);
+    public List<PkDetail> 随机主题(String userId,String pkId) {
+        return pkDataService.随机列表(userId,pkId);
 
     }
 
@@ -1653,8 +1635,8 @@ public class AppService {
         int commentStyle = AppConfigService.getConfigAsInteger(ConfigItem.留言方式);
         if(commentStyle == 3)
         {
-//            PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
-            if(userService.是否是遗传用户(userId))
+            PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
+            if(pkEntity.getPkType() == PkType.运营相册)
             {
                 return 1;
             }
@@ -1674,4 +1656,111 @@ public class AppService {
         }
 
     }
+
+    public void 设置主题标识码(String pkId, String value) {
+
+
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(PkCodeEntity.class)
+                .compareFilter("pkId",CompareTag.Equal,pkId);
+
+        PkCodeEntity entity = daoService.querySingleEntity(PkCodeEntity.class,filter);
+        if(ObjectUtils.isEmpty(entity))
+        {
+            PkCodeEntity pkCodeEntity = new PkCodeEntity();
+            pkCodeEntity.setPkId(pkId);
+            pkCodeEntity.setCode(value);
+            daoService.insertEntity(pkCodeEntity);
+        }
+        else {
+
+            entity.setCode(value);
+            daoService.updateEntity(entity);
+        }
+
+
+    }
+
+
+
+
+
+    public static String getPolicy()
+    {
+
+        String policy
+                = "{\"expiration\": \"2120-01-01T12:00:00.000Z\",\"conditions\": [[\"content-length-range\", 0, 104857600]]}";
+        String encodePolicy = new String(org.apache.commons.codec.binary.Base64.encodeBase64(policy.getBytes()));
+        return encodePolicy;
+    }
+
+
+    public static String getSignature(String accessKeySecret)  {
+
+        String signaturecom = computeSignature(accessKeySecret, getPolicy());
+
+        return signaturecom;
+    }
+
+    private static String computeSignature(String accessKeySecret, String encodePolicy)
+             {
+                 try {
+                     // convert to UTF-8
+                     byte[] key = accessKeySecret.getBytes("UTF-8");
+                     byte[] data = encodePolicy.getBytes("UTF-8");
+
+                     // hmac-sha1
+                     Mac mac = Mac.getInstance("HmacSHA1");
+                     mac.init(new SecretKeySpec(key, "HmacSHA1"));
+                     byte[] sha = mac.doFinal(data);
+
+                     // base64
+                     return new String(Base64.encodeBase64(sha));
+
+                 }catch (Exception e){
+                    return "";
+                 }
+             }
+
+
+    public String 生成二维码(String pkId, String postId)  {
+
+        try {
+            return WeChatUtil.生成二维码(pkId,postId);
+        } catch (IOException e) {
+            return this.查询背景(9);
+        }
+
+    }
+
+    public boolean 是否收费(String userId) {
+        if(userService.是否是遗传用户(userId))
+        {
+            return AppConfigService.getConfigAsBoolean(ConfigItem.遗传用户是否收费);
+
+        }
+        else
+        {
+            return AppConfigService.getConfigAsBoolean(ConfigItem.普通用户是否收费);
+        }
+
+
+    }
+
+    public JSONObject 获取支付信息(String userId,HttpServletRequest request) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("single",payService.single支付方案(userId,request));
+        jsonObject.put("all",payService.all支付方案(userId,request));
+        return jsonObject;
+
+
+
+
+
+    }
+
+
+
+
+
+
 }

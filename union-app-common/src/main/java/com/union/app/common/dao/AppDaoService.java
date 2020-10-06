@@ -64,7 +64,7 @@ public class AppDaoService
 
         if(entities == null || entities.isEmpty()){return null;}
         T t = entities.get(0);
-        pkCacheService.save(t);
+
 
         return t;
     }
@@ -118,7 +118,7 @@ public class AppDaoService
      */
     public <T> void updateEntity(T t){
 
-        pkCacheService.remove(t);
+
 
         entityManager.merge(t);
     }
@@ -129,7 +129,7 @@ public class AppDaoService
      * @param <T>
      */
     public <T> void deleteEntity(T t){
-        pkCacheService.remove(t);
+
         entityManager.remove(t);
     }
 

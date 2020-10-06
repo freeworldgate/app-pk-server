@@ -65,10 +65,10 @@ public class 审核榜帖 {
     public static Map<String,PkDetail> pkDetailMap = new HashMap<>();
 
     @RequestMapping(path="/manageApprovingPosts",method = RequestMethod.GET)
-    public AppResponse 查询审核榜帖(@RequestParam("password") String password) throws AppException, IOException {
+    public AppResponse 查询审核榜帖(@RequestParam("password") String password,@RequestParam("type") int type) throws AppException, IOException {
         appService.验证Password(password);
 
-        List<DataSet> dataSets  = appService.查询下一个审核榜帖();
+        List<DataSet> dataSets  = appService.查询下一个审核榜帖(type);
 
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
 
@@ -76,7 +76,7 @@ public class 审核榜帖 {
 
     @RequestMapping(path="/approvePost",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse approvePost(@RequestParam("password") String password,@RequestParam("postId") String postId,@RequestParam("pkId") String pkId) throws AppException, IOException {
+    public AppResponse approvePost(@RequestParam("password") String password,@RequestParam("postId") String postId,@RequestParam("pkId") String pkId,@RequestParam("type") int type) throws AppException, IOException {
         //User认证
         appService.验证Password(password);
 
@@ -84,7 +84,7 @@ public class 审核榜帖 {
         postService.上线帖子(pkId,postId);
         dynamicService.已审核(pkId,postId);
 
-        List<DataSet> dataSets  = appService.查询下一个审核榜帖();
+        List<DataSet> dataSets  = appService.查询下一个审核榜帖(type);
 
 
 
@@ -96,7 +96,7 @@ public class 审核榜帖 {
 
     @RequestMapping(path="/hiddenPost",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse hiddenPost(@RequestParam("password") String password,@RequestParam("postId") String postId,@RequestParam("pkId") String pkId,@RequestParam("text") String text) throws AppException, IOException {
+    public AppResponse hiddenPost(@RequestParam("password") String password,@RequestParam("postId") String postId,@RequestParam("pkId") String pkId,@RequestParam("text") String text,@RequestParam("type") int type) throws AppException, IOException {
         appService.验证Password(password);
 
 
@@ -106,7 +106,7 @@ public class 审核榜帖 {
         postEntity.setRejectTimes(postEntity.getRejectTimes() + 1);
         postEntity.setRejectTextBytes(text);
         daoService.updateEntity(postEntity);
-        List<DataSet> dataSets  = appService.查询下一个审核榜帖();
+        List<DataSet> dataSets  = appService.查询下一个审核榜帖(type);
 
         dynamicService.驳回用户审核(pkId,postId);
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));

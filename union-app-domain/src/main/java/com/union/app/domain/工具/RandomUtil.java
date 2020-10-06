@@ -12,7 +12,7 @@ import java.util.Random;
 public class RandomUtil {
 
     public static String[] names = new String[]{"小猫咪","无敌Max无敌Max无敌Max无敌Max无敌Max无敌Max无敌Max","大风车小朋友","我勒个去我勒个去我勒个去我勒个去我勒个去我勒个去我勒个去","香蕉个巴拉","就喜欢吹就喜欢吹就喜欢吹","江山如此多娇江山如此多娇江山如此多娇江山如此多娇","我爱北京天安门我爱北京天安门","你奶奶个腿"};
-    public static String[] dirName = new String[]{"JHDKJ","adasdas","sadasd","sadasda","sadasd","sadasd","df","sadasd","asdsadsads"};
+    public static String[] dirName = new String[]{"dir3","dir2","dir1","dir4","dir5","dir6","dir7","dir8"};
     public static String[] text = new String[]{"总结：以上就是本篇文章所","介绍的在js数组中添加","元素的2种方法，分别为","splice()方法和delete方法。工作中","splice()方法和delete方法。","如何删除指定位置的元素？删除指定位置元素的2种方法的详细内容，更多请关注php中文网其它相关文章！","如何删除指定位置的元素？删除指定位置元素的2种方法的详细内容，更多请关注php中文网其它相关文章！","以上就是js数组","splice"};
     public static int[] numbers = new int[]{0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43};
     public static String[] date = new String[]{"3分钟前","2小时以前","2018-9-8","9-08","昨天 21:00","今天"};

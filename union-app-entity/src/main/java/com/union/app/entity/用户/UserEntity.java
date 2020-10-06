@@ -50,4 +50,14 @@ public class UserEntity {
 
 
 
+
+    private int feeTimes;
+    private int usedTimes;
+
+
+
+
+
+
+
 }

@@ -2,16 +2,14 @@ package com.union.app.common.OSS存储;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
-import com.aliyun.oss.ClientBuilderConfiguration;
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
 import com.aliyun.oss.common.comm.ResponseMessage;
 import com.aliyun.oss.model.*;
 import com.union.app.common.api.runtime.ApiRuntimePro;
 import com.union.app.common.config.AppConfigService;
-import com.union.app.common.id.KeyGetter;
+import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.constant.常量值;
-import com.union.app.util.file.FileUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpEntity;
@@ -20,9 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 
-import javax.annotation.PostConstruct;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -40,13 +36,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class OssStorage {
 
 //    private static String endpoint = "oss-accelerate.aliyuncs.com";
-    private static String endpoint = AppConfigService.getConfigAsString(常量值.OSS基础地址,"https://oss.211shopper.com");
+    private static String endpoint = AppConfigService.getConfigAsString(ConfigItem.OSS基础地址);
 //    private static String accessKeyId = "LTAI4FqqnPNfxT3TpYdXqq9N";
 //    private static String accessKeySecret = "mB8LeZ70pRJiXa1CCQisVECf6R0XXY";
-    private static String accessKeyId = "LTAIzxViWZTSLgfe";
-    private static String accessKeySecret = "MPyvdgboQZhezjdhPCXPr7lUoaAfpe";
-    private static String bucketName = AppConfigService.getConfigAsString(常量值.OSSBuket名称,"211shop");
+    private static String accessKeyId = AppConfigService.getConfigAsString(ConfigItem.RAM秘钥ID);
+    private static String accessKeySecret = AppConfigService.getConfigAsString(ConfigItem.RAM秘钥);
+    private static String bucketName = AppConfigService.getConfigAsString(ConfigItem.Bucket名字);
+//    private static OSS  ossClient = new OSSClientBuilder().build("oss-accelerate.aliyuncs.com", accessKeyId, accessKeySecret);
     private static OSS  ossClient = new OSSClientBuilder().build("oss-accelerate.aliyuncs.com", accessKeyId, accessKeySecret);
+
 
     private static Map<String,ConcurrentHashMap<String,AtomicInteger>> lruCache = new HashMap<String,ConcurrentHashMap<String,AtomicInteger>>();
 
@@ -63,41 +61,37 @@ public class OssStorage {
 
     public static File downLoadFile(String key) throws IOException {
 
-        key = key.replace(endpoint + "/","");
-        File downLoadFile = new File(AppConfigService.getConfigAsString(常量值.本地文件存储地址,System.getProperty("user.dir")) + "/" + key);
+        String path = key.replace(endpoint + "/","");
+        File downLoadFile = new File(AppConfigService.getConfigAsString(常量值.本地文件存储地址,System.getProperty("user.dir")) + "/" + path);
         FileUtils.forceMkdirParent(downLoadFile);
-        OSSObject object = ossClient.getObject(bucketName,key);
+        OSSObject object = ossClient.getObject(bucketName,path);
+
         // 获取ObjectMeta
         ObjectMetadata meta = object.getObjectMetadata();
 
         // 获取Object的输入流
         InputStream objectContent = object.getObjectContent();
 
-        ObjectMetadata objectData = ossClient.getObject(new GetObjectRequest(bucketName, key), downLoadFile);
+        ObjectMetadata objectData = ossClient.getObject(new GetObjectRequest(bucketName, path), downLoadFile);
         objectContent.close();
 
         return downLoadFile;
 
     }
 
+    public static String uploadFileBytes(String pkId,String postId,byte[] fileData) {
+        String key = "wxcode/" + pkId + "/" + postId + ".jpeg";
+        PutObjectRequest request = new PutObjectRequest(bucketName, key, new ByteArrayInputStream(fileData));
+        PutObjectResult putObjectResult = ossClient.putObject(request);
+        if(ossClient.doesObjectExist(bucketName,key)){
+            return endpoint + "/" +key;
+        }
+        else
+        {
+            return null;
+        }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    }
 
 
     public <T> boolean set(String key,T t) throws IOException {
@@ -105,6 +99,7 @@ public class OssStorage {
                 String threadName = Thread.currentThread().getName();
 
                 PutObjectRequest request = new PutObjectRequest(bucketName, key, new ByteArrayInputStream(JSON.toJSONString(t).getBytes("UTF-8")));
+
                 String id = String.valueOf(Thread.currentThread().getId());
                 try {
                         long start = System.currentTimeMillis();
@@ -172,7 +167,7 @@ public class OssStorage {
 
     private static final Semaphore existSemaphore = new Semaphore(1000,true);
 
-    public boolean isKeyExist(String userPkPostKey) {
+    public static boolean isKeyExist(String userPkPostKey) {
         boolean isExist = false;
         long start = System.currentTimeMillis();
         try {

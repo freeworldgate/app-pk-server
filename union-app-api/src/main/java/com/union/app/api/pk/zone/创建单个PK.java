@@ -3,7 +3,12 @@ package com.union.app.api.pk.zone;
 import com.alibaba.fastjson.JSON;
 import com.union.app.common.OSS存储.OssStorage;
 import com.union.app.common.OSS存储.SceneType;
+import com.union.app.domain.pk.ActivePk;
 import com.union.app.domain.pk.PkDetail;
+import com.union.app.entity.pk.ActiveStatu;
+import com.union.app.entity.pk.PkActiveEntity;
+import com.union.app.entity.pk.PkEntity;
+import com.union.app.entity.pk.PkStatu;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.PageAction;
@@ -56,6 +61,7 @@ public class 创建单个PK {
 
         String pkId = pkService.创建PK(userId,topic,watchWord,invite);
         PkDetail pkDetail = pkService.querySinglePk(pkId);
+
         return AppResponse.buildResponse(PageAction.执行处理器("success",pkDetail));
     }
     @RequestMapping(path="/deletePk",method = RequestMethod.GET)
@@ -77,4 +83,21 @@ public class 创建单个PK {
         PkDetail pkDetail = pkService.querySinglePk(pkId);
         return AppResponse.buildResponse(PageAction.执行处理器("success",pkDetail));
     }
+
+    @RequestMapping(path="/updatePkPage",method = RequestMethod.GET)
+    @Transactional(rollbackOn = Exception.class)
+    public AppResponse 修改封面(@RequestParam("userId") String userId,@RequestParam("pkId") String pkId,@RequestParam("imgUrl") String imgUrl) throws AppException, IOException {
+        if(!pkService.isPkCreator(pkId,userId)){ throw AppException.buildException(PageAction.信息反馈框("错误","非法用户"));}
+
+        pkService.修改封面(pkId,imgUrl);
+        PkDetail pkDetail = pkService.querySinglePk(pkId);
+        return AppResponse.buildResponse(PageAction.执行处理器("success",pkDetail));
+
+    }
+
+
+
+
+
+
 }

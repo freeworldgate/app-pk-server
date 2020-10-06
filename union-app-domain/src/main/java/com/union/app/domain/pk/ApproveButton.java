@@ -3,11 +3,11 @@ package com.union.app.domain.pk;
 
 public class ApproveButton {
 
-    public static ApproveButton 转发审核群 = new ApproveButton(0,"/images/approve3.png","转发审核群","","share","rcc message h-100 br-100 b-white w-500");
+    public static ApproveButton 转发审核群 = new ApproveButton(0,"/images/appro.png","转发审核群","","share","rcc message h-80 br-80 b-white w-300");
 
-    public static ApproveButton 请求审核有效 = new ApproveButton(1,"/images/approve3.png","发布图贴","approvePost","","rcc message h-100 br-100 b-white w-500");
+    public static ApproveButton 请求审核有效 = new ApproveButton(1,"/images/appro.png","发布图册","approvePost","","rcc message h-80 br-80 b-white w-300");
 
-    public static ApproveButton 请求审核无效 = new ApproveButton(2,"/images/approve1.png","审核中","","","rcc h-100 br-100 b-post c-3-1 w-500");
+    public static ApproveButton 请求审核无效 = new ApproveButton(2,"/images/appro1.png","发布中","","","rcc h-80 br-80 b-white c-3 w-300");
 
 
 

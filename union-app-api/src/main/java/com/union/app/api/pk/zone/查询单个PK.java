@@ -1,5 +1,6 @@
 package com.union.app.api.pk.zone;
 
+        import com.union.app.common.config.AppConfigService;
         import com.union.app.domain.pk.PkButtonType;
         import com.union.app.domain.pk.PkDetail;
         import com.union.app.domain.pk.Post;
@@ -10,7 +11,10 @@ package com.union.app.api.pk.zone;
         import com.union.app.domain.pk.审核.ApproveUser;
         import com.union.app.domain.user.User;
         import com.union.app.domain.工具.RandomUtil;
+        import com.union.app.entity.pk.PkEntity;
         import com.union.app.entity.pk.PostEntity;
+        import com.union.app.entity.pk.PostStatu;
+        import com.union.app.plateform.constant.ConfigItem;
         import com.union.app.plateform.data.resultcode.AppException;
         import com.union.app.plateform.data.resultcode.AppResponse;
         import com.union.app.plateform.data.resultcode.DataSet;
@@ -70,34 +74,53 @@ public class 查询单个PK {
 
 
     @RequestMapping(path="/queryPk",method = RequestMethod.GET)
-    public AppResponse 查询单个PK(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId,@RequestParam("fromUser") String fromUser) throws AppException, IOException, InterruptedException {
+    public AppResponse 查询单个PK(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId) throws AppException, IOException, InterruptedException {
 
         List<DataSet> dataSets = new ArrayList<>();
 
         //榜单有可能被关闭
-        pkService.checkPk(pkId);
+        pkService.checkPk(pkId,userId);
 
         //查询PK详情
         PkDetail pkDetail = pkService.querySinglePk(pkId);
-        pkDetail.setUserBack(appService.查询背景(8));
+
+
+        Post post = postService.查询用户帖子(pkId,pkService.queryPkCreator(pkId).getUserId());
+        if(!ObjectUtils.isEmpty(post) && post.getStatu().getKey() == PostStatu.上线.getStatu()) {
+            dataSets.add(new DataSet("cpost", post));
+        }
         List<Post> posts = pkService.queryPkPost(userId,pkId,0);
 
-        dataSets.add(new DataSet("group",appService.显示按钮(PkButtonType.群组)));
+        dataSets.add(new DataSet("appImg",appService.查询背景(8)));
+
+        if(!((!AppConfigService.getConfigAsBoolean(ConfigItem.普通用户主题是否显示分享按钮和群组按钮)) && (!pkService.isVipView(userId,pkId))))
+        {
+            dataSets.add(new DataSet("group",appService.显示按钮(PkButtonType.群组)));
+        }
         dataSets.add(new DataSet("post",appService.显示按钮(PkButtonType.榜帖)));
         dataSets.add(new DataSet("approve",appService.显示按钮(PkButtonType.审核)));
-        if(pkService.isPkCreator(pkId,userId)){dataSets.add(new DataSet("approving",appService.显示按钮(PkButtonType.审核中)));}
+        if(pkService.isPkCreator(pkId,userId))
+        {
+            dataSets.add(new DataSet("approving",appService.显示按钮(PkButtonType.审核中)));
+        }
+        else
+        {
+            dataSets.add(new DataSet("complain",appService.显示按钮(PkButtonType.投诉)));
+        }
 
         PostEntity postEntity = postService.查询用户帖(pkId,userId);
         if(ObjectUtils.isEmpty(postEntity))
         {
-            dataSets.add(new DataSet("publish",true));
+            dataSets.add(new DataSet("button",appService.显示按钮(PkButtonType.发布图册)));
         }
         else
         {
-            dataSets.add(new DataSet("publish",false));
+            if(!((!AppConfigService.getConfigAsBoolean(ConfigItem.普通用户主题是否显示分享按钮和群组按钮)) && (!pkService.isVipView(userId,pkId))))
+            {
+                dataSets.add(new DataSet("button",appService.显示按钮(PkButtonType.邀请图册)));
+            }
+
         }
-
-
 
         dataSets.add(new DataSet("pk",pkDetail));
         dataSets.add(new DataSet("imgBack",appService.查询背景(0)));

@@ -4,6 +4,7 @@ import com.union.app.domain.pk.apply.KeyNameValue;
 import com.union.app.domain.pk.integral.UserIntegral;
 import com.union.app.domain.pk.审核.ApproveComment;
 import com.union.app.domain.user.User;
+import com.union.app.domain.工具.RandomUtil;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -16,9 +17,18 @@ import java.util.List;
 @ToString
 public class Post {
 
+
+
+
     private String postId;
 
     private String pkId;
+
+    private String pkTopic;
+
+    private long scan;
+
+    private String wxCode;
 
     private boolean isQueryerCollect;
 
@@ -47,6 +57,9 @@ public class Post {
     private int rejectTimes;
     private String rejectText;
 
+
+    private int style = RandomUtil.getRandomNumber()%6 + 1;
+    private String backUrl ;
 
     private boolean flag = false;
 }

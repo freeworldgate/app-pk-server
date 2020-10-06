@@ -1,6 +1,8 @@
 package com.union.app.api.用户相册;
 
 import com.union.app.common.config.AppConfigService;
+import com.union.app.domain.pk.PkButton;
+import com.union.app.domain.pk.PkButtonType;
 import com.union.app.domain.pk.PkDetail;
 import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.AppException;
@@ -61,6 +63,15 @@ public class 用户相册 {
 
         List<PkDetail> pks = appService.查询用户相册(userId,1);
 
+        if(!pkService.isVipView(userId,"")  && !AppConfigService.getConfigAsBoolean(ConfigItem.普通用户主题是否显示分享按钮和群组按钮))
+        {
+            pks.forEach(pk ->{
+                PkButton pkButton = appService.显示按钮(PkButtonType.时间);
+                pkButton.setName(pk.getTime());
+                pk.setGroupInfo(pkButton);
+            });
+        }
+
 
         List<DataSet> dataSets = new ArrayList<>();
 
@@ -69,11 +80,6 @@ public class 用户相册 {
             dataSets.add(new DataSet("pkEnd",true));}
         else
         {
-            pks.forEach(pk->{
-                pk.setUserBack(appService.查询背景(0));
-            });
-
-
             dataSets.add(new DataSet("pks",pks));
             dataSets.add(new DataSet("pkEnd",false));
         }
@@ -83,7 +89,7 @@ public class 用户相册 {
         dataSets.add(new DataSet("pkTimes", userService.查询建榜次数(userId)));
         dataSets.add(new DataSet("page",1));
         dataSets.add(new DataSet("userBack",appService.查询背景(0)));
-        dataSets.add(new DataSet("imgBack",appService.查询背景(3)));
+        dataSets.add(new DataSet("imgBack",appService.查询背景(2)));
 
 
 

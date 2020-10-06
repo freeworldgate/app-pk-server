@@ -1,7 +1,7 @@
 package com.union.app.service.pk.dynamic;
 
-import com.union.app.service.pk.dynamic.imp.RedisMapService;
-import com.union.app.service.pk.dynamic.imp.RedisSortSetService;
+import com.union.app.common.redis.RedisMapService;
+import com.union.app.common.redis.RedisSortSetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

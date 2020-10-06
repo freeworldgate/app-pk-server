@@ -1,12 +1,10 @@
-package com.union.app.api.邀请;
+package com.union.app.api.pk.管理;
 
-import com.union.app.common.config.AppConfigService;
+import com.union.app.common.dao.AppDaoService;
 import com.union.app.domain.pk.PkDetail;
-import com.union.app.entity.pk.PkType;
-import com.union.app.plateform.constant.ConfigItem;
+import com.union.app.entity.pk.BackImgEntity;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
-import com.union.app.plateform.data.resultcode.DataSet;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.service.pk.click.ClickService;
@@ -21,15 +19,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping(path="/pk")
-public class 添加邀请 {
+public class 上传内置主题封面 {
 
     @Autowired
     AppService appService;
+
+    @Autowired
+    AppDaoService daoService;
 
     @Autowired
     PkService pkService;
@@ -55,20 +56,27 @@ public class 添加邀请 {
     @Autowired
     ApproveService approveService;
 
+    public static Map<String,PkDetail> pkDetailMap = new HashMap<>();
 
-    @RequestMapping(path="/addUserInvite",method = RequestMethod.GET)
+
+
+
+    @RequestMapping(path="/uploadPkBackImg",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse 添加邀请信息(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId) throws AppException, IOException {
-        if(userService.是否是遗传用户(userId) || AppConfigService.getConfigAsBoolean(ConfigItem.普通用户发帖后解锁更多主题))
-        {
-            appService.添加邀请(pkId,userId);
-        }
+    public AppResponse 查询内置PK(@RequestParam("password") String password,@RequestParam("imgUrl") String imgUrl,@RequestParam("pkId") String pkId) throws AppException, IOException {
+        appService.验证Password(password);
+
+        pkService.修改封面(pkId,imgUrl);
+
+        PkDetail pkDetail = pkService.querySinglePk(pkId);
+
+        return AppResponse.buildResponse(PageAction.执行处理器("success",pkDetail));
 
 
-
-        return AppResponse.buildResponse(PageAction.前端数据更新("hasInivte",true));
 
     }
+
+
 
 
 

@@ -1,8 +1,12 @@
 package com.union.app.api.邀请;
 
+import com.union.app.common.config.AppConfigService;
+import com.union.app.domain.pk.PkButton;
+import com.union.app.domain.pk.PkButtonType;
 import com.union.app.domain.pk.PkDetail;
 import com.union.app.domain.user.User;
 import com.union.app.entity.pk.PkType;
+import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.DataSet;
@@ -62,6 +66,19 @@ public class 查询邀请 {
 //        List<PkDetail> pkDetails = new ArrayList<>();
 
         List<PkDetail> pks = appService.查询用户邀请(userId,1);
+
+        if(!pkService.isVipView(userId,"")  && !AppConfigService.getConfigAsBoolean(ConfigItem.普通用户主题是否显示分享按钮和群组按钮))
+        {
+            pks.forEach(pk ->{
+                PkButton pkButton = appService.显示按钮(PkButtonType.时间);
+                pkButton.setName(pk.getTime());
+                pk.setGroupInfo(pkButton);
+            });
+        }
+
+
+
+
 
         List<DataSet> dataSets = new ArrayList<>();
         if(CollectionUtils.isEmpty(pks))

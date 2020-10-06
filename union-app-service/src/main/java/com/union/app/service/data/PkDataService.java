@@ -10,11 +10,9 @@ import com.union.app.entity.pk.*;
 import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.service.pk.dynamic.DynamicService;
-import com.union.app.service.pk.dynamic.imp.RedisSortSetService;
+import com.union.app.common.redis.RedisSortSetService;
 import com.union.app.service.pk.service.*;
 import com.union.app.service.user.UserService;
-import org.apache.commons.lang.RandomStringUtils;
-import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -77,11 +75,11 @@ public class PkDataService {
     private static List<PkDetail> 非遗传主页列表 = new ArrayList<>();
     private static List<PkDetail> 仅邀请的遗传主页列表 = new ArrayList<>();
 
-    public List<PkDetail> 随机列表(String userId,String fromUser)
+    public List<PkDetail> 随机列表(String userId,String pkId)
     {
         List<PkDetail> pks = new ArrayList<>();
 
-        if(userService.是否是遗传用户(userId) || (!userService.isUserExist(userId)&&userService.是否是遗传用户(fromUser)))
+        if(pkService.isVipView(userId,pkId))
         {
             Collections.shuffle(遗传主页列表);
             int value = AppConfigService.getConfigAsInteger(ConfigItem.刷新主题个数);

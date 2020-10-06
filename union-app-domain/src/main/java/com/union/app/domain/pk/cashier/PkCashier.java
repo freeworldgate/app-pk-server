@@ -23,12 +23,13 @@ public class PkCashier
 
     private KeyNameValue statu;
     private KeyNameValue type;
-    private String linkImg;
+
+    private String img;
+    private String backPng;
+
 
     private String time;
 
-    private int activeCodes;
-    private int noActiveCodes;
-    private int usedActiveCodes;
+
 
 }
