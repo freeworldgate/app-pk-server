@@ -407,10 +407,38 @@ public class PkService {
         {
 
             PkEntity pkEntity = this.querySinglePkEntity( entity.getPkId());
+            PostEntity postEntity = postService.查询用户帖(pkEntity.getPkId(),pkEntity.getUserId());
+
+            if(!ObjectUtils.isEmpty(postEntity))
+            {
+                postEntity.setUserId(userId);
+                daoService.updateEntity(postEntity);
+            }
             pkEntity.setUserId(userId);
             daoService.updateEntity(pkEntity);
             daoService.deleteEntity(entity);
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     }
 

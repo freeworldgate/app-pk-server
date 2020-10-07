@@ -67,7 +67,7 @@ public class 查询邀请 {
 
         List<PkDetail> pks = appService.查询用户邀请(userId,1);
 
-        if(!pkService.isVipView(userId,"")  && !AppConfigService.getConfigAsBoolean(ConfigItem.普通用户主题是否显示分享按钮和群组按钮))
+        if(!userService.是否是遗传用户(userId)  && !AppConfigService.getConfigAsBoolean(ConfigItem.普通用户主题是否显示分享按钮和群组按钮))
         {
             pks.forEach(pk ->{
                 PkButton pkButton = appService.显示按钮(PkButtonType.时间);

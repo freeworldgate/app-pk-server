@@ -14,6 +14,8 @@ package com.union.app.api.pk.zone;
         import com.union.app.entity.pk.PkEntity;
         import com.union.app.entity.pk.PostEntity;
         import com.union.app.entity.pk.PostStatu;
+        import com.union.app.entity.用户.UserEntity;
+        import com.union.app.entity.用户.support.UserType;
         import com.union.app.plateform.constant.ConfigItem;
         import com.union.app.plateform.data.resultcode.AppException;
         import com.union.app.plateform.data.resultcode.AppResponse;
@@ -82,7 +84,9 @@ public class 查询单个PK {
         pkService.checkPk(pkId,userId);
 
         //查询PK详情
-        PkDetail pkDetail = pkService.querySinglePk(pkId);
+        PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
+        UserEntity creator = userService.queryUserEntity(pkEntity.getUserId());
+        PkDetail pkDetail = pkService.querySinglePk(pkEntity);
 
 
         Post post = postService.查询用户帖子(pkId,pkService.queryPkCreator(pkId).getUserId());
@@ -92,8 +96,7 @@ public class 查询单个PK {
         List<Post> posts = pkService.queryPkPost(userId,pkId,0);
 
         dataSets.add(new DataSet("appImg",appService.查询背景(8)));
-
-        if(!((!AppConfigService.getConfigAsBoolean(ConfigItem.普通用户主题是否显示分享按钮和群组按钮)) && (!pkService.isVipView(userId,pkId))))
+        if((creator.getUserType() == UserType.重点用户) || (AppConfigService.getConfigAsBoolean(ConfigItem.普通用户主题是否显示分享按钮和群组按钮))){}
         {
             dataSets.add(new DataSet("group",appService.显示按钮(PkButtonType.群组)));
         }
@@ -115,7 +118,7 @@ public class 查询单个PK {
         }
         else
         {
-            if(!((!AppConfigService.getConfigAsBoolean(ConfigItem.普通用户主题是否显示分享按钮和群组按钮)) && (!pkService.isVipView(userId,pkId))))
+            if((creator.getUserType() == UserType.重点用户) || (AppConfigService.getConfigAsBoolean(ConfigItem.普通用户主题是否显示分享按钮和群组按钮))){}
             {
                 dataSets.add(new DataSet("button",appService.显示按钮(PkButtonType.邀请图册)));
             }
