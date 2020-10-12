@@ -4,32 +4,7 @@
     <option name="GROUP_BY_SEVERITY" value="true" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="45b681d3-496d-412f-8789-ffb456e1af05" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/zone/查询单个PK.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/zone/查询单个PK.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/zone/查询单个POST.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/zone/查询单个POST.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/zone/查询用户的POST.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/zone/查询用户的POST.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/审核/一次性任务.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/审核/一次性任务.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/审核/设置审核人员.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/审核/设置审核人员.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/管理/查询单个预置PK.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/管理/查询单个预置PK.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/zone/查询单个PK.class" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/zone/查询单个PK.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/zone/查询单个POST.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/zone/查询用户的POST.class" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/zone/查询用户的POST.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-common/src/main/java/com/union/app/common/dao/PkCacheService.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-common/src/main/java/com/union/app/common/dao/PkCacheService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-common/src/main/java/com/union/app/common/微信/WeChatUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-common/src/main/java/com/union/app/common/微信/WeChatUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/微信/WeChatUtil.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-domain/src/main/java/com/union/app/domain/pk/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-domain/src/main/java/com/union/app/domain/pk/Post.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-plateform/src/main/java/com/union/app/plateform/constant/ConfigItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-plateform/src/main/java/com/union/app/plateform/constant/ConfigItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/data/PkDataService.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/data/PkDataService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/dynamic/DynamicService.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/dynamic/DynamicService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/service/AppService.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/service/AppService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/service/PkService.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/service/PkService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/service/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/service/PostService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/dynamic/DynamicService.class" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/dynamic/DynamicService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/PkService.class" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/PkService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/PostService.class" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/PostService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-start/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-start/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-util/src/main/java/com/union/app/util/idGenerator/IdGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-util/src/main/java/com/union/app/util/idGenerator/IdGenerator.java" afterDir="false" />
-    </list>
+    <list default="true" id="45b681d3-496d-412f-8789-ffb456e1af05" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/union-app-entity/target/" />
     <ignored path="$PROJECT_DIR$/union-app-api/target/" />
     <ignored path="$PROJECT_DIR$/union-app-service/target/" />
@@ -80,8 +55,8 @@
       <file leaf-file-name="WeChatUtil.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/union-app-common/src/main/java/com/union/app/common/微信/WeChatUtil.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="84">
-              <caret line="33" column="74" selection-start-line="33" selection-start-column="42" selection-end-line="33" selection-end-column="74" />
+            <state relative-caret-position="69">
+              <caret line="32" selection-start-line="32" selection-end-line="35" />
             </state>
           </provider>
         </entry>
@@ -357,113 +332,6 @@
             <path>
               <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
               <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-              <item name="union-app-api" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-              <item name="union-app-api" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-              <item name="union-app-api" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-              <item name="union-app-api" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-              <item name="union-app-api" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="pk" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-              <item name="union-app-api" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="task" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-              <item name="union-app-api" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="zone" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-              <item name="union-app-api" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="post" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-              <item name="union-app-api" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="审核" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-              <item name="union-app-api" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="预置用户" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-              <item name="union-app-api" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="主页" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-              <item name="union-app-api" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="登录和注册" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-              <item name="union-app-api" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="系统设置" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
               <item name="union-app-common" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -494,94 +362,7 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="dao" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-              <item name="union-app-service" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-              <item name="union-app-service" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-              <item name="union-app-service" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-              <item name="union-app-service" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-              <item name="union-app-service" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="service" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-              <item name="union-app-service" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="user" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-              <item name="union-app-start" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-              <item name="union-app-start" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-              <item name="union-app-start" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-              <item name="union-app-start" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-              <item name="union-app-start" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-              <item name="union-app-start" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="微信" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -873,7 +654,7 @@
       <workItem from="1601518201472" duration="43613000" />
       <workItem from="1601781846982" duration="11279000" />
       <workItem from="1601813932384" duration="31834000" />
-      <workItem from="1602040267639" duration="51561000" />
+      <workItem from="1602040267639" duration="51813000" />
     </task>
     <task id="LOCAL-00001" summary="app">
       <created>1585704709578</created>
@@ -1082,7 +863,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2775806000" />
+    <option name="totallyTimeSpent" value="2776058000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1094,7 +875,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1550" height="838" extended-state="7" />
+    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="9" />
@@ -1698,8 +1479,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/union-app-common/src/main/java/com/union/app/common/微信/WeChatUtil.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="84">
-          <caret line="33" column="74" selection-start-line="33" selection-start-column="42" selection-end-line="33" selection-end-column="74" />
+        <state relative-caret-position="69">
+          <caret line="32" selection-start-line="32" selection-end-line="35" />
         </state>
       </provider>
     </entry>

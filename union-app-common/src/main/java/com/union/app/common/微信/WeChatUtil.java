@@ -30,8 +30,8 @@ public class WeChatUtil
     private static AccessToken token;
     private static long updateTime = 0L;
 
-    public static final String appId="wx3a496d6928523d69";
-    public static final String appSecret="e37b5d03733d2f437ce94ff39460cf7d";
+    public static final String appId="";
+    public static final String appSecret="";
 
 
 
