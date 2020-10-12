@@ -72,8 +72,8 @@ public class WeChatUtil
         if(updateTime < System.currentTimeMillis() - 1 * 3600 * 1000)
         {
             String WX_URL = "https://api.weixin.qq.com/cgi-bin/token?appid=APPID&secret=SECRET&grant_type=client_credential";
-            String requestUrl = WX_URL.replace("APPID", "wx3a496d6928523d69").
-                    replace("SECRET", "e37b5d03733d2f437ce94ff39460cf7d");
+            String requestUrl = WX_URL.replace("APPID", appId).
+                    replace("SECRET", appSecret);
             // 发起GET请求获取凭证
             RestTemplate restTemplate = new RestTemplate();
             String msg = restTemplate.getForObject(requestUrl,String.class);
