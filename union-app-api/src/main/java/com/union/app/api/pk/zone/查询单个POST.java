@@ -4,6 +4,7 @@ import com.union.app.domain.pk.*;
 import com.union.app.domain.pk.cashier.PkCashier;
 import com.union.app.domain.user.User;
 import com.union.app.entity.pk.PkEntity;
+import com.union.app.entity.pk.PostEntity;
 import com.union.app.entity.pk.PostStatu;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.common.OSS存储.OssStorage;
@@ -84,28 +85,34 @@ public class 查询单个POST {
     }
 
     @RequestMapping(path="/queryPostByPostId",method = RequestMethod.GET)
-    public AppResponse 查询单个queryPostByPostId(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId) throws AppException, IOException {
+    public AppResponse 查询单个queryPostByPostId(@RequestParam("postId") String postId) throws AppException, IOException {
+        PostEntity postEntity = postService.查询帖子ById(postId);
+        Post post = postService.translate(postEntity);
 
-
-        Post post = postService.查询帖子(pkId,postId,"");
         if(post.getStatu().getKey() != PostStatu.上线.getStatu())
         {
-            return AppResponse.buildResponse(PageAction.页面跳转("/pages/pk/pk/pk?pkId="+pkId+"&fromUser="+post.getCreator().getUserId(),false));
+            return AppResponse.buildResponse(PageAction.页面跳转("/pages/pk/pk/pk?pkId="+postEntity.getPkId()+"&fromUser="+post.getCreator().getUserId(),false));
         }
-        dynamicService.扫描次数加1(pkId,postId);
+        dynamicService.扫描次数加1(postEntity.getPkId(),postId);
 
 
-        List<DataSet> dataSets = new ArrayList<>();
-        DataSet dataSet1 = new DataSet("post",post);
+        post.setImgBack(appService.查询背景(4));
 
 
-        dataSets.add(dataSet1);
 
 
-        dataSets.add(new DataSet("imgBack",appService.查询背景(4)));
 
-        return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
+        return AppResponse.buildResponse(PageAction.执行处理器("success",post));
     }
+
+
+
+
+
+
+
+
+
 
     @RequestMapping(path="/importPost",method = RequestMethod.GET)
     public AppResponse 查询单个POSTById(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId) throws AppException, IOException {

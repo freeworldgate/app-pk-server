@@ -76,13 +76,14 @@ public class 查询单个PK {
 
 
     @RequestMapping(path="/queryPk",method = RequestMethod.GET)
+    @Transactional(rollbackOn = Exception.class)
     public AppResponse 查询单个PK(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId) throws AppException, IOException, InterruptedException {
 
         List<DataSet> dataSets = new ArrayList<>();
 
         //榜单有可能被关闭
-        pkService.checkPk(pkId,userId);
-
+        AppResponse appResponse = pkService.checkPk(pkId,userId);
+        if(!ObjectUtils.isEmpty(appResponse)){return appResponse;}
         //查询PK详情
         PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
         UserEntity creator = userService.queryUserEntity(pkEntity.getUserId());
@@ -93,10 +94,10 @@ public class 查询单个PK {
         if(!ObjectUtils.isEmpty(post) && post.getStatu().getKey() == PostStatu.上线.getStatu()) {
             dataSets.add(new DataSet("cpost", post));
         }
-        List<Post> posts = pkService.queryPkPost(userId,pkId,0);
+        List<Post> posts = pkService.queryPkPost(pkId,0);
 
         dataSets.add(new DataSet("appImg",appService.查询背景(8)));
-        if((creator.getUserType() == UserType.重点用户) || (AppConfigService.getConfigAsBoolean(ConfigItem.普通用户主题是否显示分享按钮和群组按钮))){}
+        if((creator.getUserType() == UserType.重点用户) || (AppConfigService.getConfigAsBoolean(ConfigItem.普通用户主题是否显示分享按钮和群组按钮)))
         {
             dataSets.add(new DataSet("group",appService.显示按钮(PkButtonType.群组)));
         }
@@ -118,15 +119,16 @@ public class 查询单个PK {
         }
         else
         {
-            if((creator.getUserType() == UserType.重点用户) || (AppConfigService.getConfigAsBoolean(ConfigItem.普通用户主题是否显示分享按钮和群组按钮))){}
+            if((creator.getUserType() == UserType.重点用户) || (AppConfigService.getConfigAsBoolean(ConfigItem.普通用户主题是否显示分享按钮和群组按钮)))
             {
                 dataSets.add(new DataSet("button",appService.显示按钮(PkButtonType.邀请图册)));
             }
-
         }
+
 
         dataSets.add(new DataSet("pk",pkDetail));
         dataSets.add(new DataSet("imgBack",appService.查询背景(0)));
+//        dataSets.add(new DataSet("cardBack",appService.查询背景(6)));
         dataSets.add(new DataSet("posts",posts));
         dataSets.add(new DataSet("page",0));
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
@@ -137,7 +139,7 @@ public class 查询单个PK {
     public AppResponse 查询单个PK(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId,@RequestParam("page") int page) throws AppException, IOException {
 
         //页数不断递增，但是只有一百页。
-        List<Post> posts = pkService.queryPkPost(userId,pkId,page+1);
+        List<Post> posts = pkService.queryPkPost(pkId,page+1);
         if(CollectionUtils.isEmpty(posts))
         {
             return AppResponse.buildResponse(PageAction.前端数据更新("nomore",Boolean.TRUE));

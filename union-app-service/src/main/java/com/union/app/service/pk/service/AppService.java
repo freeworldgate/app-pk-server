@@ -960,15 +960,23 @@ public class AppService {
 
     }
 
+
+
+
+    private static final Map<Integer,List<BackImgEntity>> imgs = new HashMap<>();
+    private static final Map<Integer,Long> imgUpdates = new HashMap<>();
+
+
     public String 查询背景(int type) {
+
 
         EntityFilterChain filter = EntityFilterChain.newFilterChain(BackImgEntity.class)
                 .compareFilter("type",CompareTag.Equal,type)
                 .orderByRandomFilter()
                 ;
-
-
         BackImgEntity backImgEntity = daoService.querySingleEntity(BackImgEntity.class,filter);
+
+
 
 
         return ObjectUtils.isEmpty(backImgEntity)?"":backImgEntity.getImgUrl();
@@ -985,7 +993,7 @@ public class AppService {
 
 
     }
-    private boolean userType = true;
+    private volatile boolean userType = true;
     public PreUserEntity 新增内置用户(String name, String imgUrl) throws UnsupportedEncodingException {
 
         String userId = com.union.app.util.idGenerator.IdGenerator.生成用户ID();
@@ -1048,10 +1056,29 @@ public class AppService {
                 .compareFilter("userId",CompareTag.Equal,userId);
         PreUserEntity preUserEntity = daoService.querySingleEntity(PreUserEntity.class,filter);
         preUserEntity.setUserName(name);
-        UserEntity userEntity = userService.queryUserEntity(userId);
-        userEntity.setNickName(name);
+        preUserEntity.setUserType(preUserEntity.getUserType() == null?UserType.重点用户:preUserEntity.getUserType());
 
-        daoService.updateEntity(userEntity);
+        UserEntity userEntity = userService.queryUserEntity(userId);
+        if(ObjectUtils.isEmpty(userEntity))
+        {
+            userEntity = new UserEntity();
+            userEntity.setOpenId(preUserEntity.getUserId());
+            userEntity.setUserId(preUserEntity.getUserId());
+            userEntity.setAvatarUrl(preUserEntity.getImgUrl());
+            userEntity.setPkTimes(0);
+            userEntity.setPostTimes(0);
+            userEntity.setNickName(name);
+            userEntity.setUserType(preUserEntity.getUserType());
+            daoService.insertEntity(userEntity);
+
+        }
+        else
+        {
+            userEntity.setNickName(name);
+            userEntity.setUserType(preUserEntity.getUserType());
+            daoService.updateEntity(userEntity);
+        }
+
         daoService.updateEntity(preUserEntity);
 
 
@@ -1066,13 +1093,32 @@ public class AppService {
                 .compareFilter("userId",CompareTag.Equal,userId);
         PreUserEntity preUserEntity = daoService.querySingleEntity(PreUserEntity.class,filter);
         preUserEntity.setImgUrl(imgUrl);
-
+        preUserEntity.setUserType(preUserEntity.getUserType() == null?UserType.重点用户:preUserEntity.getUserType());
 
         UserEntity userEntity = userService.queryUserEntity(userId);
-        userEntity.setAvatarUrl(imgUrl);
-        daoService.updateEntity(userEntity);
+        if(ObjectUtils.isEmpty(userEntity))
+        {
+            userEntity = new UserEntity();
+            userEntity.setOpenId(preUserEntity.getUserId());
+            userEntity.setUserId(preUserEntity.getUserId());
+            userEntity.setAvatarUrl(imgUrl);
+            userEntity.setPkTimes(0);
+            userEntity.setPostTimes(0);
+            userEntity.setNickName(preUserEntity.getUserName());
+            userEntity.setUserType(preUserEntity.getUserType());
+            daoService.insertEntity(userEntity);
+
+        }
+        else
+        {
+            userEntity.setAvatarUrl(imgUrl);
+            userEntity.setUserType(preUserEntity.getUserType());
+            daoService.updateEntity(userEntity);
+        }
+
         daoService.updateEntity(preUserEntity);
         return preUserEntity;
+
     }
     public String 随机用户() {
         EntityFilterChain filter = EntityFilterChain.newFilterChain(PreUserEntity.class)
@@ -1417,14 +1463,14 @@ public class AppService {
              filter = EntityFilterChain.newFilterChain(ComplainEntity.class)
                      .compareFilter("complainStatu",CompareTag.Equal,ComplainStatu.处理中)
                      .andFilter()
-                     .compareFilter("pkType",CompareTag.Equal,PkType.运营相册);
+                     .compareFilter("pkType",CompareTag.Equal,PkType.审核相册);
         }
         else
         {
             filter = EntityFilterChain.newFilterChain(ComplainEntity.class)
                     .compareFilter("complainStatu",CompareTag.Equal,ComplainStatu.处理中)
                     .andFilter()
-                    .compareFilter("pkType",CompareTag.NotEqual,PkType.运营相册);
+                    .compareFilter("pkType",CompareTag.NotEqual,PkType.审核相册);
         }
 
 
@@ -1437,7 +1483,7 @@ public class AppService {
             dataSets.add(new DataSet("complainId",entity.getId()));
             PkDetail pkDetail = pkService.querySinglePk(post.getPkId());
 
-            pkDetail.setApproveMessage(approveService.获取审核人员消息(post.getPkId()));
+//            pkDetail.setApproveMessage(approveService.获取审核人员消息(post.getPkId()));
             dataSets.add(new DataSet("pk",pkDetail));
             dataSets.add(new DataSet("post",post));
             dataSets.add(new DataSet("text",entity.getText()));
@@ -1475,7 +1521,7 @@ public class AppService {
         else
         {
             PkDetail pkDetail = pkService.querySinglePk(post.getPkId());
-            pkDetail.setApproveMessage(approveService.获取审核人员消息(post.getPkId()));
+//            pkDetail.setApproveMessage(approveService.获取审核人员消息(post.getPkId()));
             dataSets.add(new DataSet("pk",pkDetail));
             dataSets.add(new DataSet("post",post));
 

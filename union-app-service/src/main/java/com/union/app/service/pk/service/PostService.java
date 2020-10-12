@@ -547,6 +547,18 @@ public class PostService {
                     .compareFilter("shareTime",CompareTag.Small,System.currentTimeMillis() - AppConfigService.getConfigAsInteger(ConfigItem.榜帖可发起投诉的等待时间)*60*1000)
                     .orderByRandomFilter();
         }
+        else if(type == 2)
+        {
+            filter = EntityFilterChain.newFilterChain(PostEntity.class)
+                    .compareFilter("statu",CompareTag.Equal,PostStatu.审核中)
+                    .andFilter()
+                    .compareFilter("pkType",CompareTag.Equal,PkType.内置相册)
+                    .andFilter()
+                    .compareFilter("approveStatu",CompareTag.Equal,ApproveStatu.请求审核)
+                    .andFilter()
+                    .compareFilter("shareTime",CompareTag.Small,System.currentTimeMillis() - AppConfigService.getConfigAsInteger(ConfigItem.榜帖可发起投诉的等待时间)*60*1000)
+                    .orderByRandomFilter();
+        }
         else
         {
             filter = EntityFilterChain.newFilterChain(PostEntity.class)
@@ -592,5 +604,9 @@ public class PostService {
         post.setApproveComment(approveComment);
 
         return post;
+    }
+
+    public void 修改Post(PostEntity postEntity) {
+        daoService.updateEntity(postEntity);
     }
 }

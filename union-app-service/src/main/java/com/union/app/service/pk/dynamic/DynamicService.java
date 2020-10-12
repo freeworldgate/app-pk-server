@@ -158,29 +158,18 @@ public class DynamicService {
 //
 //    }
     public String 查询审核用户(String pkId, String postId) {
+        PkPostListEntity pkPostListEntity = pkService.查询图册排列(pkId,postId);
+        if(!ObjectUtils.isEmpty(pkPostListEntity) && pkPostListEntity.getStatu() == PostStatu.审核中)
+        {
+            return pkService.querySinglePkEntity(pkId).getUserId();
+        }
+        else
+        {
+            return "";
+        }
 
-//        if(redisSortSetService.isMember(CacheKeyName.榜主审核中列表(pkId) ,postId)){
 
-//            double score = redisSortSetService.getEleScore(CacheKeyName.榜主审核中列表(pkId) ,postId);
-//
-//            long scoreAbs = new Double(Math.abs(score)).longValue() ;
-//            if((System.currentTimeMillis() - scoreAbs ) > AppConfigService.getConfigAsInteger(ConfigItem.审核榜帖最大等待时间) * 60 * 1000)
-//            {
-////                redisSortSetService.remove(pkId,postId);
-//                return null;
-//            }
-////            else
-////            {
-//            return pkService.queryPkCreator(pkId).getUserId();
-////            }
-////
-//
-//        }
-//        else
-//        {
-//
-//        }
-            return null;
+
     }
 
     public boolean 审核等待时间过长(String pkId, String postId) {
@@ -292,15 +281,24 @@ public class DynamicService {
      */
     public void 设置帖子的审核用户(String pkId, String postId) {
        // pkService.querySinglePkEntity()
-        PkPostListEntity pkPostListEntity = new PkPostListEntity();
-        pkPostListEntity.setPkId(pkId);
-        pkPostListEntity.setPostId(postId);
+        PkPostListEntity pkPostListEntity = pkService.查询图册排列(pkId,postId);
+        if(ObjectUtils.isEmpty(pkPostListEntity))
+        {
+            pkPostListEntity = new PkPostListEntity();
+            pkPostListEntity.setPkId(pkId);
+            pkPostListEntity.setPostId(postId);
 
-        pkPostListEntity.setStatu(PostStatu.审核中);
-        pkPostListEntity.setTime(System.currentTimeMillis());
+            pkPostListEntity.setStatu(PostStatu.审核中);
+            pkPostListEntity.setTime(System.currentTimeMillis());
 
-        daoService.insertEntity(pkPostListEntity);
-        pkService.添加一个审核中(pkId);
+            daoService.insertEntity(pkPostListEntity);
+            pkService.添加一个审核中(pkId);
+
+        }
+
+
+
+
 
 
 

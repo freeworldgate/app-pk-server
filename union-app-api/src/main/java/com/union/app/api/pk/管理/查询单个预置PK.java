@@ -3,6 +3,7 @@ package com.union.app.api.pk.管理;
 import com.union.app.domain.pk.PkButtonType;
 import com.union.app.domain.pk.PkDetail;
 import com.union.app.domain.pk.Post;
+import com.union.app.entity.pk.PkEntity;
 import com.union.app.entity.pk.PostStatu;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
@@ -64,7 +65,10 @@ public class 查询单个预置PK {
         List<DataSet> dataSets = new ArrayList<>();
 
         //榜单有可能被关闭
-        pkService.checkPk(pkId,"");
+        PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
+        if(ObjectUtils.isEmpty(pkEntity)){throw AppException.buildException(PageAction.信息反馈框("榜单不存在","查询的榜单不存在"));}
+
+
 
         //查询PK详情
         PkDetail pkDetail = pkService.querySinglePk(pkId);

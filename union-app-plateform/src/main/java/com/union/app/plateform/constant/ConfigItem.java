@@ -53,7 +53,10 @@ public enum ConfigItem {
     普通用户单个主题费用("singlePkPrice", "SINGLE_PK_PRICE", "遗传用户单个主题费用", "10"),
     普通用户12个主题打包费用("n12PkPrice", "12_PK_PRICE", "遗传用户12个主题打包费用", "49.9"),
     邀请和可解锁主题倍数关系("inviteAndRelease", "INVITE_AND_RELAESE", "邀请和可解锁主题倍数关系", "3"),
-    普通用户主题是否显示分享按钮和群组按钮("isShowshareButton", "IS_SHOW_SHARE_BUTTON","普通用户主题是否显示分享按钮", "false");
+    普通用户主题是否显示分享按钮和群组按钮("isShowshareButton", "IS_SHOW_SHARE_BUTTON","普通用户主题是否显示分享按钮", "false"),
+    单个PK的页面缓存数量("pkCachePost", "PK_CACHE_POST", "单个PK的页面缓存数量", "10"),
+    POST页面缓存时间("postCacheTime", "POST_CACHE_TIME", "POST页面缓存时间(时间秒)", "60"),
+    PK缓存数量("pkCacheNumbers", "PK_CACHE_NUMBERS", "PK缓存数量", "100");
 
 
 

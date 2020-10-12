@@ -76,19 +76,19 @@ public class 一次性任务 {
 
 
                 }
-                ApproveMessage approveMessage = approveService.获取审核人员消息(pkId);
-
-                if (org.springframework.util.ObjectUtils.isEmpty(approveMessage)) {
-                    ValueStr valueStr = null;
-                    if(userService.是否是遗传用户(userId)) {
-                        valueStr = new ValueStr("", "发布图册封面", "制作图册封面并发布...");
-                    }
-                    else
-                    {
-                        valueStr = new ValueStr("", "发布图册封面", "制作图册封面并发布...");
-                    }
-                    return AppResponse.buildResponse(PageAction.执行处理器("editApproverMessage", valueStr));
-                }
+//                ApproveMessage approveMessage = approveService.获取审核人员消息(pkId);
+//
+//                if (org.springframework.util.ObjectUtils.isEmpty(approveMessage)) {
+//                    ValueStr valueStr = null;
+//                    if(userService.是否是遗传用户(userId)) {
+//                        valueStr = new ValueStr("", "发布图册封面", "制作图册封面并发布...");
+//                    }
+//                    else
+//                    {
+//                        valueStr = new ValueStr("", "发布图册封面", "制作图册封面并发布...");
+//                    }
+//                    return AppResponse.buildResponse(PageAction.执行处理器("editApproverMessage", valueStr));
+//                }
         }
         if(org.springframework.util.ObjectUtils.isEmpty(postEntity)){
 

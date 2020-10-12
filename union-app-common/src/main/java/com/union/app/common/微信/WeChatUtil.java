@@ -114,8 +114,8 @@ public class WeChatUtil
 
 
         Map<String,Object> param = new HashMap<>();
-        param.put("scene", "post");
-        param.put("path", "pages/pk/post/post?pkId=" + pkId + "&postId=" + postId);
+        param.put("scene", postId);
+        param.put("path", "pages/pk/post/post");
         param.put("width", 430);
         param.put("auto_color", false);
         Map<String,Object> line_color = new HashMap<>();
@@ -131,7 +131,9 @@ public class WeChatUtil
         if (responseEntity.getStatusCode() == HttpStatus.OK) {
             String url = OssStorage.uploadFileBytes(pkId,postId,responseEntity.getBody());
             return url;
-        } else {
+        }
+        else
+        {
             return null;
         }
 

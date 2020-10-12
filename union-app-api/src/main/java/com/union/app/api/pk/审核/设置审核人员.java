@@ -47,18 +47,19 @@ public class 设置审核人员 {
     @RequestMapping(path="/setApprover",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
     public AppResponse 设置审核人员(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId,@RequestParam("userId") String userId) throws AppException, IOException {
-
-
-
         PostEntity postEntity = postService.查询帖子ById(postId);
         if(!StringUtils.equals(userId,postEntity.getUserId())){return AppResponse.buildResponse(PageAction.消息级别提示框(Level.错误消息,"非法操作"));}
+
+
 
         postService.用户转发审批(postEntity);
         dynamicService.设置帖子的审核用户(pkId,postId);
 
+
         List<DataSet> dataSets = new ArrayList<>();
         ApproveButton approveButton = approveService.获取审核按钮(pkId,postId,userId);
         dataSets.add(new DataSet("button",approveButton));
+
         if(approveButton == ApproveButton.转发审核群){
             dataSets.add(new DataSet("tip1","如群组已满，请选择"));
             dataSets.add(new DataSet("tip2", org.apache.commons.lang.StringUtils.isBlank(dynamicService.查询审核用户(pkId,postId))?"在线审核":"审核中"));

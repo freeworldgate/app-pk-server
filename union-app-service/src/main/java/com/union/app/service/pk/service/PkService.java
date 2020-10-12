@@ -16,6 +16,7 @@ import com.union.app.entity.pk.*;
 import com.union.app.entity.用户.UserEntity;
 import com.union.app.entity.用户.support.UserType;
 import com.union.app.plateform.data.resultcode.AppException;
+import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.common.dao.PkCacheService;
@@ -24,10 +25,12 @@ import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.common.redis.RedisMapService;
 import com.union.app.common.redis.RedisSortSetService;
 import com.union.app.service.user.UserService;
+import com.union.app.util.idGenerator.IdGenerator;
 import com.union.app.util.time.TimeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 
@@ -92,7 +95,7 @@ public class PkService {
 
     public List<Post> queryPrePkPost(String pkId,int page) throws IOException {
 
-        List<Post> posts = new ArrayList<>();
+        List<Post> posts = new LinkedList<>();
 //        List<String> pageList = redisSortSetService.queryPage(CacheKeyName.榜主已审核列表(pkId),page);
         List<String> pageList =  pkService.查询已审核页(pkId,page);
         for(String postId:pageList)
@@ -115,11 +118,32 @@ public class PkService {
 
 
 
-    public List<Post> queryPkPost(String userId,String pkId,int page) throws IOException {
+    public List<Post> queryPkPost(String pkId,int page) throws IOException {
 
-        List<Post> posts = new ArrayList<>();
+        List<Post> posts = 查询Post(pkId,page);
+
+        Collections.shuffle(posts);
+
+        return posts;
+    }
+
+    private List<Post> 查询Post( String pkId, int page) throws UnsupportedEncodingException {
+
+        List<Post> posts = pkCacheService.查询Post缓存(pkId,page);
+        if(CollectionUtils.isEmpty(posts))
+        {
+            posts = queryPosts(pkId,page);
+            pkCacheService.添加Post缓存(pkId,page,posts);
+        }
+        return posts;
+
+    }
+
+
+
+    public List<Post> queryPosts(String pkId,int page) throws UnsupportedEncodingException {
+        List<Post> posts = new LinkedList<>();
         List<String> pageList =  pkService.查询已审核页(pkId,page);
-//        List<String> pageList = redisSortSetService.queryPage(CacheKeyName.榜主已审核列表(pkId),page);
         for(String postId:pageList)
         {
             Post post = postService.查询帖子(pkId,postId,"");
@@ -127,12 +151,14 @@ public class PkService {
                 posts.add(post);
             }
         }
-
-        Collections.shuffle(posts);
-
-
         return posts;
+
     }
+
+
+
+
+
 
 
     public PkDetail querySinglePk(String pkId) throws IOException {
@@ -222,7 +248,7 @@ public class PkService {
     }
 
     public String 创建PK(String userId, String topic, String watchWord,boolean invite) throws UnsupportedEncodingException {
-        String pkId = UUID.randomUUID().toString();
+        String pkId = IdGenerator.getPkId();
         PkEntity pkEntity = new PkEntity();
         pkEntity.setPkId(pkId);
         pkEntity.setCreateTime(System.currentTimeMillis());
@@ -251,7 +277,7 @@ public class PkService {
     }
 
     public PkEntity 创建预置PK(String topic, String watchWord,boolean isCharge,int type) throws UnsupportedEncodingException {
-        String pkId = UUID.randomUUID().toString();
+        String pkId = IdGenerator.getPkId();
         PkEntity pkEntity = new PkEntity();
         pkEntity.setPkId(pkId);
         pkEntity.setCreateTime(System.currentTimeMillis());
@@ -318,21 +344,28 @@ public class PkService {
 
 
 
-    public void checkPk(String pkId,String userId) throws AppException {
+    public AppResponse checkPk(String pkId,String userId) throws AppException {
         PkEntity pkEntity = this.querySinglePkEntity(pkId);
         if(ObjectUtils.isEmpty(pkEntity)){throw AppException.buildException(PageAction.执行处理器("error","榜单不存在，是否返回主页?"));}
         PkStatu pkStatu = pkEntity.getAlbumStatu();
         if(pkStatu == PkStatu.已关闭){
+
             PostEntity postEntity = postService.查询用户帖(pkId,userId);
             //关闭榜单所有未审核的榜帖全变为上线
             if(!ObjectUtils.isEmpty(postEntity) && postEntity.getStatu() != PostStatu.上线)
             {
-                postEntity.setStatu(PostStatu.上线);
-                daoService.updateEntity(postEntity);
-            }
+                String approver = dynamicService.查询审核用户(pkId,postEntity.getPostId());
+                if(StringUtils.isBlank(approver)){return null;}
 
-            throw AppException.buildException(PageAction.执行处理器("error","榜单关闭，是否返回主页?"));
+                postService.上线帖子(postEntity.getPkId(),postEntity.getPostId());
+                dynamicService.已审核(postEntity.getPkId(),postEntity.getPostId());
+
+
+
+            }
+            return AppResponse.buildResponse(PageAction.执行处理器("error","榜单关闭，是否返回主页?"));
         }
+        return null;
 
 
 

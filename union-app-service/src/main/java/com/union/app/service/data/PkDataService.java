@@ -77,7 +77,7 @@ public class PkDataService {
 
     public List<PkDetail> 随机列表(String userId,String pkId)
     {
-        List<PkDetail> pks = new ArrayList<>();
+        List<PkDetail> pks = new LinkedList<>();
 
         if(pkService.isVipView(userId,pkId))
         {

@@ -1,25 +1,131 @@
 package com.union.app.common.dao;
 
 import com.union.app.common.config.AppConfigService;
-import com.union.app.domain.pk.审核.ApproveComment;
-import com.union.app.entity.pk.PkEntity;
-import com.union.app.entity.pk.PostEntity;
-import com.union.app.entity.pk.审核.ApproveCommentEntity;
-import com.union.app.entity.pk.审核.ApproveMessageEntity;
-import com.union.app.entity.用户.UserEntity;
+import com.union.app.domain.pk.Post;
 import com.union.app.plateform.constant.ConfigItem;
-import org.apache.commons.collections.map.LRUMap;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
-import javax.annotation.PostConstruct;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class PkCacheService {
-//
+    private static volatile String minPk=UUID.randomUUID().toString();
+    private static final Map<String,AtomicInteger> pkSorts = new HashMap<>();
+    private static final Map<String,HashMap<Integer,Long>> pkCacheUpdateTime = new HashMap<>();
+    private static final Map<String,AtomicInteger> pkCacheTimes = new HashMap<>();
+    private static final Map<String,HashMap<Integer,List<Post>>> postCache = new HashMap<>();
+
+    public List<Post> 查询Post缓存(String pkId, int page) {
+        PK请求次数加一(pkId);
+        if(PK排序超限(pkId)){return new ArrayList<>();}
+        if(是否超过页面数量限制(page)){return new ArrayList<>();}
+        if(是否超时(pkId,page)){return new ArrayList<>();}
+
+        HashMap<Integer,List<Post>> pkPages = new HashMap<>();
+        postCache.putIfAbsent(pkId,pkPages);
+        return postCache.get(pkId).get(page);
+
+    }
+
+    private boolean PK排序超限(String pkId) {
+
+        AtomicInteger times = new AtomicInteger(0);
+        AtomicInteger minTimes = new AtomicInteger(0);
+        pkCacheTimes.putIfAbsent(pkId,times);
+        pkCacheTimes.putIfAbsent(minPk,minTimes);
+        times = pkCacheTimes.get(pkId);
+        minTimes = pkCacheTimes.get(minPk);
+
+        if(pkSorts.size() < AppConfigService.getConfigAsInteger(ConfigItem.PK缓存数量))
+        {
+            pkSorts.put(pkId,times);
+            if( times.get() > minTimes.get())
+            {
+                minPk = pkId;
+            }
+            return false;
+        }
+        else
+        {
+            if( times.get() > minTimes.get())
+            {
+                minPk = pkId;
+                if(ObjectUtils.isEmpty(pkSorts.get(pkId)))
+                {
+                    pkSorts.remove(minPk);
+                }
+                pkSorts.put(pkId,times);
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+
+
+        }
+
+
+
+
+
+    }
+
+    private void PK请求次数加一(String pkId) {
+
+        AtomicInteger times = new AtomicInteger(0);
+        pkCacheTimes.putIfAbsent(pkId,times);
+        times = pkCacheTimes.get(pkId);
+        times.incrementAndGet();
+    }
+
+    private boolean 是否超过页面数量限制(int page)
+    {
+        return page > AppConfigService.getConfigAsInteger(ConfigItem.单个PK的页面缓存数量);
+    }
+
+    private boolean 是否超时(String pkId, int page) {
+        HashMap<Integer,Long> updateTime= new HashMap<>();
+        pkCacheUpdateTime.putIfAbsent(pkId,updateTime);
+        updateTime = pkCacheUpdateTime.get(pkId);
+
+
+        Long lastUpdateTime = ObjectUtils.isEmpty(updateTime.get(page))?0L:updateTime.get(page);
+        int postCacheTime = AppConfigService.getConfigAsInteger(ConfigItem.POST页面缓存时间);
+        long timePerid = System.currentTimeMillis() - lastUpdateTime;
+        if(timePerid/1000 > postCacheTime)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public void 添加Post缓存(String pkId, int page, List<Post> posts) {
+        if(CollectionUtils.isEmpty(posts)){return;}
+        if(是否超过页面数量限制(page)){return ;}
+        if(是否超时(pkId,page))
+        {
+
+
+            HashMap<Integer,List<Post>> pkPages = new HashMap<>();
+            postCache.putIfAbsent(pkId,pkPages);
+            postCache.get(pkId).put(page,posts);
+
+            HashMap<Integer,Long> updateTime= new HashMap<>();
+            pkCacheUpdateTime.putIfAbsent(pkId,updateTime);
+            pkCacheUpdateTime.get(pkId).put(page,System.currentTimeMillis());
+        }
+
+
+    }
 //
 //    private static Map<Class<?>,LRUMap> cache = new HashMap<>();
 //

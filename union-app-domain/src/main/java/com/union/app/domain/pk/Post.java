@@ -62,4 +62,6 @@ public class Post {
     private String backUrl ;
 
     private boolean flag = false;
+
+    private String imgBack;
 }

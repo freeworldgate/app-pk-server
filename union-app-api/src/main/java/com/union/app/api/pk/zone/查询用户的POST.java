@@ -64,9 +64,11 @@ public class 查询用户的POST {
 
             PostEntity post = postService.查询用户帖(pkId,userId);
 
-            if(!ObjectUtils.isEmpty(post)){
+            if(!ObjectUtils.isEmpty(post))
+            {
 
                 return AppResponse.buildResponse(PageAction.页面跳转("/pages/pk/prepost/prepost?pkId=" + pkId + "&postId=" + post.getPostId(),true));
+//                return AppResponse.buildResponse(PageAction.页面跳转("/pages/pk/prepost/prepost?pkId=" + pkId + "&postId=" + post.getPostId(),true));
             }
             else
             {

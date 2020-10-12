@@ -1,5 +1,7 @@
 package com.union.app.util.idGenerator;
 
+import org.apache.commons.lang.RandomStringUtils;
+
 import java.util.Random;
 import java.util.UUID;
 
@@ -23,7 +25,6 @@ public class IdGenerator {
         return UUID.randomUUID().toString();
     }
 
-    public static String getPostId() {return UUID.randomUUID().toString(); }
 
     public static String getImageId() {return UUID.randomUUID().toString(); }
 
@@ -65,6 +66,9 @@ public class IdGenerator {
     }
 
 
+    public static String getPkId() {return RandomStringUtils.randomAlphanumeric(30); }
+
+    public static String getPostId() {return RandomStringUtils.randomAlphanumeric(30); }
 
 }
 
