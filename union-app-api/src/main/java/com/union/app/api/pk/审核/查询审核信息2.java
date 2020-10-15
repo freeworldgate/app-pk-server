@@ -77,7 +77,7 @@ public class 查询审核信息2 {
         dataSets.add(new DataSet("post",post));
         dataSets.add(new DataSet("pkComment",pkComment));
         dataSets.add(new DataSet("creator",pkService.queryPkCreator(pkId)));
-        dataSets.add(new DataSet("date",TimeUtils.currentDate()));
+//        dataSets.add(new DataSet("date",TimeUtils.currentDate()));
         dataSets.add(new DataSet("pkId",pkId));
         dataSets.add(new DataSet("imgBack",appService.查询背景(4)));
 

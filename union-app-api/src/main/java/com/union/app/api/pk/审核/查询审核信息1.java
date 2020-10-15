@@ -108,13 +108,13 @@ public class 查询审核信息1 {
         DataSet dataSet8 = new DataSet("creator",creator);
         DataSet dataSet7 = new DataSet("mediaId",mediaId);
         DataSet dataSet9 = new DataSet("pkId",pkId);
-        DataSet dataSet10 = new DataSet("date",TimeUtils.dateStr(currentDate));
+//        DataSet dataSet10 = new DataSet("date",TimeUtils.dateStr(currentDate));
         DataSet dataSet11 = new DataSet("timeout",dynamicService.计算今日剩余时间(pkId));
 
         dataSets.add(dataSet7);
         dataSets.add(dataSet8);
         dataSets.add(dataSet9);
-        dataSets.add(dataSet10);
+//        dataSets.add(dataSet10);
         dataSets.add(dataSet11);
 
 

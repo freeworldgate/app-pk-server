@@ -450,23 +450,23 @@ public class AppService {
         return pkCashierGroupEntities;
     }
 
-    public List<CashierGroup> 查询用户群组(String cashierId, int page) {
-        List<CashierGroup> pkCashiers = new ArrayList<>();
-        List<PkCashierGroupEntity>  pkCashierGroupEntities = queryPkCashierGroups(cashierId,page);
-        for(PkCashierGroupEntity pkCashierGroupEntity:pkCashierGroupEntities)
-        {
-            CashierGroup cashierGroup = new CashierGroup();
-            cashierGroup.setGroupId(pkCashierGroupEntity.getGroupId());
-            cashierGroup.setGroupUrl(pkCashierGroupEntity.getGroupUrl());
-            cashierGroup.setTime("已上传:" + TimeUtils.距离上传的小时数(pkCashierGroupEntity.getCreateTime())  + "小时");
-            cashierGroup.setMembers(dynamicService.查询群组分配的人数(pkCashierGroupEntity.getGroupId()));
-            cashierGroup.setStatu(new KeyNameValue(pkCashierGroupEntity.getStatu().getStatu(),pkCashierGroupEntity.getStatu().getStatuStr()));
-            pkCashiers.add(cashierGroup);
-        }
-
-        return pkCashiers;
-
-    }
+//    public List<CashierGroup> 查询用户群组(String cashierId, int page) {
+//        List<CashierGroup> pkCashiers = new ArrayList<>();
+//        List<PkCashierGroupEntity>  pkCashierGroupEntities = queryPkCashierGroups(cashierId,page);
+//        for(PkCashierGroupEntity pkCashierGroupEntity:pkCashierGroupEntities)
+//        {
+//            CashierGroup cashierGroup = new CashierGroup();
+//            cashierGroup.setGroupId(pkCashierGroupEntity.getGroupId());
+//            cashierGroup.setGroupUrl(pkCashierGroupEntity.getGroupUrl());
+//            cashierGroup.setTime("已上传:" + TimeUtils.距离上传的小时数(pkCashierGroupEntity.getCreateTime())  + "小时");
+//            cashierGroup.setMembers(dynamicService.查询群组分配的人数(pkCashierGroupEntity.getGroupId()));
+//            cashierGroup.setStatu(new KeyNameValue(pkCashierGroupEntity.getStatu().getStatu(),pkCashierGroupEntity.getStatu().getStatuStr()));
+//            pkCashiers.add(cashierGroup);
+//        }
+//
+//        return pkCashiers;
+//
+//    }
 
     public void 上传群组(String cashierId, String imgUrl) throws IOException {
 

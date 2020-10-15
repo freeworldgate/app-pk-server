@@ -19,7 +19,7 @@ public class ApproveComment {
     private String voiceUrl;
     private int speckTime;
     private KeyNameValue statu;
-    private String time;
+
     private String date;
     private String word1 = "编辑内容";
     private String word2 = "审核留言";

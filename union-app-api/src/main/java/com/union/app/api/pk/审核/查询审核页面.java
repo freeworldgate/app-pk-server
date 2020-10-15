@@ -87,7 +87,7 @@ public class 查询审核页面 {
 
 
         dataSets.add(new DataSet("creator",pkService.queryPkCreator(pkId)));
-        dataSets.add(new DataSet("date",TimeUtils.currentDate()));
+//        dataSets.add(new DataSet("date",TimeUtils.currentDate()));
         dataSets.add(new DataSet("pkId",pkId));
         dataSets.add(new DataSet("t1","审核通过"));
         dataSets.add(new DataSet("t2","审核中"));

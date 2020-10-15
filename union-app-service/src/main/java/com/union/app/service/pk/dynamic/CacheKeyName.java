@@ -25,8 +25,8 @@ public class CacheKeyName {
 
 //    public static String 所有审核人(String pkId){return "DailyApprover-"+ pkId ;}
 
-    public static String 榜帖评论消息(String pkId, Date date){return "Comment-"+ pkId +"-"+ TimeUtils.dateStr(date) ;}
-    public static String 打榜群组(Date date){return "GroupCode-"+ TimeUtils.dateStr(date) ;}
+//    public static String 榜帖评论消息(String pkId, Date date){return "Comment-"+ pkId +"-"+ TimeUtils.dateStr(date) ;}
+//    public static String 打榜群组(Date date){return "GroupCode-"+ TimeUtils.dateStr(date) ;}
 
 //    Map   -    long
 ////    public static String 审核人已审核数量(String pkId, Date date){return "ApprovedNum-"+ pkId +"-"+ TimeUtils.dateStr(date) ;}

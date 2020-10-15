@@ -222,7 +222,7 @@ public class PostService {
         post.setRejectTimes(postEntity.getRejectTimes());
         post.setMaxRejectTimes(AppConfigService.getConfigAsInteger(ConfigItem.Post最大修改次数));
         post.setRejectText(postEntity.getRejectTextBytes() == null?"":postEntity.getRejectTextBytes());
-        post.setTime(TimeUtils.convertTime(postEntity.getCreateTime()));
+//        post.setTime(TimeUtils.convertTime(postEntity.getCreateTime()));
         post.setCreator(userService.queryUser(postEntity.getUserId()));
         post.setTopic(postEntity.getTopic());
         post.setDynamic(getPostDynamic(postEntity.getPostId(),postEntity.getPkId()));
@@ -232,9 +232,8 @@ public class PostService {
         }
         post.setPostImages(imgs);
         post.setStatu(new KeyNameValue(postEntity.getStatu().getStatu(),postEntity.getStatu().getStatuStr()));
-//        post.setUserIntegral(dynamicService.查询用户打榜信息(postEntity.getPkId(),postEntity.getUserId()));
-        post.setSelfComment(org.apache.commons.lang.StringUtils.isBlank(postEntity.getSelfComment())? org.apache.commons.lang.StringUtils.EMPTY :postEntity.getSelfComment());
-        post.setSelfCommentTime(TimeUtils.convertTime(postEntity.getSelfCommentTime()));
+//        post.setSelfComment(org.apache.commons.lang.StringUtils.isBlank(postEntity.getSelfComment())? org.apache.commons.lang.StringUtils.EMPTY :postEntity.getSelfComment());
+//        post.setSelfCommentTime(TimeUtils.convertTime(postEntity.getSelfCommentTime()));
         post.setScan(dynamicService.查询扫码次数(postEntity.getPkId(),postEntity.getPostId()));
         return post;
     }

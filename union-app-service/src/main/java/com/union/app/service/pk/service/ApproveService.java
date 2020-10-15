@@ -105,8 +105,8 @@ public class ApproveService {
         approveComment.setText(approveCommentEntity.getText());
         approveComment.setCreator(pkService.queryPkCreator(pkId));
         approveComment.setUser(userService.queryUser(approveCommentEntity.getUserId()));
-        approveComment.setTime("今天23:00");
-        approveComment.setDate(approveCommentEntity.getDate());
+//        approveComment.setTime("今天23:00");
+        approveComment.setDate(TimeUtils.convertTime(approveCommentEntity.getTime()));
         if(!org.springframework.util.ObjectUtils.isEmpty(approveCommentEntity.getPostStatu()))
         {
             approveComment.setStatu(new KeyNameValue(approveCommentEntity.getPostStatu().getStatu(), approveCommentEntity.getPostStatu().getStatuStr()));
@@ -159,7 +159,7 @@ public class ApproveService {
             approveCommentEntity.setText(text);
             approveCommentEntity.setImgUrl(this.getLegalImgUrl(imgUrl));
             approveCommentEntity.setTime(System.currentTimeMillis());
-            approveCommentEntity.setDate(TimeUtils.currentDateTime());
+
             approveCommentEntity.setPostStatu(PostStatu.审核中);
             daoService.insertEntity(approveCommentEntity);
         }
@@ -169,7 +169,7 @@ public class ApproveService {
             approveCommentEntity.setImgUrl(this.getLegalImgUrl(imgUrl));
             approveCommentEntity.setUserId(userId);
             approveCommentEntity.setTime(System.currentTimeMillis());
-            approveCommentEntity.setDate(TimeUtils.currentDateTime());
+
             approveCommentEntity.setPostStatu(PostStatu.审核中);
             daoService.updateEntity(approveCommentEntity);
         }
