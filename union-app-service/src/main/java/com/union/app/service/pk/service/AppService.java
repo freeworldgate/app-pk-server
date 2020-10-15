@@ -185,7 +185,7 @@ public class AppService {
         EntityFilterChain filter = EntityFilterChain.newFilterChain(InvitePkEntity.class)
                 .compareFilter("userId",CompareTag.Equal,userId)
                 .pageLimitFilter(page,20)
-                .orderByFilter("time",OrderTag.DESC);
+                .orderByFilter("createTime",OrderTag.DESC);
         List<InvitePkEntity> invites = daoService.queryEntities(InvitePkEntity.class,filter);
 
         for(InvitePkEntity invitePkEntity:invites)
@@ -210,7 +210,7 @@ public class AppService {
             invitePkEntity = new InvitePkEntity();
             invitePkEntity.setPkId(pkId);
             invitePkEntity.setUserId(userId);
-            invitePkEntity.setTime(TimeUtils.currentTime());
+            invitePkEntity.setCreateTime(System.currentTimeMillis());
             daoService.insertEntity(invitePkEntity);
             userService.邀请次数加一(userId);
         }
@@ -385,28 +385,49 @@ public class AppService {
 
     }
 
+
+    private  static volatile List<PkCashier> cashiers = new ArrayList<>();
+    private  static volatile long cashiersUpdateTime;
+
+
     public List<PkCashier> 查询有效收款列表() throws IOException {
 
-
-        List<PkCashier> pkCashiers = new ArrayList<>();
-
-        List<PkCashierEntity>  pkCashierEntities = queryActivePkCashiers();
-        for(PkCashierEntity pkCashierEntity:pkCashierEntities)
+        if(CollectionUtils.isEmpty(cashiers) || cashiersUpdateTime <(System.currentTimeMillis()-AppConfigService.getConfigAsInteger(ConfigItem.缓存时间)*1000))
         {
-            PkCashier pkCashier = new PkCashier();
-            pkCashier.setCashierId(pkCashierEntity.getCashierId());
-            pkCashier.setCashierName(pkCashierEntity.getRealName());
-            pkCashier.setStatu(new KeyNameValue(pkCashierEntity.getStatu().getStatu(),pkCashierEntity.getStatu().getStatuStr()));
-            pkCashier.setImg(pkCashierEntity.getImg());
-            pkCashier.setBackPng(pkCashierEntity.getBackPng());
-            pkCashier.setTime(TimeUtils.convertTime(pkCashierEntity.getTime()));
-            pkCashiers.add(pkCashier);
+            List<PkCashier> pkCashiers = new ArrayList<>();
+            List<PkCashierEntity>  pkCashierEntities = queryActivePkCashiers();
+            for(PkCashierEntity pkCashierEntity:pkCashierEntities)
+            {
+                PkCashier pkCashier = new PkCashier();
+                pkCashier.setCashierId(pkCashierEntity.getCashierId());
+                pkCashier.setCashierName(pkCashierEntity.getRealName());
+                pkCashier.setStatu(new KeyNameValue(pkCashierEntity.getStatu().getStatu(),pkCashierEntity.getStatu().getStatuStr()));
+                pkCashier.setImg(pkCashierEntity.getImg());
+                pkCashier.setBackPng(pkCashierEntity.getBackPng());
+                pkCashier.setTime(TimeUtils.convertTime(pkCashierEntity.getTime()));
+                pkCashiers.add(pkCashier);
 
+            }
+            cashiers = pkCashiers;
+            cashiersUpdateTime = System.currentTimeMillis();
         }
+        return cashiers;
 
-        return pkCashiers;
+
+
 
     }
+
+
+
+
+
+
+
+
+
+
+
 
 
     public synchronized void 新建收款用户(String name) {
@@ -969,19 +990,43 @@ public class AppService {
 
     public String 查询背景(int type) {
 
-
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(BackImgEntity.class)
-                .compareFilter("type",CompareTag.Equal,type)
-                .orderByRandomFilter()
-                ;
-        BackImgEntity backImgEntity = daoService.querySingleEntity(BackImgEntity.class,filter);
-
-
-
+        BackImgEntity backImgEntity = 更新图片缓存(type);
 
         return ObjectUtils.isEmpty(backImgEntity)?"":backImgEntity.getImgUrl();
 
     }
+
+    public BackImgEntity 更新图片缓存(int type)
+    {
+        List<BackImgEntity> typeImgs = imgs.get(type);
+        Long updateTime = imgUpdates.get(type);
+        if(CollectionUtils.isEmpty(typeImgs) || updateTime==null || updateTime <(System.currentTimeMillis()-AppConfigService.getConfigAsInteger(ConfigItem.缓存时间)*1000))
+        {
+            EntityFilterChain filter = EntityFilterChain.newFilterChain(BackImgEntity.class)
+                    .compareFilter("type",CompareTag.Equal,type)
+                    .orderByRandomFilter()
+                    ;
+            typeImgs = daoService.queryEntities(BackImgEntity.class,filter);
+            imgs.put(type,typeImgs);
+            imgUpdates.put(type,System.currentTimeMillis());
+        }
+        if(CollectionUtils.isEmpty(typeImgs)){return null;}
+        Random random = new Random();
+        int n = random.nextInt(typeImgs.size());
+        return typeImgs.get(n);
+
+    }
+
+
+
+
+
+
+
+
+
+
+
 
     public void 删除内置背景图片(String id) {
 
@@ -1465,15 +1510,26 @@ public class AppService {
                      .andFilter()
                      .compareFilter("pkType",CompareTag.Equal,PkType.审核相册);
         }
-        else
+        else if(type == 2)
         {
             filter = EntityFilterChain.newFilterChain(ComplainEntity.class)
                     .compareFilter("complainStatu",CompareTag.Equal,ComplainStatu.处理中)
                     .andFilter()
-                    .compareFilter("pkType",CompareTag.NotEqual,PkType.审核相册);
+                    .compareFilter("pkType",CompareTag.NotEqual,PkType.内置相册);
         }
-
-
+        else if(type == 3)
+        {
+            filter = EntityFilterChain.newFilterChain(ComplainEntity.class)
+                    .compareFilter("complainStatu",CompareTag.Equal,ComplainStatu.处理中)
+                    .andFilter()
+                    .compareFilter("pkType",CompareTag.NotEqual,PkType.运营相册);
+        }
+        else
+        {
+                filter = EntityFilterChain.newFilterChain(ComplainEntity.class)
+                        .compareFilter("complainStatu",CompareTag.Equal,ComplainStatu.处理中)
+                ;
+        }
 
         ComplainEntity entity = daoService.querySingleEntity(ComplainEntity.class,filter);
         if(!ObjectUtils.isEmpty(entity))

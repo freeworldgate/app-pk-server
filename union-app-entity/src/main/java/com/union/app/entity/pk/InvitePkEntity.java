@@ -25,6 +25,7 @@ public class InvitePkEntity {
     private String pkId;
 
     private String time;
+    private long createTime;
 
 
 

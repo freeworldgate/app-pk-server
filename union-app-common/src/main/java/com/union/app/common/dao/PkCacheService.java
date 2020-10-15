@@ -96,7 +96,7 @@ public class PkCacheService {
 
 
         Long lastUpdateTime = ObjectUtils.isEmpty(updateTime.get(page))?0L:updateTime.get(page);
-        int postCacheTime = AppConfigService.getConfigAsInteger(ConfigItem.POST页面缓存时间);
+        int postCacheTime = AppConfigService.getConfigAsInteger(ConfigItem.缓存时间);
         long timePerid = System.currentTimeMillis() - lastUpdateTime;
         if(timePerid/1000 > postCacheTime)
         {

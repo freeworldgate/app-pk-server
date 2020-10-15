@@ -37,8 +37,8 @@ public class OssStorage {
 
 //    private static String endpoint = "oss-accelerate.aliyuncs.com";
     private static String endpoint = AppConfigService.getConfigAsString(ConfigItem.OSS基础地址);
-//    private static String accessKeyId = "LTAI4FqqnPNfxT3TpYdXqq9N";
-//    private static String accessKeySecret = "mB8LeZ70pRJiXa1CCQisVECf6R0XXY";
+//    private static String accessKeyId = "";
+//    private static String accessKeySecret = "";
     private static String accessKeyId = AppConfigService.getConfigAsString(ConfigItem.RAM秘钥ID);
     private static String accessKeySecret = AppConfigService.getConfigAsString(ConfigItem.RAM秘钥);
     private static String bucketName = AppConfigService.getConfigAsString(ConfigItem.Bucket名字);
