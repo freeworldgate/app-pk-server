@@ -91,8 +91,8 @@ public class PostService {
         postEntity.setUserId(ObjectUtils.isEmpty(creatorPostEntity)?creator.getUserId():appService.随机用户());
         postEntity.setTopic(noActiveTitle(title)?"...":title);
         postEntity.setImgNum(images.size());
-        postEntity.setCreateTime(TimeUtils.currentTime());
-        postEntity.setLastModifyTime(TimeUtils.currentTime());
+        postEntity.setTime(System.currentTimeMillis());
+//        postEntity.setLastModifyTime(TimeUtils.currentTime());
         postEntity.setStatu(PostStatu.审核中);
         postEntity.setRejectTimes(0);
 
@@ -143,8 +143,8 @@ public class PostService {
         postEntity.setUserId(userId);
         postEntity.setTopic(noActiveTitle(title)?"...":title);
         postEntity.setImgNum(images.size());
-        postEntity.setCreateTime(TimeUtils.currentTime());
-        postEntity.setLastModifyTime(TimeUtils.currentTime());
+        postEntity.setTime(System.currentTimeMillis());
+//        postEntity.setLastModifyTime(TimeUtils.currentTime());
         postEntity.setStatu(PostStatu.审核中);
         postEntity.setRejectTimes(0);
 
@@ -222,7 +222,7 @@ public class PostService {
         post.setRejectTimes(postEntity.getRejectTimes());
         post.setMaxRejectTimes(AppConfigService.getConfigAsInteger(ConfigItem.Post最大修改次数));
         post.setRejectText(postEntity.getRejectTextBytes() == null?"":postEntity.getRejectTextBytes());
-//        post.setTime(TimeUtils.convertTime(postEntity.getCreateTime()));
+        post.setTime(TimeUtils.convertTime(postEntity.getTime()));
         post.setCreator(userService.queryUser(postEntity.getUserId()));
         post.setTopic(postEntity.getTopic());
         post.setDynamic(getPostDynamic(postEntity.getPostId(),postEntity.getPkId()));
@@ -328,7 +328,7 @@ public class PostService {
         }
 
 
-        postEntity.setLastModifyTime(TimeUtils.currentTime());
+//        postEntity.setLastModifyTime(TimeUtils.currentTime());
 //        String oldTitle = new String(postEntity.getTopic(),Charset.forName("UTF-8"));
 
         postEntity.setTopic(noActiveTitle(title) ? postEntity.getTopic() : title);
@@ -339,7 +339,7 @@ public class PostService {
             postImageEntity.setPostId(postId);
             postImageEntity.setImgUrl(getLegalImgUrl(img));
             postImageEntity.setImgId(IdGenerator.getImageId());
-            postImageEntity.setCreateTime(TimeUtils.currentTime());
+            postImageEntity.setTime(System.currentTimeMillis());
             daoService.insertEntity(postImageEntity);
         }
         postEntity.setImgNum(postEntity.getImgNum() + images.size());

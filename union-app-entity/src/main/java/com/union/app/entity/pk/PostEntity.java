@@ -33,9 +33,10 @@ public class PostEntity {
 
     private int imgNum;
 
-    private String createTime;
+//    private String createTime;
+    private long time;
 
-    private String lastModifyTime;
+//    private String lastModifyTime;
 
     @Enumerated(EnumType.STRING)
     private PostStatu statu;

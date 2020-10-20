@@ -25,7 +25,8 @@ public class PostImageEntity {
 
     private String imgUrl;
 
-    private String createTime;
+//    private String createTime;
+    private long time;
 
 
 }

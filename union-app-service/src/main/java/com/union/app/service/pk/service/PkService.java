@@ -355,10 +355,12 @@ public class PkService {
             if(!ObjectUtils.isEmpty(postEntity) && postEntity.getStatu() != PostStatu.上线)
             {
                 String approver = dynamicService.查询审核用户(pkId,postEntity.getPostId());
-                if(StringUtils.isBlank(approver)){return null;}
+                if(!StringUtils.isBlank(approver)){
+                    postService.上线帖子(postEntity.getPkId(),postEntity.getPostId());
+                    dynamicService.已审核(postEntity.getPkId(),postEntity.getPostId());
+                }
 
-                postService.上线帖子(postEntity.getPkId(),postEntity.getPostId());
-                dynamicService.已审核(postEntity.getPkId(),postEntity.getPostId());
+
 
 
 

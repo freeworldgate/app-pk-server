@@ -62,73 +62,30 @@ public class 进入PK {
     public AppResponse 进入PK(@RequestParam("userId") String userId,@RequestParam("pkId") String pkId) throws AppException, IOException {
 
         PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
+        if(pkService.isPkCreator(pkId,userId)&&ObjectUtils.equals(pkEntity.getAlbumStatu(),PkStatu.审核中)){
+
+            String url = "";
+            ValueStr valueStr = new ValueStr(url, "发布主题", "确定发布主题，发布后将无法修改主题内容...");
+            return AppResponse.buildResponse(PageAction.执行处理器("doApprove", valueStr));
+        }
+
         //非遗传用户且无解锁限制，则任意进入任何PK
         if(!AppConfigService.getConfigAsBoolean(ConfigItem.普通用户发帖后解锁更多主题) && !userService.是否是遗传用户(userId))
         {
             return AppResponse.buildResponse(PageAction.页面跳转("/pages/pk/pk/pk?pkId=" + pkId,true));
         }
-//        if(!userService.是否是遗传用户(userId))
-//        {
-//            return AppResponse.buildResponse(PageAction.页面跳转("/pages/pk/pk/pk?pkId=" + pkId,true));
-//        }
-//
 
 
         //邀请或者非邀请
 
         if(pkService.isPkCreator(pkId,userId))
         {
-
-
             if(userService.是否是遗传用户(userId) && !pkService.是否更新今日审核群(pkEntity))
             {
                 String url = "/pages/pk/message/message?pkId=" + pkId + "&type=1" + "&userId=" + userId;
                 ValueStr valueStr = new ValueStr(url, "更新主题群", "更新主题群,用户发布图册后添加主题群...");
                 return AppResponse.buildResponse(PageAction.执行处理器("group",valueStr));
             }
-
-
-            //遗传用户创建者未更新今日公告
-//            if(!pkService.是否更新今日公告(pkId))
-//            {
-//                String url = "/pages/pk/messageInfo/messageInfo?pkId=" + pkId;
-//                ValueStr valueStr = new ValueStr(url,"编辑封面","请按要求上传封面...");
-//                return AppResponse.buildResponse(PageAction.执行处理器("message",valueStr));
-//            }
-
-            if( ObjectUtils.equals(pkEntity.getAlbumStatu(),PkStatu.审核中)){
-
-                String url = "";
-                ValueStr valueStr = new ValueStr(url, "发布主题", "确定发布主题，发布后将无法修改主题内容...");
-                return AppResponse.buildResponse(PageAction.执行处理器("doApprove", valueStr));
-
-
-
-
-
-//                if(userService.是否是遗传用户(userId)) {
-//                    String url = "/pages/pk/selectPker/selectPker?pkId=" + pkId;
-//                    ValueStr valueStr = new ValueStr(url, "发布主题", "确定要发布主题?,验证通过后可以使用...");
-//                    return AppResponse.buildResponse(PageAction.执行处理器("approve", valueStr));
-//                }
-//                else
-//                {
-//                    PkActive active = appService.查询激活信息(pkId);
-//                    if(org.springframework.util.ObjectUtils.isEmpty(active))
-//                    {
-//                        String url = "";
-//                        ValueStr valueStr = new ValueStr(url, "发布主题", "确定发布主题，发布后将无法修改主题内容...");
-//                        return AppResponse.buildResponse(PageAction.执行处理器("doApprove", valueStr));
-//                    }
-//                    else
-//                    {
-//                        return AppResponse.buildResponse(PageAction.页面跳转("/pages/pk/selectPker/selectPker?pkId=" + pkId,true));
-//
-//                    }
-//
-//                }
-            }
-
         }
         else
         {
@@ -140,7 +97,6 @@ public class 进入PK {
             }
             else
             {
-
                 //邀请主题数量
                 int invites = userEntity.getInviteTimes();
                 int posts = userEntity.getPostTimes();
@@ -148,65 +104,20 @@ public class 进入PK {
                 {
                     ValueStr valueStr = new ValueStr("/pages/pk/pk/pk?pkId=" + pkId,"解锁主题","根据您发布有效图册数量,您剩余可解锁主题为" + ((posts+1)*3 - invites) + "个,解锁主题将添加到我的邀请列表,请选择您感兴趣的主题...");
                     return AppResponse.buildResponse(PageAction.执行处理器("unlock",valueStr));
-
                 }
                 else
                 {
-
                     return AppResponse.buildResponse(PageAction.信息反馈框("查看失败","根据您发布的图册数量,可解锁主题已达上限，您可以通过发布更多图册解锁更多主题..."));
-
                 }
-//
-//                if(userService.用户解锁(userId))
-//                {
-//
-//                    return AppResponse.buildResponse(PageAction.页面跳转("/pages/pk/pk/pk?pkId=" + pkId,true));
-//                }
-//                else
-//                {
-//                    return AppResponse.buildResponse(PageAction.信息反馈框("用户未解锁","至少发布一次图册，解锁后可以查看和发布主题"));
-//                }
+
             }
 
 
 
 
-
-//
-//
-//            if(!userService.是否是遗传用户(userId))
-//            {
-//                return AppResponse.buildResponse(PageAction.页面跳转("/pages/pk/pk/pk?pkId=" + pkId,true));
-//            }
-//            else
-//            {
-//                  UserEntity userEntity = userService.queryUserEntity(userId);
-//                 if(userEntity.getPostTimes() < 1)
-//                 {
-//                     return AppResponse.buildResponse(PageAction.信息反馈框("用户未解锁","至少发布一次图贴，解锁后可以查看和发布主题"));
-//                 }
-//                 else
-//                 {
-//                     return AppResponse.buildResponse(PageAction.页面跳转("/pages/pk/pk/pk?pkId=" + pkId,true));
-//                 }
-//
-//
-//
-//
-//
-//
-//
-//            }
-
         }
 
 
-
-//
-//        if(!pkService.isPkCreator(pkId,userId)  && !pkService.是否更新今日审核群(pkEntity))
-//        {
-////            return AppResponse.buildResponse(PageAction.信息反馈框("提示","榜主未更新今日审核群"));
-//        }
 
 
 
