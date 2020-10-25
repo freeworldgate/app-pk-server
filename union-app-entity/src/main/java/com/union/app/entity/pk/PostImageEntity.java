@@ -5,9 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Setter
 @Getter
@@ -20,6 +18,10 @@ public class PostImageEntity {
     private String imgId;
 
     private String postId;
+
+    @Enumerated(EnumType.STRING)
+    private PostStatu statu;
+
 
     private String pkId;
 

@@ -15,9 +15,12 @@ public class ImportPost {
 
     private List<PkCashier> tips;
 
-    public ImportPost(String topic, List<PkCashier> cashiers) {
+    private String imgBack;
+
+    public ImportPost(String topic, List<PkCashier> tips, String imgBack) {
         this.topic = topic;
-        this.tips = cashiers;
+        this.tips = tips;
+        this.imgBack = imgBack;
     }
 
     public String getTopic() {
@@ -28,11 +31,19 @@ public class ImportPost {
         this.topic = topic;
     }
 
-    public List<PkCashier> getCashiers() {
+    public List<PkCashier> getTips() {
         return tips;
     }
 
-    public void setCashiers(List<PkCashier> cashiers) {
-        this.tips = cashiers;
+    public void setTips(List<PkCashier> tips) {
+        this.tips = tips;
+    }
+
+    public String getImgBack() {
+        return imgBack;
+    }
+
+    public void setImgBack(String imgBack) {
+        this.imgBack = imgBack;
     }
 }

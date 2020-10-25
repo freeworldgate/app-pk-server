@@ -170,6 +170,7 @@ public class AppService {
         for(PkEntity pkEntity:invites)
         {
             PkDetail pkDetail = pkService.querySinglePk(pkEntity);
+            pkDetail.setImgs(postService.查询PK展示图片(pkEntity.getPkId()));
             pkDetails.add(pkDetail);
         }
         return pkDetails;
@@ -184,7 +185,7 @@ public class AppService {
         List<PkEntity> pkEntities = new ArrayList<>();
         EntityFilterChain filter = EntityFilterChain.newFilterChain(InvitePkEntity.class)
                 .compareFilter("userId",CompareTag.Equal,userId)
-                .pageLimitFilter(page,20)
+                .pageLimitFilter(page,AppConfigService.getConfigAsInteger(ConfigItem.单个PK页面的帖子数))
                 .orderByFilter("createTime",OrderTag.DESC);
         List<InvitePkEntity> invites = daoService.queryEntities(InvitePkEntity.class,filter);
 
@@ -246,7 +247,7 @@ public class AppService {
 
         EntityFilterChain filter = EntityFilterChain.newFilterChain(PkEntity.class)
                 .compareFilter("userId",CompareTag.Equal,userId)
-                .pageLimitFilter(page,20)
+                .pageLimitFilter(page,AppConfigService.getConfigAsInteger(ConfigItem.单个PK页面的帖子数))
                 .orderByFilter("createTime",OrderTag.DESC);
         List<PkEntity> pkEntities = daoService.queryEntities(PkEntity.class,filter);
 
@@ -1861,8 +1862,58 @@ public class AppService {
     }
 
 
+    public List<Post> 查询用户图册(String userId, int page) throws UnsupportedEncodingException {
+
+
+        List<Post> posts = new ArrayList<>();
+        List<PostEntity>  postEntities = queryUserPosts(userId,page);
+        if(CollectionUtils.isEmpty(postEntities)){return posts;}
+        Map<String,PkEntity> allPks = queryPostPks(postEntities);
+        for(PostEntity postEntity:postEntities)
+        {
+            PkEntity pkEntity = allPks.get(postEntity.getPkId());
+            if(!ObjectUtils.isEmpty(pkEntity))
+            {
+                Post post = postService.translate(postEntity);
+                post.setPkTopic(pkEntity.getTopic());
+                posts.add(post);
+            }
+
+        }
+
+        return posts;
 
 
 
 
+    }
+
+    private Map<String,PkEntity> queryPostPks(List<PostEntity> postEntities) {
+
+        Map<String,PkEntity> pkMap = new HashMap<>();
+        List<Object> pks = new ArrayList<>();
+        postEntities.forEach(post->{
+            pks.add(post.getPkId());
+        });
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(PkEntity.class)
+                .inFilter("pkId",pks);
+        List<PkEntity> entities = daoService.queryEntities(PkEntity.class,filter);
+        entities.forEach(pk->{
+            pkMap.put(pk.getPkId(),pk);
+        });
+        return pkMap;
+
+    }
+
+    private List<PostEntity> queryUserPosts(String userId, int page) {
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(PostEntity.class)
+                .compareFilter("userId",CompareTag.Equal,userId)
+                .pageLimitFilter(page,AppConfigService.getConfigAsInteger(ConfigItem.单个PK页面的帖子数))
+                .orderByFilter("time",OrderTag.DESC);
+
+        List<PostEntity> entities = daoService.queryEntities(PostEntity.class,filter);
+
+        return entities;
+
+    }
 }

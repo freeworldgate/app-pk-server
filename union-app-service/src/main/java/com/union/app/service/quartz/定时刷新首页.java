@@ -30,7 +30,7 @@ public class 定时刷新首页 implements ApplicationListener<ContextRefreshedE
     @Resource
     private RedisTemplate<String, String> redisTemplate;
 
-    @Scheduled(cron = "* */2 * * * ?") // 每3分钟执行一次，更新群组以及审核信息
+    @Scheduled(cron = "*/50 * * * * ?") // 每3分钟执行一次，更新群组以及审核信息
     public void work() throws Exception {
 
 

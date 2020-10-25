@@ -10,6 +10,8 @@ import lombok.ToString;
 public class PostImage {
 
     private String imageId;
+    private String pkId;
+    private String postId;
 
     private String imgUrl;
 

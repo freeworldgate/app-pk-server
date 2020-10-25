@@ -11,6 +11,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Getter
 @Setter
@@ -41,6 +42,7 @@ public class PkDetail implements Serializable{
     private KeyNameValue pkStatu;
     private KeyNameValue charge;
 
+    private List<String> imgs;
 
     private ApproveMessage approveMessage;
 

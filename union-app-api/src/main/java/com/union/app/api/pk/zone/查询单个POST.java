@@ -118,6 +118,7 @@ public class 查询单个POST {
     public AppResponse 查询单个POSTById(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId) throws AppException, IOException {
 
         PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
+        String imgBack = appService.查询背景(4);
         List<PkCashier> tips = appService.查询有效收款列表();
 
 
@@ -126,7 +127,7 @@ public class 查询单个POST {
 
 
 
-        return AppResponse.buildResponse(PageAction.执行处理器("success",new ImportPost(pkEntity.getTopic(),tips)));
+        return AppResponse.buildResponse(PageAction.执行处理器("success",new ImportPost(pkEntity.getTopic(),tips,imgBack)));
     }
 
 

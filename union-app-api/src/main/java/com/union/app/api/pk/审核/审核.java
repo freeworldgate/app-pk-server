@@ -4,6 +4,7 @@ import com.union.app.common.dao.AppDaoService;
 import com.union.app.domain.pk.Post;
 import com.union.app.domain.pk.审核.ApproveComment;
 import com.union.app.entity.pk.ApproveStatu;
+import com.union.app.entity.pk.PkEntity;
 import com.union.app.entity.pk.PostEntity;
 import com.union.app.plateform.data.resultcode.*;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
@@ -67,10 +68,11 @@ public class 审核 {
         dynamicService.已审核(pkId,postId);
 
         Post post = postService.查询帖子(pkId,postId,null);
-        ApproveComment pkComment = approveService.获取留言信息(pkId, postId);
+        PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
+        post.setPkTopic(pkEntity.getTopic());
 
-        dataSets.add(new DataSet("userPost",post));
-        dataSets.add(new DataSet("pkComment",pkComment));
+        dataSets.add(new DataSet("post",post));
+
         dataSets.add(new DataSet("creator",pkService.queryPkCreator(pkId)));
 
         dataSets.add(new DataSet("pkId",pkId));
@@ -131,6 +133,9 @@ public class 审核 {
 
         List<DataSet> dataSets = new ArrayList<>();
         Post post = dynamicService.查询审核中指定范围的Post(pkId);
+        PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
+        post.setPkTopic(pkEntity.getTopic());
+
         DataSet dataSet2 = new DataSet("post",post);
         DataSet dataSet8 = new DataSet("pkId",pkId);
 

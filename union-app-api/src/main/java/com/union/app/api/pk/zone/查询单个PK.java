@@ -121,13 +121,19 @@ public class 查询单个PK {
         {
             if((creator.getUserType() == UserType.重点用户) || (AppConfigService.getConfigAsBoolean(ConfigItem.普通用户主题是否显示分享按钮和群组按钮)))
             {
-                dataSets.add(new DataSet("button",appService.显示按钮(PkButtonType.邀请图册)));
+                if(!(CollectionUtils.isEmpty(posts) && ObjectUtils.isEmpty(post)))
+                {
+                    dataSets.add(new DataSet("button",appService.显示按钮(PkButtonType.邀请图册)));
+                }
             }
         }
 
 
         dataSets.add(new DataSet("pk",pkDetail));
         dataSets.add(new DataSet("imgBack",appService.查询背景(0)));
+        dataSets.add(new DataSet("creatorImg",appService.查询背景(11)));
+        dataSets.add(new DataSet("otherImg",appService.查询背景(12)));
+        dataSets.add(new DataSet("topImg",appService.查询背景(13)));
 //        dataSets.add(new DataSet("titleIcon",appService.查询背景(11)));
 //        dataSets.add(new DataSet("cardBack",appService.查询背景(6)));
         dataSets.add(new DataSet("posts",posts));

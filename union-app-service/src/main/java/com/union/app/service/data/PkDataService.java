@@ -180,7 +180,7 @@ public class PkDataService {
             }
 
             PkDetail pkDetail = pkService.querySinglePk(pk.getPkId());
-
+            pkDetail.setImgs(postService.查询PK展示图片(pk.getPkId()));
             pkDetail.setGeneticPriority(pk.getGeneticPriority());
             pkDetail.setNonGeneticPriority(pk.getNonGeneticPriority());
 

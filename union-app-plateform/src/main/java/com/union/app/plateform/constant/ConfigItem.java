@@ -56,7 +56,8 @@ public enum ConfigItem {
     普通用户主题是否显示分享按钮和群组按钮("isShowshareButton", "IS_SHOW_SHARE_BUTTON","普通用户主题是否显示分享按钮", "false"),
     单个PK的页面缓存数量("pkCachePost", "PK_CACHE_POST", "单个PK的页面缓存数量", "10"),
     缓存时间("postCacheTime", "POST_CACHE_TIME", "缓存时间(时间秒)", "60"),
-    PK缓存数量("pkCacheNumbers", "PK_CACHE_NUMBERS", "PK缓存数量", "100");
+    PK缓存数量("pkCacheNumbers", "PK_CACHE_NUMBERS", "PK缓存数量", "100"),
+    首页图片选择榜主图册("imgSelectPkCreator", "IS_PK_CREATOR_IMG", "首页图片选择榜主图册", "true");
 
 
 

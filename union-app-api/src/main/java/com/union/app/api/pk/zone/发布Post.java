@@ -146,10 +146,10 @@ public class 发布Post {
 
     @RequestMapping(path="/replaceImg",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse 替換图片(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId,@RequestParam("imgUrl") String imgUrl,@RequestParam("index") int index,@RequestParam("userId") String userId) throws AppException, IOException {
+    public AppResponse 替換图片(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId,@RequestParam("imgUrl") String imgUrl,@RequestParam("imgId") String imgId,@RequestParam("userId") String userId) throws AppException, IOException {
         Date currentDate = new Date();
 
-        postService.替换指定图片(pkId,postId,imgUrl,index,userId,currentDate);
+        postService.替换指定图片(pkId,postId,imgUrl,imgId,userId,currentDate);
 
 
         Post post = postService.查询帖子(pkId,postId,userId);

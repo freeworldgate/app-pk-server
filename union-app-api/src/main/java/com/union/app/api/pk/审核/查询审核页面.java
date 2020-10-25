@@ -2,6 +2,7 @@ package com.union.app.api.pk.审核;
 
 import com.union.app.domain.pk.Post;
 import com.union.app.domain.pk.审核.ApproveComment;
+import com.union.app.entity.pk.PkEntity;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.DataSet;
@@ -81,9 +82,15 @@ public class 查询审核页面 {
 
 
         Post post = postService.查询帖子(pkId,postId,null);
+        PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
+        post.setPkTopic(pkEntity.getTopic());
 
 
-        dataSets.add(new DataSet("userPost",post));
+
+
+
+
+        dataSets.add(new DataSet("post",post));
 
 
         dataSets.add(new DataSet("creator",pkService.queryPkCreator(pkId)));

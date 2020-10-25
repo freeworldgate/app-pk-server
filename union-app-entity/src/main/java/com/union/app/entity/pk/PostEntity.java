@@ -41,7 +41,7 @@ public class PostEntity {
     @Enumerated(EnumType.STRING)
     private PostStatu statu;
 
-    private String imgUrls;
+
 
     private String wxCode;
 

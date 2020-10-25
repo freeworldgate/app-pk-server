@@ -17,7 +17,6 @@ public class ApproveComment {
     private String text;
     private String imgUrl;
     private String voiceUrl;
-    private int speckTime;
     private KeyNameValue statu;
 
     private String date;

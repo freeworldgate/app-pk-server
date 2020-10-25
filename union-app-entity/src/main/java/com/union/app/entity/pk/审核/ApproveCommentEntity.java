@@ -27,7 +27,6 @@ public class ApproveCommentEntity {
     private String imgUrl;
     private long time;
     private String date;
-
     @Enumerated(EnumType.STRING)
     private PostStatu postStatu;
 

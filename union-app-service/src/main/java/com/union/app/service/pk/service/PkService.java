@@ -502,9 +502,14 @@ public class PkService {
     }
     public void 更新图册状态列表(String pkId, String postId) {
         PkPostListEntity pkPostListEntity = 查询图册排列(pkId,postId);
-        pkPostListEntity.setStatu(PostStatu.上线);
+        if(!ObjectUtils.isEmpty(pkPostListEntity))
+        {
+            pkPostListEntity.setStatu(PostStatu.上线);
+            daoService.updateEntity(pkPostListEntity);
+        }
+
         this.更新PK审核数量(pkId);
-        daoService.updateEntity(pkPostListEntity);
+
 
     }
 
