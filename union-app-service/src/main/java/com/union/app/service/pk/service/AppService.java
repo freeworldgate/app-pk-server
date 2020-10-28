@@ -1860,6 +1860,31 @@ public class AppService {
 
 
     }
+    public List<Post> 查询用户发布图册(String userId, int page) throws UnsupportedEncodingException {
+
+
+        List<Post> posts = new ArrayList<>();
+        List<PostEntity>  postEntities = queryUserPublishPosts(userId,page);
+        if(CollectionUtils.isEmpty(postEntities)){return posts;}
+        Map<String,PkEntity> allPks = queryPostPks(postEntities);
+        for(PostEntity postEntity:postEntities)
+        {
+            PkEntity pkEntity = allPks.get(postEntity.getPkId());
+            if(!ObjectUtils.isEmpty(pkEntity))
+            {
+                Post post = postService.translate(postEntity);
+                post.setPkTopic(pkEntity.getTopic());
+                posts.add(post);
+            }
+
+        }
+
+        return posts;
+
+
+
+
+    }
 
 
     public List<Post> 查询用户图册(String userId, int page) throws UnsupportedEncodingException {
@@ -1904,7 +1929,19 @@ public class AppService {
         return pkMap;
 
     }
+    private List<PostEntity> queryUserPublishPosts(String userId, int page) {
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(PostEntity.class)
+                .compareFilter("userId",CompareTag.Equal,userId)
+                .andFilter()
+                .compareFilter("statu",CompareTag.Equal,PostStatu.上线)
+                .pageLimitFilter(page,AppConfigService.getConfigAsInteger(ConfigItem.单个PK页面的帖子数))
+                .orderByFilter("time",OrderTag.DESC);
 
+        List<PostEntity> entities = daoService.queryEntities(PostEntity.class,filter);
+
+        return entities;
+
+    }
     private List<PostEntity> queryUserPosts(String userId, int page) {
         EntityFilterChain filter = EntityFilterChain.newFilterChain(PostEntity.class)
                 .compareFilter("userId",CompareTag.Equal,userId)

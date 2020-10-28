@@ -71,7 +71,7 @@ public class 检查创建PK环境 {
             }
             else
             {
-                return AppResponse.buildResponse(PageAction.信息反馈框("创建失败","创建主题将消耗一条图册并需要购买存储空间，请先在您感兴趣的主题下发布有效图贴后再创建主题..."));
+                return AppResponse.buildResponse(PageAction.信息反馈框("图册不足","创建主题将消耗一条图册，请先在您感兴趣的主题下发布有效图贴后再创建主题..."));
             }
 
 

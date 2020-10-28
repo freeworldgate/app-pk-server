@@ -1,11 +1,6 @@
 package com.union.app.api.用户相册;
 
-import com.union.app.common.config.AppConfigService;
-import com.union.app.domain.pk.PkButton;
-import com.union.app.domain.pk.PkButtonType;
-import com.union.app.domain.pk.PkDetail;
 import com.union.app.domain.pk.Post;
-import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.DataSet;
@@ -28,7 +23,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path="/pk")
-public class 用户图册 {
+public class 指定用户图册 {
 
     @Autowired
     AppService appService;
@@ -58,11 +53,11 @@ public class 用户图册 {
     ApproveService approveService;
 
 
-    @RequestMapping(path="/userPosts",method = RequestMethod.GET)
-    public AppResponse 用户图册(@RequestParam("userId") String userId) throws AppException, IOException {
+    @RequestMapping(path="/userPublishPosts",method = RequestMethod.GET)
+    public AppResponse 用户图册(@RequestParam("targetId") String targetId) throws AppException, IOException {
 
 
-        List<Post> posts = appService.查询用户图册(userId,1);
+        List<Post> posts = appService.查询用户发布图册(targetId,1);
         List<DataSet> dataSets = new ArrayList<>();
         if(CollectionUtils.isEmpty(posts))
         {
@@ -90,10 +85,10 @@ public class 用户图册 {
 
 
     }
-    @RequestMapping(path="/nextUserPosts",method = RequestMethod.GET)
-    public AppResponse 用户图册(@RequestParam("userId") String userId,@RequestParam("page") int page) throws AppException, IOException {
+    @RequestMapping(path="/nextUserPublishPosts",method = RequestMethod.GET)
+    public AppResponse 用户图册(@RequestParam("targetId") String targetId,@RequestParam("page") int page) throws AppException, IOException {
 
-        List<Post> posts = appService.查询用户图册(userId,page+1);
+        List<Post> posts = appService.查询用户发布图册(targetId,page+1);
 
         if(CollectionUtils.isEmpty(posts))
         {

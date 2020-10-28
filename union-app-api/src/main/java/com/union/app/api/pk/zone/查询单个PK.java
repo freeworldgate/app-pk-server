@@ -91,7 +91,9 @@ public class 查询单个PK {
 
 
         Post post = postService.查询用户帖子(pkId,pkService.queryPkCreator(pkId).getUserId());
+        boolean isCreatorPublish = false;
         if(!ObjectUtils.isEmpty(post) && post.getStatu().getKey() == PostStatu.上线.getStatu()) {
+            isCreatorPublish = true;
             dataSets.add(new DataSet("cpost", post));
         }
         List<Post> posts = pkService.queryPkPost(pkId,0);
@@ -121,7 +123,7 @@ public class 查询单个PK {
         {
             if((creator.getUserType() == UserType.重点用户) || (AppConfigService.getConfigAsBoolean(ConfigItem.普通用户主题是否显示分享按钮和群组按钮)))
             {
-                if(!(CollectionUtils.isEmpty(posts) && ObjectUtils.isEmpty(post)))
+                if(isCreatorPublish)
                 {
                     dataSets.add(new DataSet("button",appService.显示按钮(PkButtonType.邀请图册)));
                 }

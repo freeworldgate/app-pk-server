@@ -62,12 +62,23 @@ public class 进入PK {
     public AppResponse 进入PK(@RequestParam("userId") String userId,@RequestParam("pkId") String pkId) throws AppException, IOException {
 
         PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
-        if(pkService.isPkCreator(pkId,userId)&&ObjectUtils.equals(pkEntity.getAlbumStatu(),PkStatu.审核中)){
+        if(pkService.isPkCreator(pkId,userId))
+        {
+            if(userService.是否是遗传用户(userId) && !pkService.是否更新今日审核群(pkEntity))
+            {
+                String url = "/pages/pk/message/message?pkId=" + pkId + "&type=1" + "&userId=" + userId;
+                ValueStr valueStr = new ValueStr(url, "更新主题群", "更新主题群,用户发布图册后添加主题群...");
+                return AppResponse.buildResponse(PageAction.执行处理器("group",valueStr));
+            }
+            if(ObjectUtils.equals(pkEntity.getAlbumStatu(),PkStatu.审核中)){
 
-            String url = "";
-            ValueStr valueStr = new ValueStr(url, "发布主题", "确定发布主题，发布后将无法修改主题内容...");
-            return AppResponse.buildResponse(PageAction.执行处理器("doApprove", valueStr));
+                String url = "";
+                ValueStr valueStr = new ValueStr(url, "发布主题", "确定发布主题，发布后将无法修改主题内容...");
+                return AppResponse.buildResponse(PageAction.执行处理器("doApprove", valueStr));
+            }
         }
+
+
 
         //非遗传用户且无解锁限制，则任意进入任何PK
         if(!AppConfigService.getConfigAsBoolean(ConfigItem.普通用户发帖后解锁更多主题) && !userService.是否是遗传用户(userId))
@@ -78,16 +89,7 @@ public class 进入PK {
 
         //邀请或者非邀请
 
-        if(pkService.isPkCreator(pkId,userId))
-        {
-            if(userService.是否是遗传用户(userId) && !pkService.是否更新今日审核群(pkEntity))
-            {
-                String url = "/pages/pk/message/message?pkId=" + pkId + "&type=1" + "&userId=" + userId;
-                ValueStr valueStr = new ValueStr(url, "更新主题群", "更新主题群,用户发布图册后添加主题群...");
-                return AppResponse.buildResponse(PageAction.执行处理器("group",valueStr));
-            }
-        }
-        else
+        if(!pkService.isPkCreator(pkId,userId))
         {
             UserEntity userEntity = userService.queryUserEntity(userId);
             InvitePkEntity invitePkEntity = appService.queryInvitePk(pkId,userId);
@@ -107,7 +109,7 @@ public class 进入PK {
                 }
                 else
                 {
-                    return AppResponse.buildResponse(PageAction.信息反馈框("查看失败","根据您发布的图册数量,可解锁主题已达上限，您可以通过发布更多图册解锁更多主题..."));
+                    return AppResponse.buildResponse(PageAction.信息反馈框("图册不足","根据您发布的图册数量,可解锁主题已达上限，您可以通过发布更多图册解锁更多主题..."));
                 }
 
             }

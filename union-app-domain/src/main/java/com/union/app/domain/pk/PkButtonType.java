@@ -20,12 +20,12 @@ public enum PkButtonType {
     投诉("/images/complain.png","投诉","complain","",""),
 
 
-    发布图册("/images/post.png","发布图册","checkUserPost","rcc b-publish w-400 h-100 br-100",""),
+    发布图册("/images/publish.png","发布图册","checkUserPost","rcc b-publish w-400 h-100 br-100",""),
     邀请图册("/images/invite.png","邀请","","rcc b-share w-400 h-100 br-100","share"),
 
     群组已更新("/images/group1.png","主题群","groupCode","rus fs-25 fw-400 c-4",""),
     群组未更新("/images/group.png","主题群","groupCode","rus fs-25 fw-400 c-4",""),
-    时间("","刚刚","","rus fs-25 fw-400 c-white",""),
+    时间("","刚刚","","rus fs-25 fw-400 c-4",""),
 
 
 
