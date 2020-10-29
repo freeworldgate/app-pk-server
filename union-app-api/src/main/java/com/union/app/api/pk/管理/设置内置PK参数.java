@@ -66,47 +66,40 @@ public class 设置内置PK参数 {
     @Transactional(rollbackOn = Exception.class)
     public AppResponse 设置预置PK参数(@RequestParam("pkId") String pkId,@RequestParam("password") String password,@RequestParam("type") int type,@RequestParam("value") int value) throws AppException, IOException {
 
-        appService.验证Password(password);
-
-//        EntityFilterChain filter2 = EntityFilterChain.newFilterChain(HomePagePk.class)
-//                .compareFilter("pkId",CompareTag.Equal,pkId);
-//        HomePagePk pk = daoService.querySingleEntity(HomePagePk.class,filter2);
+//        appService.验证Password(password);
 //
-//        if(ObjectUtils.isEmpty(pk))
+//
+//        PkEntity pk = pkService.querySinglePkEntity(pkId);
+//
+//        if(!(pk.getPkType() == PkType.内置相册 && pk.getIsInvite() == InviteType.邀请))
 //        {
-//            return AppResponse.buildResponse(PageAction.信息反馈框("相册未添加到预览","相册未添加到预览"));
+//            return AppResponse.buildResponse(PageAction.信息反馈框("非内置相册","非内置仅邀请相册不能设置"));
 //        }
-        PkEntity pk = pkService.querySinglePkEntity(pkId);
-
-        if(!(pk.getPkType() == PkType.内置相册 && pk.getIsInvite() == InviteType.邀请))
-        {
-            return AppResponse.buildResponse(PageAction.信息反馈框("非内置相册","非内置仅邀请相册不能设置"));
-        }
-
-
-
-        if(type == 1)
-        {
-            dynamicService.更新内置相册已审核数量(pkId,value);
-        }
-        if(type == 2)
-        {
-            dynamicService.更新内置相册审核中数量(pkId,value);
-        }
-        if(type == 3)
-        {
-            dynamicService.更新内置相册群组状态(pkId);
-        }
-
-
-        PkDetail pkDetail = pkService.querySinglePk(pkId);
-        pkDetail.setGeneticPriority(appService.查询优先级(pkId,1));
-        pkDetail.setNonGeneticPriority(appService.查询优先级(pkId,2));
+//
+//
+//
+//        if(type == 1)
+//        {
+//            dynamicService.更新内置相册已审核数量(pkId,value);
+//        }
+//        if(type == 2)
+//        {
+//            dynamicService.更新内置相册审核中数量(pkId,value);
+//        }
+//        if(type == 3)
+//        {
+//            dynamicService.更新内置相册群组状态(pkId);
+//        }
+//
+//
+//        PkDetail pkDetail = pkService.querySinglePk(pkId);
+//        pkDetail.setGeneticPriority(appService.查询优先级(pkId,1));
+//        pkDetail.setNonGeneticPriority(appService.查询优先级(pkId,2));
+//
 
 
 
-
-        return AppResponse.buildResponse(PageAction.执行处理器("success",pkDetail));
+        return AppResponse.buildResponse(PageAction.执行处理器("success",null));
     }
 
 

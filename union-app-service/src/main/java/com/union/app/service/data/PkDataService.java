@@ -73,7 +73,7 @@ public class PkDataService {
 
     private static List<PkDetail> 遗传主页列表 = new ArrayList<>();
     private static List<PkDetail> 非遗传主页列表 = new ArrayList<>();
-    private static List<PkDetail> 仅邀请的遗传主页列表 = new ArrayList<>();
+
 
     public List<PkDetail> 随机列表(String userId,String pkId)
     {
@@ -135,25 +135,6 @@ public class PkDataService {
 
 
     }
-    public List<PkDetail> 仅邀请的遗传主页列表(int page)
-    {
-
-
-        if((page-1) * 20 >= 仅邀请的遗传主页列表.size())
-        {
-            return new ArrayList<>();
-        }
-        else if(page * 20 >= 仅邀请的遗传主页列表.size())
-        {
-            return 仅邀请的遗传主页列表.subList((page-1) * 20,仅邀请的遗传主页列表.size());
-        }
-        else
-        {
-            return 仅邀请的遗传主页列表.subList((page-1) * 20,page * 20);
-        }
-
-
-    }
 
     public void 更新相册列表() throws IOException {
         List<HomePagePk> pkEntities = new ArrayList<>();
@@ -170,14 +151,11 @@ public class PkDataService {
 
         List<PkDetail> 遗传主页列表Temp = new ArrayList<>();
         List<PkDetail> 非遗传主页列表Temp = new ArrayList<>();
-        List<PkDetail> 仅邀请的遗传主页列表Temp = new ArrayList<>();
+
 
         for(HomePagePk pk:pkEntities)
         {
             PkEntity pkEntity = pkService.querySinglePkEntity(pk.getPkId());
-            if(pkEntity.getPkType() == PkType.内置相册  && pkEntity.getIsInvite() == InviteType.邀请){
-                dynamicService.更新内置相册参数(pkEntity.getPkId());
-            }
 
             PkDetail pkDetail = pkService.querySinglePk(pk.getPkId());
             pkDetail.setImgs(postService.查询PK展示图片(pk.getPkId()));
@@ -186,8 +164,6 @@ public class PkDataService {
 
             if(pk.getGeneticPriority() > -1){
                 遗传主页列表Temp.add(pkDetail);
-                if(pkDetail.getInviteType() == InviteType.邀请){仅邀请的遗传主页列表Temp.add(pkDetail);}
-
             }
             if(pk.getNonGeneticPriority() > -1){非遗传主页列表Temp.add(pkDetail);}
 
@@ -195,7 +171,7 @@ public class PkDataService {
         }
         遗传主页列表 = 遗传主页列表Temp;
         非遗传主页列表 = 非遗传主页列表Temp;
-        仅邀请的遗传主页列表 = 仅邀请的遗传主页列表Temp;
+
     }
 
     private List<HomePagePk> 查询HomePagePk(int page) {

@@ -260,7 +260,7 @@ public class PostService {
         post.setStatu(new KeyNameValue(postEntity.getStatu().getStatu(),postEntity.getStatu().getStatuStr()));
 //        post.setSelfComment(org.apache.commons.lang.StringUtils.isBlank(postEntity.getSelfComment())? org.apache.commons.lang.StringUtils.EMPTY :postEntity.getSelfComment());
 //        post.setSelfCommentTime(TimeUtils.convertTime(postEntity.getSelfCommentTime()));
-        post.setScan(dynamicService.查询扫码次数(postEntity.getPkId(),postEntity.getPostId()));
+//        post.setScan(dynamicService.查询扫码次数(postEntity.getPkId(),postEntity.getPostId()));
         return post;
     }
 

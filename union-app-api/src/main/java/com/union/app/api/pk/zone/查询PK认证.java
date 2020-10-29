@@ -91,7 +91,7 @@ public class 查询PK认证 {
 //
 //
 //                dataSets.add(new DataSet("buttonName", "请求激活"));
-//                dataSets.add(new DataSet("buttonType", "share"));
+//                dataSets.add(new DataSet("buttonType", "kvalue"));
 //
 //
 //                PkCashierEntity weidianUrl = appService.获取微店(pkId);

@@ -8,6 +8,7 @@ import com.union.app.dao.spi.filter.EntityFilterChain;
 import com.union.app.domain.wechat.UserInfo;
 import com.union.app.domain.wechat.WeChatUser;
 import com.union.app.entity.用户.UserEntity;
+import com.union.app.entity.用户.UserKvEntity;
 import com.union.app.entity.用户.support.UserType;
 import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.response.ApiResponse;
@@ -62,17 +63,12 @@ public class 用户登录加注册 {
         {
             userEntity = new UserEntity();
 
-//            userEntity.setFromUser(fromUser);
+
             userEntity.setOpenId(openId);
             userEntity.setSessionId(weChatUser.getSession_key());
             userEntity.setAppName(appName);
             userEntity.setUserId(openId);
-            userEntity.setPkTimes(0);
-            userEntity.setPostTimes(0);
-            userEntity.setActivePkTimes(0);
-            userEntity.setPostTimes(0);
-            userEntity.setUsedTimes(0);
-            userEntity.setFeeTimes(0);
+
             if(pkService.isCreatedByVip(pkId))
             {
                 userEntity.setUserType(UserType.重点用户);
@@ -95,9 +91,14 @@ public class 用户登录加注册 {
 
 
 
-
-
-
+            UserKvEntity userKvEntity = new UserKvEntity();
+            userKvEntity.setPkTimes(0);
+            userKvEntity.setPostTimes(0);
+            userKvEntity.setActivePkTimes(0);
+            userKvEntity.setPostTimes(0);
+            userKvEntity.setUsedTimes(0);
+            userKvEntity.setFeeTimes(0);
+            appDaoService.insertEntity(userKvEntity);
             appDaoService.insertEntity(userEntity);
 
         }

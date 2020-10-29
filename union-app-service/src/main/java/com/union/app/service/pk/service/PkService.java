@@ -203,8 +203,8 @@ public class PkService {
         pkDetail.setPkStatu(ObjectUtils.isEmpty(pk.getAlbumStatu())?new KeyNameValue(PkStatu.审核中.getStatu(),PkStatu.审核中.getStatuStr()):new KeyNameValue(pk.getAlbumStatu().getStatu(),pk.getAlbumStatu().getStatuStr()));
 //        pkDetail.setApproveMessage(approveService.查询PK公告消息(pkId));
         pkDetail.setBackUrl(StringUtils.isBlank(pk.getBackUrl())?appService.查询背景(10):pk.getBackUrl());
-        pkDetail.setApproved( "已发布(" +   pk.getApproved()  + ")");
-        pkDetail.setApproving("发布中(" +   pk.getApproving()  + ")");
+        pkDetail.setApproved( "已发布(" +   dynamicService.getKeyValue(CacheKeyName.已审核数量,pkId)   + ")");
+        pkDetail.setApproving("发布中(" +   dynamicService.getKeyValue(CacheKeyName.审核中数量,pkId)  + ")");
         pkDetail.setGroupInfo(this.查询群组(pkDetail.getPkId()));
         pkDetail.setUserBack(appService.查询背景(0));
         return pkDetail;
@@ -268,9 +268,6 @@ public class PkService {
         pkEntity.setUserId(userId);
         pkEntity.setAlbumStatu(PkStatu.审核中);
         pkEntity.setComplainTimes(0);
-        pkEntity.setApproving(0);
-        pkEntity.setApproved(0);
-//        pkEntity.setTotalComplainTimes(0);
         daoService.insertEntity(pkEntity);
         userService.创建榜次数加1(userId);
         return pkId;
@@ -288,8 +285,6 @@ public class PkService {
         pkEntity.setMessageType(isCharge?MessageType.收费:MessageType.不收费);
         pkEntity.setUserId(appService.随机用户(type));
         pkEntity.setAlbumStatu(PkStatu.已审核);
-        pkEntity.setApproving(0);
-        pkEntity.setApproved(0);
         daoService.insertEntity(pkEntity);
 
         BuildInPkEntity buildInPkEntity = new BuildInPkEntity();
@@ -515,8 +510,10 @@ public class PkService {
 
     private void 更新PK审核数量(String pkId) {
         PkEntity pkEntity = this.querySinglePkEntity(pkId);
-        pkEntity.setApproved(pkEntity.getApproved() + 1);
-        pkEntity.setApproving(pkEntity.getApproving() - 1);
+        dynamicService.valueIncr(CacheKeyName.已审核数量,pkId);
+        dynamicService.valueDecr(CacheKeyName.审核中数量,pkId);
+//        pkEntity.setApproved(pkEntity.getApproved() + 1);
+//        pkEntity.setApproving(pkEntity.getApproving() - 1);
         daoService.updateEntity(pkEntity);
 
     }
@@ -535,13 +532,16 @@ public class PkService {
 
     public void 添加一个审核中(String pkId) {
         PkEntity pkEntity = this.querySinglePkEntity(pkId);
-        pkEntity.setApproving(pkEntity.getApproving() + 1);
+        dynamicService.valueIncr(CacheKeyName.审核中数量,pkId);
+
+//        pkEntity.setApproving(pkEntity.getApproving() + 1);
         daoService.updateEntity(pkEntity);
     }
 
     public void 减少一个审核中(String pkId) {
         PkEntity pkEntity = this.querySinglePkEntity(pkId);
-        pkEntity.setApproving(pkEntity.getApproving() - 1);
+        dynamicService.valueDecr(CacheKeyName.审核中数量,pkId);
+//        pkEntity.setApproving(pkEntity.getApproving() - 1);
         daoService.updateEntity(pkEntity);
     }
 

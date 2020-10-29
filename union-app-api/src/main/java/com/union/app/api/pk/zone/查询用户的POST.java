@@ -11,6 +11,7 @@ import com.union.app.entity.pk.InviteType;
 import com.union.app.entity.pk.PkEntity;
 import com.union.app.entity.pk.PostEntity;
 import com.union.app.entity.用户.UserEntity;
+import com.union.app.entity.用户.UserKvEntity;
 import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
@@ -117,7 +118,7 @@ public class 查询用户的POST {
 
             if(appService.是否收费(userId)) {
 
-                UserEntity userEntity = userService.queryUserEntity(userId);
+                UserKvEntity userEntity = userService.queryUserKvEntity(userId);
                 //总可激活次数  和  已用次数
                 if (userEntity.getFeeTimes() > userEntity.getUsedTimes()) {
                     //不用收费:提示:图册发布后将激活该主题

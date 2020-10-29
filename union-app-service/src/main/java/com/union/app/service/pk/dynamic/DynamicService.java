@@ -73,8 +73,8 @@ public class DynamicService {
         redisTemplate.delete(key);}
 
 
-    public int getKeyValue(DynamicItem item,String key){
-        Object value = redisTemplate.opsForHash().get(DynamicKeyName.getKey_Value_Name(item),key);
+    public int getKeyValue(String item,String key){
+        Object value = redisTemplate.opsForHash().get(item,key);
         if(ObjectUtils.isEmpty(value)){
             return 0;
         }
@@ -82,49 +82,18 @@ public class DynamicService {
             return (int)value;
         }
     }
-    public void setKeyValue(DynamicItem item,String key,long value){
-        redisTemplate.opsForHash().put(DynamicKeyName.getKey_Value_Name(item),key,value);
+    public void setKeyValue(String item,String key,long value){
+        redisTemplate.opsForHash().put(item,key,value);
     }
-    public int valueIncr(DynamicItem item,String key){
-        long value = redisTemplate.opsForHash().increment(DynamicKeyName.getKey_Value_Name(item),key,1L);
+    public int valueIncr(String item,String key){
+        long value = redisTemplate.opsForHash().increment(item,key,1L);
         return new Long(value).intValue();
     }
-    public int valueDecr(DynamicItem item,String key){
-        long value = redisTemplate.opsForHash().increment(DynamicKeyName.getKey_Value_Name(item),key,-1L);
+    public int valueDecr(String item,String key){
+        long value = redisTemplate.opsForHash().increment(item,key,-1L);
         if(value < 0){this.setKeyValue(item,key,0);value = 0;}
         return new Long(value).intValue();
     }
-
-
-
-
-
-    public int getMapKeyValue(DynamicItem item,String mapName,String key){
-        Object value = redisTemplate.opsForHash().get(DynamicKeyName.getMapKey_Value_Name(item,mapName),key);
-        if(ObjectUtils.isEmpty(value)){
-            return 0;
-        }
-        else {
-            return (int)value;
-        }
-    }
-    public void delMapKeyValue(DynamicItem item,String mapName,String key){
-        Object value = redisTemplate.opsForHash().delete(DynamicKeyName.getMapKey_Value_Name(item,mapName),key);
-    }
-    public void setMapKeyValue(DynamicItem item,String mapName,String key,long value){
-        redisTemplate.opsForHash().put(DynamicKeyName.getMapKey_Value_Name(item,mapName),key,value);
-    }
-    public int mapValueIncr(DynamicItem item,String mapName,String key){
-        long value = redisTemplate.opsForHash().increment(DynamicKeyName.getMapKey_Value_Name(item,mapName),key,1L);
-        return new Long(value).intValue();
-    }
-    public int mapValueDecr(DynamicItem item,String mapName,String key){
-        long value = redisTemplate.opsForHash().increment(DynamicKeyName.getMapKey_Value_Name(item,mapName),key,-1L);
-        if(value < 0){this.setMapKeyValue(item,mapName,key,0);value = 0;}
-        return new Long(value).intValue();
-    }
-
-
 
 
 
@@ -327,9 +296,9 @@ public class DynamicService {
         //有序集合-按照时间排序
     public void 更新PK排名(String pkId){
         PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
-        int size =  ObjectUtils.isEmpty(pkEntity)?0:pkEntity.getApproved() ;
+        int size =  ObjectUtils.isEmpty(pkEntity)?0:this.getKeyValue(CacheKeyName.已审核数量,pkId) ;
         double score = size * -1.0D;
-        redisSortSetService.addEle(CacheKeyName.PK排名(),pkId,score);
+        redisSortSetService.addEle(CacheKeyName.PK排名,pkId,score);
 
     }
 
@@ -379,9 +348,9 @@ public class DynamicService {
 //        UserIntegral userIntegral = new UserIntegral();
 //        int sortIndex = this.获取用户排名(pkId,userId);
 //        int follow = this.获取收藏积分(pkId,userId);
-//        int share = this.获取今日分享积分(pkId,userId);
+//        int kvalue = this.获取今日分享积分(pkId,userId);
 //        userIntegral.setIndex(sortIndex);
-//        userIntegral.setShare(share);
+//        userIntegral.setShare(kvalue);
 //        userIntegral.setFollow(follow);
 //        userIntegral.setUser(userService.queryUser(userId));
 //        userIntegral.setCreator(pkService.isPkCreator(pkId,userId));
@@ -577,60 +546,24 @@ public class DynamicService {
 
     }
 
-//    public int 已审核订单数量(String pkId, String approverUserId,Date date) {
-//        if(pkService.isPkCreator(pkId,approverUserId))
-//        {
-//            return redisSortSetService.size(CacheKeyName.榜主已审核列表(pkId));
-//        }
-//        else
-//        {
-//            return redisSortSetService.size(CacheKeyName.审核员已审核列表(pkId,date,approverUserId));
-//        }
-//
-//
-//    }
-//
-//    public int 审核中订单数量(String pkId, String approverUserId,Date date) {
-//        if(pkService.isPkCreator(pkId,approverUserId))
-//        {
-//            return redisSortSetService.size(CacheKeyName.榜主审核中列表(pkId));
-//        }
-//        else
-//        {
-//            return redisSortSetService.size(CacheKeyName.审核员审核中列表(pkId,date,approverUserId));
-//
-//        }
-//    }
-
-    public String 用户拉取群组记录(String pkId, String fromUserName) {
-
-
-        return null;
-    }
-
-    public String 获取榜主群组二维码(String pkId) {
-
-        return null;
-
-    }
 
     public void 设置PK群组二维码MediaId(String pkId, String mediaId) {
-        redisMapService.setStringValue(CacheKeyName.群组二维码(),pkId,mediaId);
+        redisMapService.setStringValue(CacheKeyName.群组二维码,pkId,mediaId);
     }
 //    public void 设置内置公开PK群组二维码MediaId(String pkId, String mediaId) {
 //        redisMapService.setStringValue(CacheKeyName.内置公开PK群组二维码(),pkId,mediaId);
 //    }
     public String 查询PK群组二维码MediaId(String pkId) {
-        return redisMapService.getStringValue(CacheKeyName.群组二维码(),pkId);
+        return redisMapService.getStringValue(CacheKeyName.群组二维码,pkId);
     }
     public void 设置PK群组二维码Url(String pkId, String url) {
-        redisMapService.setStringValue(CacheKeyName.群组URL(),pkId,url);
+        redisMapService.setStringValue(CacheKeyName.群组URL,pkId,url);
     }
 //    public void 设置内置公开PK群组二维码Url(String pkId, String url) {
 //        redisMapService.setStringValue(CacheKeyName.内置公开PK群组URL(),pkId,url);
 //    }
     public String 查询PK群组二维码Url(String pkId) {
-        return redisMapService.getStringValue(CacheKeyName.群组URL(),pkId);
+        return redisMapService.getStringValue(CacheKeyName.群组URL,pkId);
     }
 
 //    public String 查询内置公开PK群组二维码Url(String pkId) {
@@ -638,13 +571,13 @@ public class DynamicService {
 ////    }
     public String 获取当前拉取图片(String fromUserName) {
 
-        return redisMapService.getStringValue(CacheKeyName.拉取资源图片(),fromUserName);
+        return redisMapService.getStringValue(CacheKeyName.拉取资源图片,fromUserName);
 
     }
 
     public void 当前拉取图片(String fromUserName, String mediaId) {
 
-        redisMapService.setStringValue(CacheKeyName.拉取资源图片(),fromUserName,mediaId);
+        redisMapService.setStringValue(CacheKeyName.拉取资源图片,fromUserName,mediaId);
 
     }
 
@@ -664,17 +597,14 @@ public class DynamicService {
 
 
 
-    //
-    public long 查询群组分配的人数(String groupId) { return redisMapService.getIntValue(CacheKeyName.群组分配人数(),groupId); }
-    public long 群组分配的人数加一(String groupId) { return redisMapService.valueIncr(CacheKeyName.群组分配人数(),groupId); }
-
-
-    public long 查询收款码分配的人数(String feeCodeId) { return redisMapService.getIntValue(CacheKeyName.收款码分配人数(),feeCodeId); }
-    public long 收款码分配的人数加一(String feeCodeId) { return redisMapService.valueIncr(CacheKeyName.收款码分配人数(),feeCodeId); }
-
-
-
-
+//    //
+//    public long 查询群组分配的人数(String groupId) { return redisMapService.getIntValue(CacheKeyName.群组分配人数(),groupId); }
+//    public long 群组分配的人数加一(String groupId) { return redisMapService.valueIncr(CacheKeyName.群组分配人数(),groupId); }
+//
+//
+//    public long 查询收款码分配的人数(String feeCodeId) { return redisMapService.getIntValue(CacheKeyName.收款码分配人数(),feeCodeId); }
+//    public long 收款码分配的人数加一(String feeCodeId) { return redisMapService.valueIncr(CacheKeyName.收款码分配人数(),feeCodeId); }
+//
 
 
 
@@ -682,75 +612,78 @@ public class DynamicService {
 
 
 
-    public long 查看内置相册已审核榜帖(String pkId) {
-        return redisMapService.getIntValue(CacheKeyName.内置相册已审核(),pkId);
-
-
-    }
-
-    public long 查看内置相册审核中榜帖(String pkId) {
 
 
 
-        return redisMapService.getIntValue(CacheKeyName.内置相册审核中(),pkId);
-    }
+//    public long 查看内置相册已审核榜帖(String pkId) {
+//        return redisMapService.getIntValue(CacheKeyName.内置相册已审核(),pkId);
+//
+//
+//    }
+//
+//    public long 查看内置相册审核中榜帖(String pkId) {
+//
+//
+//
+//        return redisMapService.getIntValue(CacheKeyName.内置相册审核中(),pkId);
+//    }
 
-    public boolean 查看内置相册群组状态(String pkId) {
+//    public boolean 查看内置相册群组状态(String pkId) {
+//
+//
+//        return redisMapService.getIntValue(CacheKeyName.内置相册群组状态(),pkId) == 0;
+//
+//    }
 
-
-        return redisMapService.getIntValue(CacheKeyName.内置相册群组状态(),pkId) == 0;
-
-    }
-
-    public void 更新内置相册已审核数量(String pkId, int value) {
-        redisMapService.setLongValue(CacheKeyName.内置相册已审核(),pkId,Long.valueOf(value+""));
-    }
-
-    public void 更新内置相册审核中数量(String pkId, int value) {
-        redisMapService.setLongValue(CacheKeyName.内置相册审核中(),pkId,Long.valueOf(value+""));
-
-    }
-
-    public void 更新内置相册群组状态(String pkId) {
-        if(redisMapService.getIntValue(CacheKeyName.内置相册群组状态(),pkId) == 0)
-        {
-            redisMapService.setLongValue(CacheKeyName.内置相册群组状态(),pkId,1L);
-        }
-        else
-        {
-            redisMapService.setLongValue(CacheKeyName.内置相册群组状态(),pkId,0L);
-        }
-
-    }
+//    public void 更新内置相册已审核数量(String pkId, int value) {
+//        redisMapService.setLongValue(CacheKeyName.内置相册已审核(),pkId,Long.valueOf(value+""));
+//    }
+//
+//    public void 更新内置相册审核中数量(String pkId, int value) {
+//        redisMapService.setLongValue(CacheKeyName.内置相册审核中(),pkId,Long.valueOf(value+""));
+//
+//    }
+//
+//    public void 更新内置相册群组状态(String pkId) {
+//        if(redisMapService.getIntValue(CacheKeyName.内置相册群组状态(),pkId) == 0)
+//        {
+//            redisMapService.setLongValue(CacheKeyName.内置相册群组状态(),pkId,1L);
+//        }
+//        else
+//        {
+//            redisMapService.setLongValue(CacheKeyName.内置相册群组状态(),pkId,0L);
+//        }
+//
+//    }
 
 //    public String 查询内置公开PK群组二维码MediaId(String pkId) {
 //        return redisMapService.getStringValue(CacheKeyName.内置公开PK群组二维码(),pkId);
 //    }
 
-    public void 更新内置相册参数(String pkId) {
-        if(RandomUtil.getRandomNumber()%2 == 0){
-            redisMapService.valueIncr(CacheKeyName.内置相册审核中(),pkId,1L);
-        }
-        if(RandomUtil.getRandomNumber()%2 == 0){
-            redisMapService.valueIncr(CacheKeyName.内置相册已审核(),pkId,1L);
-        }
-
-
-
-    }
-
-    public void 扫描次数加1(String pkId, String postId) {
-         redisMapService.valueIncr(CacheKeyName.PK扫码次数(pkId),postId);
-
-
-
-    }
-
-    public long 查询扫码次数(String pkId, String postId) {
-
-        return redisMapService.getIntValue(CacheKeyName.PK扫码次数(pkId),postId);
-
-    }
+//    public void 更新内置相册参数(String pkId) {
+//        if(RandomUtil.getRandomNumber()%2 == 0){
+//            redisMapService.valueIncr(CacheKeyName.内置相册审核中(),pkId,1L);
+//        }
+//        if(RandomUtil.getRandomNumber()%2 == 0){
+//            redisMapService.valueIncr(CacheKeyName.内置相册已审核(),pkId,1L);
+//        }
+//
+//
+//
+//    }
+//
+//    public void 扫描次数加1(String pkId, String postId) {
+//         redisMapService.valueIncr(CacheKeyName.PK扫码次数(pkId),postId);
+//
+//
+//
+//    }
+//
+//    public long 查询扫码次数(String pkId, String postId) {
+//
+//        return redisMapService.getIntValue(CacheKeyName.PK扫码次数(pkId),postId);
+//
+//    }
 
 //    public long 查询收款码确认次数(String feeCodeId) { return redisMapService.getIntValue(CacheKeyName.收款码确认次数(),feeCodeId); }
 //    public long 收款码确认次数加一(String feeCodeId) { return redisMapService.valueIncr(CacheKeyName.收款码确认次数(),feeCodeId); }

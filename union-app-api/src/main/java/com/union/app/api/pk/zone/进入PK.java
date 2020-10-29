@@ -8,6 +8,7 @@ import com.union.app.domain.pk.TipConstant;
 import com.union.app.domain.pk.ValueStr;
 import com.union.app.entity.pk.*;
 import com.union.app.entity.用户.UserEntity;
+import com.union.app.entity.用户.UserKvEntity;
 import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
@@ -91,7 +92,7 @@ public class 进入PK {
 
         if(!pkService.isPkCreator(pkId,userId))
         {
-            UserEntity userEntity = userService.queryUserEntity(userId);
+            UserKvEntity userEntity = userService.queryUserKvEntity(userId);
             InvitePkEntity invitePkEntity = appService.queryInvitePk(pkId,userId);
             if(!org.springframework.util.ObjectUtils.isEmpty(invitePkEntity))
             {

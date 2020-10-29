@@ -6,6 +6,7 @@ import com.union.app.domain.pk.Post;
 import com.union.app.entity.pk.PostEntity;
 import com.union.app.entity.pk.PostStatu;
 import com.union.app.entity.用户.UserEntity;
+import com.union.app.entity.用户.UserKvEntity;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.Level;
@@ -68,7 +69,7 @@ public class 发布Post {
             postId = postService.创建帖子(pkId,userId,title,images);
             appService.添加邀请(pkId,userId);
             if(appService.是否收费(userId)) {
-                UserEntity userEntity = userService.queryUserEntity(userId);
+                UserKvEntity userEntity = userService.queryUserKvEntity(userId);
                 userEntity.setUsedTimes(userEntity.getUsedTimes() + 1);
                 daoService.updateEntity(userEntity);
             }

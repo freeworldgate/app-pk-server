@@ -43,16 +43,13 @@ public class UserEntity {
     private String fromUser;
 
 
-    private int postTimes;
-    private int pkTimes;
-    private int activePkTimes;
-    private int inviteTimes;
-
-
-
-
-    private int feeTimes;
-    private int usedTimes;
+//    private int postTimes;
+//    private int pkTimes;
+//    private int activePkTimes;
+//    private int inviteTimes;
+//
+//    private int feeTimes;
+//    private int usedTimes;
 
 
 

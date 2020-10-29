@@ -65,8 +65,4 @@ public class PkEntity {
     private String backUrl;
 
 
-    private int approving;
-
-    private int approved;
-
 }

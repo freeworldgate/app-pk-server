@@ -93,7 +93,7 @@ public class 查询单个POST {
         {
             return AppResponse.buildResponse(PageAction.页面跳转("/pages/pk/pk/pk?pkId="+postEntity.getPkId()+"&fromUser="+post.getCreator().getUserId(),false));
         }
-        dynamicService.扫描次数加1(postEntity.getPkId(),postId);
+//        dynamicService.扫描次数加1(postEntity.getPkId(),postId);
 
 
         post.setImgBack(appService.查询背景(4));

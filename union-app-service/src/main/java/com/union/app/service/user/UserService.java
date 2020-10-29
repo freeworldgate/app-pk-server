@@ -14,6 +14,7 @@ import com.union.app.domain.pk.客服消息.WxText;
 import com.union.app.domain.工具.RandomUtil;
 import com.union.app.domain.user.User;
 import com.union.app.entity.用户.UserEntity;
+import com.union.app.entity.用户.UserKvEntity;
 import com.union.app.entity.用户.support.UserType;
 import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.AppResponse;
@@ -25,6 +26,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
+import javax.transaction.Transactional;
 import java.util.*;
 
 @Service
@@ -54,6 +56,16 @@ public class UserService {
         return userEntity;
     }
 
+    public UserKvEntity queryUserKvEntity(String userId){
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(UserKvEntity.class)
+                .compareFilter("userId",CompareTag.Equal,userId);
+        UserKvEntity userkvEntity = appDaoService.querySingleEntity(UserKvEntity.class,filter);
+        if(ObjectUtils.isEmpty(userkvEntity)){
+                int i=0;
+        }
+        return userkvEntity;
+    }
+
 
     /**
      * 查询用户
@@ -72,6 +84,7 @@ public class UserService {
 
 
         UserEntity result  = queryUserEntity(userId);
+        UserKvEntity kv  = queryUserKvEntity(userId);
         if(!ObjectUtils.isEmpty(result))
         {
             User user = new User();
@@ -80,9 +93,9 @@ public class UserService {
             user.setUserId(result.getUserId());
             user.setUserType(ObjectUtils.isEmpty(result.getUserType())?UserType.普通用户.getType():result.getUserType().getType());
 //            user.setImgUrl(result.getAvatarUrl());
-            user.setPkTimes(result.getPkTimes());
-            user.setPostTimes(result.getPostTimes());
-            user.setInviteTimes(result.getInviteTimes());
+            user.setPkTimes(kv.getPkTimes());
+            user.setPostTimes(kv.getPostTimes());
+            user.setInviteTimes(kv.getInviteTimes());
             user.setImgUrl(result.getAvatarUrl());
 
             users.put(user.getUserId(),user);
@@ -262,75 +275,85 @@ public class UserService {
     }
 
     public void 用户已打榜(String userId) {
-        UserEntity result  = queryUserEntity(userId);
-        result.setPostTimes(result.getPostTimes() + 1);
-        appDaoService.updateEntity(result);
-
+        synchronized (userId) {
+            UserKvEntity result = queryUserKvEntity(userId);
+            result.setPostTimes(result.getPostTimes() + 1);
+            appDaoService.updateEntity(result);
+        }
     }
 
 
     public int queryUserPkTimes(String userId) {
-        UserEntity result  = queryUserEntity(userId);
+        UserKvEntity result = queryUserKvEntity(userId);
 
         return result.getPkTimes();
     }
 
     public void 创建榜次数加1(String userId) {
-        UserEntity result  = queryUserEntity(userId);
-        result.setPkTimes(result.getPkTimes() + 1);
-        appDaoService.updateEntity(result);
+        synchronized (userId) {
+            UserKvEntity result = queryUserKvEntity(userId);
+            result.setPkTimes(result.getPkTimes() + 1);
+            appDaoService.updateEntity(result);
+        }
 
     }
 
     public void 邀请次数加一(String userId) {
-
-        UserEntity result  = queryUserEntity(userId);
-        result.setInviteTimes(result.getInviteTimes() + 1);
-        appDaoService.updateEntity(result);
+        synchronized (userId) {
+            UserKvEntity result = queryUserKvEntity(userId);
+            result.setInviteTimes(result.getInviteTimes() + 1);
+            appDaoService.updateEntity(result);
+        }
 
     }
 
     public int 查询用户剩余榜单(String userId) {
-        UserEntity result  = queryUserEntity(userId);
+        UserKvEntity result = queryUserKvEntity(userId);
         return result.getPostTimes();
     }
 
     public int 查询邀请次数(String userId) {
-        UserEntity result  = queryUserEntity(userId);
+        UserKvEntity result = queryUserKvEntity(userId);
         return result.getInviteTimes();
     }
 
     public int 查询建榜次数(String userId) {
-        UserEntity result  = queryUserEntity(userId);
+        UserKvEntity result = queryUserKvEntity(userId);
         return result.getPkTimes();
     }
 
 
     public void 确认开通PK次数加1(String userId) {
-        UserEntity result  = queryUserEntity(userId);
-        result.setActivePkTimes(result.getActivePkTimes() + 1);
 
-    }
-
-
-
-    public boolean 是否已经打榜(String userId) {
-        if(org.apache.commons.lang.StringUtils.isBlank(userId)){return false;}
-        UserEntity result  = queryUserEntity(userId);
-        if(!ObjectUtils.isEmpty(result))
-        {
-            return result.getPostTimes() > 0;
+        synchronized (userId) {
+            UserKvEntity result = queryUserKvEntity(userId);
+            result.setActivePkTimes(result.getActivePkTimes() + 1);
+            appDaoService.updateEntity(result);
         }
-        return false;
-
 
     }
+
+
+//
+//    public boolean 是否已经打榜(String userId) {
+//        if(org.apache.commons.lang.StringUtils.isBlank(userId)){return false;}
+//        UserEntity result  = queryUserEntity(userId);
+//        if(!ObjectUtils.isEmpty(result))
+//        {
+//            return result.getPostTimes() > 0;
+//        }
+//        return false;
+//
+//
+//    }
 
     public void 删除一个未激活榜单(String userId) {
-        UserEntity result  = queryUserEntity(userId);
+        synchronized (userId) {
+            UserKvEntity result = queryUserKvEntity(userId);
+            result.setPkTimes(result.getPkTimes() + 1);
+            appDaoService.updateEntity(result);
+        }
 
-        result.setPkTimes(result.getPkTimes() - 1);
-        appDaoService.updateEntity(result);
 
 
     }
@@ -346,26 +369,26 @@ public class UserService {
 
     }
 
-    public void 修改PKUser(String pkId, String userId) {
-    }
-
-    public boolean 用户解锁(String userId) {
-//        if(!AppConfigService.getConfigAsBoolean(ConfigItem.普通用户发帖后解锁开关)){return true;}
-
-
-
-        UserEntity userEntity = userService.queryUserEntity(userId);
-        if(userEntity.getUserType() == UserType.重点用户 && userEntity.getPostTimes() < 1)
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
-
-
-    }
+//    public void 修改PKUser(String pkId, String userId) {
+//    }
+//
+//    public boolean 用户解锁(String userId) {
+////        if(!AppConfigService.getConfigAsBoolean(ConfigItem.普通用户发帖后解锁开关)){return true;}
+//
+//
+//
+//        UserEntity userEntity = userService.queryUserEntity(userId);
+//        if(userEntity.getUserType() == UserType.重点用户 && userEntity.getPostTimes() < 1)
+//        {
+//            return false;
+//        }
+//        else
+//        {
+//            return true;
+//        }
+//
+//
+//    }
 
     public boolean 是否可以创建主题(String userId) {
         //普通用户且不要求主题和榜帖数量绑定时返回可以创建
@@ -379,8 +402,8 @@ public class UserService {
         else
         {
 
-            UserEntity userEntity = userService.queryUserEntity(userId);
-            if(userEntity.getPostTimes() > userEntity.getPkTimes())
+            UserKvEntity result = queryUserKvEntity(userId);
+            if(result.getPostTimes() > result.getPkTimes())
             {
                 return true;
             }
@@ -396,9 +419,5 @@ public class UserService {
 
     }
 
-    public void 用户激活一个主题(String userId) {
 
-
-
-    }
 }
