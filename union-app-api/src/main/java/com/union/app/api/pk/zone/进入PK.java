@@ -93,19 +93,30 @@ public class 进入PK {
         if(!pkService.isPkCreator(pkId,userId))
         {
             UserKvEntity userEntity = userService.queryUserKvEntity(userId);
-            InvitePkEntity invitePkEntity = appService.queryInvitePk(pkId,userId);
-            if(!org.springframework.util.ObjectUtils.isEmpty(invitePkEntity))
+
+            if(!org.springframework.util.ObjectUtils.isEmpty(appService.queryInvitePk(pkId,userId)) || !org.springframework.util.ObjectUtils.isEmpty(appService.查询用户解锁(pkId,userId)))
             {
                 return AppResponse.buildResponse(PageAction.页面跳转("/pages/pk/pk/pk?pkId=" + pkId,true));
             }
             else
             {
-                //邀请主题数量
-                int invites = userEntity.getInviteTimes();
-                int posts = userEntity.getPostTimes();
-                if(invites < (posts + 1) * AppConfigService.getConfigAsInteger(ConfigItem.邀请和可解锁主题倍数关系))
+
+                PostEntity postEntity = postService.查询用户帖(pkId,userId);
+                if(!org.springframework.util.ObjectUtils.isEmpty(postEntity))
                 {
-                    ValueStr valueStr = new ValueStr("/pages/pk/pk/pk?pkId=" + pkId,"解锁主题","根据您发布有效图册数量,您剩余可解锁主题为" + ((posts+1)*3 - invites) + "个,解锁主题将添加到我的邀请列表,请选择您感兴趣的主题...");
+                    return AppResponse.buildResponse(PageAction.页面跳转("/pages/pk/pk/pk?pkId=" + pkId,true));
+                }
+
+
+
+
+                //邀请主题数量
+                int unlockTimes = userEntity.getUnlockTimes();
+                int posts = userEntity.getPostTimes();
+                int 图册和解锁倍数关系 = AppConfigService.getConfigAsInteger(ConfigItem.邀请和可解锁主题倍数关系);
+                if(unlockTimes < (posts + 1) * 图册和解锁倍数关系)
+                {
+                    ValueStr valueStr = new ValueStr("/pages/pk/pk/pk?lock=1&pkId=" + pkId,"解锁主题","根据您发布有效图册数量,您剩余可解锁主题为" + ((posts+1)*图册和解锁倍数关系 - unlockTimes) + "个,解锁主题将添加到我的邀请列表,请选择您感兴趣的主题...");
                     return AppResponse.buildResponse(PageAction.执行处理器("unlock",valueStr));
                 }
                 else

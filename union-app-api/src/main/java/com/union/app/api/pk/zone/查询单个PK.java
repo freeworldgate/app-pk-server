@@ -140,6 +140,7 @@ public class 查询单个PK {
 //        dataSets.add(new DataSet("cardBack",appService.查询背景(6)));
         dataSets.add(new DataSet("posts",posts));
         dataSets.add(new DataSet("page",0));
+
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
 
     }

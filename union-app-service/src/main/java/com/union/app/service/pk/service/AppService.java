@@ -1968,4 +1968,26 @@ public class AppService {
         return entities;
 
     }
+
+    public PkUnlockEntity 查询用户解锁(String pkId, String userId) {
+
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(PkUnlockEntity.class)
+                .compareFilter("userId",CompareTag.Equal,userId)
+                .andFilter()
+                .compareFilter("pkId",CompareTag.Equal,pkId);
+
+        PkUnlockEntity unlockEntity = daoService.querySingleEntity(PkUnlockEntity.class,filter);
+        return unlockEntity;
+    }
+
+    public void 添加解锁Pk(String pkId, String userId) {
+
+        PkUnlockEntity unlockEntity = new PkUnlockEntity();
+        unlockEntity.setPkId(pkId);
+        unlockEntity.setUserId(userId);
+        unlockEntity.setCreateTime(System.currentTimeMillis());
+
+        daoService.insertEntity(unlockEntity);
+
+    }
 }

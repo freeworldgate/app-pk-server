@@ -13,7 +13,7 @@ public enum PkButtonType {
 
     榜帖("/images/pic.png","我的图册","publish","",""),
 
-    审核("/images/appro.png","记录","approveList","",""),
+    审核("/images/message.png","评论","approveList","",""),
 
     审核中("/images/waiting2.png","待发布","approvingList","",""),
 

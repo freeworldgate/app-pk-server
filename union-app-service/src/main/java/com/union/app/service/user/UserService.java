@@ -60,9 +60,7 @@ public class UserService {
         EntityFilterChain filter = EntityFilterChain.newFilterChain(UserKvEntity.class)
                 .compareFilter("userId",CompareTag.Equal,userId);
         UserKvEntity userkvEntity = appDaoService.querySingleEntity(UserKvEntity.class,filter);
-        if(ObjectUtils.isEmpty(userkvEntity)){
-                int i=0;
-        }
+
         return userkvEntity;
     }
 
@@ -85,7 +83,7 @@ public class UserService {
 
         UserEntity result  = queryUserEntity(userId);
         UserKvEntity kv  = queryUserKvEntity(userId);
-        if(!ObjectUtils.isEmpty(result))
+        if(!ObjectUtils.isEmpty(result) && !ObjectUtils.isEmpty(kv))
         {
             User user = new User();
             user.setUserName(new String(result.getNickName()));
@@ -297,30 +295,20 @@ public class UserService {
         }
 
     }
-
+    public void 解锁次数加1(String userId) {
+        UserKvEntity result = queryUserKvEntity(userId);
+        result.setUnlockTimes(result.getUnlockTimes() + 1);
+        appDaoService.updateEntity(result);
+    }
     public void 邀请次数加一(String userId) {
-        synchronized (userId) {
+
             UserKvEntity result = queryUserKvEntity(userId);
             result.setInviteTimes(result.getInviteTimes() + 1);
             appDaoService.updateEntity(result);
-        }
+
 
     }
 
-    public int 查询用户剩余榜单(String userId) {
-        UserKvEntity result = queryUserKvEntity(userId);
-        return result.getPostTimes();
-    }
-
-    public int 查询邀请次数(String userId) {
-        UserKvEntity result = queryUserKvEntity(userId);
-        return result.getInviteTimes();
-    }
-
-    public int 查询建榜次数(String userId) {
-        UserKvEntity result = queryUserKvEntity(userId);
-        return result.getPkTimes();
-    }
 
 
     public void 确认开通PK次数加1(String userId) {
@@ -418,6 +406,7 @@ public class UserService {
 
 
     }
+
 
 
 }

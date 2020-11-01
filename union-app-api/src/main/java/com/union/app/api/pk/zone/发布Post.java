@@ -67,7 +67,7 @@ public class 发布Post {
         PostEntity postEntity = postService.查询用户帖(pkId,userId);
         if(ObjectUtils.isEmpty(postEntity)){
             postId = postService.创建帖子(pkId,userId,title,images);
-            appService.添加邀请(pkId,userId);
+//            appService.添加邀请(pkId,userId);
             if(appService.是否收费(userId)) {
                 UserKvEntity userEntity = userService.queryUserKvEntity(userId);
                 userEntity.setUsedTimes(userEntity.getUsedTimes() + 1);

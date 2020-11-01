@@ -3,9 +3,9 @@ package com.union.app.domain.pk;
 
 public class ApproveButton {
 
-    public static ApproveButton 转发审核群 = new ApproveButton(0,"/images/appro.png","审核群","","share","rcc message border10 c-12 h-60 br-60 w-160 b-white ");
+    public static ApproveButton 转发审核群 = new ApproveButton(0,"/images/share.png","审核群","","share","rcc message border10 c-12 h-60 br-60 w-160 b-white ");
 
-    public static ApproveButton 请求审核有效 = new ApproveButton(1,"/images/appro.png","发布","approvePost","","rcc message c-12 border10 h-60 br-60 w-160 b-white ");
+    public static ApproveButton 请求审核有效 = new ApproveButton(1,"/images/share.png","发布","approvePost","","rcc message c-12 border10 h-60 br-60 w-160 b-white ");
 
     public static ApproveButton 请求审核无效 = new ApproveButton(2,"/images/appro1.png","发布中","","","rcc c-3  border10-1 h-60 br-60 w-160 b-white ");
 

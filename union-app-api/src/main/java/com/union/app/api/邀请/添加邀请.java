@@ -59,10 +59,10 @@ public class 添加邀请 {
     @RequestMapping(path="/addUserInvite",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
     public AppResponse 添加邀请信息(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId) throws AppException, IOException {
-        if(userService.是否是遗传用户(userId) || AppConfigService.getConfigAsBoolean(ConfigItem.普通用户发帖后解锁更多主题))
-        {
+//        if(userService.是否是遗传用户(userId) || AppConfigService.getConfigAsBoolean(ConfigItem.普通用户发帖后解锁更多主题))
+//        {
             appService.添加邀请(pkId,userId);
-        }
+//        }
 
 
 

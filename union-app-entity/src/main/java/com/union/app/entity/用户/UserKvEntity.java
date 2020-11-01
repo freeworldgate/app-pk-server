@@ -25,6 +25,7 @@ public class UserKvEntity {
     private int pkTimes;
     private int activePkTimes;
     private int inviteTimes;
+    private int unlockTimes;
     private int feeTimes;
     private int usedTimes;
 

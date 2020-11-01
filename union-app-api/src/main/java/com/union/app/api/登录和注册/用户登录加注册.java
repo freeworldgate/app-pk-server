@@ -84,7 +84,7 @@ public class 用户登录加注册 {
 
 
 
-            appService.添加邀请(pkId,userEntity.getUserId());
+//            appService.添加邀请(pkId,userEntity.getUserId());
 
 
 

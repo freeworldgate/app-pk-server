@@ -4,6 +4,7 @@ import com.union.app.common.config.AppConfigService;
 import com.union.app.domain.pk.PkButton;
 import com.union.app.domain.pk.PkButtonType;
 import com.union.app.domain.pk.PkDetail;
+import com.union.app.entity.用户.UserKvEntity;
 import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
@@ -83,10 +84,11 @@ public class 用户相册 {
             dataSets.add(new DataSet("pks",pks));
             dataSets.add(new DataSet("pkEnd",false));
         }
-
-        dataSets.add(new DataSet("leftPks", userService.查询用户剩余榜单(userId)));
-        dataSets.add(new DataSet("inviteTimes", userService.查询邀请次数(userId)));
-        dataSets.add(new DataSet("pkTimes", userService.查询建榜次数(userId)));
+        UserKvEntity result = userService.queryUserKvEntity(userId);
+        dataSets.add(new DataSet("leftPks", result.getPostTimes()));
+        dataSets.add(new DataSet("inviteTimes", result.getInviteTimes()));
+        dataSets.add(new DataSet("pkTimes", result.getPkTimes()));
+        dataSets.add(new DataSet("unlock", result.getUnlockTimes()));
         dataSets.add(new DataSet("page",1));
         dataSets.add(new DataSet("userBack",appService.查询背景(0)));
         dataSets.add(new DataSet("imgBack",appService.查询背景(2)));
