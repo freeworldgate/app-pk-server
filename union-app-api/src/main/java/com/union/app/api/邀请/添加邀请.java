@@ -64,9 +64,12 @@ public class 添加邀请 {
             appService.添加邀请(pkId,userId);
 //        }
 
+        List<DataSet> dataSets = new ArrayList<>();
+        dataSets.add(new DataSet("hasInivte",true));
+        dataSets.add(new DataSet("inviteStatu",appService.查询状态(pkId,userId,3)));
 
 
-        return AppResponse.buildResponse(PageAction.前端数据更新("hasInivte",true));
+        return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
 
     }
 

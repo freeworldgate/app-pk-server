@@ -28,7 +28,6 @@ public class 查询投诉信息 {
 
 
     @RequestMapping(path="/nextComplain",method = RequestMethod.GET)
-    @Transactional(rollbackOn = Exception.class)
     public AppResponse 查询投诉信息(@RequestParam("password") String password,@RequestParam("type") int type) throws AppException, IOException {
         appService.验证Password(password);
 

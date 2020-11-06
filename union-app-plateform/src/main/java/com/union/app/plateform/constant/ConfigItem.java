@@ -31,7 +31,7 @@ public enum ConfigItem {
 
 
     PKEntity缓存数量("pkentityCacheSize", "PKENTITY_CACHE_SIZE", "PKEntity缓存数量", "1000"),
-    POSTEntity缓存数量("postentityCacheSize", "POSTENTITY_CACHE_SIZE", "POSTEntity缓存数量", "1000"),
+    POSTIMAGEEntity缓存数量("postImageentityCacheSize", "POSTIMAGEENTITY_CACHE_SIZE", "POSTIMAGEEntity缓存数量", "1000"),
     USEREntity缓存数量("userentityCacheSize", "USERENTITY_CACHE_SIZE", "USEREntity缓存数量", "1000"),
     APPROVEMESSAGEEntity缓存数量("approveMessageentityCacheSize", "APPROVEMESSAGEENTITY_CACHE_SIZE", "APPROVEMESSAGE缓存数量", "1000"),
     APPROVECOMMENTEntity缓存数量("approveCommententityCacheSize", "APPROVECOMMENTENTITY_CACHE_SIZE", "APPROVEMESSAGE缓存数量", "1000"),

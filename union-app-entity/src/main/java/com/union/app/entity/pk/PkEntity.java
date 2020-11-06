@@ -23,42 +23,26 @@ public class PkEntity {
 
     private String watchWord;
 
-
-    @Enumerated(EnumType.STRING)
-    private InviteType isInvite;
-
-    //时长
-    private String time;
-
     //创建时间
     private long createTime;
 
-    private String appName;
-
-    //刷新
-    private String pageTime;
-
-    private String nodeUUID;
-
-    @Enumerated(EnumType.STRING)
-    private PkStatu albumStatu;
 
     @Enumerated(EnumType.STRING)
     private PkType pkType;
 
-    @Enumerated(EnumType.STRING)
-    private MessageType messageType;
 
 
-    /**
-     * 打榜任务每天重置一次，重置时写入重置时间
-     */
-    private long resetTime;
 
-    private String selectCashierId;
+
+
+    //--------------------可变数据----------------------
+
+    private String topPostUserId;
 
     private int complainTimes;
 
+    @Enumerated(EnumType.STRING)
+    private PkStatu albumStatu;
 
     private long updateTime;
 

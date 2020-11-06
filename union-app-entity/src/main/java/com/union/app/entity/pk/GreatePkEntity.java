@@ -12,13 +12,13 @@ import javax.persistence.*;
 @EqualsAndHashCode
 @ToString
 @Entity
-@Table(name="T_PK_INVITE")
-public class InvitePkEntity {
+@Table(name="T_PK_GREATE")
+public class GreatePkEntity {
 
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)//mysql数据库主键策略
-    private int inviteId;
+    private int greateId;
 
     private String userId;
 

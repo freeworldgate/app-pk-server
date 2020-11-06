@@ -48,42 +48,42 @@ public class 查询审核员消息 {
 
     @Autowired
     AppService appService;
-
-    @RequestMapping(path="/queryApproveMessage",method = RequestMethod.GET)
-    public AppResponse 查询审核员消息(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId) throws AppException, IOException {
-
-        Date currentDate = new Date();
-
-        ApproveMessage approveMessage = approveService.获取审核人员消息(pkId);
-
-        List<DataSet> dataSets = new ArrayList<>();
-        dataSets.add(new DataSet("message",approveMessage));
-        dataSets.add(new DataSet("user",userService.queryUser(userId)));
-        dataSets.add(new DataSet("creator",pkService.queryPkCreator(pkId)));
-        dataSets.add(new DataSet("pkId",pkId));
-        dataSets.add(new DataSet("date","审核公告"));
-
-//        boolean mode = AppConfigService.getConfigAsBoolean(ConfigItem.系统当前是否客服模式);
-//        dataSets.add(new DataSet("mode",mode));
-//        if(mode)
-//        {
-            dataSets.add(new DataSet("buttonStr1","获取图片"));
-//        }
-//        else
-//        {
-            dataSets.add(new DataSet("buttonStr2","保存图片到相册"));
-//        }
-        dataSets.add(new DataSet("word1","编辑公告"));
-        dataSets.add(new DataSet("word2","审核公告"));
-//        if(mode)
-//        {
-            dataSets.add(new DataSet("word3", "客服会话中回复1下载图片"));
-//        }
-        dataSets.add(new DataSet("imgBack",appService.查询背景(5)));
-
-
-        return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
-    }
+//
+//    @RequestMapping(path="/queryApproveMessage",method = RequestMethod.GET)
+//    public AppResponse 查询审核员消息(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId) throws AppException, IOException {
+//
+//        Date currentDate = new Date();
+//
+//        ApproveMessage approveMessage = approveService.获取审核人员消息(pkId);
+//
+//        List<DataSet> dataSets = new ArrayList<>();
+//        dataSets.add(new DataSet("message",approveMessage));
+//        dataSets.add(new DataSet("user",userService.queryUser(userId)));
+//        dataSets.add(new DataSet("creator",pkService.queryPkCreator(pkId)));
+//        dataSets.add(new DataSet("pkId",pkId));
+//        dataSets.add(new DataSet("date","审核公告"));
+//
+////        boolean mode = AppConfigService.getConfigAsBoolean(ConfigItem.系统当前是否客服模式);
+////        dataSets.add(new DataSet("mode",mode));
+////        if(mode)
+////        {
+//            dataSets.add(new DataSet("buttonStr1","获取图片"));
+////        }
+////        else
+////        {
+//            dataSets.add(new DataSet("buttonStr2","保存图片到相册"));
+////        }
+//        dataSets.add(new DataSet("word1","编辑公告"));
+//        dataSets.add(new DataSet("word2","审核公告"));
+////        if(mode)
+////        {
+//            dataSets.add(new DataSet("word3", "客服会话中回复1下载图片"));
+////        }
+//        dataSets.add(new DataSet("imgBack",appService.查询背景(5)));
+//
+//
+//        return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
+//    }
 
     @RequestMapping(path="/canEditApproveMessage",method = RequestMethod.GET)
     public AppResponse 查询审核员消息(@RequestParam("pkId") String pkId) throws AppException, IOException {

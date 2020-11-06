@@ -142,8 +142,8 @@ public class DynamicService {
     }
 
     public boolean 审核等待时间过长(String pkId, String postId) {
-//        double score = redisSortSetService.getEleScore(CacheKeyName.榜主审核中列表(pkId) ,postId);
-        long scoreAbs = pkService.查询POST审核时间(pkId,postId) ;//new Double(Math.abs(score)).longValue() ;
+
+        long scoreAbs = pkService.查询POST审核时间(pkId,postId) ;
         long canComplainWaitingTime  = AppConfigService.getConfigAsInteger(ConfigItem.榜帖可发起投诉的等待时间) * 60 * 1000;
         if(System.currentTimeMillis() - scoreAbs > canComplainWaitingTime)
         {
@@ -217,15 +217,6 @@ public class DynamicService {
 
 
     }
-    public void 添加操作动态(String pkId,String userId,OperType operType){
-        FactualInfo factualInfo = new FactualInfo();
-        factualInfo.setFactualId(UUID.randomUUID().toString());
-        factualInfo.setUser(userService.queryUser(userId));
-        factualInfo.setOperType(new KeyNameValue(operType.getKey(),operType.getValue()));
-        factualInfo.setTime(String.valueOf(System.currentTimeMillis()));
-        this.添加动态(pkId,factualInfo);
-    }
-
 
 
 

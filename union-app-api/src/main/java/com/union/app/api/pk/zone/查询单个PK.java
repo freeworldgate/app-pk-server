@@ -23,6 +23,7 @@ package com.union.app.api.pk.zone;
         import com.union.app.plateform.data.resultcode.PageAction;
         import com.union.app.plateform.storgae.redis.RedisStringUtil;
         import com.union.app.service.pk.click.ClickService;
+        import com.union.app.service.pk.complain.ComplainService;
         import com.union.app.service.pk.dynamic.DynamicService;
         import com.union.app.service.pk.service.*;
         import com.union.app.service.user.UserService;
@@ -30,6 +31,7 @@ package com.union.app.api.pk.zone;
         import org.springframework.beans.factory.annotation.Autowired;
         import org.springframework.util.CollectionUtils;
         import org.springframework.util.ObjectUtils;
+        import org.springframework.util.StringUtils;
         import org.springframework.web.bind.annotation.RequestMapping;
         import org.springframework.web.bind.annotation.RequestMethod;
         import org.springframework.web.bind.annotation.RequestParam;
@@ -74,6 +76,9 @@ public class 查询单个PK {
     @Autowired
     AppService appService;
 
+    @Autowired
+    ComplainService complainService;
+
 
     @RequestMapping(path="/queryPk",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
@@ -90,7 +95,7 @@ public class 查询单个PK {
         PkDetail pkDetail = pkService.querySinglePk(pkEntity);
 
 
-        Post post = postService.查询用户帖子(pkId,pkService.queryPkCreator(pkId).getUserId());
+        Post post = postService.查询用户帖子(pkId,StringUtils.isEmpty(pkEntity.getTopPostUserId())?pkEntity.getUserId():pkEntity.getTopPostUserId());
         boolean isCreatorPublish = false;
         if(!ObjectUtils.isEmpty(post) && post.getStatu().getKey() == PostStatu.上线.getStatu()) {
             isCreatorPublish = true;
@@ -104,15 +109,8 @@ public class 查询单个PK {
             dataSets.add(new DataSet("group",appService.显示按钮(PkButtonType.群组)));
         }
         dataSets.add(new DataSet("post",appService.显示按钮(PkButtonType.榜帖)));
-        dataSets.add(new DataSet("approve",appService.显示按钮(PkButtonType.审核)));
-        if(pkService.isPkCreator(pkId,userId))
-        {
-            dataSets.add(new DataSet("approving",appService.显示按钮(PkButtonType.审核中)));
-        }
-        else
-        {
-            dataSets.add(new DataSet("complain",appService.显示按钮(PkButtonType.投诉)));
-        }
+        dataSets.add(new DataSet("approve",appService.显示按钮(PkButtonType.评论)));
+        dataSets.add(new DataSet("approving",appService.显示按钮(PkButtonType.点赞)));
 
         PostEntity postEntity = postService.查询用户帖(pkId,userId);
         if(ObjectUtils.isEmpty(postEntity))
@@ -136,10 +134,22 @@ public class 查询单个PK {
         dataSets.add(new DataSet("creatorImg",appService.查询背景(11)));
         dataSets.add(new DataSet("otherImg",appService.查询背景(12)));
         dataSets.add(new DataSet("topImg",appService.查询背景(13)));
-//        dataSets.add(new DataSet("titleIcon",appService.查询背景(11)));
-//        dataSets.add(new DataSet("cardBack",appService.查询背景(6)));
+
         dataSets.add(new DataSet("posts",posts));
         dataSets.add(new DataSet("page",0));
+
+
+
+
+        dataSets.add(new DataSet("greateStatu",appService.查询状态(pkId,userId,1)));
+        dataSets.add(new DataSet("inviteStatu",appService.查询状态(pkId,userId,3)));
+        dataSets.add(new DataSet("complainStatu",appService.查询状态(pkId,userId,2)));
+
+
+
+
+
+
 
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
 

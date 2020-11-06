@@ -12,28 +12,22 @@ import javax.persistence.*;
 @EqualsAndHashCode
 @ToString
 @Entity
-@Table(name="T_PK_INVITE")
-public class InvitePkEntity {
-
-
+@Table(name="T_PK_LOCATION")
+public class PkLocationEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)//mysql数据库主键策略
-    private int inviteId;
-
-    private String userId;
-
     private String pkId;
 
+    private String name;
 
-    private long createTime;
+    private String description;
 
+    private String cityCode;
 
+    private String city;
 
+    private long latitude;
 
-
-
-
-
+    private long longitude;
 
 
 

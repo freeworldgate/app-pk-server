@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.union.app.common.OSS存储.CacheStorage;
 import com.union.app.common.OSS存储.OssStorage;
 import com.union.app.common.config.AppConfigService;
+import com.union.app.common.dao.EntityCacheService;
 import com.union.app.common.微信.WeChatUtil;
 import com.union.app.common.dao.AppDaoService;
 import com.union.app.dao.spi.filter.CompareTag;
@@ -26,6 +27,7 @@ import com.union.app.plateform.data.resultcode.DataSet;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.service.data.PkDataService;
+import com.union.app.service.pk.complain.ComplainService;
 import com.union.app.service.pk.dynamic.CacheKeyName;
 import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.common.redis.RedisSortSetService;
@@ -99,6 +101,10 @@ public class AppService {
     @Autowired
     PkDataService pkDataService;
 
+    @Autowired
+    ComplainService complainService;
+
+
     public List<PkDetail> 查询预设相册(int page,int type) throws IOException {
 
 
@@ -170,8 +176,9 @@ public class AppService {
         List<PkEntity>  invites = queryUserInvitePks(userId,page);
         for(PkEntity pkEntity:invites)
         {
+            String topUserId = pkEntity.getTopPostUserId();
             PkDetail pkDetail = pkService.querySinglePk(pkEntity);
-            pkDetail.setImgs(postService.查询PK展示图片(pkEntity.getPkId()));
+            pkDetail.setImgs(postService.查询PK展示图片(pkEntity.getPkId(),StringUtils.isEmpty(topUserId)?pkEntity.getUserId():topUserId));
             pkDetails.add(pkDetail);
         }
         return pkDetails;
@@ -215,7 +222,19 @@ public class AppService {
             invitePkEntity.setCreateTime(System.currentTimeMillis());
             daoService.insertEntity(invitePkEntity);
             userService.邀请次数加一(userId);
+            dynamicService.valueIncr(CacheKeyName.邀请,pkId);
         }
+        else
+        {
+            daoService.deleteEntity(invitePkEntity);
+            userService.邀请次数减一(userId);
+            dynamicService.valueDecr(CacheKeyName.邀请,pkId);
+        }
+
+
+
+
+
 
     }
     public InvitePkEntity queryInvitePk(String pkId,String userId){
@@ -1524,21 +1543,27 @@ public class AppService {
              filter = EntityFilterChain.newFilterChain(ComplainEntity.class)
                      .compareFilter("complainStatu",CompareTag.Equal,ComplainStatu.处理中)
                      .andFilter()
-                     .compareFilter("pkType",CompareTag.Equal,PkType.审核相册);
+                     .compareFilter("pkType",CompareTag.Equal,PkType.审核相册)
+                     .andFilter()
+                     .compareFilter("postStatu",CompareTag.Equal,PostStatu.审核中);
         }
         else if(type == 2)
         {
             filter = EntityFilterChain.newFilterChain(ComplainEntity.class)
                     .compareFilter("complainStatu",CompareTag.Equal,ComplainStatu.处理中)
                     .andFilter()
-                    .compareFilter("pkType",CompareTag.NotEqual,PkType.内置相册);
+                    .compareFilter("pkType",CompareTag.NotEqual,PkType.内置相册)
+                    .andFilter()
+                    .compareFilter("postStatu",CompareTag.Equal,PostStatu.审核中);
         }
         else if(type == 3)
         {
             filter = EntityFilterChain.newFilterChain(ComplainEntity.class)
                     .compareFilter("complainStatu",CompareTag.Equal,ComplainStatu.处理中)
                     .andFilter()
-                    .compareFilter("pkType",CompareTag.NotEqual,PkType.运营相册);
+                    .compareFilter("pkType",CompareTag.NotEqual,PkType.运营相册)
+                    .andFilter()
+                    .compareFilter("postStatu",CompareTag.Equal,PostStatu.审核中);
         }
         else
         {
@@ -1663,27 +1688,6 @@ public class AppService {
 
 
 
-    private String 获取系统默认激活码() {
-        return UUID.randomUUID().toString();
-    }
-
-    public List<PkCreator> 查询Creator设置(int page) throws IOException {
-
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(PkCreatorEntity.class)
-                .pageLimitFilter(page,20);
-        List<PkCreatorEntity> pkCreatorEntities = daoService.queryEntities(PkCreatorEntity.class,filter);
-        List<PkCreator> pkCreators = new ArrayList<>();
-        for(PkCreatorEntity pk:pkCreatorEntities)
-        {
-            PkCreator pkCreator = new PkCreator();
-            pkCreator.setPk(pkService.querySinglePk(pk.getPkId()));
-            pkCreator.getPk().setUser(userService.queryUser(pk.getUserId()));
-            pkCreator.setSwitchBit(pk.isSwitchBit());
-            pkCreators.add(pkCreator);
-        }
-        return pkCreators;
-    }
-
     public void 有效投诉(String id) throws AppException {
 
         EntityFilterChain filter = EntityFilterChain.newFilterChain(ComplainEntity.class)
@@ -1717,13 +1721,14 @@ public class AppService {
                 .compareFilter("id",CompareTag.Equal,Integer.valueOf(id));
         ComplainEntity entity = daoService.querySingleEntity(ComplainEntity.class,filter);
         if(!ObjectUtils.isEmpty(entity)){
+
+            EntityCacheService.lockPkEntity(entity.getPkId());
+
             PkEntity pkEntity = pkService.querySinglePkEntity(entity.getPkId());
-
-
-
             entity.setComplainStatu(ComplainStatu.已处理);
             daoService.updateEntity(entity);
             daoService.updateEntity(pkEntity);
+            EntityCacheService.unlockPkEntity(entity.getPkId());
 
         }
 
@@ -1988,6 +1993,49 @@ public class AppService {
         unlockEntity.setCreateTime(System.currentTimeMillis());
 
         daoService.insertEntity(unlockEntity);
+
+    }
+
+    public PkLocationEntity 查询PK位置(String pkId) {
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(PkLocationEntity.class)
+                .compareFilter("pkId",CompareTag.Equal,pkId);
+
+        PkLocationEntity pkLocationEntity = daoService.querySingleEntity(PkLocationEntity.class,filter);
+
+        return pkLocationEntity;
+    }
+
+    public void 设置PK位置( String pkId, String name, String desc, String city, String cityCode, String latitude, String longitude) throws AppException, UnsupportedEncodingException {
+        PkLocationEntity locationEntity = 查询PK位置(pkId);
+        if(ObjectUtils.isEmpty(locationEntity))
+        {
+            locationEntity = new PkLocationEntity();
+
+        }
+        locationEntity.setPkId(pkId);
+        locationEntity.setName(name);
+        locationEntity.setDescription(desc);
+        locationEntity.setCity(city);
+        locationEntity.setCityCode(cityCode);
+        locationEntity.setLatitude(Float.valueOf(Float.valueOf(latitude)*1000000.0F).longValue());
+        locationEntity.setLongitude(Float.valueOf(Float.valueOf(longitude)*1000000.0F).longValue());
+        if(ObjectUtils.isEmpty(locationEntity))
+        {
+            daoService.insertEntity(locationEntity);
+
+        }
+        else
+        {
+            daoService.updateEntity(locationEntity);
+        }
+
+    }
+
+    public boolean 查询状态(String pkId, String userId, int gap) {
+        if(gap == 1){return !ObjectUtils.isEmpty(pkService.查询用户点赞(pkId,userId));}
+        if(gap == 2){return !ObjectUtils.isEmpty(complainService.查询投诉信息(pkId,userId));}
+        if(gap == 3){  InvitePkEntity invitePkEntity = queryInvitePk(pkId,userId);return !ObjectUtils.isEmpty(invitePkEntity);}
+        return false;
 
     }
 }

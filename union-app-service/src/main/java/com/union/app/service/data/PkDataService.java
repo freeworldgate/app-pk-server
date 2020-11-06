@@ -13,6 +13,7 @@ import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.common.redis.RedisSortSetService;
 import com.union.app.service.pk.service.*;
 import com.union.app.service.user.UserService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -155,10 +156,13 @@ public class PkDataService {
 
         for(HomePagePk pk:pkEntities)
         {
-            PkEntity pkEntity = pkService.querySinglePkEntity(pk.getPkId());
 
-            PkDetail pkDetail = pkService.querySinglePk(pk.getPkId());
-            pkDetail.setImgs(postService.查询PK展示图片(pk.getPkId()));
+
+
+            PkEntity pkEntity = pkService.querySinglePkEntity(pk.getPkId());
+            String topUserId = pkEntity.getTopPostUserId();
+            PkDetail pkDetail = pkService.querySinglePk(pkEntity);
+            pkDetail.setImgs(postService.查询PK展示图片(pkEntity.getPkId(),StringUtils.isEmpty(topUserId)?pkEntity.getUserId():topUserId));
             pkDetail.setGeneticPriority(pk.getGeneticPriority());
             pkDetail.setNonGeneticPriority(pk.getNonGeneticPriority());
 

@@ -83,8 +83,8 @@ public class 查询单个预置PK {
 
         dataSets.add(new DataSet("group",appService.显示按钮(PkButtonType.群组)));
         dataSets.add(new DataSet("post",appService.显示按钮(PkButtonType.榜帖)));
-        dataSets.add(new DataSet("approve",appService.显示按钮(PkButtonType.审核)));
-        dataSets.add(new DataSet("approving",appService.显示按钮(PkButtonType.审核中)));
+        dataSets.add(new DataSet("approve",appService.显示按钮(PkButtonType.评论)));
+        dataSets.add(new DataSet("approving",appService.显示按钮(PkButtonType.点赞)));
 
         dataSets.add(new DataSet("pk",pkDetail));
         dataSets.add(new DataSet("imgBack",appService.查询背景(0)));

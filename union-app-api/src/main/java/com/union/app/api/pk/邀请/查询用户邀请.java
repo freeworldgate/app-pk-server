@@ -6,6 +6,7 @@ import com.union.app.domain.pk.审核.ApproveComment;
 import com.union.app.entity.pk.InvitePkEntity;
 import com.union.app.entity.pk.PkEntity;
 import com.union.app.entity.pk.PkStatu;
+import com.union.app.entity.pk.PostEntity;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.DataSet;
@@ -68,8 +69,9 @@ public class 查询用户邀请 {
 
         if(StringUtils.equals(pkEntity.getUserId(),userId)){return AppResponse.buildResponse(PageAction.前端数据更新("inviteTag",true));}
         if(pkEntity.getAlbumStatu() != PkStatu.已审核){return AppResponse.buildResponse(PageAction.前端数据更新("inviteTag",true));}
-        InvitePkEntity invitePkEntity = appService.queryInvitePk(pkId,userId);
-        if(!org.springframework.util.ObjectUtils.isEmpty(invitePkEntity)){return AppResponse.buildResponse(PageAction.前端数据更新("inviteTag",true));}
+        PostEntity postEntity = postService.查询用户帖(pkId,userId);
+//        InvitePkEntity invitePkEntity = appService.queryInvitePk(pkId,userId);
+        if(!org.springframework.util.ObjectUtils.isEmpty(postEntity)){return AppResponse.buildResponse(PageAction.前端数据更新("inviteTag",true));}
 
 
 

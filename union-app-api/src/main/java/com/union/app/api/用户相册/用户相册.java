@@ -84,11 +84,7 @@ public class 用户相册 {
             dataSets.add(new DataSet("pks",pks));
             dataSets.add(new DataSet("pkEnd",false));
         }
-        UserKvEntity result = userService.queryUserKvEntity(userId);
-        dataSets.add(new DataSet("leftPks", result.getPostTimes()));
-        dataSets.add(new DataSet("inviteTimes", result.getInviteTimes()));
-        dataSets.add(new DataSet("pkTimes", result.getPkTimes()));
-        dataSets.add(new DataSet("unlock", result.getUnlockTimes()));
+
         dataSets.add(new DataSet("page",1));
         dataSets.add(new DataSet("userBack",appService.查询背景(0)));
         dataSets.add(new DataSet("imgBack",appService.查询背景(2)));

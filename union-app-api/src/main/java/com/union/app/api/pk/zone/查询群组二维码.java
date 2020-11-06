@@ -69,11 +69,11 @@ public class 查询群组二维码 {
 
         if(!pkService.是否更新今日审核群(pkEntity)){return AppResponse.buildResponse(PageAction.信息反馈框("未更新主题群","请稍后再试..."));}
 
-        InvitePkEntity invitePkEntity = appService.queryInvitePk(pkId,userId);
-        if(ObjectUtils.isEmpty(invitePkEntity))
-        {
-            return AppResponse.buildResponse(PageAction.信息反馈框("用户不可见","仅邀请用户可见..."));
-        }
+//        InvitePkEntity invitePkEntity = appService.queryInvitePk(pkId,userId);
+//        if(ObjectUtils.isEmpty(invitePkEntity))
+//        {
+//            return AppResponse.buildResponse(PageAction.信息反馈框("用户不可见","仅邀请用户可见..."));
+//        }
 
 
 

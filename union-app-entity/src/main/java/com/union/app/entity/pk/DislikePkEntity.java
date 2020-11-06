@@ -12,18 +12,17 @@ import javax.persistence.*;
 @EqualsAndHashCode
 @ToString
 @Entity
-@Table(name="T_PK_INVITE")
-public class InvitePkEntity {
+@Table(name="T_PK_Dislike")
+public class DislikePkEntity {
 
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)//mysql数据库主键策略
-    private int inviteId;
+    private int dislikeId;
 
     private String userId;
 
     private String pkId;
-
 
     private long createTime;
 

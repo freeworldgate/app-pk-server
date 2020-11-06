@@ -5,6 +5,7 @@ import com.union.app.domain.pk.apply.KeyNameValue;
 import com.union.app.domain.pk.审核.ApproveMessage;
 import com.union.app.domain.user.User;
 import com.union.app.entity.pk.InviteType;
+import com.union.app.entity.pk.PkLocationEntity;
 import com.union.app.entity.pk.PkType;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,6 +23,8 @@ public class PkDetail implements Serializable{
 
     private String pkId;
 
+    private PkLocationEntity location;
+
     private User user;
 
     private String userBack;
@@ -30,8 +33,7 @@ public class PkDetail implements Serializable{
 
     private String watchWord;
 
-    private KeyNameValue invite;
-    private InviteType inviteType;
+
 
     private int shareMode;
 
@@ -51,10 +53,19 @@ public class PkDetail implements Serializable{
 
     private String time;
 
+    //点赞
+    private int greate;
+    //邀请
+    private int invite;
+    //踩一脚
+    private int dislike;
+    //评论
+    private int comment;
 
 
-    private String approved;
-    private String approving;
+
+    private int approved;
+    private int approving;
     private PkButton groupInfo;
 
     private long nonGeneticPriority;

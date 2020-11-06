@@ -3,6 +3,7 @@ package com.union.app.service.pk.service;
 import com.union.app.common.OSS存储.CacheStorage;
 import com.union.app.common.OSS存储.OssStorage;
 import com.union.app.common.dao.AppDaoService;
+import com.union.app.common.dao.EntityCacheService;
 import com.union.app.dao.spi.filter.CompareTag;
 import com.union.app.dao.spi.filter.EntityFilterChain;
 import com.union.app.dao.spi.filter.OrderTag;
@@ -190,6 +191,7 @@ public class PkService {
         String pkId = pk.getPkId();
         PkDetail pkDetail = new PkDetail();
         pkDetail.setPkId(pk.getPkId());
+        pkDetail.setLocation(appService.查询PK位置(pkId));
         pkDetail.setPkTypeValue(pk.getPkType().getType());
         pkDetail.setPkType(pk.getPkType().getDesc());
         pkDetail.setTopic(pk.getTopic());
@@ -197,16 +199,15 @@ public class PkService {
         pkDetail.setWatchWord(pk.getWatchWord());
         pkDetail.setTime(TimeUtils.convertTime(pk.getCreateTime()));
         pkDetail.setComplainTimes(pk.getComplainTimes());
-        pkDetail.setInvite(new KeyNameValue(pk.getIsInvite().getStatu(),pk.getIsInvite().getStatuStr()));
-        pkDetail.setInviteType(pk.getIsInvite());
-        if(!ObjectUtils.isEmpty(pk.getMessageType())){pkDetail.setCharge(new KeyNameValue(pk.getMessageType().getStatu(),pk.getMessageType().getStatuStr()));}
         pkDetail.setPkStatu(ObjectUtils.isEmpty(pk.getAlbumStatu())?new KeyNameValue(PkStatu.审核中.getStatu(),PkStatu.审核中.getStatuStr()):new KeyNameValue(pk.getAlbumStatu().getStatu(),pk.getAlbumStatu().getStatuStr()));
-//        pkDetail.setApproveMessage(approveService.查询PK公告消息(pkId));
         pkDetail.setBackUrl(StringUtils.isBlank(pk.getBackUrl())?appService.查询背景(10):pk.getBackUrl());
-        pkDetail.setApproved( "已发布(" +   dynamicService.getKeyValue(CacheKeyName.已审核数量,pkId)   + ")");
-        pkDetail.setApproving("发布中(" +   dynamicService.getKeyValue(CacheKeyName.审核中数量,pkId)  + ")");
+        pkDetail.setApproved(dynamicService.getKeyValue(CacheKeyName.已审核数量,pkId));
+        pkDetail.setApproving(dynamicService.getKeyValue(CacheKeyName.审核中数量,pkId));
         pkDetail.setGroupInfo(this.查询群组(pkDetail.getPkId()));
         pkDetail.setUserBack(appService.查询背景(0));
+        pkDetail.setGreate(dynamicService.getKeyValue(CacheKeyName.点赞,pkId));
+        pkDetail.setInvite(dynamicService.getKeyValue(CacheKeyName.邀请,pkId));
+        pkDetail.setComment(dynamicService.getKeyValue(CacheKeyName.评论,pkId));
         return pkDetail;
     }
 
@@ -228,9 +229,15 @@ public class PkService {
 
     public PkEntity querySinglePkEntity(String pkId)
     {
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(PkEntity.class)
-                .compareFilter("pkId",CompareTag.Equal,pkId);
-        PkEntity  pkEntity = daoService.querySingleEntity(PkEntity.class,filter);
+        PkEntity pkEntity = EntityCacheService.getPkEntity(pkId);
+        if(ObjectUtils.isEmpty(pkEntity))
+        {
+            EntityFilterChain filter = EntityFilterChain.newFilterChain(PkEntity.class)
+                    .compareFilter("pkId",CompareTag.Equal,pkId);
+            pkEntity = daoService.querySingleEntity(PkEntity.class,filter);
+            EntityCacheService.savePk(pkEntity);
+        }
+
         return pkEntity;
     }
 
@@ -261,11 +268,12 @@ public class PkService {
             pkEntity.setPkType(PkType.审核相册);
         }
 
-        pkEntity.setMessageType(MessageType.不收费);
+
         pkEntity.setTopic(topic);
         pkEntity.setWatchWord(watchWord);
-        pkEntity.setIsInvite(invite?InviteType.邀请:InviteType.公开);
+
         pkEntity.setUserId(userId);
+        pkEntity.setTopPostUserId(userId);
         pkEntity.setAlbumStatu(PkStatu.审核中);
         pkEntity.setComplainTimes(0);
         daoService.insertEntity(pkEntity);
@@ -281,9 +289,9 @@ public class PkService {
         pkEntity.setPkType(PkType.内置相册);
         pkEntity.setTopic(topic);
         pkEntity.setWatchWord(watchWord);
-        pkEntity.setIsInvite(InviteType.公开);
-        pkEntity.setMessageType(isCharge?MessageType.收费:MessageType.不收费);
-        pkEntity.setUserId(appService.随机用户(type));
+        String userId = appService.随机用户(type);
+        pkEntity.setUserId(userId);
+        pkEntity.setTopPostUserId(userId);
         pkEntity.setAlbumStatu(PkStatu.已审核);
         daoService.insertEntity(pkEntity);
 
@@ -474,16 +482,19 @@ public class PkService {
 
     
     public void 更新群组时间(String pkId) {
+        EntityCacheService.lockPkEntity(pkId);
         PkEntity pkEntity = this.querySinglePkEntity(pkId);
         pkEntity.setUpdateTime(System.currentTimeMillis());
         daoService.updateEntity(pkEntity);
+        EntityCacheService.unlockPkEntity(pkId);
     }
 
     public void 修改封面(String pkId, String imgUrl) {
-
+        EntityCacheService.lockPkEntity(pkId);
         PkEntity pkEntity = this.querySinglePkEntity(pkId);
         pkEntity.setBackUrl(imgUrl);
         daoService.updateEntity(pkEntity);
+        EntityCacheService.unlockPkEntity(pkId);
 
     }
     public PkPostListEntity 查询图册排列(String pkId, String postId)
@@ -604,5 +615,74 @@ public class PkService {
 
 
 
+    }
+
+    public GreatePkEntity 查询用户点赞(String pkId,String userId)
+    {
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(GreatePkEntity.class)
+                .compareFilter("pkId",CompareTag.Equal,pkId)
+                .andFilter()
+                .compareFilter("userId",CompareTag.Equal,userId);
+        GreatePkEntity entity = daoService.querySingleEntity(GreatePkEntity.class,filter);
+        return entity;
+    }
+
+
+    public void greate(String pkId, String userId) {
+        GreatePkEntity entity = this.查询用户点赞(pkId,userId);
+        if(ObjectUtils.isEmpty(entity))
+        {
+            entity = new GreatePkEntity();
+            entity.setPkId(pkId);
+            entity.setUserId(userId);
+            entity.setCreateTime(System.currentTimeMillis());
+            daoService.insertEntity(entity);
+            dynamicService.valueIncr(CacheKeyName.点赞,pkId);
+        }
+        else
+        {
+            daoService.deleteEntity(entity);
+            dynamicService.valueDecr(CacheKeyName.点赞,pkId);
+        }
+
+    }
+
+    public DislikePkEntity 查询用户踩一脚(String pkId,String userId)
+    {
+
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(DislikePkEntity.class)
+                .compareFilter("pkId",CompareTag.Equal,pkId)
+                .andFilter()
+                .compareFilter("userId",CompareTag.Equal,userId);
+        DislikePkEntity entity = daoService.querySingleEntity(DislikePkEntity.class,filter);
+        return entity;
+    }
+
+    public void dislike(String pkId, String userId) {
+
+        DislikePkEntity entity = this.查询用户踩一脚(pkId,userId);
+        if(ObjectUtils.isEmpty(entity))
+        {
+            entity = new DislikePkEntity();
+            entity.setPkId(pkId);
+            entity.setUserId(userId);
+            entity.setCreateTime(System.currentTimeMillis());
+            daoService.insertEntity(entity);
+            dynamicService.valueIncr(CacheKeyName.踩一脚,pkId);
+        }
+        else
+        {
+            daoService.deleteEntity(entity);
+            dynamicService.valueDecr(CacheKeyName.踩一脚,pkId);
+        }
+    }
+
+    public void 修改首页图册(String pkId, String postId) {
+        PostEntity postEntity = postService.查询帖子ById(postId);
+        EntityCacheService.lockPkEntity(pkId);
+        PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
+        pkEntity.setTopPostUserId(postEntity.getUserId());
+        daoService.updateEntity(pkEntity);
+        EntityCacheService.unlockPkEntity(pkId);
     }
 }

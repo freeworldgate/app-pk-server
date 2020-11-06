@@ -1,12 +1,16 @@
 package com.union.app.service.pk.complain;
 
+import com.union.app.common.config.AppConfigService;
 import com.union.app.common.dao.AppDaoService;
 import com.union.app.dao.spi.filter.CompareTag;
 import com.union.app.dao.spi.filter.EntityFilterChain;
 import com.union.app.domain.pk.complain.Complain;
 import com.union.app.entity.pk.PkEntity;
+import com.union.app.entity.pk.PkPostListEntity;
+import com.union.app.entity.pk.PostEntity;
 import com.union.app.entity.pk.complain.ComplainEntity;
 import com.union.app.entity.pk.complain.ComplainStatu;
+import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.PageAction;
@@ -42,19 +46,7 @@ public class ComplainService {
     @Autowired
     PkService pkService;
 
-    public void 新增审核投诉(String id, String userId) {
-    }
 
-    public ComplainEntity 查询投诉信息(String id) {
-        return null;
-    }
-
-    public void 新增收款投诉(String id, String userId) {
-    }
-
-    public Complain 下一个投诉信息(int type) {
-        return null;
-    }
 
     public ComplainEntity 查询投诉信息(String pkId, String userId) {
         EntityFilterChain filter = EntityFilterChain.newFilterChain(ComplainEntity.class)
@@ -71,12 +63,23 @@ public class ComplainService {
 
         if(ObjectUtils.isEmpty(complainEntity))
         {
+            PostEntity postEntity = postService.查询用户帖(pkId, userId);
+            if(userService.是否是遗传用户(userId)) {
+                PkPostListEntity pkPostListEntity = pkService.查询图册排列(pkId, postEntity.getPkId());
+                if (ObjectUtils.isEmpty(pkPostListEntity)) {
+                    throw AppException.buildException(PageAction.信息反馈框("投诉失败", "发布图册后申请审核图册!"));
+                }
+                if (!dynamicService.审核等待时间过长(pkId, postEntity.getPostId())) {
+                    throw AppException.buildException(PageAction.信息反馈框("投诉失败", "发布图册后，等待审核时间超过" + AppConfigService.getConfigAsInteger(ConfigItem.榜帖可发起投诉的等待时间) + "分钟后方可投诉!"));
+                }
+            }
+
             PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
             ComplainEntity newComplain = new ComplainEntity();
 
             newComplain.setText(text);
             newComplain.setUserId(userId);
-
+            newComplain.setPostStatu(postEntity.getStatu());
             newComplain.setPkId(pkId);
             newComplain.setPkType(pkEntity.getPkType());
             newComplain.setComplainStatu(ComplainStatu.处理中);
@@ -87,7 +90,7 @@ public class ComplainService {
         else
         {
 
-             throw AppException.buildException(PageAction.信息反馈框("错误","已投诉,不能重复投诉..."));
+             throw AppException.buildException(PageAction.信息反馈框("已投诉","已接受投诉,不能重复投诉..."));
 
         }
 

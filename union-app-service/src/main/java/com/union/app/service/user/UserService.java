@@ -3,6 +3,7 @@ package com.union.app.service.user;
 
 import com.alibaba.fastjson.JSON;
 import com.union.app.common.config.AppConfigService;
+import com.union.app.common.dao.EntityCacheService;
 import com.union.app.common.dao.PkCacheService;
 import com.union.app.common.微信.WeChatUtil;
 import com.union.app.common.dao.AppDaoService;
@@ -13,6 +14,7 @@ import com.union.app.domain.pk.客服消息.WxSendMessage;
 import com.union.app.domain.pk.客服消息.WxText;
 import com.union.app.domain.工具.RandomUtil;
 import com.union.app.domain.user.User;
+import com.union.app.entity.pk.PkEntity;
 import com.union.app.entity.用户.UserEntity;
 import com.union.app.entity.用户.UserKvEntity;
 import com.union.app.entity.用户.support.UserType;
@@ -46,14 +48,27 @@ public class UserService {
     @Autowired
     UserService userService;
 
-    private Map<String,User> users = new HashMap<>();
+
 
 
     public UserEntity queryUserEntity(String userId){
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(UserEntity.class)
-                .compareFilter("userId",CompareTag.Equal,userId);
-        UserEntity userEntity = appDaoService.querySingleEntity(UserEntity.class,filter);
+        UserEntity userEntity = EntityCacheService.getUserEntity(userId);
+
+        if(ObjectUtils.isEmpty(userEntity))
+        {
+            if(org.apache.commons.lang.StringUtils.equalsIgnoreCase("undefined",userId)|| org.apache.commons.lang.StringUtils.equalsIgnoreCase("null",userId)|| org.apache.commons.lang.StringUtils.equalsIgnoreCase("Nan",userId))
+            {
+                return null;
+            }
+            EntityFilterChain filter = EntityFilterChain.newFilterChain(UserEntity.class)
+                    .compareFilter("userId",CompareTag.Equal,userId);
+            userEntity = appDaoService.querySingleEntity(UserEntity.class,filter);
+            EntityCacheService.saveUser(userEntity);
+        }
+
         return userEntity;
+
+
     }
 
     public UserKvEntity queryUserKvEntity(String userId){
@@ -76,14 +91,11 @@ public class UserService {
         {
             return null;
         }
-//        User user1 = users.get(userId);
-//        if(!ObjectUtils.isEmpty(user1)){return user1;}
-
 
 
         UserEntity result  = queryUserEntity(userId);
-        UserKvEntity kv  = queryUserKvEntity(userId);
-        if(!ObjectUtils.isEmpty(result) && !ObjectUtils.isEmpty(kv))
+//        UserKvEntity kv  = queryUserKvEntity(userId);
+        if(!ObjectUtils.isEmpty(result))
         {
             User user = new User();
             user.setUserName(new String(result.getNickName()));
@@ -91,12 +103,10 @@ public class UserService {
             user.setUserId(result.getUserId());
             user.setUserType(ObjectUtils.isEmpty(result.getUserType())?UserType.普通用户.getType():result.getUserType().getType());
 //            user.setImgUrl(result.getAvatarUrl());
-            user.setPkTimes(kv.getPkTimes());
-            user.setPostTimes(kv.getPostTimes());
-            user.setInviteTimes(kv.getInviteTimes());
+//            user.setPkTimes(kv.getPkTimes());
+//            user.setPostTimes(kv.getPostTimes());
+//            user.setInviteTimes(kv.getInviteTimes());
             user.setImgUrl(result.getAvatarUrl());
-
-            users.put(user.getUserId(),user);
 
             return user;
         }
@@ -108,9 +118,9 @@ public class UserService {
 
             if(!this.isUserExist(userId)){return false;}
             //运营模式
-            User user = this.queryUser(userId);
+            UserEntity user = this.queryUserEntity(userId);
 
-            if(UserType.重点用户.getType() == user.getUserType()){return true;}
+            if(UserType.重点用户 == user.getUserType()){return true;}
             else{return false;}
 
 
@@ -134,10 +144,10 @@ public class UserService {
         if(org.apache.commons.lang.StringUtils.equalsIgnoreCase(userId,"null")){
             return false;
         }
-        if(org.apache.commons.lang.StringUtils.equalsIgnoreCase(userId,"undifined")){
+        if(org.apache.commons.lang.StringUtils.equalsIgnoreCase(userId,"undefined")){
             return false;
         }
-        User user = this.queryUser(userId);
+        UserEntity user = this.queryUserEntity(userId);
         if(!ObjectUtils.isEmpty(user)){
             return true;
         }
@@ -173,7 +183,7 @@ public class UserService {
                 wxSendMessage1.setTouser(fromUserName);
                 wxSendMessage1.setMsgtype("text");
                 WxText wxText1 = new WxText();
-                wxText1.setContent("确认获取用户图片.\n来自榜主:" + userService.queryUser(sessions[1]).getUserName() + ".\n确认拉取     请回复 ：1");
+                wxText1.setContent("确认获取用户图片.\n来自榜主:" + userService.queryUserEntity(sessions[1]).getNickName() + ".\n确认拉取     请回复 ：1");
                 wxSendMessage1.setText(wxText1);
                 sendMsToCustomer(wxSendMessage1);
 
@@ -308,7 +318,14 @@ public class UserService {
 
 
     }
+    public void 邀请次数减一(String userId) {
 
+        UserKvEntity result = queryUserKvEntity(userId);
+        result.setInviteTimes(result.getInviteTimes() - 1);
+        appDaoService.updateEntity(result);
+
+
+    }
 
 
     public void 确认开通PK次数加1(String userId) {

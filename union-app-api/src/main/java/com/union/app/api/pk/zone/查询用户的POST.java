@@ -69,7 +69,7 @@ public class 查询用户的POST {
             {
 
                 return AppResponse.buildResponse(PageAction.页面跳转("/pages/pk/prepost/prepost?pkId=" + pkId + "&postId=" + post.getPostId(),true));
-//                return AppResponse.buildResponse(PageAction.页面跳转("/pages/pk/prepost/prepost?pkId=" + pkId + "&postId=" + post.getPostId(),true));
+//                return AppResponse.buildResponse(PageAction.页面跳转("/pages/pk/post/post?pkId=" + pkId + "&postId=" + post.getPostId(),true));
             }
             else
             {
@@ -97,21 +97,20 @@ public class 查询用户的POST {
     @RequestMapping(path="/checkUserPost",method = RequestMethod.GET)
     public AppResponse check用户的POST(@RequestParam("pkId") String pkId, @RequestParam("userId") String userId, HttpServletRequest request) throws AppException, IOException {
 
+        PostEntity post = postService.查询用户帖(pkId,userId);
+        if(!ObjectUtils.isEmpty(post)){
+
+            return AppResponse.buildResponse(PageAction.页面跳转("/pages/pk/prepost/prepost?pkId=" + pkId + "&postId=" + post.getPostId(),true));
+        }
+
+
+
         if(!pkService.isPkCreator(pkId,userId))
         {
             String url = "";
             ValueStr valueStr = new ValueStr(url, "编辑图册", "请按照主题编辑图册...");
             return AppResponse.buildResponse(PageAction.执行处理器("uploadImgs",valueStr));
 
-        }
-
-
-
-        PostEntity post = postService.查询用户帖(pkId,userId);
-
-        if(!ObjectUtils.isEmpty(post)){
-
-            return AppResponse.buildResponse(PageAction.页面跳转("/pages/pk/prepost/prepost?pkId=" + pkId + "&postId=" + post.getPostId(),true));
         }
         else
         {
@@ -157,7 +156,7 @@ public class 查询用户的POST {
             else
             {
                 String url = "";
-                ValueStr valueStr = new ValueStr(url, "激活主题", "发布图册将视为激活该图册,请按照主题要求编辑图册...");
+                ValueStr valueStr = new ValueStr(url, "编辑图册", "发布图册将视为激活该图册,请按照主题要求编辑图册...");
                 return AppResponse.buildResponse(PageAction.执行处理器("uploadImgs",valueStr));
 
 

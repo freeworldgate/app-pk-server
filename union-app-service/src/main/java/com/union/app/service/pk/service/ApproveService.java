@@ -60,34 +60,6 @@ public class ApproveService {
     @Autowired
     PkCacheService pkCacheService;
 
-    public ApproveUser 查询帖子的审核用户(String pkId, String postId,Date date) throws IOException {
-
-        String approveUserId = dynamicService.查询审核用户(pkId,postId);
-
-        if(StringUtils.isBlank(approveUserId))
-        {
-            return null;
-        }
-        else
-        {
-            ApproveUser approveUser = new ApproveUser();
-            User user = userService.queryUser(approveUserId);
-            ApproveMessage approveMessage = this.获取审核人员消息(pkId);
-            ApproveDynamic approveDynamic = this.获取审核人员动态信息(pkId,approveUserId,date);
-            approveUser.setUser(user);
-            approveUser.setApproveDynamic(approveDynamic);
-            approveUser.setApproveMessage(approveMessage);
-            ApproveComplain approveComplain = this.获取投诉信息(pkId,postId,approveUserId);
-            ApproveComment approveComment = this.获取留言信息(pkId,postId);
-
-            approveUser.setApproveComment(approveComment);
-            approveUser.setApproveComplain(approveComplain);
-
-            return approveUser;
-        }
-
-    }
-
 
 
 
@@ -223,7 +195,7 @@ public class ApproveService {
 
     public ApproveMessage translate(ApproveMessageEntity approveMessageEntity) throws UnsupportedEncodingException {
         ApproveMessage approveMessage = new ApproveMessage();
-        approveMessage.setUser(userService.queryUser(approveMessageEntity.getApproverUserId()));
+//        approveMessage.setUser(userService.queryUser(approveMessageEntity.getApproverUserId()));
         approveMessage.setText(approveMessageEntity.getText());
         approveMessage.setImgeUrl(ImageUtils.添加水印(approveMessageEntity.getImgUrl()));
         approveMessage.setTime(TimeUtils.convertTime(approveMessageEntity.getTime()));

@@ -53,45 +53,48 @@ public class 处理投诉信息 {
         PostEntity postEntity = postService.查询用户帖(pkId,userId);
         if(ObjectUtils.isEmpty(postEntity))
         {
-            return AppResponse.buildResponse(PageAction.信息反馈框("未发布图册","请按照主题要求编辑图册方可对主题进行投诉..."));
+            return AppResponse.buildResponse(PageAction.信息反馈框("投诉失败","请先发布图册"));
         }
 
-
-        if(postEntity.getStatu() == PostStatu.上线)
-        {
-//            return AppResponse.buildResponse(PageAction.信息反馈框("提示","图贴已发布..."));
-            return AppResponse.buildResponse(PageAction.信息反馈框("消息通知","已收到您的投诉信息，如若榜主违反主题规则，我们会尽快处理..."));
-        }
-
-
-        if(postEntity.getRejectTimes() > 0)
-        {
-            complainService.添加投诉(pkId,userId,text);
+        complainService.添加投诉(pkId,userId,text);
 //            return AppResponse.buildResponse(PageAction.信息反馈框("提示","已收到您的投诉信息，如若榜主违反主题规则，我们会尽快处理..."));
-            return AppResponse.buildResponse(PageAction.信息反馈框("消息通知","已收到您的投诉信息，如若榜主违反主题规则，我们会尽快处理..."));
-        }
-        if(pkService.是否审核中(pkId,postEntity.getPostId()) )//      redisSortSetService.isMember(CacheKeyName.榜主审核中列表(pkId) ,postEntity.getPostId()))
-        {
-            if(dynamicService.审核等待时间过长(pkId,postEntity.getPostId()))
-            {
+        return AppResponse.buildResponse(PageAction.执行处理器("success",""));
 
-                complainService.添加投诉(pkId,userId,text);
-                return AppResponse.buildResponse(PageAction.信息反馈框("消息通知","已收到您的投诉信息，如若榜主违反主题规则，我们会尽快处理..."));
-            }
-            else
-            {
-//                return AppResponse.buildResponse(PageAction.信息反馈框("消息通知","已收到您的投诉信息，如若榜主违反主题规则，我们会尽快处理..."));
-                return AppResponse.buildResponse(PageAction.信息反馈框("未到投诉时间","发布图册后，转发审核群后等待审核时间超过" +  AppConfigService.getConfigAsInteger(ConfigItem.榜帖可发起投诉的等待时间) + "分钟后方可投诉!"));
 
-            }
-        }
-        else
-        {
-            return AppResponse.buildResponse(PageAction.信息反馈框("提示","图册未审核，请先发布图册..."));
+
+//
+//        if(postEntity.getStatu() == PostStatu.上线)
+//        {
+////            return AppResponse.buildResponse(PageAction.信息反馈框("提示","图贴已发布..."));
 //            return AppResponse.buildResponse(PageAction.信息反馈框("消息通知","已收到您的投诉信息，如若榜主违反主题规则，我们会尽快处理..."));
-        }
+//        }
 
 
+//        if(postEntity.getRejectTimes() > 0)
+//        {
+//            complainService.添加投诉(pkId,userId,text);
+//            return AppResponse.buildResponse(PageAction.信息反馈框("消息通知","已收到您的投诉信息，如若榜主违反主题规则，我们会尽快处理..."));
+//        }
+//        if(pkService.是否审核中(pkId,postEntity.getPostId()) )//      redisSortSetService.isMember(CacheKeyName.榜主审核中列表(pkId) ,postEntity.getPostId()))
+//        {
+//            if(dynamicService.审核等待时间过长(pkId,postEntity.getPostId()))
+//            {
+//
+//                complainService.添加投诉(pkId,userId,text);
+//                return AppResponse.buildResponse(PageAction.信息反馈框("消息通知","已收到您的投诉信息，如若榜主违反主题规则，我们会尽快处理..."));
+//            }
+//            else
+//            {
+//                return AppResponse.buildResponse(PageAction.信息反馈框("未到投诉时间","发布图册后，转发审核群后等待审核时间超过" +  AppConfigService.getConfigAsInteger(ConfigItem.榜帖可发起投诉的等待时间) + "分钟后方可投诉!"));
+//
+//            }
+//        }
+//        else
+//        {
+//            return AppResponse.buildResponse(PageAction.信息反馈框("提示","图册未审核，请先发布图册..."));
+//        }
+//
+//
 
 
 

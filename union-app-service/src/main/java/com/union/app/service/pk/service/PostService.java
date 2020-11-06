@@ -4,6 +4,7 @@ import com.union.app.common.OSS存储.CacheStorage;
 import com.union.app.common.OSS存储.OssStorage;
 import com.union.app.common.config.AppConfigService;
 import com.union.app.common.dao.AppDaoService;
+import com.union.app.common.dao.EntityCacheService;
 import com.union.app.common.dao.PkCacheService;
 import com.union.app.dao.spi.filter.CompareTag;
 import com.union.app.dao.spi.filter.EntityFilterChain;
@@ -269,26 +270,36 @@ public class PostService {
 
     public List<PostImage> getPostImages(String postId,String pkId) {
         List<PostImage> postImages = new ArrayList<>();
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(PostImageEntity.class)
-                .compareFilter("pkId",CompareTag.Equal,pkId)
-                .andFilter()
-                .compareFilter("postId",CompareTag.Equal,postId);
-        List<PostImageEntity> postImageEntity = daoService.queryEntities(PostImageEntity.class,filter);
+        if(StringUtils.isEmpty(postId)||StringUtils.isEmpty(pkId)) {return postImages; }
 
-        postImageEntity.forEach(img->{
-            PostImage postImage = new PostImage();
-            postImage.setImgUrl(img.getImgUrl());
-            postImage.setImageId(img.getImgId());
-            postImage.setPkId(img.getPkId());
-            postImage.setPostId(img.getPostId());
-            postImage.setTime(TimeUtils.convertTime(img.getTime()));
+        postImages.addAll(EntityCacheService.查询榜帖图片(pkId,postId));
 
-            postImages.add(postImage);
+        if(CollectionUtils.isEmpty(postImages))
+        {
+
+            EntityFilterChain filter = EntityFilterChain.newFilterChain(PostImageEntity.class)
+                    .compareFilter("pkId",CompareTag.Equal,pkId)
+                    .andFilter()
+                    .compareFilter("postId",CompareTag.Equal,postId);
+            List<PostImageEntity> postImageEntity = daoService.queryEntities(PostImageEntity.class,filter);
+
+            postImageEntity.forEach(img->{
+                PostImage postImage = new PostImage();
+                postImage.setImgUrl(img.getImgUrl());
+                postImage.setImageId(img.getImgId());
+                postImage.setPkId(img.getPkId());
+                postImage.setPostId(img.getPostId());
+                postImage.setTime(TimeUtils.convertTime(img.getTime()));
+                postImages.add(postImage);
+            });
+            if(!CollectionUtils.isEmpty(postImageEntity) && postImageEntity.get(0).getStatu() == PostStatu.上线)
+            {
+                EntityCacheService.保存图片(pkId,postId,postImages);
+            }
+        }
 
 
-        });
 
-//        Collections.shuffle(postImages);
         return postImages;
     }
 
@@ -331,58 +342,6 @@ public class PostService {
 
 
 
-
-    public void 删除帖子指定图片(String postId, String imgId, String userId) throws AppException {
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(PostEntity.class)
-                .compareFilter("postId",CompareTag.Equal,postId);
-        PostEntity postEntity = daoService.querySingleEntity(PostEntity.class,filter);
-        if(!org.apache.commons.lang.StringUtils.equals(postEntity.getUserId(),userId)){
-            throw AppException.buildException(PageAction.信息反馈框("操作异常","您无权删除用户图片"));
-        }
-
-        EntityFilterChain filter1 = EntityFilterChain.newFilterChain(PostImageEntity.class)
-                .compareFilter("imgId",CompareTag.Equal,imgId)
-                .andFilter()
-                .compareFilter("postId",CompareTag.Equal,postId);
-        PostImageEntity postImageEntity = daoService.querySingleEntity(PostImageEntity.class,filter1);
-        if(ObjectUtils.isEmpty(postImageEntity)){return;}
-        postEntity.setImgNum(postEntity.getImgNum() - 1);
-
-        daoService.deleteEntity(postImageEntity);
-        daoService.updateEntity(postEntity);
-
-    }
-
-    public void 续传帖子(String postId, String title, String userId, List<String> images) throws AppException, UnsupportedEncodingException {
-
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(PostEntity.class)
-                .compareFilter("postId",CompareTag.Equal,postId);
-        PostEntity postEntity = daoService.querySingleEntity(PostEntity.class,filter);
-        if(!org.apache.commons.lang.StringUtils.equals(postEntity.getUserId(),userId)){
-            throw AppException.buildException(PageAction.信息反馈框("操作异常","您无权续传用户图片"));
-        }
-
-
-//        postEntity.setLastModifyTime(TimeUtils.currentTime());
-//        String oldTitle = new String(postEntity.getTopic(),Charset.forName("UTF-8"));
-
-        postEntity.setTopic(noActiveTitle(title) ? postEntity.getTopic() : title);
-
-        for(String img:images){
-            PostImageEntity postImageEntity = new PostImageEntity();
-            postImageEntity.setPkId(postEntity.getPkId());
-            postImageEntity.setPostId(postId);
-            postImageEntity.setImgUrl(getLegalImgUrl(img));
-            postImageEntity.setImgId(IdGenerator.getImageId());
-            postImageEntity.setTime(System.currentTimeMillis());
-            daoService.insertEntity(postImageEntity);
-        }
-        postEntity.setImgNum(postEntity.getImgNum() + images.size());
-        daoService.updateEntity(postEntity);
-
-
-
-    }
 
     public Post 查询类型帖子(String pkId, String userId, int type, int page) throws AppException, UnsupportedEncodingException {
 
@@ -464,12 +423,6 @@ public class PostService {
         postEntity.setApproveStatu(ApproveStatu.已处理);
         daoService.updateEntity(postEntity);
         this.修改图片状态上线(postEntity);
-        ApproveCommentEntity approveCommentEntity = approveService.查询留言(pkId,postId);
-        if(!ObjectUtils.isEmpty(approveCommentEntity))
-        {
-            approveCommentEntity.setPostStatu(PostStatu.上线);
-            daoService.updateEntity(approveCommentEntity);
-        }
         if(!pkService.isPkCreator(pkId,postEntity.getUserId())){
             userService.用户已打榜(postEntity.getUserId());
         }
@@ -666,43 +619,18 @@ public class PostService {
         daoService.updateEntity(postEntity);
     }
 
-    public List<String> 查询PK展示图片(String pkId) {
+    public List<String> 查询PK展示图片(String pkId,String userId) {
         List<String> imgs = new ArrayList<>();
+        PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
 
-        EntityFilterChain filter = null;
-        if(AppConfigService.getConfigAsBoolean(ConfigItem.首页图片选择榜主图册))
+        String topUserId = pkEntity.getTopPostUserId();
+        if(StringUtils.isEmpty(topUserId))
         {
-            PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
-            PostEntity postEntity = this.查询用户帖(pkId,pkEntity.getUserId());
-            if(ObjectUtils.isEmpty(postEntity)){return imgs;}
-            filter = EntityFilterChain.newFilterChain(PostImageEntity.class)
-                    .compareFilter("pkId",CompareTag.Equal,pkId)
-                    .andFilter()
-                    .compareFilter("postId",CompareTag.Equal,postEntity.getPostId());
+            topUserId = pkEntity.getUserId();
         }
-        else
-        {
-
-
-             filter = EntityFilterChain.newFilterChain(PostImageEntity.class)
-                    .compareFilter("pkId",CompareTag.Equal,pkId)
-                    .andFilter()
-                    .compareFilter("statu",CompareTag.Equal,PostStatu.上线)
-                    .pageLimitFilter(1,9)
-                    .orderByRandomFilter();
-
-        }
-
-
-
-
-
-
-
-
-
-
-        List<PostImageEntity> postImageEntity = daoService.queryEntities(PostImageEntity.class,filter);
+        PostEntity postEntity = this.查询用户帖(pkId,topUserId);
+        if(ObjectUtils.isEmpty(postEntity)){return imgs;}
+        List<PostImage> postImageEntity =  getPostImages(postEntity.getPostId(),pkId);
         if(!org.apache.commons.collections4.CollectionUtils.isEmpty(postImageEntity))
         {
             postImageEntity.forEach(image->{
