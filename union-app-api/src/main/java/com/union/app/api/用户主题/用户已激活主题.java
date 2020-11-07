@@ -1,12 +1,8 @@
-package com.union.app.api.用户相册;
+package com.union.app.api.用户主题;
 
-import com.union.app.common.config.AppConfigService;
-import com.union.app.domain.pk.PkButton;
-import com.union.app.domain.pk.PkButtonType;
 import com.union.app.domain.pk.PkDetail;
 import com.union.app.domain.pk.Post;
 import com.union.app.entity.用户.UserKvEntity;
-import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.DataSet;
@@ -29,7 +25,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path="/pk")
-public class 用户图册 {
+public class 用户已激活主题 {
 
     @Autowired
     AppService appService;
@@ -59,30 +55,29 @@ public class 用户图册 {
     ApproveService approveService;
 
 
-    @RequestMapping(path="/userPosts",method = RequestMethod.GET)
+    @RequestMapping(path="/queryUserPublishPks",method = RequestMethod.GET)
     public AppResponse 用户图册(@RequestParam("userId") String userId) throws AppException, IOException {
 
 
-        List<Post> posts = appService.查询用户图册(userId,1);
+        List<PkDetail> pks = appService.查询用户已发布主题(userId,1);
         List<DataSet> dataSets = new ArrayList<>();
-        if(CollectionUtils.isEmpty(posts))
+
+
+
+        if(CollectionUtils.isEmpty(pks))
         {
-            dataSets.add(new DataSet("pkEnd",true));}
+            dataSets.add(new DataSet("pkEnd",true));
+        }
         else
         {
 
 
-            dataSets.add(new DataSet("posts",posts));
+            dataSets.add(new DataSet("pks",pks));
             dataSets.add(new DataSet("pkEnd",false));
         }
-//        UserKvEntity result = userService.queryUserKvEntity(userId);
-//        dataSets.add(new DataSet("leftPks", result.getPostTimes()));
-//        dataSets.add(new DataSet("inviteTimes", result.getInviteTimes()));
-//        dataSets.add(new DataSet("pkTimes", result.getPkTimes()));
-//        dataSets.add(new DataSet("unlock", result.getUnlockTimes()));
+
         dataSets.add(new DataSet("page",1));
-        dataSets.add(new DataSet("pageTag",true));
-        dataSets.add(new DataSet("imgBack",appService.查询背景(14)));
+
 
 
 
@@ -96,16 +91,16 @@ public class 用户图册 {
 
 
     }
-    @RequestMapping(path="/nextUserPosts",method = RequestMethod.GET)
+    @RequestMapping(path="/nextUserPublishPks",method = RequestMethod.GET)
     public AppResponse 用户图册(@RequestParam("userId") String userId,@RequestParam("page") int page) throws AppException, IOException {
 
-        List<Post> posts = appService.查询用户图册(userId,page+1);
+        List<PkDetail> pks = appService.查询用户已发布主题(userId,page+1);
 
-        if(CollectionUtils.isEmpty(posts))
+        if(CollectionUtils.isEmpty(pks))
         {
             return AppResponse.buildResponse(PageAction.前端数据更新("pkEnd",true));
         }
-        return AppResponse.buildResponse(PageAction.执行处理器("success",posts));
+        return AppResponse.buildResponse(PageAction.执行处理器("success",pks));
 
     }
 

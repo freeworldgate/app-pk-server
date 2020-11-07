@@ -56,6 +56,8 @@ public class 处理投诉信息 {
             return AppResponse.buildResponse(PageAction.信息反馈框("投诉失败","请先发布图册"));
         }
 
+
+
         complainService.添加投诉(pkId,userId,text);
 //            return AppResponse.buildResponse(PageAction.信息反馈框("提示","已收到您的投诉信息，如若榜主违反主题规则，我们会尽快处理..."));
         return AppResponse.buildResponse(PageAction.执行处理器("success",""));

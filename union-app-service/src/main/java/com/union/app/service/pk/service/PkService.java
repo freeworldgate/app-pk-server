@@ -248,10 +248,10 @@ public class PkService {
 
 
 
-    public boolean isPkCreator(String pkId, String userId) {
-        User creator = this.queryPkCreator(pkId);
-        if(ObjectUtils.isEmpty(creator)){return false;}
-        return org.apache.commons.lang.StringUtils.equals(userId,creator.getUserId())? Boolean.TRUE:Boolean.FALSE;
+    public boolean isPkCreator(String pkId, String userId) throws IOException {
+        PkEntity pk = this.querySinglePkEntity(pkId);
+        if(ObjectUtils.isEmpty(pk)){return false;}
+        return org.apache.commons.lang.StringUtils.equals(userId,pk.getUserId())? Boolean.TRUE:Boolean.FALSE;
     }
 
     public String 创建PK(String userId, String topic, String watchWord,boolean invite) throws UnsupportedEncodingException {
@@ -268,7 +268,7 @@ public class PkService {
             pkEntity.setPkType(PkType.审核相册);
         }
 
-
+        pkEntity.setActive(false);
         pkEntity.setTopic(topic);
         pkEntity.setWatchWord(watchWord);
 
@@ -293,6 +293,7 @@ public class PkService {
         pkEntity.setUserId(userId);
         pkEntity.setTopPostUserId(userId);
         pkEntity.setAlbumStatu(PkStatu.已审核);
+        pkEntity.setActive(false);
         daoService.insertEntity(pkEntity);
 
         BuildInPkEntity buildInPkEntity = new BuildInPkEntity();
@@ -347,7 +348,7 @@ public class PkService {
 
 
 
-    public AppResponse checkPk(String pkId,String userId) throws AppException {
+    public AppResponse checkPk(String pkId,String userId) throws AppException, IOException {
         PkEntity pkEntity = this.querySinglePkEntity(pkId);
         if(ObjectUtils.isEmpty(pkEntity)){throw AppException.buildException(PageAction.执行处理器("error","榜单不存在，是否返回主页?"));}
         PkStatu pkStatu = pkEntity.getAlbumStatu();
@@ -388,7 +389,7 @@ public class PkService {
         {
             daoService.deleteEntity(pkEntity);
             this.删除激活表(pkEntity.getPkId());
-            userService.删除一个未激活榜单(userId);
+            userService.删除一个未发布榜单(userId);
             return ;
         }
         if(pkEntity.getAlbumStatu() == PkStatu.已关闭)

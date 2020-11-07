@@ -17,6 +17,7 @@ import com.union.app.domain.工具.RandomUtil;
 import com.union.app.entity.pk.*;
 import com.union.app.entity.pk.complain.ComplainEntity;
 import com.union.app.entity.pk.审核.ApproveCommentEntity;
+import com.union.app.entity.用户.UserKvEntity;
 import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.Level;
@@ -415,7 +416,7 @@ public class PostService {
         daoService.updateEntity(postEntity);
         return keyNameValue;
     }
-    public void 上线帖子(String pkId, String postId) throws AppException {
+    public void 上线帖子(String pkId, String postId) throws AppException, IOException {
 
         PostEntity postEntity = this.查询帖子ById(postId);
         if(postEntity.getStatu() == PostStatu.上线){return;}
@@ -426,6 +427,31 @@ public class PostService {
         if(!pkService.isPkCreator(pkId,postEntity.getUserId())){
             userService.用户已打榜(postEntity.getUserId());
         }
+        else
+        {
+            //激活该主题
+            EntityCacheService.lockPkEntity(pkId);
+            PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
+            pkEntity.setActive(true);
+            daoService.updateEntity(pkEntity);
+            userService.用户激活PK加一(postEntity.getUserId());
+
+            EntityCacheService.unlockPkEntity(pkId);
+            //用户可激活次数减一
+            if(appService.是否收费(pkEntity.getUserId())) {
+                UserKvEntity userKvEntity = userService.queryUserKvEntity(pkEntity.getUserId());
+                if(userKvEntity.getFeeTimes() > 0)
+                {
+                    userKvEntity.setFeeTimes(userKvEntity.getFeeTimes() - 1);
+                    daoService.updateEntity(userKvEntity);
+                }
+
+            }
+
+        }
+
+
+
 
 
 

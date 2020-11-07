@@ -116,7 +116,7 @@ public class 进入PK {
                 int 图册和解锁倍数关系 = AppConfigService.getConfigAsInteger(ConfigItem.邀请和可解锁主题倍数关系);
                 if(unlockTimes < (posts + 1) * 图册和解锁倍数关系)
                 {
-                    ValueStr valueStr = new ValueStr("/pages/pk/pk/pk?lock=1&pkId=" + pkId,"解锁主题","根据您发布有效图册数量,您剩余可解锁主题为" + ((posts+1)*图册和解锁倍数关系 - unlockTimes) + "个,解锁主题将添加到我的邀请列表,请选择您感兴趣的主题...");
+                    ValueStr valueStr = new ValueStr("/pages/pk/pk/pk?lock=1&pkId=" + pkId,"解锁主题","根据您发布有效图册数量,您剩余可解锁主题为" + ((posts+1)*图册和解锁倍数关系 - unlockTimes) + "个,请选择您感兴趣的主题...");
                     return AppResponse.buildResponse(PageAction.执行处理器("unlock",valueStr));
                 }
                 else

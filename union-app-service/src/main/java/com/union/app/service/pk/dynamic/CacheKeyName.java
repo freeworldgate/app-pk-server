@@ -36,6 +36,7 @@ public class CacheKeyName {
     public static final String 邀请 =  "PK-Invite";
     public static final String 踩一脚 =  "PK-Dislike";
     public static final String 评论 =  "PK-COMMENT";
+    public static final String 用户评论 =  "PK-USER-COMMENT";
 
     public static final String 审核中数量 =  "PK-Approving";
     public static final String 已审核数量 =  "PK-Approved";
@@ -43,6 +44,7 @@ public class CacheKeyName {
     public static final String 群组URL = "Group-Code-Url" ;
     public static final String 拉取资源图片 =  "USER-MEDIA-CURRENT" ;
     public static final String PK排名 = "PK-POST-MEMBER-SORT" ;
+
 
 
 //    public static String 内置相册已审核() { return "PK-PRE-ALBUM-APPROVED-NUMS" ;}

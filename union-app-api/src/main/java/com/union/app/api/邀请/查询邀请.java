@@ -95,6 +95,7 @@ public class 查询邀请 {
         }
 ;
         dataSets.add(new DataSet("page",1));
+        dataSets.add(new DataSet("pageTag",true));
         dataSets.add(new DataSet("imgBack",appService.查询背景(3)));
 
 

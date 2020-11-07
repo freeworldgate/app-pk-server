@@ -23,11 +23,26 @@ public class UserKvEntity {
 
     private int postTimes;
     private int pkTimes;
-    private int activePkTimes;
+    private int publishPkTimes;
     private int inviteTimes;
     private int unlockTimes;
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //用户总的激活PK次数  （发布第一贴时+1）
+    private int activePks;
+    //可激活主题次数    购买次数，支付成功后增加次数
     private int feeTimes;
-    private int usedTimes;
 
 
 

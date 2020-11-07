@@ -207,7 +207,7 @@ public class AppService {
     }
 
 
-    public void 添加邀请(String pkId, String userId) {
+    public void 添加邀请(String pkId, String userId) throws IOException {
 
         if(StringUtils.isBlank(pkId) || pkService.isPkCreator(pkId,userId)){return;}
 
@@ -221,13 +221,13 @@ public class AppService {
             invitePkEntity.setUserId(userId);
             invitePkEntity.setCreateTime(System.currentTimeMillis());
             daoService.insertEntity(invitePkEntity);
-            userService.邀请次数加一(userId);
+//            userService.邀请次数加一(userId);
             dynamicService.valueIncr(CacheKeyName.邀请,pkId);
         }
         else
         {
             daoService.deleteEntity(invitePkEntity);
-            userService.邀请次数减一(userId);
+//            userService.邀请次数减一(userId);
             dynamicService.valueDecr(CacheKeyName.邀请,pkId);
         }
 
@@ -274,7 +274,18 @@ public class AppService {
         return pkEntities;
     }
 
+    private List<PkEntity> queryUserPublishPks(String userId, int page) {
 
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(PkEntity.class)
+                .compareFilter("userId",CompareTag.Equal,userId)
+                .andFilter()
+                .compareFilter("active",CompareTag.Equal,Boolean.TRUE)
+                .pageLimitFilter(page,AppConfigService.getConfigAsInteger(ConfigItem.单个PK页面的帖子数))
+                .orderByFilter("createTime",OrderTag.DESC);
+        List<PkEntity> pkEntities = daoService.queryEntities(PkEntity.class,filter);
+
+        return pkEntities;
+    }
 
 
 
@@ -1101,10 +1112,10 @@ public class AppService {
         UserKvEntity userKvEntity = new UserKvEntity();
         userKvEntity.setPkTimes(0);
         userKvEntity.setPostTimes(0);
-        userKvEntity.setActivePkTimes(0);
+        userKvEntity.setPublishPkTimes(0);
+        userKvEntity.setActivePks(0);
         userKvEntity.setPostTimes(0);
-        userKvEntity.setUsedTimes(0);
-        userKvEntity.setFeeTimes(0);
+        userKvEntity.setFeeTimes(1000000);
         daoService.insertEntity(userKvEntity);
 
 
@@ -1688,7 +1699,7 @@ public class AppService {
 
 
 
-    public void 有效投诉(String id) throws AppException {
+    public void 有效投诉(String id) throws AppException, IOException {
 
         EntityFilterChain filter = EntityFilterChain.newFilterChain(ComplainEntity.class)
                 .compareFilter("id",CompareTag.Equal,Integer.valueOf(id));
@@ -2036,6 +2047,36 @@ public class AppService {
         if(gap == 2){return !ObjectUtils.isEmpty(complainService.查询投诉信息(pkId,userId));}
         if(gap == 3){  InvitePkEntity invitePkEntity = queryInvitePk(pkId,userId);return !ObjectUtils.isEmpty(invitePkEntity);}
         return false;
+
+    }
+
+    public List<PkDetail> 查询用户已发布主题(String userId, int page) throws IOException {
+
+        Date current = new Date();
+        List<PkDetail> pkDetails = new ArrayList<>();
+        List<PkEntity>  pkEntities = queryUserPublishPks(userId,page);
+        for(PkEntity pkEntity:pkEntities)
+        {
+            PkDetail pkDetail = pkService.querySinglePk(pkEntity);
+            String topUserId = pkEntity.getTopPostUserId();
+            pkDetail.setImgs(postService.查询PK展示图片(pkEntity.getPkId(),StringUtils.isEmpty(topUserId)?pkEntity.getUserId():topUserId));
+            pkDetails.add(pkDetail);
+        }
+
+
+
+
+        if(!userService.是否是遗传用户(userId)  && !AppConfigService.getConfigAsBoolean(ConfigItem.普通用户主题是否显示分享按钮和群组按钮))
+        {
+            pkDetails.forEach(pk ->{
+                PkButton pkButton = appService.显示按钮(PkButtonType.时间);
+                pkButton.setName(pk.getTime());
+                pk.setGroupInfo(pkButton);
+            });
+        }
+        return pkDetails;
+
+
 
     }
 }

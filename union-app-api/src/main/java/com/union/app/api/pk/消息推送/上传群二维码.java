@@ -101,7 +101,7 @@ public class 上传群二维码 {
 
     @RequestMapping(value = "/queryGroupCode", method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse 查询群二维码(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId,@RequestParam("type") int type) throws IOException, AppException {
+    public AppResponse 查询群二维码(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId) throws IOException, AppException {
 
 
 

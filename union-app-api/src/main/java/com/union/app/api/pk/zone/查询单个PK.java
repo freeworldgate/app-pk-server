@@ -125,6 +125,10 @@ public class 查询单个PK {
                 {
                     dataSets.add(new DataSet("button",appService.显示按钮(PkButtonType.邀请图册)));
                 }
+                else
+                {
+                    dataSets.add(new DataSet("button",null));
+                }
             }
         }
 

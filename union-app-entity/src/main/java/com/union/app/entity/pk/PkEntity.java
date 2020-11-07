@@ -17,6 +17,9 @@ public class PkEntity {
     @Id
     private String pkId;
 
+
+    private boolean active;
+
     private String userId;
 
     private String topic;

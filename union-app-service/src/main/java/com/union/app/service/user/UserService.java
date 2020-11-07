@@ -310,31 +310,29 @@ public class UserService {
         result.setUnlockTimes(result.getUnlockTimes() + 1);
         appDaoService.updateEntity(result);
     }
-    public void 邀请次数加一(String userId) {
-
-            UserKvEntity result = queryUserKvEntity(userId);
-            result.setInviteTimes(result.getInviteTimes() + 1);
-            appDaoService.updateEntity(result);
-
-
-    }
-    public void 邀请次数减一(String userId) {
-
-        UserKvEntity result = queryUserKvEntity(userId);
-        result.setInviteTimes(result.getInviteTimes() - 1);
-        appDaoService.updateEntity(result);
-
-
-    }
+//    public void 邀请次数加一(String userId) {
+//
+//            UserKvEntity result = queryUserKvEntity(userId);
+//            result.setInviteTimes(result.getInviteTimes() + 1);
+//            appDaoService.updateEntity(result);
+//
+//
+//    }
+//    public void 邀请次数减一(String userId) {
+//
+//        UserKvEntity result = queryUserKvEntity(userId);
+//        result.setInviteTimes(result.getInviteTimes() - 1);
+//        appDaoService.updateEntity(result);
+//    }
 
 
     public void 确认开通PK次数加1(String userId) {
 
-        synchronized (userId) {
+
             UserKvEntity result = queryUserKvEntity(userId);
-            result.setActivePkTimes(result.getActivePkTimes() + 1);
+            result.setPublishPkTimes(result.getPublishPkTimes() + 1);
             appDaoService.updateEntity(result);
-        }
+
 
     }
 
@@ -352,7 +350,7 @@ public class UserService {
 //
 //    }
 
-    public void 删除一个未激活榜单(String userId) {
+    public void 删除一个未发布榜单(String userId) {
         synchronized (userId) {
             UserKvEntity result = queryUserKvEntity(userId);
             result.setPkTimes(result.getPkTimes() + 1);
@@ -425,5 +423,14 @@ public class UserService {
     }
 
 
+    public void 用户激活PK加一(String userId) {
+        UserKvEntity result = queryUserKvEntity(userId);
+        result.setActivePks(result.getActivePks() + 1);
+        appDaoService.updateEntity(result);
+    }
+    public int 查询用户激活PK数量(String userId) {
+        UserKvEntity result = queryUserKvEntity(userId);
 
+        return result.getActivePks();
+    }
 }

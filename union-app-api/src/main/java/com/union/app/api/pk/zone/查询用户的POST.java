@@ -119,10 +119,10 @@ public class 查询用户的POST {
 
                 UserKvEntity userEntity = userService.queryUserKvEntity(userId);
                 //总可激活次数  和  已用次数
-                if (userEntity.getFeeTimes() > userEntity.getUsedTimes()) {
+                if (userEntity.getFeeTimes() > 0) {
                     //不用收费:提示:图册发布后将激活该主题
                     String url = "";
-                    ValueStr valueStr = new ValueStr(url, "激活主题", "发布图册将视为激活该图册,剩余可激活主题次数为" + (userEntity.getFeeTimes()-userEntity.getUsedTimes() )+"...");
+                    ValueStr valueStr = new ValueStr(url, "激活主题", "发布图册将视为激活该图册,剩余可激活主题次数为" + (userEntity.getFeeTimes())+"...");
                     return AppResponse.buildResponse(PageAction.执行处理器("uploadImgs",valueStr));
 
                 }

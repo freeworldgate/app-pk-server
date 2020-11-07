@@ -8,6 +8,7 @@ import com.union.app.domain.pk.complain.Complain;
 import com.union.app.entity.pk.PkEntity;
 import com.union.app.entity.pk.PkPostListEntity;
 import com.union.app.entity.pk.PostEntity;
+import com.union.app.entity.pk.PostStatu;
 import com.union.app.entity.pk.complain.ComplainEntity;
 import com.union.app.entity.pk.complain.ComplainStatu;
 import com.union.app.plateform.constant.ConfigItem;
@@ -64,15 +65,22 @@ public class ComplainService {
         if(ObjectUtils.isEmpty(complainEntity))
         {
             PostEntity postEntity = postService.查询用户帖(pkId, userId);
-            if(userService.是否是遗传用户(userId)) {
-                PkPostListEntity pkPostListEntity = pkService.查询图册排列(pkId, postEntity.getPkId());
-                if (ObjectUtils.isEmpty(pkPostListEntity)) {
-                    throw AppException.buildException(PageAction.信息反馈框("投诉失败", "发布图册后申请审核图册!"));
+            if(postEntity.getStatu() != PostStatu.上线)
+            {
+
+                if(userService.是否是遗传用户(userId)) {
+                    PkPostListEntity pkPostListEntity = pkService.查询图册排列(pkId, postEntity.getPkId());
+                    if (ObjectUtils.isEmpty(pkPostListEntity)) {
+                        throw AppException.buildException(PageAction.信息反馈框("投诉失败", "发布图册后申请审核图册!"));
+                    }
+                    if (!dynamicService.审核等待时间过长(pkId, postEntity.getPostId())) {
+                        throw AppException.buildException(PageAction.信息反馈框("投诉失败", "发布图册后，等待审核时间超过" + AppConfigService.getConfigAsInteger(ConfigItem.榜帖可发起投诉的等待时间) + "分钟后方可投诉!"));
+                    }
                 }
-                if (!dynamicService.审核等待时间过长(pkId, postEntity.getPostId())) {
-                    throw AppException.buildException(PageAction.信息反馈框("投诉失败", "发布图册后，等待审核时间超过" + AppConfigService.getConfigAsInteger(ConfigItem.榜帖可发起投诉的等待时间) + "分钟后方可投诉!"));
-                }
+
             }
+
+
 
             PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
             ComplainEntity newComplain = new ComplainEntity();

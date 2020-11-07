@@ -94,9 +94,9 @@ public class 用户登录加注册 {
             UserKvEntity userKvEntity = new UserKvEntity();
             userKvEntity.setPkTimes(0);
             userKvEntity.setPostTimes(0);
-            userKvEntity.setActivePkTimes(0);
+            userKvEntity.setPublishPkTimes(0);
+            userKvEntity.setActivePks(0);
             userKvEntity.setPostTimes(0);
-            userKvEntity.setUsedTimes(0);
             userKvEntity.setFeeTimes(0);
             appDaoService.insertEntity(userKvEntity);
             appDaoService.insertEntity(userEntity);

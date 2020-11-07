@@ -68,11 +68,11 @@ public class 发布Post {
         if(ObjectUtils.isEmpty(postEntity)){
             postId = postService.创建帖子(pkId,userId,title,images);
 //            appService.添加邀请(pkId,userId);
-            if(appService.是否收费(userId)) {
-                UserKvEntity userEntity = userService.queryUserKvEntity(userId);
-                userEntity.setUsedTimes(userEntity.getUsedTimes() + 1);
-                daoService.updateEntity(userEntity);
-            }
+//            if(appService.是否收费(userId)) {
+//                UserKvEntity userEntity = userService.queryUserKvEntity(userId);
+//
+//                daoService.updateEntity(userEntity);
+//            }
 
         }
         else
