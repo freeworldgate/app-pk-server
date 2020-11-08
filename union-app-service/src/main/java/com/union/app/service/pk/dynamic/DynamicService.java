@@ -10,6 +10,7 @@ import com.union.app.domain.pk.apply.KeyNameValue;
 import com.union.app.domain.工具.RandomUtil;
 import com.union.app.entity.pk.PkEntity;
 import com.union.app.entity.pk.PkPostListEntity;
+import com.union.app.entity.pk.PostEntity;
 import com.union.app.entity.pk.PostStatu;
 import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.constant.常量值;
@@ -237,17 +238,17 @@ public class DynamicService {
      * 有效期5分钟
      *
      * @param pkId
-     * @param postId
+     * @param postEntity
      */
-    public void 设置帖子的审核用户(String pkId, String postId) {
+    public void 设置帖子的审核用户(String pkId, PostEntity postEntity) {
        // pkService.querySinglePkEntity()
-        PkPostListEntity pkPostListEntity = pkService.查询图册排列(pkId,postId);
+        PkPostListEntity pkPostListEntity = pkService.查询图册排列(pkId,postEntity.getPostId());
         if(ObjectUtils.isEmpty(pkPostListEntity))
         {
             pkPostListEntity = new PkPostListEntity();
             pkPostListEntity.setPkId(pkId);
-            pkPostListEntity.setPostId(postId);
-
+            pkPostListEntity.setPostId(postEntity.getPostId());
+            pkPostListEntity.setUserId(postEntity.getUserId());
             pkPostListEntity.setStatu(PostStatu.审核中);
             pkPostListEntity.setTime(System.currentTimeMillis());
 

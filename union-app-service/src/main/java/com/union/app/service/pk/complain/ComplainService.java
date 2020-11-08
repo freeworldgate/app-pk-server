@@ -16,6 +16,7 @@ import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
+import com.union.app.service.pk.dynamic.CacheKeyName;
 import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.service.PkService;
 import com.union.app.service.pk.service.PostService;
@@ -93,6 +94,7 @@ public class ComplainService {
             newComplain.setComplainStatu(ComplainStatu.处理中);
             newComplain.setUpdateTime(System.currentTimeMillis());
             daoService.insertEntity(newComplain);
+            dynamicService.valueIncr(CacheKeyName.投诉,pkId);
 
         }
         else

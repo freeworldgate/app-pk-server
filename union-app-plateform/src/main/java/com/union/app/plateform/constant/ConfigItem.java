@@ -57,7 +57,8 @@ public enum ConfigItem {
     单个PK的页面缓存数量("pkCachePost", "PK_CACHE_POST", "单个PK的页面缓存数量", "10"),
     缓存时间("postCacheTime", "POST_CACHE_TIME", "缓存时间(时间秒)", "60"),
     PK缓存数量("pkCacheNumbers", "PK_CACHE_NUMBERS", "PK缓存数量", "100"),
-    首页图片选择榜主图册("imgSelectPkCreator", "IS_PK_CREATOR_IMG", "首页图片选择榜主图册", "true");
+    首页图片选择榜主图册("imgSelectPkCreator", "IS_PK_CREATOR_IMG", "首页图片选择榜主图册", "true"),
+    信息展示页面用户数量("InfoShowUserNum", "USER_NUM_INFO_SHOW","信息展示页面用户数量" , "5");
 
 
 

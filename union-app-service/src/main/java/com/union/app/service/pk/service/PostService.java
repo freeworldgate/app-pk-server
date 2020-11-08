@@ -119,7 +119,7 @@ public class PostService {
 
 
         this.用户转发审批(postEntity);
-        dynamicService.设置帖子的审核用户(pkId,postId);
+        dynamicService.设置帖子的审核用户(pkId,postEntity);
 //          审核通过
         this.上线帖子(pkId,postId);
         dynamicService.已审核(pkId,postId);

@@ -351,11 +351,14 @@ public class UserService {
 //    }
 
     public void 删除一个未发布榜单(String userId) {
-        synchronized (userId) {
+
             UserKvEntity result = queryUserKvEntity(userId);
-            result.setPkTimes(result.getPkTimes() + 1);
-            appDaoService.updateEntity(result);
-        }
+            if(result.getPkTimes() > 0)
+            {
+                result.setPkTimes(result.getPkTimes() - 1);
+                appDaoService.updateEntity(result);
+            }
+
 
 
 

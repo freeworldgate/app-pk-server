@@ -222,13 +222,13 @@ public class AppService {
             invitePkEntity.setCreateTime(System.currentTimeMillis());
             daoService.insertEntity(invitePkEntity);
 //            userService.邀请次数加一(userId);
-            dynamicService.valueIncr(CacheKeyName.邀请,pkId);
+            dynamicService.valueIncr(CacheKeyName.收藏,pkId);
         }
         else
         {
             daoService.deleteEntity(invitePkEntity);
 //            userService.邀请次数减一(userId);
-            dynamicService.valueDecr(CacheKeyName.邀请,pkId);
+            dynamicService.valueDecr(CacheKeyName.收藏,pkId);
         }
 
 

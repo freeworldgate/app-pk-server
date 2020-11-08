@@ -53,7 +53,7 @@ public class 设置审核人员 {
 
 
         postService.用户转发审批(postEntity);
-        dynamicService.设置帖子的审核用户(pkId,postId);
+        dynamicService.设置帖子的审核用户(pkId,postEntity);
 
 
         List<DataSet> dataSets = new ArrayList<>();

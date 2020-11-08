@@ -33,7 +33,8 @@ public class CacheKeyName {
 ////    public static String 打榜Follow(String pkId){return "Follow-"+ pkId ;}
 ////    public static String 打榜Share(String pkId){return "Share-"+ pkId  ;}
     public static final String 点赞 =  "PK-Greate";
-    public static final String 邀请 =  "PK-Invite";
+    public static final String 收藏 =  "PK-Invite";
+    public static final String 投诉 =  "PK-Complain";
     public static final String 踩一脚 =  "PK-Dislike";
     public static final String 评论 =  "PK-COMMENT";
     public static final String 用户评论 =  "PK-USER-COMMENT";

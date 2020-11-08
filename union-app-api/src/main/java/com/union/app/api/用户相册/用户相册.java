@@ -86,6 +86,7 @@ public class 用户相册 {
         }
 
         dataSets.add(new DataSet("page",1));
+        dataSets.add(new DataSet("pageTag",true));
         dataSets.add(new DataSet("userBack",appService.查询背景(0)));
         dataSets.add(new DataSet("imgBack",appService.查询背景(2)));
 

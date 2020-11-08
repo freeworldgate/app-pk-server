@@ -17,6 +17,8 @@ public class PkPostListEntity {
     @Id
     private String postId;
 
+    private String userId;
+
     private String pkId;
 
     @Enumerated(EnumType.STRING)

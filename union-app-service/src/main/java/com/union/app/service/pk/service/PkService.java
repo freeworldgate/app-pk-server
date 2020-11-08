@@ -206,7 +206,7 @@ public class PkService {
         pkDetail.setGroupInfo(this.查询群组(pkDetail.getPkId()));
         pkDetail.setUserBack(appService.查询背景(0));
         pkDetail.setGreate(dynamicService.getKeyValue(CacheKeyName.点赞,pkId));
-        pkDetail.setInvite(dynamicService.getKeyValue(CacheKeyName.邀请,pkId));
+        pkDetail.setInvite(dynamicService.getKeyValue(CacheKeyName.收藏,pkId));
         pkDetail.setComment(dynamicService.getKeyValue(CacheKeyName.评论,pkId));
         return pkDetail;
     }
@@ -293,7 +293,7 @@ public class PkService {
         pkEntity.setUserId(userId);
         pkEntity.setTopPostUserId(userId);
         pkEntity.setAlbumStatu(PkStatu.已审核);
-        pkEntity.setActive(false);
+        pkEntity.setActive(true);
         daoService.insertEntity(pkEntity);
 
         BuildInPkEntity buildInPkEntity = new BuildInPkEntity();
@@ -381,36 +381,29 @@ public class PkService {
     }
 
     public void 删除PK(String userId, String pkId) throws AppException {
+        EntityCacheService.lockPkEntity(pkId);
         PkEntity pkEntity = this.querySinglePkEntity(pkId);
-        //如果去掉此步骤，则可能要删除两次PK才能成功，因为JPA的原因
-        pkEntity = this.querySinglePkEntity(pkId);
 
         if(pkEntity.getAlbumStatu() == PkStatu.审核中)
         {
             daoService.deleteEntity(pkEntity);
-            this.删除激活表(pkEntity.getPkId());
             userService.删除一个未发布榜单(userId);
+            EntityCacheService.unlockPkEntity(pkId);
             return ;
         }
-        if(pkEntity.getAlbumStatu() == PkStatu.已关闭)
-        {
-            daoService.deleteEntity(pkEntity);
-            this.删除激活表(pkEntity.getPkId());
-            return ;
-        }
-        throw AppException.buildException(PageAction.信息反馈框("无法删除","已流通主题无法删除"));
+        EntityCacheService.unlockPkEntity(pkId);
+//        if(pkEntity.getAlbumStatu() == PkStatu.已关闭)
+//        {
+//            daoService.deleteEntity(pkEntity);
+//            this.删除激活表(pkEntity.getPkId());
+//            return ;
+//        }
+        throw AppException.buildException(PageAction.信息反馈框("无法删除","已发布主题无法删除"));
 
 
     }
 
-    private void 删除激活表(String pkId) {
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(PkActiveEntity.class)
-                .compareFilter("pkId",CompareTag.Equal,pkId);
-        PkActiveEntity pkActiveEntity = daoService.querySingleEntity(PkActiveEntity.class,filter);
-        if(!ObjectUtils.isEmpty(pkActiveEntity)){daoService.deleteEntity(pkActiveEntity);}
 
-
-    }
     public void 修改PrePK(String pkId,String topic, String watchWord) throws AppException, UnsupportedEncodingException {
         PkEntity pkEntity = this.querySinglePkEntity(pkId);
 
@@ -418,9 +411,6 @@ public class PkService {
             pkEntity.setWatchWord(watchWord);
             daoService.updateEntity(pkEntity);
             return ;
-
-
-
 
     }
 
@@ -543,18 +533,18 @@ public class PkService {
     }
 
     public void 添加一个审核中(String pkId) {
-        PkEntity pkEntity = this.querySinglePkEntity(pkId);
+//        PkEntity pkEntity = this.querySinglePkEntity(pkId);
         dynamicService.valueIncr(CacheKeyName.审核中数量,pkId);
 
-//        pkEntity.setApproving(pkEntity.getApproving() + 1);
-        daoService.updateEntity(pkEntity);
+////        pkEntity.setApproving(pkEntity.getApproving() + 1);
+//        daoService.updateEntity(pkEntity);
     }
 
     public void 减少一个审核中(String pkId) {
-        PkEntity pkEntity = this.querySinglePkEntity(pkId);
+//        PkEntity pkEntity = this.querySinglePkEntity(pkId);
         dynamicService.valueDecr(CacheKeyName.审核中数量,pkId);
 //        pkEntity.setApproving(pkEntity.getApproving() - 1);
-        daoService.updateEntity(pkEntity);
+//        daoService.updateEntity(pkEntity);
     }
 
 
