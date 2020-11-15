@@ -167,8 +167,8 @@ public class 上传群二维码 {
                 {
 
                     dataSet5 = new DataSet("mode", "");
-                    dataSet6 = new DataSet("t1", "空空如也");
-                    dataSet7 = new DataSet("t2", "等待用户更新主题群...");
+                    dataSet6 = new DataSet("t1", "未更新主题群");
+                    dataSet7 = new DataSet("t2", "等待更新主题群,稍后再查看...");
 
 
 

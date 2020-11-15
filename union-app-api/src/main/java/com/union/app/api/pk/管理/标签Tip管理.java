@@ -25,7 +25,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(path="/pk")
-public class 审核Tip管理 {
+public class 标签Tip管理 {
 
     @Autowired
     AppService appService;
@@ -66,7 +66,7 @@ public class 审核Tip管理 {
     public AppResponse 查询内置PK(@RequestParam("password") String password) throws AppException, IOException {
         appService.验证Password(password);
 
-        List<ActiveTip> tips = appService.查询所有提示信息();
+        List<ActiveTip> tips = appService.查询所有标签信息();
 
 
 

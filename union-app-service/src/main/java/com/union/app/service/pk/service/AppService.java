@@ -209,8 +209,8 @@ public class AppService {
 
     public void 添加邀请(String pkId, String userId) throws IOException {
 
-        if(StringUtils.isBlank(pkId) || pkService.isPkCreator(pkId,userId)){return;}
 
+        if(StringUtils.isBlank(pkId)){return;}
 
 
         InvitePkEntity invitePkEntity = queryInvitePk(pkId,userId);
@@ -1373,7 +1373,7 @@ public class AppService {
         pkActive.setPkId(pkActiveEntity.getPkId());
         pkActive.setRejectTimes(pkActiveEntity.getRejectTime());
         pkActive.setMaxModifyTimes(AppConfigService.getConfigAsInteger(ConfigItem.PK最大修改次数));
-        pkActive.setTip(StringUtils.isBlank(pkActiveEntity.getTipId())?"":this.查询Tip(pkActiveEntity.getTipId()));
+//        pkActive.setTip(StringUtils.isBlank(pkActiveEntity.getTipId())?"":this.查询Tip(pkActiveEntity.getTipId()));
         pkActive.setStatu(new KeyNameValue(pkActiveEntity.getStatu().getStatu(),pkActiveEntity.getStatu().getStatuStr()));
 
         return pkActive;
@@ -1489,7 +1489,7 @@ public class AppService {
 
     }
 
-    public List<ActiveTip> 查询所有提示信息() {
+    public List<ActiveTip> 查询所有标签信息() {
         EntityFilterChain filter =  EntityFilterChain.newFilterChain(ActiveTipEntity.class);
         List<ActiveTipEntity> activeTipEntities = daoService.queryEntities(ActiveTipEntity.class,filter);
 
@@ -1498,40 +1498,76 @@ public class AppService {
         activeTipEntities.forEach(tip ->{
             ActiveTip activeTip = new ActiveTip();
             activeTip.setId(tip.getId());
-            try {
-                activeTip.setTip(new String(tip.getTipStr(),"UTF-8"));
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
+            activeTip.setStyle(查询标签Style());
+            activeTip.setTip(tip.getTip());
             activeTips.add(activeTip);
         });
 
-
-
         return activeTips;
+    }
+
+    public List<ActiveTip> 查询PK标签信息(String pkId) {
+        EntityFilterChain filter =  EntityFilterChain.newFilterChain(PkTipEntity.class)
+                .compareFilter("pkId",CompareTag.Equal,pkId);
+        List<PkTipEntity> activeTipEntities = daoService.queryEntities(PkTipEntity.class,filter);
+
+        List<ActiveTip> activeTips = new ArrayList<>();
+        List<Object> tips = new ArrayList<>();
+        activeTipEntities.forEach(tip->{
+            tips.add(tip.getTipId());
+        });
+
+        activeTips = 查询Tip(tips);
+
+
+//        activeTipEntities.forEach(tip ->{
+//
+//            ActiveTip activeTip = 查询Tip(tip.getTipId());
+//            if(!ObjectUtils.isEmpty(activeTip))
+//            {
+//                activeTips.add(activeTip);
+//            }
+//
+//        });
+        
+        return activeTips;
+    }
+
+    private String 查询标签Style() {
+
+        return "";
+
     }
 
     public void 添加Tip(String tip) throws UnsupportedEncodingException {
         ActiveTipEntity activeTipEntity = new ActiveTipEntity();
         activeTipEntity.setId(com.union.app.util.idGenerator.IdGenerator.getActiveTipId());
-        activeTipEntity.setTipStr(tip.getBytes("UTF-8"));
+        activeTipEntity.setTip(tip);
         daoService.insertEntity(activeTipEntity);
 
     }
-    private String 查询Tip(String tipId) throws UnsupportedEncodingException {
+    private List<ActiveTip> 查询Tip(List<Object> tips){
+        List<ActiveTip> activeTips = new ArrayList<>();
+        if(CollectionUtils.isEmpty(tips)){return activeTips;}
         EntityFilterChain filter =  EntityFilterChain.newFilterChain(ActiveTipEntity.class)
-                .compareFilter("id",CompareTag.Equal,tipId);
-        ActiveTipEntity activeTipEntity = daoService.querySingleEntity(ActiveTipEntity.class,filter);
-        if(!ObjectUtils.isEmpty(activeTipEntity))
+                .inFilter("id",tips);
+        List<ActiveTipEntity> activeTipEntities = daoService.queryEntities(ActiveTipEntity.class,filter);
+
+        if(!CollectionUtils.isEmpty(activeTipEntities))
         {
-            return new String(activeTipEntity.getTipStr(),"UTF-8");
+            activeTipEntities.forEach(activeTipEntity -> {
+                ActiveTip activeTip = new ActiveTip();
+                activeTip.setId(activeTipEntity.getId());
+                activeTip.setStyle(查询标签Style());
+                activeTip.setTip(activeTipEntity.getTip());
+                activeTips.add(activeTip);
+            });
         }
-        else
-        {
-            return "";
-        }
+        return activeTips;
+
 
     }
+
 
     public void 删除Tip(String id) {
         EntityFilterChain filter =  EntityFilterChain.newFilterChain(ActiveTipEntity.class)
@@ -1556,7 +1592,9 @@ public class AppService {
                      .andFilter()
                      .compareFilter("pkType",CompareTag.Equal,PkType.审核相册)
                      .andFilter()
-                     .compareFilter("postStatu",CompareTag.Equal,PostStatu.审核中);
+                     .compareFilter("postStatu",CompareTag.Equal,PostStatu.审核中)
+                     .andFilter()
+                     .compareFilter("active",CompareTag.Equal,true);
         }
         else if(type == 2)
         {
@@ -1565,7 +1603,9 @@ public class AppService {
                     .andFilter()
                     .compareFilter("pkType",CompareTag.NotEqual,PkType.内置相册)
                     .andFilter()
-                    .compareFilter("postStatu",CompareTag.Equal,PostStatu.审核中);
+                    .compareFilter("postStatu",CompareTag.Equal,PostStatu.审核中)
+                    .andFilter()
+                    .compareFilter("active",CompareTag.Equal,true);;
         }
         else if(type == 3)
         {
@@ -1574,7 +1614,9 @@ public class AppService {
                     .andFilter()
                     .compareFilter("pkType",CompareTag.NotEqual,PkType.运营相册)
                     .andFilter()
-                    .compareFilter("postStatu",CompareTag.Equal,PostStatu.审核中);
+                    .compareFilter("postStatu",CompareTag.Equal,PostStatu.审核中)
+                    .andFilter()
+                    .compareFilter("active",CompareTag.Equal,true);;
         }
         else
         {
@@ -1595,8 +1637,6 @@ public class AppService {
             dataSets.add(new DataSet("pk",pkDetail));
             dataSets.add(new DataSet("post",post));
             dataSets.add(new DataSet("text",entity.getText()));
-
-
 
         }
         else
@@ -1951,6 +1991,7 @@ public class AppService {
         postEntities.forEach(post->{
             pks.add(post.getPkId());
         });
+        if(CollectionUtils.isEmpty(pks)){return pkMap;}
         EntityFilterChain filter = EntityFilterChain.newFilterChain(PkEntity.class)
                 .inFilter("pkId",pks);
         List<PkEntity> entities = daoService.queryEntities(PkEntity.class,filter);
@@ -2078,5 +2119,47 @@ public class AppService {
 
 
 
+    }
+
+
+    public void 设置标签(String pkId, List<String> tips) {
+
+        EntityFilterChain filter =  EntityFilterChain.newFilterChain(PkTipEntity.class)
+                .compareFilter("pkId",CompareTag.Equal,pkId);
+        List<PkTipEntity> entities = daoService.queryEntities(PkTipEntity.class,filter);
+        if(!CollectionUtils.isEmpty(entities))
+        {
+            entities.forEach(entity->{
+                daoService.deleteEntity(entity);
+            });
+        }
+
+
+        for(String tipId:tips)
+        {
+            EntityFilterChain filter1 =  EntityFilterChain.newFilterChain(PkTipEntity.class)
+                    .compareFilter("pkId",CompareTag.Equal,pkId)
+                    .andFilter()
+                    .compareFilter("tipId",CompareTag.Equal,tipId);
+            PkTipEntity activeTipEntity = daoService.querySingleEntity(PkTipEntity.class,filter1);
+            if(ObjectUtils.isEmpty(activeTipEntity))
+            {
+                activeTipEntity = new PkTipEntity();
+                activeTipEntity.setPkId(pkId);
+                activeTipEntity.setTipId(clearTip(tipId));
+                activeTipEntity.setTime(System.currentTimeMillis());
+                daoService.insertEntity(activeTipEntity);
+            }
+
+        }
+
+    }
+    private String clearTip(String tip) {
+        String reg1 = "\\[";
+        String reg2 = "]";
+        String reg3 = "\"";
+//        String reg4 = AppConfigService.getConfigAsString(常量值.OSS基础地址,"https://oss.211shopper.com");
+        tip = tip.replaceAll(reg3,"").replaceAll(reg1,"").replaceAll(reg2,"").trim();
+        return tip;
     }
 }

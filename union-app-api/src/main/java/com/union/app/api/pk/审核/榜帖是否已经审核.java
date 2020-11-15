@@ -78,7 +78,7 @@ public class 榜帖是否已经审核 {
             PostEntity postEntity    = postService.查询帖子ById(postId);
             if(  (postEntity.getStatu() == PostStatu.审核中))
             {
-                return AppResponse.buildResponse(PageAction.执行处理器("noApprove","/pages/pk/editApproveComment/editApproveComment?pkId=" + pkId + "&postId=" + postEntity.getPostId()));
+                return AppResponse.buildResponse(PageAction.执行处理器("noApprove","/pages/pk/prepost/prepost?pkId=" + pkId + "&postId=" + postEntity.getPostId()));
 
             }
             else

@@ -197,6 +197,7 @@ public class PkService {
         pkDetail.setTopic(pk.getTopic());
         pkDetail.setUser(userService.queryUser(pk.getUserId()));
         pkDetail.setWatchWord(pk.getWatchWord());
+        pkDetail.setTips(appService.查询PK标签信息(pkId));
         pkDetail.setTime(TimeUtils.convertTime(pk.getCreateTime()));
         pkDetail.setComplainTimes(pk.getComplainTimes());
         pkDetail.setPkStatu(ObjectUtils.isEmpty(pk.getAlbumStatu())?new KeyNameValue(PkStatu.审核中.getStatu(),PkStatu.审核中.getStatuStr()):new KeyNameValue(pk.getAlbumStatu().getStatu(),pk.getAlbumStatu().getStatuStr()));
@@ -207,6 +208,7 @@ public class PkService {
         pkDetail.setUserBack(appService.查询背景(0));
         pkDetail.setGreate(dynamicService.getKeyValue(CacheKeyName.点赞,pkId));
         pkDetail.setInvite(dynamicService.getKeyValue(CacheKeyName.收藏,pkId));
+        pkDetail.setComplainTimes(dynamicService.getKeyValue(CacheKeyName.投诉,pkId));
         pkDetail.setComment(dynamicService.getKeyValue(CacheKeyName.评论,pkId));
         return pkDetail;
     }
@@ -568,7 +570,23 @@ public class PkService {
 
 
     }
+    public List<String> 查询审核中页(String pkId, int page) {
 
+        List<String> ids = new ArrayList<>();
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(PkPostListEntity.class)
+                .compareFilter("pkId",CompareTag.Equal,pkId)
+                .andFilter()
+                .compareFilter("statu",CompareTag.NotEqual,PostStatu.上线)
+                .pageLimitFilter(page+1,20)
+                .orderByFilter("time",OrderTag.DESC);
+
+        List<PkPostListEntity> entities = daoService.queryEntities(PkPostListEntity.class,filter);
+        entities.forEach(t->{
+            ids.add(t.getPostId());
+        });
+        return ids;
+
+    }
     public List<String> 查询已审核页(String pkId, int page) {
 
         List<String> ids = new ArrayList<>();
@@ -576,7 +594,7 @@ public class PkService {
                 .compareFilter("pkId",CompareTag.Equal,pkId)
                 .andFilter()
                 .compareFilter("statu",CompareTag.Equal,PostStatu.上线)
-                .pageLimitFilter(page+1,30)
+                .pageLimitFilter(page+1,20)
                 .orderByFilter("time",OrderTag.DESC);
 
         List<PkPostListEntity> entities = daoService.queryEntities(PkPostListEntity.class,filter);
@@ -626,7 +644,7 @@ public class PkService {
             entity = new GreatePkEntity();
             entity.setPkId(pkId);
             entity.setUserId(userId);
-            entity.setCreateTime(System.currentTimeMillis());
+            entity.setTime(System.currentTimeMillis());
             daoService.insertEntity(entity);
             dynamicService.valueIncr(CacheKeyName.点赞,pkId);
         }

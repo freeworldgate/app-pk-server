@@ -43,33 +43,42 @@ public class 点赞添加邀请 {
     @Autowired
     AppService appService;
 
-    @RequestMapping(path="/addGap",method = RequestMethod.GET)
+    @RequestMapping(path="/likePk",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse 设置PK位置(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId,@RequestParam("gap") int tag) throws AppException, IOException {
-        if(tag == 1)
-        {
+    public AppResponse 喜欢(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId) throws AppException, IOException {
+
             //点赞
-            pkService.greate(pkId,userId);
 
-        }
+        pkService.greate(pkId,userId);
 
 
-        if(tag == 3)
-        {
+        List<DataSet> dataSets = new ArrayList<>();
+
+        dataSets.add(new DataSet("greateStatu",appService.查询状态(pkId,userId,1)));
+        dataSets.add(new DataSet("pk.greate",dynamicService.getKeyValue(CacheKeyName.点赞,pkId)));
+        return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
+
+
+
+
+
+
+
+
+    }
+
+
+    @RequestMapping(path="/collectPk",method = RequestMethod.GET)
+    @Transactional(rollbackOn = Exception.class)
+    public AppResponse 设置PK位置(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId) throws AppException, IOException {
+
             //邀请
             appService.添加邀请(pkId,userId);
             List<DataSet> dataSets = new ArrayList<>();
-            dataSets.add(new DataSet("hasInivte",true));
+
             dataSets.add(new DataSet("inviteStatu",appService.查询状态(pkId,userId,3)));
+            dataSets.add(new DataSet("pk.invite",dynamicService.getKeyValue(CacheKeyName.收藏,pkId)));
             return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
-
-        }
-
-        return AppResponse.buildResponse(PageAction.前端数据更新("key","key"));
-
-
-
-
 
 
 

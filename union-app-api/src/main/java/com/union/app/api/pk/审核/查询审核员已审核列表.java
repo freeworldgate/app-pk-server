@@ -47,7 +47,7 @@ public class 查询审核员已审核列表 {
     ApproveService approveService;
 
     @RequestMapping(path="/queryApprovedPost",method = RequestMethod.GET)
-    public AppResponse 查询审核信息(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId) throws AppException, IOException {
+    public AppResponse 查询审核信息(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId,@RequestParam("type") int type) throws AppException, IOException {
 
         Date currentDate = new Date();
 
@@ -56,9 +56,9 @@ public class 查询审核员已审核列表 {
 
         List<DataSet> dataSets = new ArrayList<>();
 
-        List<Post> posts = dynamicService.查询已审核指定范围的Post(userId,pkId,0);
+        List<Post> posts = dynamicService.查询已审核指定范围的Post(userId,pkId,0,type);
         DataSet dataSet2 = new DataSet("approvedPosts",posts);
-        DataSet dataSet4 = new DataSet("currentApprovedPage",1);
+        DataSet dataSet4 = new DataSet("page",1);
 
         DataSet dataSet8 = new DataSet("pkId",pkId);
         DataSet dataSet9 = new DataSet("creator",pkService.queryPkCreator(pkId));
@@ -76,10 +76,10 @@ public class 查询审核员已审核列表 {
     }
 
     @RequestMapping(path="/queryMoreApprovedPost",method = RequestMethod.GET)
-    public AppResponse 查询审核信息More(@RequestParam("pkId") String pkId,@RequestParam("currentApprovedPage") int page,@RequestParam("userId") String userId) throws AppException, IOException {
+    public AppResponse 查询审核信息More(@RequestParam("pkId") String pkId,@RequestParam("page") int page,@RequestParam("userId") String userId,@RequestParam("type") int type) throws AppException, IOException {
 
 
-        List<Post> posts = dynamicService.查询已审核指定范围的Post(userId,pkId,page);
+        List<Post> posts = dynamicService.查询已审核指定范围的Post(userId,pkId,page,type);
         if(CollectionUtils.isEmpty(posts)){
             return AppResponse.buildResponse(PageAction.前端数据更新("approvedEnd",true));
         }

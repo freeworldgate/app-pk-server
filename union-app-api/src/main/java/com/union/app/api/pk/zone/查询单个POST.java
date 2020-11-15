@@ -14,10 +14,12 @@ import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.service.pk.click.ClickService;
 import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.service.AppService;
+import com.union.app.service.pk.service.ApproveService;
 import com.union.app.service.pk.service.PkService;
 import com.union.app.service.pk.service.PostService;
 import com.union.app.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -55,16 +57,27 @@ public class 查询单个POST {
     @Autowired
     DynamicService dynamicService;
 
+    @Autowired
+    ApproveService approveService;
 
     @RequestMapping(path="/queryPostById",method = RequestMethod.GET)
     public AppResponse 查询单个POSTById(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId,@RequestParam("userId") String userId) throws AppException, IOException {
 
-        Date currentDate = new Date();
-        Post post = postService.查询帖子(pkId,postId,userId);
+        List<DataSet> dataSets = new ArrayList<>();
 
+        PostEntity postEntity = postService.查询帖子ById(postId);
+        if(ObjectUtils.isEmpty(postEntity)){
+            return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
+        }
+
+        if(postEntity.getStatu() != PostStatu.上线){
+            ApproveButton approveButton = approveService.获取审核按钮(pkId,postId,userId);
+            dataSets.add(new DataSet("button",approveButton));
+        }
+        Post post = postService.translate(postEntity);
         User creator = pkService.queryPkCreator(pkId);
 
-        List<DataSet> dataSets = new ArrayList<>();
+
         DataSet dataSet1 = new DataSet("post",post);
         DataSet dataSet2 = new DataSet("creator",creator);
 
@@ -75,6 +88,7 @@ public class 查询单个POST {
         dataSets.add(new DataSet("t3","审核"));
         dataSets.add(new DataSet("t4","检测到当前图册处于未审核状态，请前往审核页面,榜主通过审核后方可发布该图册内容..."));
         dataSets.add(new DataSet("t5","修改主题"));
+        dataSets.add(new DataSet("t55","请求审核"));
         dataSets.add(new DataSet("t6","修改主题内容"));
         dataSets.add(new DataSet("t7","修改图片需要重新审核图册内容..."));
         dataSets.add(new DataSet("t3","审核"));

@@ -72,7 +72,7 @@ public class 激活榜 {
         if(!ObjectUtils.isEmpty(activePk))
         {
 
-            List<ActiveTip> tips = appService.查询所有提示信息();
+            List<ActiveTip> tips = appService.查询所有标签信息();
             dataSets.add(new DataSet("tips",tips));
             dataSets.add(new DataSet("tipId",activePk.getTipId()));
         }

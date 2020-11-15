@@ -497,14 +497,25 @@ public class DynamicService {
 
 
 
-    public List<Post> 查询已审核指定范围的Post(String userId,String pkId,int page) throws UnsupportedEncodingException {
+    public List<Post> 查询已审核指定范围的Post(String userId,String pkId,int page,int type) throws UnsupportedEncodingException {
 
 
         List<Post> posts = new ArrayList<>();
         List<String> postIds = new ArrayList<>();
+        if(type == 0)
+        {
 
-        List<String> pageList =  pkService.查询已审核页(pkId,page) ;//redisSortSetService.queryPage(CacheKeyName.榜主已审核列表(pkId),page);
-        postIds.addAll(pageList);
+            postIds.addAll(pkService.查询已审核页(pkId,page));
+        }
+        else if(type == 1)
+        {
+
+            postIds.addAll(pkService.查询审核中页(pkId,page));
+        }
+        else
+        {
+
+        }
 
 
         for(String postId:postIds)

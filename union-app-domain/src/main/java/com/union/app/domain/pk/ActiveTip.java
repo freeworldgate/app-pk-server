@@ -14,4 +14,6 @@ public class ActiveTip {
     private String id;
 
     private String tip;
+
+    private String style;
 }

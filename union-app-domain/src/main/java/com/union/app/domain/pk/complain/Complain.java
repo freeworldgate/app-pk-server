@@ -2,6 +2,7 @@ package com.union.app.domain.pk.complain;
 
 import com.union.app.domain.pk.UserCode;
 import com.union.app.domain.pk.apply.ApplyOrder;
+import com.union.app.domain.user.User;
 import com.union.app.entity.pk.complain.ComplainStatu;
 import com.union.app.entity.pk.complain.ComplainType;
 import lombok.Getter;
@@ -11,13 +12,21 @@ import lombok.Setter;
 @Setter
 public class Complain {
 
-    String id;
 
-    UserCode userCode;
+    private int complainId;
+    private User user;
 
-    ApplyOrder applyOrder;
+    private String pkId;
 
-    ComplainType complainType;
+    private String postId;
+
+    private String statu;
+
+    private String text;
+
+    private String url;
+
+    private String time;
 
 
 

@@ -12,25 +12,19 @@ import javax.persistence.*;
 @EqualsAndHashCode
 @ToString
 @Entity
-@Table(name="T_PK_GREATE")
-public class GreatePkEntity {
+@Table(name="T_Pk_Tip")
+public class PkTipEntity {
 
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)//mysql数据库主键策略
-    private int greateId;
-
-    private String userId;
+    private int id;
 
     private String pkId;
 
+    private String tipId;
+
     private long time;
-
-
-
-
-
-
 
 
 

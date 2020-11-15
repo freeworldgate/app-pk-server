@@ -33,7 +33,7 @@ public class PkDetail implements Serializable{
 
     private String watchWord;
 
-
+    private List<ActiveTip> tips;
 
     private int shareMode;
 
@@ -45,6 +45,8 @@ public class PkDetail implements Serializable{
     private KeyNameValue charge;
 
     private List<String> imgs;
+
+
 
     private ApproveMessage approveMessage;
 

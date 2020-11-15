@@ -94,49 +94,70 @@ public class 查询单个PK {
         UserEntity creator = userService.queryUserEntity(pkEntity.getUserId());
         PkDetail pkDetail = pkService.querySinglePk(pkEntity);
 
+        dataSets.add(new DataSet("greateStatu",appService.查询状态(pkId,userId,1)));
+        dataSets.add(new DataSet("inviteStatu",appService.查询状态(pkId,userId,3)));
+//
+//        if(org.apache.commons.lang.StringUtils.equalsIgnoreCase(pkEntity.getUserId(),userId)){
+////            dataSets.add(new DataSet("tips",appService.查询所有标签信息()));
+////            dataSets.add(new DataSet("maxTips",AppConfigService.getConfigAsInteger(ConfigItem.主题可选择标签数量)));
+//        }
+//        else
+//        {
+////            dataSets.add(new DataSet("greateStatu",appService.查询状态(pkId,userId,1)));
+////            dataSets.add(new DataSet("inviteStatu",appService.查询状态(pkId,userId,3)));
+////            dataSets.add(new DataSet("complainStatu",appService.查询状态(pkId,userId,2)));
+//        }
+        PostEntity userPostEntity = postService.查询用户帖(pkId,userId);
+        dataSets.add(new DataSet("userPost", userPostEntity));
+
+        dataSets.add(new DataSet("share",appService.显示按钮(PkButtonType.邀请图册)));
+        if(!ObjectUtils.isEmpty(userPostEntity) && org.apache.commons.lang.StringUtils.equalsIgnoreCase(pkEntity.getUserId(),userId) && userPostEntity.getStatu() != PostStatu.上线)
+        {
+                //创建者：
+            dataSets.add(new DataSet("share",null));
+
+        }
+        if((creator.getUserType() == UserType.重点用户) || (AppConfigService.getConfigAsBoolean(ConfigItem.普通用户主题是否显示分享按钮和群组按钮)) && (userPostEntity.getStatu() != PostStatu.上线))
+        {
+            dataSets.add(new DataSet("group",appService.显示按钮(PkButtonType.群组)));
+        }
+
+
 
         Post post = postService.查询用户帖子(pkId,StringUtils.isEmpty(pkEntity.getTopPostUserId())?pkEntity.getUserId():pkEntity.getTopPostUserId());
-        boolean isCreatorPublish = false;
         if(!ObjectUtils.isEmpty(post) && post.getStatu().getKey() == PostStatu.上线.getStatu()) {
-            isCreatorPublish = true;
             dataSets.add(new DataSet("cpost", post));
         }
         List<Post> posts = pkService.queryPkPost(pkId,0);
 
-        dataSets.add(new DataSet("appImg",appService.查询背景(8)));
-        if((creator.getUserType() == UserType.重点用户) || (AppConfigService.getConfigAsBoolean(ConfigItem.普通用户主题是否显示分享按钮和群组按钮)))
-        {
-            dataSets.add(new DataSet("group",appService.显示按钮(PkButtonType.群组)));
-        }
-        dataSets.add(new DataSet("post",appService.显示按钮(PkButtonType.榜帖)));
-        dataSets.add(new DataSet("approve",appService.显示按钮(PkButtonType.评论)));
-        dataSets.add(new DataSet("approving",appService.显示按钮(PkButtonType.点赞)));
 
-        PostEntity postEntity = postService.查询用户帖(pkId,userId);
-        if(ObjectUtils.isEmpty(postEntity))
-        {
-            dataSets.add(new DataSet("button",appService.显示按钮(PkButtonType.发布图册)));
-        }
-        else
-        {
-            if((creator.getUserType() == UserType.重点用户) || (AppConfigService.getConfigAsBoolean(ConfigItem.普通用户主题是否显示分享按钮和群组按钮)))
-            {
-                if(isCreatorPublish)
-                {
-                    dataSets.add(new DataSet("button",appService.显示按钮(PkButtonType.邀请图册)));
-                }
-                else
-                {
-                    dataSets.add(new DataSet("button",null));
-                }
-            }
-        }
 
+
+
+//        PostEntity postEntity = postService.查询用户帖(pkId,userId);
+//        if(ObjectUtils.isEmpty(postEntity))
+//        {
+////            dataSets.add(new DataSet("button",appService.显示按钮(PkButtonType.发布图册)));
+//        }
+//        else
+//        {
+//            if((creator.getUserType() == UserType.重点用户) || (AppConfigService.getConfigAsBoolean(ConfigItem.普通用户主题是否显示分享按钮和群组按钮)))
+//            {
+//                if(isCreatorPublish)
+//                {
+//                    dataSets.add(new DataSet("button",appService.显示按钮(PkButtonType.邀请图册)));
+//                }
+//                else
+//                {
+//                    dataSets.add(new DataSet("button",null));
+//                }
+//            }
+//        }
 
         dataSets.add(new DataSet("pk",pkDetail));
         dataSets.add(new DataSet("imgBack",appService.查询背景(0)));
-        dataSets.add(new DataSet("creatorImg",appService.查询背景(11)));
-        dataSets.add(new DataSet("otherImg",appService.查询背景(12)));
+
+
         dataSets.add(new DataSet("topImg",appService.查询背景(13)));
 
         dataSets.add(new DataSet("posts",posts));
@@ -145,9 +166,10 @@ public class 查询单个PK {
 
 
 
-        dataSets.add(new DataSet("greateStatu",appService.查询状态(pkId,userId,1)));
-        dataSets.add(new DataSet("inviteStatu",appService.查询状态(pkId,userId,3)));
-        dataSets.add(new DataSet("complainStatu",appService.查询状态(pkId,userId,2)));
+
+
+
+
 
 
 

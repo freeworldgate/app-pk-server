@@ -23,7 +23,11 @@ public class ComplainEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)//mysql数据库主键策略
     int id;
 
+    boolean active;
+
     String pkId;
+
+    String postId;
 
     @Enumerated(EnumType.STRING)
     PkType pkType;
@@ -38,8 +42,8 @@ public class ComplainEntity {
 
     String text;
 
-    long updateTime;
+    String url;
 
-
+    long time;
 
 }

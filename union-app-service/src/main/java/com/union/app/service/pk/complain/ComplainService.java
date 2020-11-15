@@ -4,6 +4,7 @@ import com.union.app.common.config.AppConfigService;
 import com.union.app.common.dao.AppDaoService;
 import com.union.app.dao.spi.filter.CompareTag;
 import com.union.app.dao.spi.filter.EntityFilterChain;
+import com.union.app.dao.spi.filter.OrderTag;
 import com.union.app.domain.pk.complain.Complain;
 import com.union.app.entity.pk.PkEntity;
 import com.union.app.entity.pk.PkPostListEntity;
@@ -21,9 +22,14 @@ import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.service.PkService;
 import com.union.app.service.pk.service.PostService;
 import com.union.app.service.user.UserService;
+import com.union.app.util.time.TimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ComplainService {
@@ -49,7 +55,25 @@ public class ComplainService {
     PkService pkService;
 
 
+    public Complain 查询Complain投诉信息(String pkId, String userId) {
+        ComplainEntity complainEntity = 查询投诉信息(pkId,userId);
+        if(!ObjectUtils.isEmpty(complainEntity))
+        {
+            Complain complain = new Complain();
+            complain.setComplainId(complainEntity.getId());
+            complain.setStatu(complainEntity.getComplainStatu().getStatuStr());
+            complain.setText(complainEntity.getText());
+            complain.setUrl(complainEntity.getUrl());
+            complain.setUser(userService.queryUser(complainEntity.getUserId()));
+            complain.setPkId(complainEntity.getPkId());
+            complain.setPostId(complainEntity.getPostId());
+            complain.setTime(TimeUtils.convertTime(complainEntity.getTime()));
+            return complain;
+        }
+        return null;
 
+    }
+    
     public ComplainEntity 查询投诉信息(String pkId, String userId) {
         EntityFilterChain filter = EntityFilterChain.newFilterChain(ComplainEntity.class)
                 .compareFilter("pkId",CompareTag.Equal,pkId)
@@ -59,49 +83,56 @@ public class ComplainService {
         return complainEntity;
     }
 
-    public void 添加投诉(String pkId, String userId,String text) throws AppException {
+    public void 添加投诉(String pkId, String userId,String text,String url) throws AppException {
 
         ComplainEntity complainEntity = this.查询投诉信息(pkId,userId);
-
+        PostEntity postEntity = postService.查询用户帖(pkId, userId);
         if(ObjectUtils.isEmpty(complainEntity))
         {
-            PostEntity postEntity = postService.查询用户帖(pkId, userId);
-            if(postEntity.getStatu() != PostStatu.上线)
+
+
+            PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
+            complainEntity = new ComplainEntity();
+
+            if(!ObjectUtils.isEmpty(postEntity))
             {
-
-                if(userService.是否是遗传用户(userId)) {
-                    PkPostListEntity pkPostListEntity = pkService.查询图册排列(pkId, postEntity.getPkId());
-                    if (ObjectUtils.isEmpty(pkPostListEntity)) {
-                        throw AppException.buildException(PageAction.信息反馈框("投诉失败", "发布图册后申请审核图册!"));
-                    }
-                    if (!dynamicService.审核等待时间过长(pkId, postEntity.getPostId())) {
-                        throw AppException.buildException(PageAction.信息反馈框("投诉失败", "发布图册后，等待审核时间超过" + AppConfigService.getConfigAsInteger(ConfigItem.榜帖可发起投诉的等待时间) + "分钟后方可投诉!"));
-                    }
+                if(postEntity.getShareTime()>0)
+                {
+                    complainEntity.setActive(true);
                 }
-
             }
 
 
 
-            PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
-            ComplainEntity newComplain = new ComplainEntity();
-
-            newComplain.setText(text);
-            newComplain.setUserId(userId);
-            newComplain.setPostStatu(postEntity.getStatu());
-            newComplain.setPkId(pkId);
-            newComplain.setPkType(pkEntity.getPkType());
-            newComplain.setComplainStatu(ComplainStatu.处理中);
-            newComplain.setUpdateTime(System.currentTimeMillis());
-            daoService.insertEntity(newComplain);
+            complainEntity.setText(text);
+            complainEntity.setUserId(userId);
+            complainEntity.setPostStatu(ObjectUtils.isEmpty(postEntity)?null:postEntity.getStatu());
+            complainEntity.setPkId(pkId);
+            complainEntity.setPostId(ObjectUtils.isEmpty(postEntity)?null:postEntity.getPostId());
+            complainEntity.setUrl(url);
+            complainEntity.setPkType(pkEntity.getPkType());
+            complainEntity.setComplainStatu(ComplainStatu.处理中);
+            complainEntity.setTime(System.currentTimeMillis());
+            daoService.insertEntity(complainEntity);
             dynamicService.valueIncr(CacheKeyName.投诉,pkId);
 
         }
         else
         {
+            if(!ObjectUtils.isEmpty(postEntity))
+            {
+                if(postEntity.getShareTime()>0 && postEntity.getShareTime()>complainEntity.getTime())
+                {
+                    complainEntity.setActive(true);
+                }
+            }
 
-             throw AppException.buildException(PageAction.信息反馈框("已投诉","已接受投诉,不能重复投诉..."));
 
+            complainEntity.setPostStatu(ObjectUtils.isEmpty(postEntity)?null:postEntity.getStatu());
+            complainEntity.setUrl(url);
+            complainEntity.setText(text);
+            complainEntity.setTime(System.currentTimeMillis());
+            daoService.updateEntity(complainEntity);
         }
 
 
@@ -120,7 +151,33 @@ public class ComplainService {
 
 
     }
+    public List<Complain> 查询投诉信息(String pkId,int page) {
+        List<Complain> complains = new ArrayList<>();
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(ComplainEntity.class)
+                .compareFilter("pkId",CompareTag.Equal,pkId)
+                .pageLimitFilter(page,AppConfigService.getConfigAsInteger(ConfigItem.单个PK页面的帖子数))
+                .orderByFilter("time",OrderTag.DESC);
+        List<ComplainEntity> complainEntities = daoService.queryEntities(ComplainEntity.class,filter);
+        if(!CollectionUtils.isEmpty(complainEntities))
+        {
+            complainEntities.forEach(complainEntity -> {
+                Complain complain = new Complain();
+                complain.setComplainId(complainEntity.getId());
+                complain.setStatu(complainEntity.getComplainStatu().getStatuStr());
+                complain.setText(complainEntity.getText());
+                complain.setUrl(complainEntity.getUrl());
+                complain.setUser(userService.queryUser(complainEntity.getUserId()));
+                complain.setPkId(complainEntity.getPkId());
+                complain.setPostId(complainEntity.getPostId());
+                complain.setTime(TimeUtils.convertTime(complainEntity.getTime()));
+                complains.add(complain);
 
+            });
+
+        }
+
+        return complains;
+    }
 
 //    public boolean 用户是否可以收款(String pkId,String userId,int tag){
 //        return dynamicService.getMapKeyValue(DynamicItem.PKUSER用户投诉,pkId,userId) == 0;

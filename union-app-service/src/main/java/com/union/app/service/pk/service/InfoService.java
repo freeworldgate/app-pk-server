@@ -252,4 +252,43 @@ public class InfoService {
 
         return "";
     }
+
+    public List<User> 查询喜欢信息(String pkId, int page) {
+        List<User> users = new ArrayList<>();
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(GreatePkEntity.class)
+                .compareFilter("pkId",CompareTag.Equal,pkId)
+                .pageLimitFilter(page,20)
+                .orderByFilter("time",OrderTag.DESC);
+        List<GreatePkEntity> entities = daoService.queryEntities(GreatePkEntity.class,filter);
+        if(!CollectionUtils.isEmpty(entities))
+        {
+            entities.forEach(entity->{
+                User user = userService.queryUser(entity.getUserId());
+                user.setTime(TimeUtils.convertTime(entity.getTime()));
+                users.add(user);
+            });
+
+
+        }
+        return users;
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

@@ -58,7 +58,8 @@ public enum ConfigItem {
     缓存时间("postCacheTime", "POST_CACHE_TIME", "缓存时间(时间秒)", "60"),
     PK缓存数量("pkCacheNumbers", "PK_CACHE_NUMBERS", "PK缓存数量", "100"),
     首页图片选择榜主图册("imgSelectPkCreator", "IS_PK_CREATOR_IMG", "首页图片选择榜主图册", "true"),
-    信息展示页面用户数量("InfoShowUserNum", "USER_NUM_INFO_SHOW","信息展示页面用户数量" , "5");
+    信息展示页面用户数量("InfoShowUserNum", "USER_NUM_INFO_SHOW","信息展示页面用户数量" , "5"),
+    主题可选择标签数量("maxTips", "MAX_TIPS", "主题可选择标签数量", "5");
 
 
 

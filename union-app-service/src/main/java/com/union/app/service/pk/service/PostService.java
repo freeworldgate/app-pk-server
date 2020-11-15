@@ -506,11 +506,11 @@ public class PostService {
             throw AppException.buildException(PageAction.消息级别提示框(Level.错误消息,"非法操作"));
         }
 
-        ComplainEntity complainEntity = complainService.查询投诉信息(pkId,postEntity.getUserId());
-        if(!ObjectUtils.isEmpty(complainEntity))
-        {
-            throw AppException.buildException(PageAction.信息反馈框("投诉信息处理中","不能修改图册内容..."));
-        }
+//        ComplainEntity complainEntity = complainService.查询投诉信息(pkId,postEntity.getUserId());
+//        if(!ObjectUtils.isEmpty(complainEntity))
+//        {
+//            throw AppException.buildException(PageAction.信息反馈框("投诉信息处理中","不能修改图册内容..."));
+//        }
 
 
 
@@ -628,7 +628,6 @@ public class PostService {
         }
         postEntity.setShareTime(System.currentTimeMillis());
         postEntity.setApproveStatu(ApproveStatu.请求审核);
-//        postEntity.setApproveUserId(postEntity.getPkId());
         daoService.updateEntity(postEntity);
     }
 

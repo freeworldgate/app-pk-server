@@ -183,7 +183,7 @@ public class UserService {
                 wxSendMessage1.setTouser(fromUserName);
                 wxSendMessage1.setMsgtype("text");
                 WxText wxText1 = new WxText();
-                wxText1.setContent("确认获取用户图片.\n来自榜主:" + userService.queryUserEntity(sessions[1]).getNickName() + ".\n确认拉取     请回复 ：1");
+                wxText1.setContent("确认获取二维码.\n来自用户:" + userService.queryUserEntity(sessions[1]).getNickName() + ".\n确认下载     请回复 ：1");
                 wxSendMessage1.setText(wxText1);
                 sendMsToCustomer(wxSendMessage1);
 

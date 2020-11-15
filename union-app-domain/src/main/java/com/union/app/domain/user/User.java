@@ -30,4 +30,7 @@ public class User implements Serializable{
     private int inviteTimes;
 
 
+
+    private String time;
+
 }
