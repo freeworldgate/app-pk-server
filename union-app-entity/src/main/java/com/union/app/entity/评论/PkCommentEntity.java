@@ -21,6 +21,8 @@ public class PkCommentEntity {
 
     private String pkId;
 
+    private int type;
+
     private String userId;
 
     private String text;

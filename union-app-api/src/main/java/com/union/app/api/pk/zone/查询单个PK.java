@@ -117,7 +117,7 @@ public class 查询单个PK {
             dataSets.add(new DataSet("share",null));
 
         }
-        if((creator.getUserType() == UserType.重点用户) || (AppConfigService.getConfigAsBoolean(ConfigItem.普通用户主题是否显示分享按钮和群组按钮)) && (userPostEntity.getStatu() != PostStatu.上线))
+        if((creator.getUserType() == UserType.重点用户) || (AppConfigService.getConfigAsBoolean(ConfigItem.普通用户主题是否显示分享按钮和群组按钮)) && ((!ObjectUtils.isEmpty(userPostEntity) && (userPostEntity.getStatu() != PostStatu.上线))))
         {
             dataSets.add(new DataSet("group",appService.显示按钮(PkButtonType.群组)));
         }

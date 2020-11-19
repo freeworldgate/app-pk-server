@@ -107,7 +107,7 @@ public class CommentService {
 
     public List<Comment> 查询评论(String id, int type, String userId, int page) {
         //type 用来区分Post还是Pk的评论,目前只支持PK评论
-        if(type == 0)
+        if(type == 0 || type == 1)
         {
             List<Comment> comments = 查询PK评论(id,page);
             return comments;
@@ -142,9 +142,9 @@ public class CommentService {
 
     public Comment 添加评论(String id, int type, String userId, String text) throws AppException {
 
-        if(type == 0)
+        if(type == 0 || type == 1)
         {
-            PkCommentEntity entity = 添加PK评论(id,userId,text);
+            PkCommentEntity entity = 添加PK评论(id,userId,text,type);
             Comment comment1 = new Comment();
             comment1.setCommentId(entity.getCommentId());
             comment1.setId(entity.getPkId());
@@ -158,7 +158,7 @@ public class CommentService {
 
     }
 
-    private PkCommentEntity 添加PK评论(String pkId, String userId, String text) {
+    private PkCommentEntity 添加PK评论(String pkId, String userId, String text,int type) {
 
         EntityFilterChain filter = EntityFilterChain.newFilterChain(PkCommentEntity.class)
                 .compareFilter("pkId",CompareTag.Equal,pkId)
@@ -170,6 +170,7 @@ public class CommentService {
             commentEntity = new PkCommentEntity();
             commentEntity.setCommentId(IdGenerator.getCommentId());
             commentEntity.setPkId(pkId);
+            commentEntity.setType(type);
             commentEntity.setText(text);
             commentEntity.setUserId(userId);
             commentEntity.setTime(System.currentTimeMillis());

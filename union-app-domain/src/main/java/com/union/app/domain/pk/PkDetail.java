@@ -19,6 +19,12 @@ import java.util.List;
 @ToString
 public class PkDetail implements Serializable{
 
+
+
+    private int current = 0;
+
+
+
     private String publishName = "封面";
 
     private String pkId;

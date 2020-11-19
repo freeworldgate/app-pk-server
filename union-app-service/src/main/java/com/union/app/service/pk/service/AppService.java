@@ -1931,7 +1931,7 @@ public class AppService {
 
 
     }
-    public List<Post> 查询用户发布图册(String userId, int page) throws UnsupportedEncodingException {
+    public List<Post> 查询用户发布图册(String userId, int page) throws IOException {
 
 
         List<Post> posts = new ArrayList<>();
@@ -1945,6 +1945,8 @@ public class AppService {
             {
                 Post post = postService.translate(postEntity);
                 post.setPkTopic(pkEntity.getTopic());
+                post.setLocation(appService.查询PK位置(pkEntity.getPkId()));
+                post.setPkBackUrl(pkEntity.getBackUrl());
                 posts.add(post);
             }
 

@@ -60,22 +60,20 @@ public class 指定用户图册 {
         List<Post> posts = appService.查询用户发布图册(targetId,1);
         List<DataSet> dataSets = new ArrayList<>();
 
-        dataSets.add(new DataSet("activePks",userService.查询用户激活PK数量(targetId)));
+//        dataSets.add(new DataSet("activePks",userService.查询用户激活PK数量(targetId)));
 
         if(CollectionUtils.isEmpty(posts))
         {
             dataSets.add(new DataSet("pkEnd",true));}
         else
         {
-
-
             dataSets.add(new DataSet("posts",posts));
             dataSets.add(new DataSet("pkEnd",false));
         }
 
         ;
         dataSets.add(new DataSet("page",1));
-        dataSets.add(new DataSet("targetUser",userService.queryUser(targetId)));
+        dataSets.add(new DataSet("creator",userService.queryUser(targetId)));
         dataSets.add(new DataSet("imgBack",appService.查询背景(14)));
 
 

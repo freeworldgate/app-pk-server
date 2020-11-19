@@ -5,6 +5,7 @@ import com.union.app.domain.pk.*;
 import com.union.app.domain.pk.审核.ApproveMessage;
 import com.union.app.domain.user.User;
 import com.union.app.domain.工具.RandomUtil;
+import com.union.app.entity.pk.PkLocationEntity;
 import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
@@ -79,14 +80,39 @@ public class 查询主页 {
                 pk.setGroupInfo(pkButton);
             });
         }
+        List<Marker> markers = new ArrayList<>();
+        List<Circle> circles = new ArrayList<>();
+
+        pks.forEach(pk ->{
+            PkLocationEntity location = pk.getLocation();
+            if(!ObjectUtils.isEmpty(location)) {
+                Marker marker = new Marker();
+                marker.setId(RandomUtil.getRandomNumber());
+                marker.setLatitude(location.getLatitude() / 1000000.0d);
+                marker.setLongitude(location.getLongitude() / 1000000.0d);
+//                marker.setIconPath(pk.getUser().getImgUrl());
+                Callout callout = new Callout();
+                callout.setContent(pk.getTopic().length()>10?pk.getTopic().substring(0,10)+"...":pk.getTopic());
+                marker.setCallout(callout);
+                markers.add(marker);
+
+                Circle circle = new Circle();
+                circle.setLatitude(location.getLatitude() / 1000000.0d);
+                circle.setLongitude(location.getLongitude() / 1000000.0d);
+                circles.add(circle);
+
+            }
 
 
+        });
 
 
 
         List<DataSet> dataSets = new ArrayList<>();
         dataSets.add(new DataSet("pageTag",true));
         dataSets.add(new DataSet("pks",pks));
+        dataSets.add(new DataSet("circles",circles));
+        dataSets.add(new DataSet("markers",markers));
         dataSets.add(new DataSet("page",1));
 
         User user = userService.queryUser(userId);

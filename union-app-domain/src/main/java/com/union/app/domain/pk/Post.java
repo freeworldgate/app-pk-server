@@ -5,6 +5,7 @@ import com.union.app.domain.pk.integral.UserIntegral;
 import com.union.app.domain.pk.审核.ApproveComment;
 import com.union.app.domain.user.User;
 import com.union.app.domain.工具.RandomUtil;
+import com.union.app.entity.pk.PkLocationEntity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -18,13 +19,18 @@ import java.util.List;
 public class Post {
 
 
-
+    private int current  = 0;
 
     private String postId;
 
     private String pkId;
 
     private String pkTopic;
+    private PkLocationEntity location;
+    private String pkBackUrl;
+
+//    private PkDetail pkDetail;
+
 
     private long scan;
 
