@@ -83,7 +83,7 @@ public class 查询审核页面 {
 
         Post post = postService.查询帖子(pkId,postId,null);
         PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
-        post.setPkTopic(pkEntity.getTopic());
+//        post.setPkTopic(pkEntity.getTopic());
 
 
 

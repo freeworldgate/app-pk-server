@@ -14,9 +14,9 @@ public class Circle {
     //标记点经度
     double longitude;
 
-    String color = "#00000015";
+    String color = "#00000000";
 
-    String fillColor = "#00000008";
+    String fillColor = "#00000010";
 
     int radius = 160;
 

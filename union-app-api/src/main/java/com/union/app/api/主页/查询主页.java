@@ -63,45 +63,37 @@ public class 查询主页 {
     @Autowired
     ApproveService approveService;
 
+    @Autowired
+    LocationService locationService;
 
     @RequestMapping(path="/queryHomePage",method = RequestMethod.GET)
     public AppResponse 查询主页(@RequestParam("userId") String userId,@RequestParam("pkId") String pkId)  {
 
 
 
-        List<PkDetail> pks = appService.随机主题(userId,pkId);
+        List<PkDetail> pks = locationService.查询附近卡点("","");;
 
 
-        if(!pkService.isVipView(userId,pkId)  && !AppConfigService.getConfigAsBoolean(ConfigItem.普通用户主题是否显示分享按钮和群组按钮))
-        {
-            pks.forEach(pk ->{
-                PkButton pkButton = appService.显示按钮(PkButtonType.时间);
-                pkButton.setName(pk.getTime());
-                pk.setGroupInfo(pkButton);
-            });
-        }
         List<Marker> markers = new ArrayList<>();
         List<Circle> circles = new ArrayList<>();
 
         pks.forEach(pk ->{
-            PkLocationEntity location = pk.getLocation();
-            if(!ObjectUtils.isEmpty(location)) {
+
                 Marker marker = new Marker();
                 marker.setId(RandomUtil.getRandomNumber());
-                marker.setLatitude(location.getLatitude() / 1000000.0d);
-                marker.setLongitude(location.getLongitude() / 1000000.0d);
-//                marker.setIconPath(pk.getUser().getImgUrl());
+                marker.setLatitude(pk.getLatitude());
+                marker.setLongitude(pk.getLongitude());
                 Callout callout = new Callout();
-                callout.setContent(pk.getTopic().length()>10?pk.getTopic().substring(0,10)+"...":pk.getTopic());
+                callout.setContent(pk.getName());
                 marker.setCallout(callout);
                 markers.add(marker);
 
                 Circle circle = new Circle();
-                circle.setLatitude(location.getLatitude() / 1000000.0d);
-                circle.setLongitude(location.getLongitude() / 1000000.0d);
+                circle.setLatitude(pk.getLatitude());
+                circle.setLongitude(pk.getLongitude());
                 circles.add(circle);
 
-            }
+
 
 
         });

@@ -61,7 +61,7 @@ public class 解锁 {
 
 
         if(StringUtils.equals(pkEntity.getUserId(),userId)){return AppResponse.buildResponse(PageAction.前端数据更新("inviteTag",true));}
-        if(pkEntity.getAlbumStatu() != PkStatu.已审核){return AppResponse.buildResponse(PageAction.前端数据更新("inviteTag",true));}
+//        if(pkEntity.getAlbumStatu() != PkStatu.已审核){return AppResponse.buildResponse(PageAction.前端数据更新("inviteTag",true));}
         InvitePkEntity invitePkEntity = appService.queryInvitePk(pkId,userId);
         if(!org.springframework.util.ObjectUtils.isEmpty(invitePkEntity)){return AppResponse.buildResponse(PageAction.前端数据更新("inviteTag",true));}
 

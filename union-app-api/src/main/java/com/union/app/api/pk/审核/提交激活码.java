@@ -99,7 +99,7 @@ public class 提交激活码 {
 //        {
 
             PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
-            pkEntity.setAlbumStatu(PkStatu.已审核);
+//            pkEntity.setAlbumStatu(PkStatu.已审核);
 //            PkActiveEntity pkActiveEntity = appService.查询PK激活信息(pkId);
 //            pkActiveEntity.setStatu(ActiveStatu.处理过);
             daoService.updateEntity(pkEntity);

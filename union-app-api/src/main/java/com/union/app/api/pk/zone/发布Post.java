@@ -62,24 +62,9 @@ public class 发布Post {
 
 
 
-        String postId = null;
+        //添加时间限制
 
-        PostEntity postEntity = postService.查询用户帖(pkId,userId);
-        if(ObjectUtils.isEmpty(postEntity)){
-            postId = postService.创建帖子(pkId,userId,title,images);
-//            appService.添加邀请(pkId,userId);
-//            if(appService.是否收费(userId)) {
-//                UserKvEntity userEntity = userService.queryUserKvEntity(userId);
-//
-//                daoService.updateEntity(userEntity);
-//            }
-
-        }
-        else
-        {
-            return AppResponse.buildResponse(PageAction.消息级别提示框(Level.错误消息,"图册已存在"));
-        }
-
+        String postId = postService.创建帖子(pkId,userId,title,images);
 
 
         Post post = postService.查询帖子(pkId,postId,userId);

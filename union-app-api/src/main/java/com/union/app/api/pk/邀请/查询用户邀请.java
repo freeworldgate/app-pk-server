@@ -68,7 +68,7 @@ public class 查询用户邀请 {
         PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
 
         if(StringUtils.equals(pkEntity.getUserId(),userId)){return AppResponse.buildResponse(PageAction.前端数据更新("inviteTag",true));}
-        if(pkEntity.getAlbumStatu() != PkStatu.已审核){return AppResponse.buildResponse(PageAction.前端数据更新("inviteTag",true));}
+//        if(pkEntity.getAlbumStatu() != PkStatu.已审核){return AppResponse.buildResponse(PageAction.前端数据更新("inviteTag",true));}
         PostEntity postEntity = postService.查询用户帖(pkId,userId);
 //        InvitePkEntity invitePkEntity = appService.queryInvitePk(pkId,userId);
         if(!org.springframework.util.ObjectUtils.isEmpty(postEntity)){return AppResponse.buildResponse(PageAction.前端数据更新("inviteTag",true));}

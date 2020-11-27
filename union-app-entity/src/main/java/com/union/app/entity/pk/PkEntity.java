@@ -17,39 +17,29 @@ public class PkEntity {
     @Id
     private String pkId;
 
-
-    private boolean active;
-
     private String userId;
 
-    private String topic;
+    private String sign;
 
-    private String watchWord;
+    double latitude;
+
+    double longitude;
+
+    String name;
+
+    String address;
+
+    String type;
 
     //创建时间
-    private long createTime;
+    long time;
+
+    long updateTime;
 
 
-    @Enumerated(EnumType.STRING)
-    private PkType pkType;
-
-
-
-
-
-
-    //--------------------可变数据----------------------
-
-    private String topPostUserId;
-
-    private int complainTimes;
-
-    @Enumerated(EnumType.STRING)
-    private PkStatu albumStatu;
-
-    private long updateTime;
 
     private String backUrl;
-
-
+//    顶置贴
+    private String topPostId;
+    private long topPostSetTime;
 }

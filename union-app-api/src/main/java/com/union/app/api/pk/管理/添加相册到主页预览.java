@@ -65,9 +65,9 @@ public class 添加相册到主页预览 {
         appService.验证Password(password);
         appService.添加到主页预览(pkId,value,1);
         PkDetail pkDetail = pkService.querySinglePk(pkId);
-        pkDetail.setGeneticPriority(appService.查询优先级(pkId,1));
-        pkDetail.setNonGeneticPriority(appService.查询优先级(pkId,2));
-
+//        pkDetail.setGeneticPriority(appService.查询优先级(pkId,1));
+//        pkDetail.setNonGeneticPriority(appService.查询优先级(pkId,2));
+//
         return AppResponse.buildResponse(PageAction.执行处理器("success",pkDetail));
     }
 
@@ -77,8 +77,8 @@ public class 添加相册到主页预览 {
         appService.验证Password(password);
         appService.添加到主页预览(pkId,value,2);
         PkDetail pkDetail = pkService.querySinglePk(pkId);
-        pkDetail.setGeneticPriority(appService.查询优先级(pkId,1));
-        pkDetail.setNonGeneticPriority(appService.查询优先级(pkId,2));
+//        pkDetail.setGeneticPriority(appService.查询优先级(pkId,1));
+//        pkDetail.setNonGeneticPriority(appService.查询优先级(pkId,2));
 
         return AppResponse.buildResponse(PageAction.执行处理器("success",pkDetail));
     }

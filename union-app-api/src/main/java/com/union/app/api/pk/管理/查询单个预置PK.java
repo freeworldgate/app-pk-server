@@ -72,7 +72,7 @@ public class 查询单个预置PK {
 
         //查询PK详情
         PkDetail pkDetail = pkService.querySinglePk(pkId);
-        pkDetail.setUserBack(appService.查询背景(8));
+//        pkDetail.setUserBack(appService.查询背景(8));
         List<Post> posts = pkService.queryPrePkPost(pkId,0);
 
 

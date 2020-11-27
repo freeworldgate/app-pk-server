@@ -24,64 +24,33 @@ public class PkDetail implements Serializable{
     private int current = 0;
 
 
-
-    private String publishName = "封面";
-
     private String pkId;
 
-    private PkLocationEntity location;
+//    private PkLocationEntity location;
 
     private User user;
 
-    private String userBack;
+    private String sign;
 
-    private String topic;
+    double latitude;
 
-    private String watchWord;
+    double longitude;
 
-    private List<ActiveTip> tips;
+    String name;
 
-    private int shareMode;
+    String address;
 
-    private KeyNameValue totalSort;
-
-    private KeyNameValue totalApprover;
-
-    private KeyNameValue pkStatu;
-    private KeyNameValue charge;
-
-    private List<String> imgs;
-
-
-
-    private ApproveMessage approveMessage;
-
-    private String pkType;
-    private int pkTypeValue;
+    LocationType type;
 
     private String time;
-
-    //点赞
-    private int greate;
-    //邀请
-    private int invite;
-    //踩一脚
-    private int dislike;
-    //评论
-    private int comment;
-
-
-
     private int approved;
-    private int approving;
-    private PkButton groupInfo;
 
-    private long nonGeneticPriority;
-    private long geneticPriority;
 
-    private int complainTimes;
 
     private String backUrl;
 
+
+    private String topPostId;
+    private Post topPost;
 
 }

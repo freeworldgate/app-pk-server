@@ -1,10 +1,10 @@
 package com.union.app.api.邀请;
 
 import com.union.app.common.config.AppConfigService;
-import com.union.app.domain.pk.PkButton;
-import com.union.app.domain.pk.PkButtonType;
-import com.union.app.domain.pk.PkDetail;
+import com.union.app.domain.pk.*;
 import com.union.app.domain.user.User;
+import com.union.app.domain.工具.RandomUtil;
+import com.union.app.entity.pk.PkLocationEntity;
 import com.union.app.entity.pk.PkType;
 import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.AppException;
@@ -67,27 +67,44 @@ public class 查询邀请 {
 
         List<PkDetail> pks = appService.查询用户邀请(userId,1);
 
-        if(!userService.是否是遗传用户(userId)  && !AppConfigService.getConfigAsBoolean(ConfigItem.普通用户主题是否显示分享按钮和群组按钮))
-        {
-            pks.forEach(pk ->{
-                PkButton pkButton = appService.显示按钮(PkButtonType.时间);
-                pkButton.setName(pk.getTime());
-                pk.setGroupInfo(pkButton);
-            });
-        }
+        List<Marker> markers = new ArrayList<>();
+        List<Circle> circles = new ArrayList<>();
 
-
+//        pks.forEach(pk ->{
+//            PkLocationEntity location = null;
+//            if(!ObjectUtils.isEmpty(location)) {
+//                Marker marker = new Marker();
+//                marker.setId(RandomUtil.getRandomNumber());
+//                marker.setLatitude(location.getLatitude() / 1000000.0d);
+//                marker.setLongitude(location.getLongitude() / 1000000.0d);
+////                marker.setIconPath(pk.getUser().getImgUrl());
+//                Callout callout = new Callout();
+////                callout.setContent(pk.getTopic().length()>10?pk.getTopic().substring(0,10)+"...":pk.getTopic());
+//                marker.setCallout(callout);
+//                markers.add(marker);
+//
+//                Circle circle = new Circle();
+//                circle.setLatitude(location.getLatitude() / 1000000.0d);
+//                circle.setLongitude(location.getLongitude() / 1000000.0d);
+//                circles.add(circle);
+//
+//            }
+//
+//
+//        });
 
 
 
         List<DataSet> dataSets = new ArrayList<>();
+        dataSets.add(new DataSet("circles",circles));
+        dataSets.add(new DataSet("markers",markers));
         if(CollectionUtils.isEmpty(pks))
         {
             dataSets.add(new DataSet("pkEnd",true));}
         else
         {
             pks.forEach(pk->{
-                pk.setUserBack(appService.查询背景(0));
+//                pk.setUserBack(appService.查询背景(0));
             });
 
             dataSets.add(new DataSet("pks",pks));

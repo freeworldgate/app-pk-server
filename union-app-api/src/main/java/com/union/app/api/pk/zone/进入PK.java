@@ -71,12 +71,12 @@ public class 进入PK {
                 ValueStr valueStr = new ValueStr(url, "更新主题群", "更新主题群,用户发布图册后添加主题群...");
                 return AppResponse.buildResponse(PageAction.执行处理器("group",valueStr));
             }
-            if(ObjectUtils.equals(pkEntity.getAlbumStatu(),PkStatu.审核中)){
-
-                String url = "";
-                ValueStr valueStr = new ValueStr(url, "发布主题", "确定发布主题，发布后将无法修改主题内容...");
-                return AppResponse.buildResponse(PageAction.执行处理器("doApprove", valueStr));
-            }
+//            if(ObjectUtils.equals(pkEntity.getAlbumStatu(),PkStatu.审核中)){
+//
+//                String url = "";
+//                ValueStr valueStr = new ValueStr(url, "发布主题", "确定发布主题，发布后将无法修改主题内容...");
+//                return AppResponse.buildResponse(PageAction.执行处理器("doApprove", valueStr));
+//            }
         }
 
 

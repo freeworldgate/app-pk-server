@@ -49,7 +49,7 @@ public class 点赞添加邀请 {
 
             //点赞
 
-        pkService.greate(pkId,userId);
+//        pkService.greate(pkId,userId);
 
 
         List<DataSet> dataSets = new ArrayList<>();

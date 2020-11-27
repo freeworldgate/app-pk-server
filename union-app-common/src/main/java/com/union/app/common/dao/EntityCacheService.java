@@ -7,6 +7,7 @@ import com.union.app.entity.用户.UserEntity;
 import com.union.app.plateform.constant.ConfigItem;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.map.LRUMap;
+import org.springframework.util.ObjectUtils;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -57,6 +58,7 @@ public class EntityCacheService {
 
     public static void savePk(PkEntity pkEntity)
     {
+        if(ObjectUtils.isEmpty(pkEntity)){return;}
         Long lockTime = pkCacheLock.get(pkEntity.getPkId());
         if(lockTime == null)
         {

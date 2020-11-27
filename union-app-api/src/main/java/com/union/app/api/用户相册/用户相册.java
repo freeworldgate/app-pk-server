@@ -64,14 +64,6 @@ public class 用户相册 {
 
         List<PkDetail> pks = appService.查询用户相册(userId,1);
 
-        if(!userService.是否是遗传用户(userId)  && !AppConfigService.getConfigAsBoolean(ConfigItem.普通用户主题是否显示分享按钮和群组按钮))
-        {
-            pks.forEach(pk ->{
-                PkButton pkButton = appService.显示按钮(PkButtonType.时间);
-                pkButton.setName(pk.getTime());
-                pk.setGroupInfo(pkButton);
-            });
-        }
 
 
         List<DataSet> dataSets = new ArrayList<>();
@@ -87,8 +79,7 @@ public class 用户相册 {
 
         dataSets.add(new DataSet("page",1));
         dataSets.add(new DataSet("pageTag",true));
-        dataSets.add(new DataSet("userBack",appService.查询背景(0)));
-        dataSets.add(new DataSet("imgBack",appService.查询背景(2)));
+
 
 
 

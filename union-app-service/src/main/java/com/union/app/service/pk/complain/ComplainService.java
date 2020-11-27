@@ -110,7 +110,7 @@ public class ComplainService {
             complainEntity.setPkId(pkId);
             complainEntity.setPostId(ObjectUtils.isEmpty(postEntity)?null:postEntity.getPostId());
             complainEntity.setUrl(url);
-            complainEntity.setPkType(pkEntity.getPkType());
+//            complainEntity.setPkType(pkEntity.getPkType());
             complainEntity.setComplainStatu(ComplainStatu.处理中);
             complainEntity.setTime(System.currentTimeMillis());
             daoService.insertEntity(complainEntity);

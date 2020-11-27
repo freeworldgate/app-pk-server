@@ -160,19 +160,18 @@ public class PkDataService {
 
 
             PkEntity pkEntity = pkService.querySinglePkEntity(pk.getPkId());
-            String topUserId = pkEntity.getTopPostUserId();
+//            String topUserId = pkEntity.getTopPostUserId();
             PkDetail pkDetail = pkService.querySinglePk(pkEntity);
-            pkDetail.setImgs(postService.查询PK展示图片(pkEntity.getPkId(),StringUtils.isEmpty(topUserId)?pkEntity.getUserId():topUserId));
-            pkDetail.setGeneticPriority(pk.getGeneticPriority());
-            pkDetail.setNonGeneticPriority(pk.getNonGeneticPriority());
-
-            if(pk.getGeneticPriority() > -1){
-                遗传主页列表Temp.add(pkDetail);
-            }
-            if(pk.getNonGeneticPriority() > -1){非遗传主页列表Temp.add(pkDetail);}
+//            pkDetail.setImgs(postService.查询PK展示图片(pkEntity.getPkId(),StringUtils.isEmpty(topUserId)?pkEntity.getUserId():topUserId));
+//            pkDetail.setGeneticPriority(pk.getGeneticPriority());
+//            pkDetail.setNonGeneticPriority(pk.getNonGeneticPriority());
+            非遗传主页列表Temp.add(pkDetail);
+            遗传主页列表Temp.add(pkDetail);
 
 
         }
+
+
         遗传主页列表 = 遗传主页列表Temp;
         非遗传主页列表 = 非遗传主页列表Temp;
 

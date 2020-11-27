@@ -15,6 +15,7 @@ import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.service.pk.click.ClickService;
 import com.union.app.service.pk.service.AppService;
+import com.union.app.service.pk.service.LocationService;
 import com.union.app.service.pk.service.PkService;
 import com.union.app.service.pk.service.PostService;
 import com.union.app.service.user.UserService;
@@ -51,6 +52,8 @@ public class 创建单个PK {
     @Autowired
     PostService postService;
 
+    @Autowired
+    LocationService locationService;
 
     @Autowired
     AppService appService;
@@ -69,7 +72,7 @@ public class 创建单个PK {
     public AppResponse 删除单个PK(@RequestParam("userId") String userId,@RequestParam("pkId") String pkId) throws AppException, IOException {
 
         if(!pkService.isPkCreator(pkId,userId)){ throw AppException.buildException(PageAction.信息反馈框("错误","非法用户"));}
-        pkService.删除PK(userId,pkId);
+//        pkService.删除PK(userId,pkId);
 
         return AppResponse.buildResponse(PageAction.执行处理器("success",""));
     }
@@ -79,7 +82,7 @@ public class 创建单个PK {
     public AppResponse updatePk(@RequestParam("userId") String userId,@RequestParam("topic") String topic,@RequestParam("watchWord") String watchWord,@RequestParam("pkId") String pkId) throws AppException, IOException {
         if(!pkService.isPkCreator(pkId,userId)){ throw AppException.buildException(PageAction.信息反馈框("错误","非法用户"));}
 
-        pkService.修改PK(pkId,topic,watchWord);
+//        pkService.修改PK(pkId,topic,watchWord);
         PkDetail pkDetail = pkService.querySinglePk(pkId);
         return AppResponse.buildResponse(PageAction.执行处理器("success",pkDetail));
     }
@@ -90,7 +93,7 @@ public class 创建单个PK {
         if(!pkService.isPkCreator(pkId,userId)){ throw AppException.buildException(PageAction.信息反馈框("错误","非法用户"));}
 
         pkService.修改封面(pkId,imgUrl);
-        PkDetail pkDetail = pkService.querySinglePk(pkId);
+        PkDetail pkDetail = locationService.querySinglePk(pkId);
         return AppResponse.buildResponse(PageAction.执行处理器("success",pkDetail));
 
     }

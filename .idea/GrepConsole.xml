@@ -26,6 +26,16 @@
                           </GrepModel>
                         </option>
                       </Pin>
+                      <Pin>
+                        <option name="consoleUUID" value="ecbc191b-5b28-4363-9630-ab8ee9d2e745" />
+                        <option name="contentType" value="ConsoleContent" />
+                        <option name="grepModel">
+                          <GrepModel>
+                            <option name="expression" value="getNetInterfaceStat" />
+                            <option name="unlessExpression" value="" />
+                          </GrepModel>
+                        </option>
+                      </Pin>
                     </list>
                   </option>
                 </Pins>

@@ -69,7 +69,7 @@ public class 审核 {
 
         Post post = postService.查询帖子(pkId,postId,null);
         PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
-        post.setPkTopic(pkEntity.getTopic());
+//        post.setPkTopic(pkEntity.getTopic());
 
         dataSets.add(new DataSet("post",post));
 
@@ -134,7 +134,7 @@ public class 审核 {
         List<DataSet> dataSets = new ArrayList<>();
         Post post = dynamicService.查询审核中指定范围的Post(pkId);
         PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
-        post.setPkTopic(pkEntity.getTopic());
+//        post.setPkTopic(pkEntity.getTopic());
 
         DataSet dataSet2 = new DataSet("post",post);
         DataSet dataSet8 = new DataSet("pkId",pkId);

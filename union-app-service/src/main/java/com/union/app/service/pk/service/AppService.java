@@ -104,6 +104,8 @@ public class AppService {
     @Autowired
     ComplainService complainService;
 
+    @Autowired
+    LocationService locationService;
 
     public List<PkDetail> 查询预设相册(int page,int type) throws IOException {
 
@@ -162,8 +164,8 @@ public class AppService {
         for(PkEntity pkEntity:invites)
         {
             PkDetail pkDetail = pkService.querySinglePk(pkEntity.getPkId());
-            pkDetail.setGeneticPriority(appService.查询优先级(pkEntity.getPkId(),1));
-            pkDetail.setNonGeneticPriority(appService.查询优先级(pkEntity.getPkId(),2));
+//            pkDetail.setGeneticPriority(appService.查询优先级(pkEntity.getPkId(),1));
+//            pkDetail.setNonGeneticPriority(appService.查询优先级(pkEntity.getPkId(),2));
             pkDetails.add(pkDetail);
         }
         return pkDetails;
@@ -176,9 +178,7 @@ public class AppService {
         List<PkEntity>  invites = queryUserInvitePks(userId,page);
         for(PkEntity pkEntity:invites)
         {
-            String topUserId = pkEntity.getTopPostUserId();
-            PkDetail pkDetail = pkService.querySinglePk(pkEntity);
-            pkDetail.setImgs(postService.查询PK展示图片(pkEntity.getPkId(),StringUtils.isEmpty(topUserId)?pkEntity.getUserId():topUserId));
+            PkDetail pkDetail = locationService.querySinglePk(pkEntity);
             pkDetails.add(pkDetail);
         }
         return pkDetails;
@@ -197,11 +197,19 @@ public class AppService {
                 .orderByFilter("createTime",OrderTag.DESC);
         List<InvitePkEntity> invites = daoService.queryEntities(InvitePkEntity.class,filter);
 
+        List<Object> pkIds = new ArrayList<>();
         for(InvitePkEntity invitePkEntity:invites)
         {
-            PkEntity pkEntity = pkService.querySinglePkEntity(invitePkEntity.getPkId());
-            if(!ObjectUtils.isEmpty(pkEntity)){pkEntities.add(pkEntity);}
-
+            pkIds.add(invitePkEntity.getPkId());
+        }
+        //批量查询
+        if(!org.apache.commons.collections4.CollectionUtils.isEmpty(pkIds)) {
+            EntityFilterChain filter1 = EntityFilterChain.newFilterChain(PkEntity.class)
+                    .inFilter("pkId", pkIds);
+            List<PkEntity> pks = daoService.queryEntities(PkEntity.class, filter1);
+            if (!org.apache.commons.collections4.CollectionUtils.isEmpty(pks)) {
+                pkEntities.addAll(pks);
+            }
         }
         return pkEntities;
     }
@@ -255,7 +263,7 @@ public class AppService {
         List<PkEntity>  pkEntities = queryUserPks(userId,page);
         for(PkEntity pkEntity:pkEntities)
         {
-            PkDetail pkDetail = pkService.querySinglePk(pkEntity);
+            PkDetail pkDetail = locationService.querySinglePk(pkEntity);
             pkDetails.add(pkDetail);
         }
 
@@ -268,7 +276,7 @@ public class AppService {
         EntityFilterChain filter = EntityFilterChain.newFilterChain(PkEntity.class)
                 .compareFilter("userId",CompareTag.Equal,userId)
                 .pageLimitFilter(page,AppConfigService.getConfigAsInteger(ConfigItem.单个PK页面的帖子数))
-                .orderByFilter("createTime",OrderTag.DESC);
+                .orderByFilter("time",OrderTag.DESC);
         List<PkEntity> pkEntities = daoService.queryEntities(PkEntity.class,filter);
 
         return pkEntities;
@@ -879,8 +887,8 @@ public class AppService {
         {
             PkDetail pkDetail =pkService.querySinglePk(pkId);
             if(!ObjectUtils.isEmpty(pkDetail)){
-                pkDetail.setGeneticPriority(appService.查询优先级(pkId,1));
-                pkDetail.setNonGeneticPriority(appService.查询优先级(pkId,2));
+//                pkDetail.setGeneticPriority(appService.查询优先级(pkId,1));
+//                pkDetail.setNonGeneticPriority(appService.查询优先级(pkId,2));
                 pks.add(pkDetail);
             }
 
@@ -911,7 +919,7 @@ public class AppService {
             PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
             pk = new HomePagePk();
             pk.setPkId(pkId);
-            pk.setPkType(pkEntity.getPkType());
+//            pk.setPkType(pkEntity.getPkType());
             if(type == 1){pk.setGeneticPriority(value);}
             if(type == 2){pk.setNonGeneticPriority(value);}
 
@@ -1507,6 +1515,7 @@ public class AppService {
     }
 
     public List<ActiveTip> 查询PK标签信息(String pkId) {
+        //进缓存
         EntityFilterChain filter =  EntityFilterChain.newFilterChain(PkTipEntity.class)
                 .compareFilter("pkId",CompareTag.Equal,pkId);
         List<PkTipEntity> activeTipEntities = daoService.queryEntities(PkTipEntity.class,filter);
@@ -1751,11 +1760,7 @@ public class AppService {
             dynamicService.已审核(postEntity.getPkId(),postEntity.getPostId());
             //记录一次有效投诉。
             PkEntity pkEntity = pkService.querySinglePkEntity(entity.getPkId());
-            pkEntity.setComplainTimes(pkEntity.getComplainTimes() + 1);
-            if(pkEntity.getComplainTimes() > AppConfigService.getConfigAsInteger(ConfigItem.PK有效投诉最大数量))
-            {
-                pkEntity.setAlbumStatu(PkStatu.已关闭);
-            }
+
             daoService.updateEntity(pkEntity);
         }
 
@@ -1801,7 +1806,7 @@ public class AppService {
     }
 
     public List<PkDetail> 随机主题(String userId,String pkId) {
-        return pkDataService.随机列表(userId,pkId);
+        return locationService.查询附近卡点("","");
 
     }
 
@@ -1810,14 +1815,14 @@ public class AppService {
         if(commentStyle == 3)
         {
             PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
-            if(pkEntity.getPkType() == PkType.运营相册)
-            {
-                return 1;
-            }
-            else
-            {
-                return 0;
-            }
+//            if(pkEntity.getPkType() == PkType.运营相册)
+//            {
+//                return 1;
+//            }
+//            else
+//            {
+//                return 0;
+//            }
 
         }
         else if(commentStyle == 2)
@@ -1828,7 +1833,7 @@ public class AppService {
         {
             return 0;
         }
-
+        return 0;
     }
 
     public void 设置主题标识码(String pkId, String value) {
@@ -1944,7 +1949,7 @@ public class AppService {
             if(!ObjectUtils.isEmpty(pkEntity))
             {
                 Post post = postService.translate(postEntity);
-                post.setPkTopic(pkEntity.getTopic());
+                post.setPkTopic(pkEntity.getName());
                 post.setLocation(appService.查询PK位置(pkEntity.getPkId()));
                 post.setPkBackUrl(pkEntity.getBackUrl());
                 posts.add(post);
@@ -1973,7 +1978,7 @@ public class AppService {
             if(!ObjectUtils.isEmpty(pkEntity))
             {
                 Post post = postService.translate(postEntity);
-                post.setPkTopic(pkEntity.getTopic());
+//                post.setPkTopic(pkEntity.getTopic());
                 posts.add(post);
             }
 
@@ -2051,6 +2056,10 @@ public class AppService {
     }
 
     public PkLocationEntity 查询PK位置(String pkId) {
+
+
+        //进缓存
+
         EntityFilterChain filter = EntityFilterChain.newFilterChain(PkLocationEntity.class)
                 .compareFilter("pkId",CompareTag.Equal,pkId);
 
@@ -2086,7 +2095,7 @@ public class AppService {
     }
 
     public boolean 查询状态(String pkId, String userId, int gap) {
-        if(gap == 1){return !ObjectUtils.isEmpty(pkService.查询用户点赞(pkId,userId));}
+//        if(gap == 1){return !ObjectUtils.isEmpty(pkService.查询用户点赞(pkId,userId));}
         if(gap == 2){return !ObjectUtils.isEmpty(complainService.查询投诉信息(pkId,userId));}
         if(gap == 3){  InvitePkEntity invitePkEntity = queryInvitePk(pkId,userId);return !ObjectUtils.isEmpty(invitePkEntity);}
         return false;
@@ -2101,8 +2110,8 @@ public class AppService {
         for(PkEntity pkEntity:pkEntities)
         {
             PkDetail pkDetail = pkService.querySinglePk(pkEntity);
-            String topUserId = pkEntity.getTopPostUserId();
-            pkDetail.setImgs(postService.查询PK展示图片(pkEntity.getPkId(),StringUtils.isEmpty(topUserId)?pkEntity.getUserId():topUserId));
+//            String topUserId = pkEntity.getTopPostUserId();
+//            pkDetail.setImgs(postService.查询PK展示图片(pkEntity.getPkId(),StringUtils.isEmpty(topUserId)?pkEntity.getUserId():topUserId));
             pkDetails.add(pkDetail);
         }
 
@@ -2114,7 +2123,7 @@ public class AppService {
             pkDetails.forEach(pk ->{
                 PkButton pkButton = appService.显示按钮(PkButtonType.时间);
                 pkButton.setName(pk.getTime());
-                pk.setGroupInfo(pkButton);
+//                pk.setGroupInfo(pkButton);
             });
         }
         return pkDetails;

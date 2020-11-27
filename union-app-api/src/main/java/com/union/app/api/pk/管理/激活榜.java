@@ -89,7 +89,7 @@ public class 激活榜 {
     public AppResponse activePk(@RequestParam("password") String password,@RequestParam("pkId") String pkId) throws AppException, IOException {
         appService.验证Password(password);
         PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
-        pkEntity.setAlbumStatu(PkStatu.已审核);
+//        pkEntity.setAlbumStatu(PkStatu.已审核);
         PkActiveEntity pkActiveEntity = appService.查询PK激活信息(pkId);
         pkActiveEntity.setStatu(ActiveStatu.处理过);
         daoService.updateEntity(pkEntity);

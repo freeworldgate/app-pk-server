@@ -1,11 +1,8 @@
-package com.union.app.api.pk.zone;
+package com.union.app.api.pk.搜索创建;
 
 import com.union.app.common.OSS存储.OssStorage;
 import com.union.app.domain.pk.Post;
-import com.union.app.entity.pk.InvitePkEntity;
-import com.union.app.entity.pk.PkEntity;
-import com.union.app.entity.pk.PkStatu;
-import com.union.app.entity.pk.PkUnlockEntity;
+import com.union.app.entity.pk.*;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.PageAction;
@@ -27,7 +24,7 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping(path="/pk")
-public class 顶置 {
+public class 顶置删除 {
 
 
     @Autowired
@@ -64,19 +61,34 @@ public class 顶置 {
             pkService.修改首页图册(pkId,postId);
             Post post = postService.查询帖子(pkId,postId,userId);
 
-            return AppResponse.buildResponse(PageAction.前端数据更新("cpost",post));
+            return AppResponse.buildResponse(PageAction.执行处理器("success",post));
         }
         else
         {
             return AppResponse.buildResponse(PageAction.信息反馈框("非法操作","不具备权限"));
         }
 
+    }
+    @RequestMapping(path="/removePost",method = RequestMethod.GET)
+    @Transactional(rollbackOn = Exception.class)
+    public AppResponse 删除(@RequestParam("userId") String userId,@RequestParam("pkId") String pkId,@RequestParam("postId") String postId) throws AppException, IOException {
+
+        PostEntity postEntity = postService.查询帖子ById(postId);
 
 
 
+        if(StringUtils.equals(userId,postEntity.getUserId()))
+        {
+            postService.删除打卡信息(postId);
 
+
+            return AppResponse.buildResponse(PageAction.执行处理器("success",""));
+        }
+        else
+        {
+            return AppResponse.buildResponse(PageAction.信息反馈框("非法操作","不具备权限"));
+        }
 
     }
-
 
 }

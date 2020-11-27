@@ -310,11 +310,11 @@ public class ApproveService {
 
 
 
-        if((pkEntity.getPkType()==PkType.内置相册 && policy2) || (pkEntity.getPkType()==PkType.运营相册 && policy1) || (pkEntity.getPkType()==PkType.审核相册 && policy3) )
-        {
-
-            return ApproveButton.转发审核群;
-        }
+//        if((pkEntity.getPkType()==PkType.内置相册 && policy2) || (pkEntity.getPkType()==PkType.运营相册 && policy1) || (pkEntity.getPkType()==PkType.审核相册 && policy3) )
+//        {
+//
+//            return ApproveButton.转发审核群;
+//        }
 
 
 
