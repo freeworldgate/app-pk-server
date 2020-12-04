@@ -61,11 +61,11 @@ public class 查询邀请 {
 
 
     @RequestMapping(path="/queryInvites",method = RequestMethod.GET)
-    public AppResponse 查询邀请信息(@RequestParam("userId") String userId) throws AppException, IOException {
+    public AppResponse 查询邀请信息(@RequestParam("userId") String userId,@RequestParam("latitude") double latitude,@RequestParam("longitude") double longitude) throws AppException, IOException {
 
 //        List<PkDetail> pkDetails = new ArrayList<>();
 
-        List<PkDetail> pks = appService.查询用户邀请(userId,1);
+        List<PkDetail> pks = appService.查询用户邀请(userId,1,latitude,longitude);
 
         List<Marker> markers = new ArrayList<>();
         List<Circle> circles = new ArrayList<>();
@@ -103,9 +103,7 @@ public class 查询邀请 {
             dataSets.add(new DataSet("pkEnd",true));}
         else
         {
-            pks.forEach(pk->{
-//                pk.setUserBack(appService.查询背景(0));
-            });
+
 
             dataSets.add(new DataSet("pks",pks));
             dataSets.add(new DataSet("pkEnd",false));
@@ -127,9 +125,9 @@ public class 查询邀请 {
     }
 
     @RequestMapping(path="/nextInvitePage",method = RequestMethod.GET)
-    public AppResponse 查询单个PK(@RequestParam("userId") String userId,@RequestParam("page") int page) throws AppException, IOException {
+    public AppResponse 查询单个PK(@RequestParam("userId") String userId,@RequestParam("page") int page,@RequestParam("latitude") double latitude,@RequestParam("longitude") double longitude) throws AppException, IOException {
 
-        List<PkDetail> pks = appService.查询用户邀请(userId,page+1);
+        List<PkDetail> pks = appService.查询用户邀请(userId,page+1,latitude,longitude);
 
         if(pks.size() == 0)
         {

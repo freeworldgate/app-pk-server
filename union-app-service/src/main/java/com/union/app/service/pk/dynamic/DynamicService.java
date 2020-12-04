@@ -127,38 +127,21 @@ public class DynamicService {
 //        redisSortSetService.addEle(CacheKeyName.打榜排名列表(pkId),userId,score);
 //
 //    }
-    public String 查询审核用户(String pkId, String postId) {
-        PkPostListEntity pkPostListEntity = pkService.查询图册排列(pkId,postId);
-        if(!ObjectUtils.isEmpty(pkPostListEntity) && pkPostListEntity.getStatu() == PostStatu.审核中)
-        {
-            return pkService.querySinglePkEntity(pkId).getUserId();
-        }
-        else
-        {
-            return "";
-        }
-
-
-
-    }
-
-    public boolean 审核等待时间过长(String pkId, String postId) {
-
-        long scoreAbs = pkService.查询POST审核时间(pkId,postId) ;
-        long canComplainWaitingTime  = AppConfigService.getConfigAsInteger(ConfigItem.榜帖可发起投诉的等待时间) * 60 * 1000;
-        if(System.currentTimeMillis() - scoreAbs > canComplainWaitingTime)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-
-
-    }
-
-
+//    public String 查询审核用户(String pkId, String postId) {
+//        PkPostListEntity pkPostListEntity = pkService.查询图册排列(pkId,postId);
+//        if(!ObjectUtils.isEmpty(pkPostListEntity) && pkPostListEntity.getStatu() == PostStatu.审核中)
+//        {
+//            return pkService.querySinglePkEntity(pkId).getUserId();
+//        }
+//        else
+//        {
+//            return "";
+//        }
+//
+//
+//
+//    }
+//
 
 
 
@@ -249,7 +232,7 @@ public class DynamicService {
             pkPostListEntity.setPkId(pkId);
             pkPostListEntity.setPostId(postEntity.getPostId());
             pkPostListEntity.setUserId(postEntity.getUserId());
-            pkPostListEntity.setStatu(PostStatu.审核中);
+//            pkPostListEntity.setStatu(PostStatu.审核中);
             pkPostListEntity.setTime(System.currentTimeMillis());
 
             daoService.insertEntity(pkPostListEntity);
@@ -527,7 +510,7 @@ public class DynamicService {
         }
         PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
         for (Post post : posts) {
-            post.setApproveComment(approveService.获取留言信息(pkId, post.getPostId()));
+//            post.setApproveComment(approveService.获取留言信息(pkId, post.getPostId()));
         }
         return posts;
 
@@ -540,7 +523,7 @@ public class DynamicService {
         if(StringUtils.isBlank(postId)){return null;}
         Post post = postService.查询帖子(pkId,postId,"");
         if(!ObjectUtils.isEmpty(post)) {
-            post.setApproveComment(approveService.获取留言信息(pkId, postId));
+//            post.setApproveComment(approveService.获取留言信息(pkId, postId));
         }
 
 

@@ -49,7 +49,7 @@ public class Post审批 {
     public AppResponse getApplyOrder(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId,@RequestParam("type") int type,@RequestParam("page") int page) throws AppException, IOException {
 
 
-        Post post = postService.查询类型帖子(pkId,userId,type,page);
+        Post post = null;
 
 
         return AppResponse.buildResponse(PageAction.执行处理器("success",post));
@@ -61,7 +61,7 @@ public class Post审批 {
     public AppResponse cashierOrderConfirm1(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId,@RequestParam("userId") String userId) throws AppException, IOException, InterruptedException {
 
 
-        KeyNameValue statu = postService.修改榜帖状态(pkId,postId,userId);
+        KeyNameValue statu = null;
 
         return AppResponse.buildResponse(PageAction.执行处理器("success",statu));
     }

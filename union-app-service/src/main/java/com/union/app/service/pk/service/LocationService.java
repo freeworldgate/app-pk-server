@@ -15,6 +15,7 @@ import com.union.app.domain.pk.*;
 import com.union.app.domain.pk.apply.KeyNameValue;
 import com.union.app.domain.pk.cashier.PkCashier;
 import com.union.app.domain.pk.daka.CreateLocation;
+import com.union.app.domain.工具.RandomUtil;
 import com.union.app.entity.pk.*;
 import com.union.app.entity.pk.complain.ComplainEntity;
 import com.union.app.entity.pk.complain.ComplainStatu;
@@ -128,7 +129,7 @@ public class LocationService {
 
 
     //单位米
-    private static int 计算坐标间距离(Double longitude1, Double latitude1, Double longitude2, Double latitude2){
+    public static int 计算坐标间距离(Double longitude1, Double latitude1, Double longitude2, Double latitude2){
 
         Double EARTH_RADIUS = 6370.996; // 地球半径系数
         Double PI = 3.1415926;
@@ -160,7 +161,12 @@ public class LocationService {
         pkEntity.setUserId(createLocation.getUserId());
         pkEntity.setLatitude(createLocation.getLatitude());
         pkEntity.setLongitude(createLocation.getLongitude());
-        pkEntity.setType(createLocation.getType());
+        LocationType locationType = this.查询默认卡点类型(createLocation.getType());
+
+        pkEntity.setType(locationType.getTypeName());
+        pkEntity.setTypeRange(locationType.getRangeLength());
+        pkEntity.setTypeScale(locationType.getScale());
+
         pkEntity.setName(createLocation.getName());
         pkEntity.setAddress(createLocation.getAddress());
         pkEntity.setSign(createLocation.getSign());
@@ -170,6 +176,9 @@ public class LocationService {
 
         return pkId;
     }
+
+
+
 
     public PkDetail 搜索卡点(String pkId) throws IOException {
 
@@ -205,38 +214,102 @@ public class LocationService {
         String pkId = pk.getPkId();
         PkDetail pkDetail = new PkDetail();
         pkDetail.setPkId(pk.getPkId());
-
         pkDetail.setSign(pk.getSign());
         pkDetail.setLatitude(pk.getLatitude());
         pkDetail.setLongitude(pk.getLongitude());
         pkDetail.setName(pk.getName());
         pkDetail.setAddress(pk.getAddress());
-        pkDetail.setType(this.查询类型(pk.getType()));
+        LocationType locationType = this.查询类型(pk);
+        pkDetail.setType(locationType);
         pkDetail.setUser(userService.queryUser(pk.getUserId()));
         pkDetail.setTime(TimeUtils.convertTime(pk.getTime()));
         pkDetail.setBackUrl(pk.getBackUrl());
         pkDetail.setApproved(dynamicService.getKeyValue(CacheKeyName.已审核数量,pkId));
         pkDetail.setTopPostId(pk.getTopPostId());
         pkDetail.setTopPost(postService.查询顶置帖子(pk));
+        pkDetail.setMarker(this.查询Marker(pk));
+        pkDetail.setCircle(this.查询Circle(pk,locationType));
+
+
         return pkDetail;
     }
 
-    private LocationType 查询类型(String type) {
+    private Circle 查询Circle(PkEntity pk, LocationType locationType) {
+        Circle circle = new Circle();
+        circle.setLatitude(pk.getLatitude());
+        circle.setLongitude(pk.getLongitude());
+        circle.setRadius(locationType.getRangeLength());
+        return circle;
 
+    }
+
+    private Marker 查询Marker(PkEntity pk) {
+        return buildMarker(pk.getName(),pk.getLatitude(),pk.getLongitude());
+    }
+    public Marker buildMarker(String name,Double latitude, Double longitude)
+    {
+        Marker marker = new Marker();
+        marker.setId(RandomUtil.getRandomNumber());
+        marker.setLatitude(latitude);
+        marker.setLongitude(longitude);
+        Callout callout = new Callout();
+        callout.setContent(name);
+        marker.setCallout(callout);
+        return marker;
+    }
+
+    private LocationType 查询类型(PkEntity pk) {
 
         LocationType locationType = new LocationType();
-        locationType.setRange(200);
-        locationType.setTypeName("商业街区");
-
+        locationType.setTypeName(pk.getType());
+        locationType.setScale(pk.getTypeScale());
+        locationType.setRange(this.长度转义(pk.getTypeRange()));
+        locationType.setRangeLength(pk.getTypeRange());
         return locationType;
 
     }
 
+    private String 长度转义(int typeRange) {
+        if(typeRange > 1000)
+        {
+            double rangeLength = typeRange/1000.0D;
+            BigDecimal bg = new BigDecimal(rangeLength);
+            double d3 = bg.setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue();
+            return  String.valueOf(d3)+"公里";
 
-    public List<PkDetail> 查询附近卡点(String s, String s1) {
+        }
+        else
+        {
+            return typeRange+"米";
+        }
+
+
+
+    }
+
+    private LocationType 查询默认卡点类型(String type) {
+        LocationType locationType = new LocationType();
+        locationType.setRangeLength(RandomUtil.getRandomNumber());
+        locationType.setScale(RandomUtil.getRandomScale());
+        locationType.setTypeName("商业中心");
+        return locationType;
+    }
+
+
+    public List<PkDetail> 查询附近卡点(String queryerId,double latitude, double longitude) {
         List<PkDetail> pks = new ArrayList<>();
 
         EntityFilterChain filter = EntityFilterChain.newFilterChain(PkEntity.class)
+                .compareFilter("latitude",CompareTag.Small,latitude + 0.06D)
+                .andFilter()
+                .compareFilter("latitude",CompareTag.Bigger,latitude - 0.06D)
+                .andFilter()
+                .compareFilter("longitude",CompareTag.Small,longitude + 0.06D)
+                .andFilter()
+                .compareFilter("longitude",CompareTag.Bigger,longitude - 0.06D)
+                .andFilter()
+                .nullFilter("topPostId",false)
+                .orderByRandomFilter()
                 .pageLimitFilter(1,20);
         List<PkEntity> pkEntities = daoService.queryEntities(PkEntity.class,filter);
 
@@ -244,7 +317,11 @@ public class LocationService {
         {
             pkEntities.forEach(pk->{
                 try {
-                    pks.add(this.querySinglePk(pk));
+                    PkDetail pkDetail = this.querySinglePk(pk);
+                    int length = this.计算坐标间距离(latitude,longitude,pk.getLatitude(),pk.getLongitude());
+                    pkDetail.setUserLength(length);
+                    pkDetail.setUserLengthStr(this.距离转换成描述(length));
+                    pks.add(pkDetail);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -254,6 +331,86 @@ public class LocationService {
         }
 
         return pks;
+
+    }
+
+    public String 距离转换成描述(int length) {
+
+        return 长度转义(length);
+    }
+
+    public PostEntity 查询最新用户Post发布时间(String pkId, String userId) {
+        EntityFilterChain cfilter = EntityFilterChain.newFilterChain(PostEntity.class)
+                .compareFilter("pkId",CompareTag.Equal,pkId)
+                .andFilter()
+                .compareFilter("userId",CompareTag.Equal,userId)
+                .orderByFilter("time", OrderTag.DESC);
+        PostEntity postEntity = daoService.querySingleEntity(PostEntity.class,cfilter);
+        return postEntity;
+
+
+    }
+
+    public int 查询用户打卡次数(String pkId, String userId) {
+
+        EntityFilterChain cfilter = EntityFilterChain.newFilterChain(PkUserEntity.class)
+                .compareFilter("pkId",CompareTag.Equal,pkId)
+                .andFilter()
+                .compareFilter("userId",CompareTag.Equal,userId);
+        PkUserEntity pkUserEntity = daoService.querySingleEntity(PkUserEntity.class,cfilter);
+        if(ObjectUtils.isEmpty(pkUserEntity)){
+            return 0;
+        }
+        else
+        {
+            return  pkUserEntity.getPostTimes();
+        }
+
+    }
+
+    public void 用户发布打卡一次(String pkId, String userId) {
+        EntityFilterChain cfilter = EntityFilterChain.newFilterChain(PkUserEntity.class)
+                .compareFilter("pkId",CompareTag.Equal,pkId)
+                .andFilter()
+                .compareFilter("userId",CompareTag.Equal,userId);
+        PkUserEntity pkUserEntity = daoService.querySingleEntity(PkUserEntity.class,cfilter);
+        if(!ObjectUtils.isEmpty(pkUserEntity))
+        {
+            pkUserEntity.setPostTimes(pkUserEntity.getPostTimes()+1);
+            daoService.updateEntity(pkUserEntity);
+        }
+        else
+        {
+            pkUserEntity = new PkUserEntity();
+            pkUserEntity.setPostTimes(1);
+            pkUserEntity.setPkId(pkId);
+            pkUserEntity.setUserId(userId);
+            daoService.insertEntity(pkUserEntity);
+        }
+
+
+    }
+
+    public void 打卡次数减一(String pkId, String userId) {
+        EntityFilterChain cfilter = EntityFilterChain.newFilterChain(PkUserEntity.class)
+                .compareFilter("pkId",CompareTag.Equal,pkId)
+                .andFilter()
+                .compareFilter("userId",CompareTag.Equal,userId);
+        PkUserEntity pkUserEntity = daoService.querySingleEntity(PkUserEntity.class,cfilter);
+        if(!ObjectUtils.isEmpty(pkUserEntity))
+        {
+            pkUserEntity.setPostTimes(pkUserEntity.getPostTimes()-1<0?0:pkUserEntity.getPostTimes()-1);
+            daoService.updateEntity(pkUserEntity);
+        }
+        else
+        {
+            pkUserEntity = new PkUserEntity();
+            pkUserEntity.setPostTimes(0);
+            pkUserEntity.setPkId(pkId);
+            pkUserEntity.setUserId(userId);
+            daoService.insertEntity(pkUserEntity);
+        }
+
 
     }
 }

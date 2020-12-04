@@ -59,7 +59,10 @@ public enum ConfigItem {
     PK缓存数量("pkCacheNumbers", "PK_CACHE_NUMBERS", "PK缓存数量", "100"),
     首页图片选择榜主图册("imgSelectPkCreator", "IS_PK_CREATOR_IMG", "首页图片选择榜主图册", "true"),
     信息展示页面用户数量("InfoShowUserNum", "USER_NUM_INFO_SHOW","信息展示页面用户数量" , "5"),
-    主题可选择标签数量("maxTips", "MAX_TIPS", "主题可选择标签数量", "5");
+    主题可选择标签数量("maxTips", "MAX_TIPS", "主题可选择标签数量", "5"),
+    发帖的时间间隔("time_period", "POST_TIME_PERIED", "发帖的时间间隔", "3600"),
+    卡点默认打卡范围("defaultPkRange", "DEFAULT_PK_RANGE", "卡点默认打卡范围", "200"),
+    卡点默认缩放等级("defaultScale", "DEFAULT_SCALE", "默认缩放等级", "16");
 
 
 

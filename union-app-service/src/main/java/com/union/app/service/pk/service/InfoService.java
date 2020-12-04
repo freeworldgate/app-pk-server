@@ -153,8 +153,8 @@ public class InfoService {
         {
             EntityFilterChain filter = EntityFilterChain.newFilterChain(PkPostListEntity.class)
                     .compareFilter("pkId", CompareTag.Equal, pkId)
-                    .andFilter()
-                    .compareFilter("statu",CompareTag.Equal,PostStatu.审核中)
+//                    .andFilter()
+//                    .compareFilter("statu",CompareTag.Equal,PostStatu.审核中)
                     .pageLimitFilter(1, AppConfigService.getConfigAsInteger(ConfigItem.信息展示页面用户数量))
                     .orderByRandomFilter();
             List<PkPostListEntity> entities = daoService.queryEntities(PkPostListEntity.class, filter);
@@ -173,8 +173,8 @@ public class InfoService {
         {
             EntityFilterChain filter = EntityFilterChain.newFilterChain(PkPostListEntity.class)
                     .compareFilter("pkId", CompareTag.Equal, pkId)
-                    .andFilter()
-                    .compareFilter("statu",CompareTag.Equal,PostStatu.上线)
+//                    .andFilter()
+//                    .compareFilter("statu",CompareTag.Equal,PostStatu.上线)
                     .pageLimitFilter(1, AppConfigService.getConfigAsInteger(ConfigItem.信息展示页面用户数量))
                     .orderByRandomFilter();
             List<PkPostListEntity> entities = daoService.queryEntities(PkPostListEntity.class, filter);

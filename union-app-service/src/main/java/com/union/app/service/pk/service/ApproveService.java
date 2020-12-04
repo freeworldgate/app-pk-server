@@ -63,33 +63,33 @@ public class ApproveService {
 
 
 
-
-    public ApproveComment 获取留言信息(String pkId, String postId) throws UnsupportedEncodingException {
-        ApproveComment approveComment = new ApproveComment();
-        approveComment.setImgBack(appService.查询背景(4));
-
-
-        ApproveCommentEntity approveCommentEntity = this.查询留言(pkId,postId);
-        if(org.springframework.util.ObjectUtils.isEmpty(approveCommentEntity)){return null;}
-        approveComment.setImgUrl(approveCommentEntity.getImgUrl());
-        approveComment.setPkId(approveCommentEntity.getPkId());
-        approveComment.setPostId(approveCommentEntity.getPostId());
-        approveComment.setText(approveCommentEntity.getText());
-        approveComment.setCreator(pkService.queryPkCreator(pkId));
-        approveComment.setUser(userService.queryUser(approveCommentEntity.getUserId()));
-//        approveComment.setTime("今天23:00");
-        approveComment.setDate(TimeUtils.convertTime(approveCommentEntity.getTime()));
-        if(!org.springframework.util.ObjectUtils.isEmpty(approveCommentEntity.getPostStatu()))
-        {
-            approveComment.setStatu(new KeyNameValue(approveCommentEntity.getPostStatu().getStatu(), approveCommentEntity.getPostStatu().getStatuStr()));
-        }
-        else
-        {
-            approveComment.setStatu(new KeyNameValue(PostStatu.审核中.getStatu(), PostStatu.审核中.getStatuStr()));
-        }
-
-        return approveComment;
-    }
+//
+//    public ApproveComment 获取留言信息(String pkId, String postId) throws UnsupportedEncodingException {
+//        ApproveComment approveComment = new ApproveComment();
+//        approveComment.setImgBack(appService.查询背景(4));
+//
+//
+//        ApproveCommentEntity approveCommentEntity = this.查询留言(pkId,postId);
+//        if(org.springframework.util.ObjectUtils.isEmpty(approveCommentEntity)){return null;}
+//        approveComment.setImgUrl(approveCommentEntity.getImgUrl());
+//        approveComment.setPkId(approveCommentEntity.getPkId());
+//        approveComment.setPostId(approveCommentEntity.getPostId());
+//        approveComment.setText(approveCommentEntity.getText());
+//        approveComment.setCreator(pkService.queryPkCreator(pkId));
+//        approveComment.setUser(userService.queryUser(approveCommentEntity.getUserId()));
+////        approveComment.setTime("今天23:00");
+//        approveComment.setDate(TimeUtils.convertTime(approveCommentEntity.getTime()));
+//        if(!org.springframework.util.ObjectUtils.isEmpty(approveCommentEntity.getPostStatu()))
+//        {
+//            approveComment.setStatu(new KeyNameValue(approveCommentEntity.getPostStatu().getStatu(), approveCommentEntity.getPostStatu().getStatuStr()));
+//        }
+//        else
+//        {
+//            approveComment.setStatu(new KeyNameValue(PostStatu.审核中.getStatu(), PostStatu.审核中.getStatuStr()));
+//        }
+//
+//        return approveComment;
+//    }
 
     private ApproveComplain 获取投诉信息(String pkId, String postId, String approveUserId) {
 
@@ -118,35 +118,35 @@ public class ApproveService {
 
 
 
-    public void 设置审核留言(String pkId, String postId,String userId,String text,String imgUrl) throws UnsupportedEncodingException {
-
-        ApproveCommentEntity approveCommentEntity = 查询留言(pkId,postId);
-
-        if(org.springframework.util.ObjectUtils.isEmpty(approveCommentEntity))
-        {
-            approveCommentEntity = new ApproveCommentEntity();
-            approveCommentEntity.setPkId(pkId);
-            approveCommentEntity.setPostId(postId);
-            approveCommentEntity.setUserId(userId);
-            approveCommentEntity.setText(text);
-            approveCommentEntity.setImgUrl(this.getLegalImgUrl(imgUrl));
-            approveCommentEntity.setTime(System.currentTimeMillis());
-
-            approveCommentEntity.setPostStatu(PostStatu.审核中);
-            daoService.insertEntity(approveCommentEntity);
-        }
-        else
-        {
-            approveCommentEntity.setText(text);
-            approveCommentEntity.setImgUrl(this.getLegalImgUrl(imgUrl));
-            approveCommentEntity.setUserId(userId);
-            approveCommentEntity.setTime(System.currentTimeMillis());
-
-            approveCommentEntity.setPostStatu(PostStatu.审核中);
-            daoService.updateEntity(approveCommentEntity);
-        }
-
-    }
+//    public void 设置审核留言(String pkId, String postId,String userId,String text,String imgUrl) throws UnsupportedEncodingException {
+//
+//        ApproveCommentEntity approveCommentEntity = 查询留言(pkId,postId);
+//
+//        if(org.springframework.util.ObjectUtils.isEmpty(approveCommentEntity))
+//        {
+//            approveCommentEntity = new ApproveCommentEntity();
+//            approveCommentEntity.setPkId(pkId);
+//            approveCommentEntity.setPostId(postId);
+//            approveCommentEntity.setUserId(userId);
+//            approveCommentEntity.setText(text);
+//            approveCommentEntity.setImgUrl(this.getLegalImgUrl(imgUrl));
+//            approveCommentEntity.setTime(System.currentTimeMillis());
+//
+//            approveCommentEntity.setPostStatu(PostStatu.审核中);
+//            daoService.insertEntity(approveCommentEntity);
+//        }
+//        else
+//        {
+//            approveCommentEntity.setText(text);
+//            approveCommentEntity.setImgUrl(this.getLegalImgUrl(imgUrl));
+//            approveCommentEntity.setUserId(userId);
+//            approveCommentEntity.setTime(System.currentTimeMillis());
+//
+//            approveCommentEntity.setPostStatu(PostStatu.审核中);
+//            daoService.updateEntity(approveCommentEntity);
+//        }
+//
+//    }
 
     public ApproveCommentEntity 查询留言(String pkId, String postId){
         EntityFilterChain filter = EntityFilterChain.newFilterChain(ApproveCommentEntity.class)
@@ -320,9 +320,9 @@ public class ApproveService {
 
 
         PostEntity postEntity = postService.查询帖子ById(postId);
-        if(postEntity.getApproveStatu() == ApproveStatu.请求审核 ){
-            return ApproveButton.请求审核无效 ;
-        }
+//        if(postEntity.getApproveStatu() == ApproveStatu.请求审核 ){
+//            return ApproveButton.请求审核无效 ;
+//        }
         return ApproveButton.请求审核有效;
 
     }

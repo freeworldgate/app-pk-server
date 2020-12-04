@@ -3,89 +3,501 @@
   <component name="AnalysisUIOptions">
     <option name="GROUP_BY_SEVERITY" value="true" />
   </component>
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:dependabot" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:dependabot" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:maven" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="45b681d3-496d-412f-8789-ffb456e1af05" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/搜索创建/创建卡点.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/搜索创建/搜索卡点.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/union-app-domain/src/main/java/com/union/app/domain/pk/LocationType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/union-app-domain/src/main/java/com/union/app/domain/pk/daka/CreateLocation.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/union-app-domain/src/main/java/com/union/app/domain/pk/daka/Location.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/service/LocationService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/GrepConsole.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/GrepConsole.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/zone/创建单个PK.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/zone/创建单个PK.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dir1/wx-1603533365772.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dir7/wx-1603530066920.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/zone/post/Post审批.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/zone/post/Post审批.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/zone/发布Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/zone/发布Post.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/zone/查询单个PK.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/zone/查询单个PK.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/zone/查询单个POST.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/zone/解锁.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/zone/解锁.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/zone/进入PK.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/zone/进入PK.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/zone/顶置.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/搜索创建/顶置删除.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/审核/一次性任务.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/审核/一次性任务.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/审核/审核.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/审核/审核.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/审核/提交激活码.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/审核/提交激活码.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/审核/查询审核信息1.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/审核/查询审核信息1.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/审核/查询审核页面.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/审核/查询审核页面.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/审核/榜帖是否已经审核.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/审核/榜帖是否已经审核.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/审核/设置留言.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/审核/设置留言.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/搜索创建/搜索卡点.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/搜索创建/搜索卡点.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/搜索创建/顶置删除.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/搜索创建/顶置删除.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/浏览动态/点赞添加邀请.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/浏览动态/点赞添加邀请.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/消息/查询审核员消息.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/管理/创建内置PK.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/管理/查询单个预置PK.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/管理/查询单个预置PK.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/管理/添加相册到主页预览.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/管理/添加相册到主页预览.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/管理/激活榜.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/管理/激活榜.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/邀请/查询用户邀请.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/邀请/查询用户邀请.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/管理/发布图贴.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/管理/发布图贴.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/管理/审核榜帖.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/管理/审核榜帖.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/主页/查询主页.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/主页/查询主页.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/用户相册/用户相册.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/用户相册/用户相册.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/邀请/查询邀请.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/邀请/查询邀请.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/zone/创建单个PK.class" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/zone/创建单个PK.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/zone/发布Post.class" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/zone/发布Post.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/zone/查询单个PK.class" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/zone/查询单个PK.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/zone/查询单个POST.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/zone/进入PK.class" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/zone/进入PK.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/审核/审核.class" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/审核/审核.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/审核/提交激活码.class" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/审核/提交激活码.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/审核/查询审核页面.class" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/审核/查询审核页面.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/消息/查询审核员消息.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/创建内置PK.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/查询单个预置PK.class" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/查询单个预置PK.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/添加相册到主页预览.class" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/添加相册到主页预览.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/激活榜.class" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/激活榜.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/主页/查询主页.class" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/主页/查询主页.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/用户相册/用户相册.class" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/用户相册/用户相册.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/邀请/查询邀请.class" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/邀请/查询邀请.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-common/src/main/java/com/union/app/common/dao/EntityCacheService.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-common/src/main/java/com/union/app/common/dao/EntityCacheService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-domain/src/main/java/com/union/app/domain/pk/Circle.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-domain/src/main/java/com/union/app/domain/pk/Circle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/邀请/添加邀请.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/邀请/添加邀请.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/OSS/OSSSave.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/task/PK动态.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/zone/ImportPost.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/zone/post/Post审批.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/zone/修改PK创建者.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/zone/切换激活员.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/zone/创建单个PK.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/zone/刷新PKID中的PAGE页面.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/zone/参战.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/zone/发布Post.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/zone/查询PK认证.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/zone/查询单个PK.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/zone/查询用户的POST.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/zone/查询群组二维码.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/zone/进入PK.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/反馈/反馈.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/审核/一次性任务.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/审核/审核.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/审核/提交激活码.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/审核/查询审核信息1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/审核/查询审核信息2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/审核/查询审核员审核中列表.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/审核/查询审核员已审核列表.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/审核/查询审核页面.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/审核/榜主选择审核人员.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/审核/榜帖是否已经审核.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/审核/设置审核人员.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/审核/设置留言.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/审核/设置自评.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/投诉/处理投诉信息.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/检查创建PK环境.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/消息/发布审核员消息.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/消息推送/上传群二维码.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/消息推送/接收消息.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/消息推送/链接验证.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/点击/点击.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/上传内置主题封面.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/上传内置公开群二维码.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/上传内置背景图片.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/主页预览.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/发布图贴.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/审核榜帖.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/收款用户.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/收款码列表.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/查询内置PK.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/查询内置背景图片.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/查询单个预置PK.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/查询投诉信息.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/查询排名.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/查询激活码.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/查询设置Creator的PK列表.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/添加相册到主页预览.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/激活榜.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/登录.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/群组列表.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/设置内置PK参数.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/预置用户/创建预置用户.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/预置用户/查询内置用户.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/share/分享按钮.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/share/判断是否可以创建审核订单.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/share/帮助信息.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/主页/查询主页.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/应用信息/应用信息.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/用户相册/用户图册.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/用户相册/用户相册.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/登录和注册/UserBasicInfo.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/登录和注册/用户登录加注册.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/系统设置/系统设置.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/邀请/查询邀请.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/邀请/添加邀请.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/gateway/entry/AppGatewayApiGetController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/gateway/entry/AppGatewayApiPostController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/gateway/entry/AppGatewayApiTestController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/gateway/executor/ApiExecutor.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/OSS存储/CacheStorage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/OSS存储/IdGenerator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/OSS存储/OssStorage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/OSS存储/PostObjectSample.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/OSS存储/SceneType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/annotation/ApiService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/api/registry/ApiURI.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/api/registry/ServiceRegistry.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/api/registry/bean/ServiceBean.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/api/registry/bean/ServiceExceptionBean.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/api/registry/bean/ServiceParamBean.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/api/registry/bean/ServiceUrlBean.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/api/registry/helper/BasicServiceParamType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/api/registry/helper/ServiceBeanHelper.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/api/resolver/HttpClientResolver.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/api/resolver/JpaEntityManagerResolver.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/api/resolver/RedisClientResolver.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/api/resolver/ServiceResolver.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/api/runtime/ApiRuntimePro.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/config/AppConfigService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/dao/AppDaoService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/dao/PkCacheService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/id/IdService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/id/KeyGetter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/redis/IRedisService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/redis/RedisMapService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/redis/RedisSortSetService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/request/RequestHelper.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/resultcode/ResultCodeService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/spring/context/SpringContextUtil.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/spring/interceptor/ControllerConfigurerAdapter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/spring/interceptor/ControllerRequestLoggerInterceptor.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/spring/listener/AppConfigServiceListener.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/spring/listener/AppDaoServiceListener.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/validate/AppValidatorService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/validate/validators/IntValidator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/validate/validators/ValidateTypeSupport.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/validate/validators/Validator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/微信/AES.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/微信/FileUpload.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/微信/HttpPostUtil.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/微信/MdlUpload.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/微信/OssSignHeader.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/微信/Result.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/微信/WeChatUtil$PostEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/微信/WeChatUtil.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/验证码/VCodeEnginer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-dao/target/classes/com/union/app/dao/druid/DruidStatFilter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-dao/target/classes/com/union/app/dao/druid/DruidStatViewServlet.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-dao/target/classes/com/union/app/dao/druid/DuridConfig.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-dao/target/classes/com/union/app/dao/jpa/JPAConfig.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-dao/target/classes/com/union/app/dao/jpa/JpaTransactionUtil.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-dao/target/classes/com/union/app/dao/spi/filter/AndFilter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-dao/target/classes/com/union/app/dao/spi/filter/BetweenFilter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-dao/target/classes/com/union/app/dao/spi/filter/CompareFilter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-dao/target/classes/com/union/app/dao/spi/filter/CompareTag.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-dao/target/classes/com/union/app/dao/spi/filter/EntityFilter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-dao/target/classes/com/union/app/dao/spi/filter/EntityFilterChain.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-dao/target/classes/com/union/app/dao/spi/filter/InFilter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-dao/target/classes/com/union/app/dao/spi/filter/LikeFilter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-dao/target/classes/com/union/app/dao/spi/filter/NullFilter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-dao/target/classes/com/union/app/dao/spi/filter/OrFilter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-dao/target/classes/com/union/app/dao/spi/filter/OrderByFilter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-dao/target/classes/com/union/app/dao/spi/filter/OrderByRandomFilter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-dao/target/classes/com/union/app/dao/spi/filter/OrderTag.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-dao/target/classes/com/union/app/dao/spi/filter/PageLimitFilter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/src/main/java/com/union/app/domain/pk/LocationType.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-domain/src/main/java/com/union/app/domain/pk/LocationType.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/union-app-domain/src/main/java/com/union/app/domain/pk/PkDetail.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-domain/src/main/java/com/union/app/domain/pk/PkDetail.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/PkDetail.class" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/PkDetail.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/src/main/java/com/union/app/domain/pk/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-domain/src/main/java/com/union/app/domain/pk/Post.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/src/main/java/com/union/app/domain/工具/RandomUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-domain/src/main/java/com/union/app/domain/工具/RandomUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/Oss上传/OssUrlInfo.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/ActivePk.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/ActiveTip.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/ApproveButton.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/ApprovePost.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/CashierFeeCode.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/CashierGroup.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/DatePage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/FrontPage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/GroupInfo.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/HosterTask.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/IconUrl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/Like.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/OperType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/PayPolicy.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/PkActive.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/PkButton.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/PkButtonType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/PkCreator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/PkDetail.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/PkDyName.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/PkDynamic/AppDynamic.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/PkDynamic/FactualInfo.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/PkDynamic/FeeTask.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/PkDynamic/PkDynamic.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/PkDynamic/PostDynamic.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/PkDynamic/UserDynamic.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/PkDynamic/UserPkDynamic.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/PkDynamic/UserScore.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/PkLevel.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/PkMode.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/PkPost.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/PkPostId.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/PkTime.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/Post.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/PostAlbum.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/PostBody.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/PostContributor.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/PostDetail.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/PostDynamic.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/PostFrontPage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/PostImage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/PostImages.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/PostMessage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/PostPage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/PostPart.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/ShareDynamicMessage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/ShareMode.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/TipConstant.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/TipUrl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/UserCode.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/ValueStr.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/Winners.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/apply/ApplyOrder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/apply/ApproveCode.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/apply/KeyNameValue.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/apply/KeyValuePair.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/cashier/PkCashier.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/complain/Complain.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/help/HelpInfo.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/integral/UserIntegral.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/share/CreatorInfo.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/share/PosterInfo.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/share/ShareInfo.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/share/ShareMessage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/share/ShareWindow.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/user/Image.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/user/用户相册.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/wechat/AccessToken.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/zone/Zone.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/审核/AppMessage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/审核/ApproveComment.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/审核/ApproveComplain.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/审核/ApproveDynamic.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/审核/ApproveMessage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/审核/ApproveUser.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/审核/PkComment.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/客服消息/WxImage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/客服消息/WxLink.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/客服消息/WxSendMessage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/客服消息/WxText.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/客服消息/recieveMessage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/user/City.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/user/FeeCodeDomain.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/user/Job.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/user/User.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/wechat/UserInfo.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/wechat/Watermark.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/wechat/WeChatUser.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/工具/RandomUtil.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/房间/Room.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/支付/City.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/支付/Job.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/union-app-entity/src/main/java/com/union/app/entity/pk/PkEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-entity/src/main/java/com/union/app/entity/pk/PkEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/PkEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/PkEntity.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/data/PkDataService.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/data/PkDataService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/src/main/java/com/union/app/entity/pk/PostEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-entity/src/main/java/com/union/app/entity/pk/PostEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/src/main/java/com/union/app/entity/pk/PostImageEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-entity/src/main/java/com/union/app/entity/pk/PostImageEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/src/main/java/com/union/app/entity/pk/PostStatu.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-entity/src/main/java/com/union/app/entity/pk/PostStatu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/src/main/java/com/union/app/entity/用户/UserEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-entity/src/main/java/com/union/app/entity/用户/UserEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/ImgStatu.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/OSS上传记录表/OssUploadTaskEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/order/PkOrderEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/order/PkOrderStatu.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/ActiveCodeEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/ActiveStatu.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/ActiveTipEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/AppMode.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/ApproveStatu.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/BackImgEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/BuildInPkEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/CashierStatu.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/CodeStatu.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/EmptyPostEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/FeeCodeStatu.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/FeeNumber.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/GroupStatu.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/HomePagePk.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/InvitePkEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/InviteType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/LinkType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/MessageType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/OrderEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/OrderStatu.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/PkActiveEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/PkCashierEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/PkCashierFeeCodeEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/PkCashierGroupEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/PkCodeEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/PkCreatorEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/PkDynamicEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/PkEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/PkPageCacheEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/PkPageRefreshTimeEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/PkPostListEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/PkPreEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/PkStatu.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/PkType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/PostDynamicEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/PostEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/PostImageEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/PostStatu.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/PreUserEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/UserCollectionEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/UserDynamicEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/apply/OrderType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/apply/PayOrderEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/complain/ComplainEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/complain/ComplainStatu.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/complain/ComplainType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/share/ShareEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/task/PkTaskEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/task/TaskStatu.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/助力浏览评论分享/UserLikeEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/审核/ApproveCommentEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/审核/ApproveMessageEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/消息/MessageEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/消息/MessageType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/share/ShareFeeEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/外部错误码映射表/ResultCodeEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/应用信息表/ApplicationEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/标签/LabelEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/校验表/ValidateClassType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/校验表/ValidateEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/用户/InviteViewHistoryEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/用户/PayScene.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/用户/UserBalanceEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/用户/UserBalanceHistoryEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/用户/UserEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/用户/UserFollowEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/用户/UserInviteFromUserEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/用户/UserSex.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/用户/UserShareHistoryEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/用户/support/UserPostStatu.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/用户/support/UserType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/配置表/ColumSwitch.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/配置表/ConfigEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-plateform/src/main/java/com/union/app/plateform/constant/ConfigItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-plateform/src/main/java/com/union/app/plateform/constant/ConfigItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-plateform/target/classes/com/union/app/plateform/common/CommonUtil.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-plateform/target/classes/com/union/app/plateform/constant/ConfigItem.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-plateform/target/classes/com/union/app/plateform/constant/常量值.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-plateform/target/classes/com/union/app/plateform/data/resultcode/ActionType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-plateform/target/classes/com/union/app/plateform/data/resultcode/AppException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-plateform/target/classes/com/union/app/plateform/data/resultcode/AppResponse.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-plateform/target/classes/com/union/app/plateform/data/resultcode/DataSet.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-plateform/target/classes/com/union/app/plateform/data/resultcode/Level.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-plateform/target/classes/com/union/app/plateform/data/resultcode/PageAction.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-plateform/target/classes/com/union/app/plateform/data/resultcode/ResultCode.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-plateform/target/classes/com/union/app/plateform/exception/ApiException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-plateform/target/classes/com/union/app/plateform/exception/AppException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-plateform/target/classes/com/union/app/plateform/exception/SqlException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-plateform/target/classes/com/union/app/plateform/exception/ValidateException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-plateform/target/classes/com/union/app/plateform/exception/handler/GlobalExceptionHandler.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-plateform/target/classes/com/union/app/plateform/log4j2/AppLoggerFactory.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-plateform/target/classes/com/union/app/plateform/meet/MeetTimeCalculator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-plateform/target/classes/com/union/app/plateform/response/ApiResponse.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-plateform/target/classes/com/union/app/plateform/storgae/KeyName.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-plateform/target/classes/com/union/app/plateform/storgae/RedisConfig.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-plateform/target/classes/com/union/app/plateform/storgae/RedisUtil.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-plateform/target/classes/com/union/app/plateform/storgae/SubType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-plateform/target/classes/com/union/app/plateform/storgae/redis/RedisStringUtil.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-plateform/target/classes/com/union/app/plateform/validate/CommonValidator.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/complain/ComplainService.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/complain/ComplainService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/dynamic/DynamicService.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/dynamic/DynamicService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/service/AppService.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/service/AppService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/service/ApproveService.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/service/ApproveService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/service/InfoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/service/InfoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/service/LocationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/service/LocationService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/service/PkService.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/service/PkService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/service/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/service/PostService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/quartz/定时刷新首页.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/data/PkDataService.class" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/data/PkDataService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/complain/ComplainService.class" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/complain/ComplainService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/AppService.class" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/AppService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/ApproveService.class" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/ApproveService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/PkService.class" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/PkService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/PostService.class" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/PostService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/quartz/定时刷新首页.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/user/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/user/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/data/PkDataService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/click/ClickHandler.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/click/ClickItem.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/click/ClickService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/click/handler/POST贡献榜页面.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/click/handler/Pk礼品等级详情界面.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/click/handler/Pk贡献榜页面.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/click/handler/榜帖详情界面.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/click/handler/用户主页界面.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/click/handler/用户打榜记录.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/click/handler/用户收藏单榜.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/click/handler/用户立榜记录.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/click/handler/选择城市页面.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/complain/ComplainService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/dynamic/CacheItem.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/dynamic/CacheKeyName.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/dynamic/CacheService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/dynamic/CacheType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/dynamic/DynamicItem.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/dynamic/DynamicKeyName.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/dynamic/DynamicLevel.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/dynamic/DynamicService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/dynamic/RedisService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/AppService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/ApproveService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/MediaService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/MessageService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/OrderService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/PayService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/PkLevelEnum.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/PkService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/PostCacheService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/PostService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/TimeCacheService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/Util.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/WXConst.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/cache/ICacheService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/cache/SingleCacheService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/cache/TimePolicy.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/storage/IStorage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/storage/immutable/DataBaseImmutableStorage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/storage/immutable/IStorage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/storage/immutable/MemoryImmutableStorage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/storage/immutable/OssImmutableStorage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/storage/immutable/RedisImmutableStorage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/storage/immutable/StorageId.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/storage/immutable/StorageType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/support/SingleCacheResolver.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/topic/MessageProducer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/topic/MessageSubscriber.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/quartz/data/AppData.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/quartz/data/PkData.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/quartz/data/PkUserData.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/quartz/data/UserData.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/quartz/更新微信缓存媒体文件.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/user/UserService.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/union-app-start/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-start/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-start/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-start/target/classes/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-util/src/main/java/com/union/app/util/time/TimeUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-util/src/main/java/com/union/app/util/time/TimeUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-util/target/classes/com/union/app/util/time/TimeUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-util/target/classes/com/union/app/util/time/TimeUtils.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-start/target/classes/520oo.jks" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-start/target/classes/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-start/target/classes/com/union/app/AppApplication.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-start/target/classes/img/b1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-start/target/classes/img/b2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-start/target/classes/img/b3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-start/target/classes/log4j2-spring.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-util/target/classes/com/union/app/util/env/EnvUtil.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-util/target/classes/com/union/app/util/file/FileUtil.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-util/target/classes/com/union/app/util/http/AppHttpUtil.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-util/target/classes/com/union/app/util/http/HttpClientConfig.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-util/target/classes/com/union/app/util/http/HttpResponse.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-util/target/classes/com/union/app/util/idGenerator/IdGenerator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-util/target/classes/com/union/app/util/jar/JarLoader.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-util/target/classes/com/union/app/util/jar/JarUtil.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-util/target/classes/com/union/app/util/reflect/ClassEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-util/target/classes/com/union/app/util/reflect/EntityAnalyser.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-util/target/classes/com/union/app/util/reflect/FieldEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-util/target/classes/com/union/app/util/reflect/MethodEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-util/target/classes/com/union/app/util/reflect/ParamterEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-util/target/classes/com/union/app/util/time/ImageUtils.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-util/target/classes/com/union/app/util/time/TimeUtils.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wx1548129081102_9999.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wx1548129121750_9999.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wx1548129129822_9999.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wx1548156415538_9999.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wx1548240368990_9999.jpg" beforeDir="false" />
     </list>
-    <ignored path="$PROJECT_DIR$/union-app-entity/target/" />
-    <ignored path="$PROJECT_DIR$/union-app-api/target/" />
-    <ignored path="$PROJECT_DIR$/union-app-service/target/" />
-    <ignored path="$PROJECT_DIR$/union-app-plateform/target/" />
-    <ignored path="$PROJECT_DIR$/target/" />
-    <ignored path="$PROJECT_DIR$/union-app-dao/target/" />
-    <ignored path="$PROJECT_DIR$/union-app-domain/target/" />
-    <ignored path="$PROJECT_DIR$/union-app-util/target/" />
-    <ignored path="$PROJECT_DIR$/union-app-common/target/" />
-    <ignored path="$PROJECT_DIR$/union-app-start/target/" />
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
-    <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -116,106 +528,6 @@
     <expand />
     <select />
   </component>
-  <component name="FavoritesManager">
-    <favorites_list name="union-boot-pk" />
-  </component>
-  <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="PkDetail.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/union-app-domain/src/main/java/com/union/app/domain/pk/PkDetail.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="315">
-              <caret line="42" column="12" lean-forward="true" selection-start-line="42" selection-start-column="12" selection-end-line="42" selection-end-column="12" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="LocationType.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/union-app-domain/src/main/java/com/union/app/domain/pk/LocationType.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="创建单个PK.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/zone/创建单个PK.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="361">
-              <caret line="65" column="13" selection-start-line="65" selection-start-column="13" selection-end-line="65" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="创建卡点.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/搜索创建/创建卡点.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="70">
-              <caret line="57" column="14" lean-forward="true" selection-start-line="57" selection-start-column="14" selection-end-line="57" selection-end-column="14" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PostService.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/service/PostService.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="414">
-              <caret line="710" column="1" lean-forward="true" selection-start-line="710" selection-start-column="1" selection-end-line="710" selection-end-column="38" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="顶置删除.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/搜索创建/顶置删除.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="345">
-              <caret line="81" column="28" lean-forward="true" selection-start-line="81" selection-start-column="28" selection-end-line="81" selection-end-column="28" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="查询主页.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/主页/查询主页.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="233">
-              <caret line="74" lean-forward="true" selection-start-line="74" selection-end-line="74" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Callout.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/union-app-domain/src/main/java/com/union/app/domain/pk/Callout.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Marker.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/union-app-domain/src/main/java/com/union/app/domain/pk/Marker.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="application.properties" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/union-app-start/src/main/resources/application.properties">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="15" column="6" lean-forward="true" selection-start-line="15" selection-start-column="6" selection-end-line="15" selection-end-column="6" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
-  </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -226,50 +538,6 @@
         <option value="Class" />
       </list>
     </option>
-  </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>T_Pk_Tip</find>
-      <find>upload</find>
-      <find>/message/mess</find>
-      <find>等待用户</find>
-      <find>来自榜主</find>
-      <find>/compla</find>
-      <find>queryApproving</find>
-      <find>queryApprovedPost</find>
-      <find>/complain</find>
-      <find>new Complain</find>
-      <find>complainList</find>
-      <find>/upload</find>
-      <find>/replace</find>
-      <find>comp</find>
-      <find>showInfo</find>
-      <find>在线审核</find>
-      <find>queryPostById</find>
-      <find>goApproving</find>
-      <find>queryApproveInfo2</find>
-      <find>userPost</find>
-      <find>group&quot;,appService</find>
-      <find>userPublishPosts</find>
-      <find>unit</find>
-      <find>decimal</find>
-      <find>cpost</find>
-      <find>topPos</find>
-      <find>顶置</find>
-      <find>查询已</find>
-      <find>buildPk</find>
-      <find>updatePkPage</find>
-    </findStrings>
-    <replaceStrings>
-      <replace>APP_LOG_HOME</replace>
-    </replaceStrings>
-    <dirStrings>
-      <dir>E:\IDEA Workspace\union-boot-pk\union-app-api\src\main\java\com\union\app\api\pk\管理</dir>
-      <dir>E:\IDEA Workspace\union-boot-pk\union-app-dao</dir>
-      <dir>E:\IDEA Workspace\union-boot-pk\union-app-api\src\main\java\com\union\app\api\pk\审核</dir>
-      <dir>E:\IDEA Workspace\union-boot-pk</dir>
-      <dir>E:\IDEA Workspace\union-boot-pk\union-app-api\src\main\java\com\union\app\api\pk</dir>
-    </dirStrings>
   </component>
   <component name="Git.Settings">
     <option name="PUSH_AUTO_UPDATE" value="true" />
@@ -282,352 +550,40 @@
   <component name="HierarchyBrowserManager">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="true" />
   </component>
-  <component name="IdeDocumentHistory">
-    <option name="CHANGED_PATHS">
-      <list>
-        <option value="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/zone/查询单个POST.java" />
-        <option value="$PROJECT_DIR$/union-app-domain/src/main/java/com/union/app/domain/pk/PkButtonType.java" />
-        <option value="$PROJECT_DIR$/union-app-entity/src/main/java/com/union/app/entity/评论/PkCommentEntity.java" />
-        <option value="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/service/CommentService.java" />
-        <option value="$PROJECT_DIR$/union-app-domain/src/main/java/com/union/app/domain/pk/Marker.java" />
-        <option value="$PROJECT_DIR$/union-app-domain/src/main/java/com/union/app/domain/pk/Callout.java" />
-        <option value="$PROJECT_DIR$/union-app-domain/src/main/java/com/union/app/domain/pk/Post.java" />
-        <option value="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/用户相册/指定用户图册.java" />
-        <option value="$PROJECT_DIR$/union-app-domain/src/main/java/com/union/app/domain/pk/Circle.java" />
-        <option value="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/审核/查询审核信息2.java" />
-        <option value="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/data/PkDataService.java" />
-        <option value="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/用户相册/用户相册.java" />
-        <option value="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/zone/发布Post.java" />
-        <option value="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/浏览动态/点赞添加邀请.java" />
-        <option value="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/zone/顶置.java" />
-        <option value="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/搜索/查询单个PK.java" />
-        <option value="$PROJECT_DIR$/union-app-util/src/main/java/com/union/app/util/time/TimeUtils.java" />
-        <option value="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/搜索/搜索PK.java" />
-        <option value="$PROJECT_DIR$/union-app-domain/src/main/java/com/union/app/domain/pk/daka/PkLocation.java" />
-        <option value="$PROJECT_DIR$/union-app-domain/src/main/java/com/union/app/domain/pk/daka/Location.java" />
-        <option value="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/邀请/查询用户邀请.java" />
-        <option value="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/审核/提交激活码.java" />
-        <option value="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/审核/查询审核页面.java" />
-        <option value="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/搜索创建/创建PK.java" />
-        <option value="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/审核/审核.java" />
-        <option value="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/zone/解锁.java" />
-        <option value="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/zone/进入PK.java" />
-        <option value="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/管理/激活榜.java" />
-        <option value="$PROJECT_DIR$/union-app-entity/src/main/java/com/union/app/entity/pk/PkEntity.java" />
-        <option value="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/service/ApproveService.java" />
-        <option value="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/complain/ComplainService.java" />
-        <option value="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/管理/添加相册到主页预览.java" />
-        <option value="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/管理/查询单个预置PK.java" />
-        <option value="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/搜索创建/创建卡点.java" />
-        <option value="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/quartz/定时刷新首页.java" />
-        <option value="$PROJECT_DIR$/union-app-common/src/main/java/com/union/app/common/dao/EntityCacheService.java" />
-        <option value="$PROJECT_DIR$/union-app-domain/src/main/java/com/union/app/domain/pk/PkDetail.java" />
-        <option value="$PROJECT_DIR$/union-app-domain/src/main/java/com/union/app/domain/pk/LocationType.java" />
-        <option value="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/service/PkService.java" />
-        <option value="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/搜索创建/搜索PK.java" />
-        <option value="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/搜索创建/搜索卡点.java" />
-        <option value="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/zone/创建单个PK.java" />
-        <option value="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/zone/查询单个PK.java" />
-        <option value="$PROJECT_DIR$/union-app-domain/src/main/java/com/union/app/domain/pk/daka/CreateLocation.java" />
-        <option value="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/邀请/查询邀请.java" />
-        <option value="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/service/AppService.java" />
-        <option value="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/service/LocationService.java" />
-        <option value="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/主页/查询主页.java" />
-        <option value="$PROJECT_DIR$/union-app-start/src/main/resources/application.properties" />
-        <option value="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/搜索创建/顶置删除.java" />
-        <option value="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/service/PostService.java" />
-      </list>
-    </option>
-  </component>
-  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
-  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
-  <component name="JsGulpfileManager">
-    <detection-done>true</detection-done>
-    <sorting>DEFINITION_ORDER</sorting>
-  </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
-        <option name="mavenHome" value="E:/software/maven/apache-maven-3.5.3" />
+        <option name="mavenHome" value="E:\software\maven\apache-maven-3.5.3" />
         <option name="userSettingsFile" value="E:\software\maven\apache-maven-3.5.3\conf\settings.xml" />
       </MavenGeneralSettings>
     </option>
   </component>
-  <component name="MavenProjectNavigator">
-    <treeState>
-      <expand>
-        <path>
-          <item name="" type="16c1761:MavenProjectsStructure$RootNode" />
-          <item name="boot-archetype" type="9519ce18:MavenProjectsStructure$ProjectNode" />
-        </path>
-        <path>
-          <item name="" type="16c1761:MavenProjectsStructure$RootNode" />
-          <item name="boot-archetype" type="9519ce18:MavenProjectsStructure$ProjectNode" />
-          <item name="Plugins" type="7aea1407:MavenProjectsStructure$PluginsNode" />
-        </path>
-      </expand>
-      <select />
-    </treeState>
-  </component>
-  <component name="NodePackageJsonFileManager">
-    <packageJsonPaths />
-  </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="width" value="1025" />
-    <option name="height" value="730" />
-  </component>
+  <component name="ProjectId" id="1kuaWGgSW9m0L5gv1YB0SznuKxy" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
-  <component name="ProjectView">
-    <navigator proportions="" version="1">
-      <foldersAlwaysOnTop value="true" />
-    </navigator>
-    <panes>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-              <item name="union-app-api" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-              <item name="union-app-api" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-              <item name="union-app-api" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-              <item name="union-app-api" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-              <item name="union-app-api" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="zone" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-              <item name="union-app-api" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="审核" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-              <item name="union-app-api" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="搜索创建" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-              <item name="union-app-api" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="消息" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-              <item name="union-app-api" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="管理" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-              <item name="union-app-api" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="邀请" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-              <item name="union-app-api" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="主页" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-              <item name="union-app-api" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="用户主题" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-              <item name="union-app-api" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="用户相册" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-              <item name="union-app-api" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="邀请" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-              <item name="union-app-domain" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-              <item name="union-app-domain" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-              <item name="union-app-domain" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-              <item name="union-app-domain" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-              <item name="union-app-domain" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="pk" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-              <item name="union-app-domain" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="pk" type="462c0819:PsiDirectoryNode" />
-              <item name="PkLocation" type="1a9f42e2:ClassTreeNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-              <item name="union-app-service" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-              <item name="union-app-service" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-              <item name="union-app-service" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-              <item name="union-app-service" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-              <item name="union-app-service" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="click" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="union-boot-pk" type="462c0819:PsiDirectoryNode" />
-              <item name="union-app-service" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="quartz" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-            </path>
-            <path>
-              <item name="union-boot-pk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="Maven: commons-io:commons-io:2.8.0" type="70bed36:NamedLibraryElementNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="AndroidView" />
-    </panes>
+  <component name="ProjectViewState">
+    <option name="flattenPackages" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+    <option name="showMembers" value="true" />
   </component>
   <component name="PropertiesComponent">
     <property name="RequestMappingsPanelOrder0" value="0" />
     <property name="RequestMappingsPanelOrder1" value="1" />
     <property name="RequestMappingsPanelWidth0" value="75" />
     <property name="RequestMappingsPanelWidth1" value="75" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="com.intellij.database.dataSource.DataSourceTemplate" value="MySQL" />
     <property name="last.edited.regexp" value="Sample Text" />
-    <property name="last_opened_file_path" value="E:/IDE/扫描内存拷贝溢出/tmp" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../IDE/诊断工具/diagnosesystem" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.16601562" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="MavenSettings" />
+    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
   </component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
@@ -645,11 +601,11 @@
       <recent name="E:\IDEA Workspace\union-boot-pk\union-app-start\target\classes" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.union.app.entity.pk" />
+      <recent name="com.union.app.api.pk.喜欢收藏投诉审核页面" />
       <recent name="com.union.app.domain.pk.daka" />
       <recent name="com.union.app.api.pk.搜索创建" />
       <recent name="com.union.app.api.pk.搜索" />
-      <recent name="com.union.app.service.pk.service" />
-      <recent name="com.union.app.domain.pk" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="E:\IDEA Workspace\union-boot-pk\union-app-dao\src\main\resources" />
@@ -673,19 +629,21 @@
       <select />
     </treeState>
   </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
-  </component>
-  <component name="RunManager" selected="Spring Boot.AppApplication">
+  <component name="RunManager" selected="Application.AppApplication">
+    <configuration name="AppApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.union.app.AppApplication" />
+      <module name="union-app-start" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.union.app.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="HttpClientInstance" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.union.app.util.http.HttpClientInstance" />
       <module name="union-app-util" />
@@ -696,6 +654,9 @@
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration name="IdGenerator" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.union.app.util.idGenerator.IdGenerator" />
@@ -707,6 +668,9 @@
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration name="WeChatUtil" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.union.app.common.微信.WeChatUtil" />
@@ -718,37 +682,36 @@
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration default="true" type="JUnit" factoryName="JUnit">
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="METHOD_NAME" />
       <option name="TEST_OBJECT" value="class" />
-      <option name="VM_PARAMETERS" value="-ea" />
-      <option name="PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="singleModule" />
-      </option>
-      <patterns />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
-    <configuration name="PK" type="Remote" factoryName="Remote">
+    <configuration name="PK" type="Remote">
       <module name="union-app-start" />
       <option name="USE_SOCKET_TRANSPORT" value="true" />
       <option name="SERVER_MODE" value="false" />
       <option name="SHMEM_ADDRESS" value="javadebug" />
       <option name="HOST" value="101.201.155.235" />
       <option name="PORT" value="443" />
+      <option name="AUTO_RESTART" value="false" />
       <RunnerSettings RunnerId="Debug">
         <option name="DEBUG_PORT" value="443" />
         <option name="LOCAL" value="false" />
       </RunnerSettings>
+      <method v="2" />
     </configuration>
     <configuration name="AppApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
       <module name="union-app-start" />
@@ -760,45 +723,36 @@
       </extension>
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.union.app.AppApplication" />
       <option name="ALTERNATIVE_JRE_PATH" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
-    <configuration default="true" type="TestNG" factoryName="TestNG">
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="SUITE_NAME" />
-      <option name="PACKAGE_NAME" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="METHOD_NAME" />
-      <option name="GROUP_NAME" />
+    <configuration default="true" type="TestNG">
       <option name="TEST_OBJECT" value="CLASS" />
-      <option name="VM_PARAMETERS" value="-ea" />
-      <option name="PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
-      <option name="OUTPUT_DIRECTORY" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="singleModule" />
-      </option>
-      <option name="USE_DEFAULT_REPORTERS" value="false" />
-      <option name="PROPERTIES_FILE" />
       <properties />
       <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <list>
-      <item itemvalue="Remote.PK" />
+      <item itemvalue="Application.AppApplication" />
       <item itemvalue="Application.HttpClientInstance" />
-      <item itemvalue="Application.WeChatUtil" />
       <item itemvalue="Application.IdGenerator" />
-      <item itemvalue="Spring Boot.AppApplication" />
+      <item itemvalue="Application.WeChatUtil" />
+      <item itemvalue="Remote.PK" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Spring Boot.AppApplication" />
+        <item itemvalue="Application.AppApplication" />
         <item itemvalue="Application.IdGenerator" />
         <item itemvalue="Application.WeChatUtil" />
         <item itemvalue="Application.HttpClientInstance" />
       </list>
     </recent_temporary>
   </component>
+  <component name="SpellCheckerSettings" BundledDictionaries="0" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" Dictionaries="0" CorrectionsLimit="5" DefaultDictionary="application-level" UseSingleDictionary="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -951,7 +905,14 @@
       <workItem from="1605836515952" duration="13585000" />
       <workItem from="1606096997959" duration="13944000" />
       <workItem from="1606133778127" duration="11441000" />
-      <workItem from="1606198836918" duration="39577000" />
+      <workItem from="1606198836918" duration="40099000" />
+      <workItem from="1606552966343" duration="7000" />
+      <workItem from="1606556434914" duration="28000" />
+      <workItem from="1606562457166" duration="1797000" />
+      <workItem from="1606572418572" duration="956000" />
+      <workItem from="1606573558824" duration="16000" />
+      <workItem from="1606574055796" duration="173000" />
+      <workItem from="1606625476788" duration="41000" />
     </task>
     <task id="LOCAL-00001" summary="app">
       <created>1585704709578</created>
@@ -1261,123 +1222,105 @@
       <option name="project" value="LOCAL" />
       <updated>1605789187014</updated>
     </task>
-    <option name="localTasksCounter" value="45" />
+    <task id="LOCAL-00045" summary="Merge remote-tracking branch 'origin/master'&#10;&#10;# Conflicts:&#10;#&#9;union-app-api/src/main/java/com/union/app/api/pk/zone/收藏.java&#10;#&#9;union-app-api/src/main/java/com/union/app/api/pk/zone/查询单个PK.java&#10;#&#9;union-app-api/src/main/java/com/union/app/api/pk/审核/查询审核信息1.java&#10;#&#9;union-app-api/src/main/java/com/union/app/api/pk/审核/查询审核信息2.java&#10;#&#9;union-app-api/src/main/java/com/union/app/api/pk/审核/查询审核员审核中列表.java&#10;#&#9;union-app-api/src/main/java/com/union/app/api/pk/审核/查询审核员已审核列表.java&#10;#&#9;union-app-api/src/main/java/com/union/app/api/pk/审核/设置留言.java&#10;#&#9;union-app-api/target/classes/com/union/app/api/pk/zone/收藏.class&#10;#&#9;union-app-api/target/classes/com/union/app/api/pk/zone/查询单个PK.class&#10;#&#9;union-app-api/target/classes/com/union/app/api/登录和注册/用户登录加注册.class&#10;#&#9;union-app-common/target/classes/com/union/app/common/OSS存储/IdGenerator.class&#10;#&#9;union-app-common/target/classes/com/union/app/common/OSS存储/OssStorage.class&#10;#&#9;union-app-common/target/classes/com/union/app/common/api/registry/ApiURI.class&#10;#&#9;union-app-common/target/classes/com/union/app/common/api/registry/ServiceRegistry.class&#10;#&#9;union-app-common/target/classes/com/union/app/common/api/registry/helper/ServiceBeanHelper.class&#10;#&#9;union-app-common/target/classes/com/union/app/common/resultcode/ResultCodeService.class&#10;#&#9;union-app-common/target/classes/com/union/app/common/spring/interceptor/ControllerRequestLoggerInterceptor.class&#10;#&#9;union-app-common/target/classes/com/union/app/common/spring/listener/AppConfigServiceListener.class&#10;#&#9;union-app-common/target/classes/com/union/app/common/validate/AppValidatorService.class&#10;#&#9;union-app-common/target/classes/com/union/app/common/微信/AES.class&#10;#&#9;union-app-common/target/classes/com/union/app/common/微信/WeChatUtil.class&#10;#&#9;union-app-dao/src/main/java/com/union/app/dao/druid/DuridConfig.java&#10;#&#9;union-app-dao/target/classes/com/union/app/dao/druid/DuridConfig.class&#10;#&#9;union-app-dao/target/classes/com/union/app/dao/spi/AppDaoService.class&#10;#&#9;union-app-dao/target/classes/com/union/app/dao/spi/filter/NullFilter.class&#10;#&#9;union-app-domain/src/main/java/com/union/app/domain/pk/审核/ApproveUser.java&#10;#&#9;union-app-domain/target/classes/com/union/app/domain/pk/Post.class&#10;#&#9;union-app-domain/target/classes/com/union/app/domain/pk/UserCode.class&#10;#&#9;union-app-domain/target/classes/com/union/app/domain/房间/Room.class&#10;#&#9;union-app-domain/target/classes/com/union/app/domain/支付/City.class&#10;#&#9;union-app-domain/target/classes/com/union/app/domain/支付/Job.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/order/PkOrderEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/pk/EmptyPostEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/pk/OrderEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/pk/PostEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/pk/PostStatu.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/pk/UserCollectionEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/pk/share/ShareEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/pk/助力浏览评论分享/UserLikeEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/share/ShareFeeEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/应用信息表/ApplicationEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/标签/LabelEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/用户/InviteViewHistoryEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/用户/UserBalanceEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/用户/UserBalanceHistoryEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/用户/UserFollowEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/用户/UserInviteFromUserEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/用户/UserShareHistoryEntity.class&#10;#&#9;union-app-plateform/src/main/java/com/union/app/plateform/constant/常量值.java&#10;#&#9;union-app-plateform/target/classes/com/union/app/plateform/constant/常量值.class&#10;#&#9;union-app-plateform/target/classes/com/union/app/plateform/storgae/RedisConfig.class&#10;#&#9;union-app-plateform/target/classes/com/union/app/plateform/storgae/redis/RedisStringUtil.class&#10;#&#9;union-app-service/src/main/java/com/union/app/service/pk/complain/ComplainService.java&#10;#&#9;union-app-service/src/main/java/com/union/app/service/pk/dynamic/DynamicItem.java&#10;#&#9;union-app-service/src/main/java/com/union/app/service/pk/dynamic/DynamicService.java&#10;#&#9;union-app-service/src/main/java/com/union/app/service/pk/service/ApproveService.java&#10;#&#9;union-app-service/src/main/java/com/union/app/service/pk/service/PostService.java&#10;#&#9;union-app-service/src/main/java/com/union/app/service/pk/service/UserInfoService.java&#10;#&#9;union-app-service/src/main/java/com/union/app/service/quartz/TEST.java&#10;#&#9;union-app-service/target/classes/com/union/app/service/pk/click/ClickItem.class&#10;#&#9;union-app-service/target/classes/com/union/app/service/pk/click/ClickService.class&#10;#&#9;union-app-service/target/classes/com/union/app/service/pk/dynamic/DynamicItem.class&#10;#&#9;union-app-service/target/classes/com/union/app/service/pk/dynamic/DynamicService.class&#10;#&#9;union-app-service/target/classes/com/union/app/service/pk/service/PkService.class&#10;#&#9;union-app-service/target/classes/com/union/app/service/pk/service/PostService.class&#10;#&#9;union-app-service/target/classes/com/union/app/service/pk/service/UserInfoService.class&#10;#&#9;union-app-service/target/classes/com/union/app/service/quartz/TEST.class&#10;#&#9;union-app-start/src/main/resources/application.properties&#10;#&#9;union-app-util/target/classes/com/union/app/util/http/AppHttpUtil.class&#10;#&#9;union-app-util/target/classes/com/union/app/util/jar/JarLoader.class&#10;#&#9;union-app-util/target/classes/com/union/app/util/jar/JarUtil.class&#10;#&#9;union-app-util/target/classes/com/union/app/util/reflect/EntityAnalyser.class&#10;#&#9;union-app-util/target/classes/com/union/app/util/time/TimeUtils.class">
+      <created>1606480759232</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1606480759233</updated>
+    </task>
+    <option name="localTasksCounter" value="46" />
     <servers />
   </component>
-  <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3241876000" />
-  </component>
-  <component name="TodoView">
-    <todo-panel id="selected-file">
-      <is-autoscroll-to-source value="true" />
-    </todo-panel>
-    <todo-panel id="all">
-      <are-packages-shown value="true" />
-      <is-autoscroll-to-source value="true" />
-    </todo-panel>
-  </component>
-  <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
-    <editor active="true" />
-    <layout>
-      <window_info anchor="right" id="Palette" order="9" />
-      <window_info anchor="right" id="RestServices" order="7" weight="0.4691689" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.17560321" side_tool="true" weight="0.329429" />
-      <window_info anchor="right" id="Maven Projects" order="5" weight="0.11863271" />
-      <window_info anchor="bottom" id="Database Changes" order="3" show_stripe_button="false" />
-      <window_info anchor="right" id="JSON Viewer" order="6" weight="0.10656837" />
-      <window_info id="Capture Tool" order="9" />
-      <window_info id="Designer" order="0" />
-      <window_info anchor="bottom" content_ui="combo" id="Hierarchy" order="18" sideWeight="0.36260054" side_tool="true" weight="0.5475842" />
-      <window_info anchor="bottom" id="Tail" order="7" />
-      <window_info anchor="right" id="Database" order="3" weight="0.14678285" />
-      <window_info id="Structure" order="8" side_tool="true" weight="0.2533512" />
-      <window_info anchor="right" id="Ant Build" order="12" weight="0.25" />
-      <window_info id="UI Designer" order="2" />
-      <window_info anchor="bottom" id="Debug" order="12" sideWeight="0.63739944" weight="0.16105418" />
-      <window_info anchor="bottom" id="TODO" order="16" weight="0.329429" />
-      <window_info anchor="bottom" id="Messages" order="15" sideWeight="0.64410186" weight="0.329429" />
-      <window_info anchor="right" id="Palette&#9;" order="4" />
-      <window_info id="Image Layers" order="1" />
-      <window_info anchor="bottom" id="Java Enterprise" order="5" sideWeight="0.49932975" weight="0.32844576" />
-      <window_info anchor="right" id="Capture Analysis" order="1" />
-      <window_info anchor="bottom" id="File Transfer" order="17" sideWeight="0.6085791" weight="0.12903225" />
-      <window_info anchor="bottom" id="Version Control" order="6" weight="0.32937685" />
-      <window_info anchor="bottom" id="Run" order="11" sideWeight="0.6977212" weight="0.36510265" />
-      <window_info anchor="bottom" id="Spring" order="1" weight="0.329429" />
-      <window_info anchor="bottom" id="Terminal" order="2" weight="0.329429" />
-      <window_info content_ui="combo" id="Project" order="7" sideWeight="0.49532712" weight="0.2841823" />
-      <window_info anchor="bottom" id="Problems" order="4" weight="0.329429" />
-      <window_info anchor="right" id="Bean Validation" order="11" weight="0.048257373" />
-      <window_info id="Web" order="5" sideWeight="0.5046729" side_tool="true" weight="0.24798928" />
-      <window_info anchor="right" id="BPMNPalette" order="2" weight="0.09584451" />
-      <window_info anchor="bottom" id="Find" order="9" sideWeight="0.49932975" weight="0.3020528" />
-      <window_info id="Learn" order="6" weight="0.32908848" />
-      <window_info anchor="right" id="Theme Preview" order="8" />
-      <window_info id="Favorites" order="4" sideWeight="0.50329673" side_tool="true" weight="0.36796248" />
-      <window_info anchor="bottom" id="Inspection Results" order="0" weight="0.329429" />
-      <window_info anchor="right" id="Coverage" order="0" side_tool="true" visible="true" weight="0.11126006" />
-      <window_info anchor="bottom" id="Inspection" order="14" weight="0.4" />
-      <window_info id="BPMN Editor" order="3" weight="0.13605899" />
-      <window_info anchor="bottom" id="Cvs" order="13" weight="0.25" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="10" type="SLIDING" weight="0.4" />
-      <window_info anchor="bottom" id="Message" order="8" />
-    </layout>
-    <layout-to-restore>
-      <window_info id="Designer" order="0" />
-      <window_info anchor="right" id="Palette" order="9" />
-      <window_info anchor="bottom" id="Inspection" order="14" weight="0.4" />
-      <window_info anchor="bottom" id="Spring" order="1" weight="0.329429" />
-      <window_info id="Image Layers" order="1" />
-      <window_info anchor="bottom" id="Run" order="11" sideWeight="0.6977212" weight="0.36510265" />
-      <window_info anchor="right" id="JSON Viewer" order="6" weight="0.10656837" />
-      <window_info anchor="right" id="Ant Build" order="12" weight="0.25" />
-      <window_info id="UI Designer" order="2" />
-      <window_info id="Favorites" order="4" sideWeight="0.50329673" side_tool="true" weight="0.36796248" />
-      <window_info anchor="bottom" id="Terminal" order="2" weight="0.329429" />
-      <window_info id="Capture Tool" order="9" />
-      <window_info anchor="right" id="Capture Analysis" order="1" />
-      <window_info anchor="bottom" id="Inspection Results" order="0" weight="0.329429" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="10" type="SLIDING" weight="0.4" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.17560321" side_tool="true" weight="0.329429" />
-      <window_info anchor="bottom" id="Cvs" order="13" weight="0.25" />
-      <window_info anchor="bottom" id="Messages" order="15" sideWeight="0.64410186" weight="0.329429" />
-      <window_info anchor="bottom" id="TODO" order="16" weight="0.329429" />
-      <window_info anchor="bottom" content_ui="combo" id="Hierarchy" order="18" sideWeight="0.36260054" side_tool="true" weight="0.5475842" />
-      <window_info anchor="right" id="BPMNPalette" order="2" weight="0.09584451" />
-      <window_info id="BPMN Editor" order="3" weight="0.13605899" />
-      <window_info anchor="bottom" id="Problems" order="4" weight="0.329429" />
-      <window_info anchor="bottom" id="Java Enterprise" order="5" sideWeight="0.49932975" weight="0.32844576" />
-      <window_info anchor="bottom" id="Database Changes" order="3" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="6" weight="0.32937685" />
-      <window_info anchor="right" id="Maven Projects" order="5" weight="0.11863271" />
-      <window_info id="Structure" order="8" side_tool="true" weight="0.2533512" />
-      <window_info anchor="bottom" id="Find" order="9" sideWeight="0.49932975" weight="0.3020528" />
-      <window_info active="true" content_ui="combo" id="Project" order="7" sideWeight="0.49532712" visible="true" weight="0.2841823" />
-      <window_info id="Learn" order="6" weight="0.32908848" />
-      <window_info anchor="right" id="Database" order="3" weight="0.14678285" />
-      <window_info anchor="bottom" id="Message" order="8" />
-      <window_info id="Web" order="5" sideWeight="0.5046729" side_tool="true" weight="0.24798928" />
-      <window_info anchor="right" id="Palette&#9;" order="4" />
-      <window_info anchor="right" id="Theme Preview" order="8" />
-      <window_info anchor="right" id="RestServices" order="7" weight="0.4691689" />
-      <window_info anchor="bottom" id="File Transfer" order="17" sideWeight="0.6085791" weight="0.12903225" />
-      <window_info anchor="right" id="Coverage" order="0" side_tool="true" visible="true" weight="0.11126006" />
-      <window_info anchor="bottom" id="Tail" order="7" />
-      <window_info anchor="right" id="Bean Validation" order="11" weight="0.048257373" />
-      <window_info anchor="bottom" id="Debug" order="12" sideWeight="0.63739944" visible="true" weight="0.16105418" />
-    </layout-to-restore>
-  </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="1" />
+    <option name="version" value="3" />
   </component>
-  <component name="VcsContentAnnotationSettings">
-    <option name="myLimit" value="2678400000" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="app" />
     <MESSAGE value="Merge remote-tracking branch 'origin/master'&#10;&#10;# Conflicts:&#10;#&#9;union-app-api/src/main/java/com/union/app/api/pk/zone/收藏.java&#10;#&#9;union-app-api/src/main/java/com/union/app/api/pk/zone/查询单个PK.java&#10;#&#9;union-app-api/src/main/java/com/union/app/api/pk/审核/查询审核信息1.java&#10;#&#9;union-app-api/src/main/java/com/union/app/api/pk/审核/查询审核信息2.java&#10;#&#9;union-app-api/src/main/java/com/union/app/api/pk/审核/查询审核员审核中列表.java&#10;#&#9;union-app-api/src/main/java/com/union/app/api/pk/审核/查询审核员已审核列表.java&#10;#&#9;union-app-api/src/main/java/com/union/app/api/pk/审核/设置留言.java&#10;#&#9;union-app-api/target/classes/com/union/app/api/pk/zone/收藏.class&#10;#&#9;union-app-api/target/classes/com/union/app/api/pk/zone/查询单个PK.class&#10;#&#9;union-app-api/target/classes/com/union/app/api/登录和注册/用户登录加注册.class&#10;#&#9;union-app-common/target/classes/com/union/app/common/OSS存储/IdGenerator.class&#10;#&#9;union-app-common/target/classes/com/union/app/common/OSS存储/OssStorage.class&#10;#&#9;union-app-common/target/classes/com/union/app/common/api/registry/ApiURI.class&#10;#&#9;union-app-common/target/classes/com/union/app/common/api/registry/ServiceRegistry.class&#10;#&#9;union-app-common/target/classes/com/union/app/common/api/registry/helper/ServiceBeanHelper.class&#10;#&#9;union-app-common/target/classes/com/union/app/common/resultcode/ResultCodeService.class&#10;#&#9;union-app-common/target/classes/com/union/app/common/spring/interceptor/ControllerRequestLoggerInterceptor.class&#10;#&#9;union-app-common/target/classes/com/union/app/common/spring/listener/AppConfigServiceListener.class&#10;#&#9;union-app-common/target/classes/com/union/app/common/validate/AppValidatorService.class&#10;#&#9;union-app-common/target/classes/com/union/app/common/微信/AES.class&#10;#&#9;union-app-common/target/classes/com/union/app/common/微信/WeChatUtil.class&#10;#&#9;union-app-dao/src/main/java/com/union/app/dao/druid/DuridConfig.java&#10;#&#9;union-app-dao/target/classes/com/union/app/dao/druid/DuridConfig.class&#10;#&#9;union-app-dao/target/classes/com/union/app/dao/spi/AppDaoService.class&#10;#&#9;union-app-dao/target/classes/com/union/app/dao/spi/filter/NullFilter.class&#10;#&#9;union-app-domain/src/main/java/com/union/app/domain/pk/审核/ApproveUser.java&#10;#&#9;union-app-domain/target/classes/com/union/app/domain/pk/Post.class&#10;#&#9;union-app-domain/target/classes/com/union/app/domain/pk/UserCode.class&#10;#&#9;union-app-domain/target/classes/com/union/app/domain/房间/Room.class&#10;#&#9;union-app-domain/target/classes/com/union/app/domain/支付/City.class&#10;#&#9;union-app-domain/target/classes/com/union/app/domain/支付/Job.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/order/PkOrderEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/pk/EmptyPostEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/pk/OrderEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/pk/PostEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/pk/PostStatu.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/pk/UserCollectionEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/pk/share/ShareEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/pk/助力浏览评论分享/UserLikeEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/share/ShareFeeEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/应用信息表/ApplicationEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/标签/LabelEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/用户/InviteViewHistoryEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/用户/UserBalanceEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/用户/UserBalanceHistoryEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/用户/UserFollowEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/用户/UserInviteFromUserEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/用户/UserShareHistoryEntity.class&#10;#&#9;union-app-plateform/src/main/java/com/union/app/plateform/constant/常量值.java&#10;#&#9;union-app-plateform/target/classes/com/union/app/plateform/constant/常量值.class&#10;#&#9;union-app-plateform/target/classes/com/union/app/plateform/storgae/RedisConfig.class&#10;#&#9;union-app-plateform/target/classes/com/union/app/plateform/storgae/redis/RedisStringUtil.class&#10;#&#9;union-app-service/src/main/java/com/union/app/service/pk/complain/ComplainService.java&#10;#&#9;union-app-service/src/main/java/com/union/app/service/pk/dynamic/DynamicItem.java&#10;#&#9;union-app-service/src/main/java/com/union/app/service/pk/dynamic/DynamicService.java&#10;#&#9;union-app-service/src/main/java/com/union/app/service/pk/service/ApproveService.java&#10;#&#9;union-app-service/src/main/java/com/union/app/service/pk/service/PostService.java&#10;#&#9;union-app-service/src/main/java/com/union/app/service/pk/service/UserInfoService.java&#10;#&#9;union-app-service/src/main/java/com/union/app/service/quartz/TEST.java&#10;#&#9;union-app-service/target/classes/com/union/app/service/pk/click/ClickItem.class&#10;#&#9;union-app-service/target/classes/com/union/app/service/pk/click/ClickService.class&#10;#&#9;union-app-service/target/classes/com/union/app/service/pk/dynamic/DynamicItem.class&#10;#&#9;union-app-service/target/classes/com/union/app/service/pk/dynamic/DynamicService.class&#10;#&#9;union-app-service/target/classes/com/union/app/service/pk/service/PkService.class&#10;#&#9;union-app-service/target/classes/com/union/app/service/pk/service/PostService.class&#10;#&#9;union-app-service/target/classes/com/union/app/service/pk/service/UserInfoService.class&#10;#&#9;union-app-service/target/classes/com/union/app/service/quartz/TEST.class&#10;#&#9;union-app-start/src/main/resources/application.properties&#10;#&#9;union-app-util/target/classes/com/union/app/util/http/AppHttpUtil.class&#10;#&#9;union-app-util/target/classes/com/union/app/util/jar/JarLoader.class&#10;#&#9;union-app-util/target/classes/com/union/app/util/jar/JarUtil.class&#10;#&#9;union-app-util/target/classes/com/union/app/util/reflect/EntityAnalyser.class&#10;#&#9;union-app-util/target/classes/com/union/app/util/time/TimeUtils.class" />
     <option name="LAST_COMMIT_MESSAGE" value="Merge remote-tracking branch 'origin/master'&#10;&#10;# Conflicts:&#10;#&#9;union-app-api/src/main/java/com/union/app/api/pk/zone/收藏.java&#10;#&#9;union-app-api/src/main/java/com/union/app/api/pk/zone/查询单个PK.java&#10;#&#9;union-app-api/src/main/java/com/union/app/api/pk/审核/查询审核信息1.java&#10;#&#9;union-app-api/src/main/java/com/union/app/api/pk/审核/查询审核信息2.java&#10;#&#9;union-app-api/src/main/java/com/union/app/api/pk/审核/查询审核员审核中列表.java&#10;#&#9;union-app-api/src/main/java/com/union/app/api/pk/审核/查询审核员已审核列表.java&#10;#&#9;union-app-api/src/main/java/com/union/app/api/pk/审核/设置留言.java&#10;#&#9;union-app-api/target/classes/com/union/app/api/pk/zone/收藏.class&#10;#&#9;union-app-api/target/classes/com/union/app/api/pk/zone/查询单个PK.class&#10;#&#9;union-app-api/target/classes/com/union/app/api/登录和注册/用户登录加注册.class&#10;#&#9;union-app-common/target/classes/com/union/app/common/OSS存储/IdGenerator.class&#10;#&#9;union-app-common/target/classes/com/union/app/common/OSS存储/OssStorage.class&#10;#&#9;union-app-common/target/classes/com/union/app/common/api/registry/ApiURI.class&#10;#&#9;union-app-common/target/classes/com/union/app/common/api/registry/ServiceRegistry.class&#10;#&#9;union-app-common/target/classes/com/union/app/common/api/registry/helper/ServiceBeanHelper.class&#10;#&#9;union-app-common/target/classes/com/union/app/common/resultcode/ResultCodeService.class&#10;#&#9;union-app-common/target/classes/com/union/app/common/spring/interceptor/ControllerRequestLoggerInterceptor.class&#10;#&#9;union-app-common/target/classes/com/union/app/common/spring/listener/AppConfigServiceListener.class&#10;#&#9;union-app-common/target/classes/com/union/app/common/validate/AppValidatorService.class&#10;#&#9;union-app-common/target/classes/com/union/app/common/微信/AES.class&#10;#&#9;union-app-common/target/classes/com/union/app/common/微信/WeChatUtil.class&#10;#&#9;union-app-dao/src/main/java/com/union/app/dao/druid/DuridConfig.java&#10;#&#9;union-app-dao/target/classes/com/union/app/dao/druid/DuridConfig.class&#10;#&#9;union-app-dao/target/classes/com/union/app/dao/spi/AppDaoService.class&#10;#&#9;union-app-dao/target/classes/com/union/app/dao/spi/filter/NullFilter.class&#10;#&#9;union-app-domain/src/main/java/com/union/app/domain/pk/审核/ApproveUser.java&#10;#&#9;union-app-domain/target/classes/com/union/app/domain/pk/Post.class&#10;#&#9;union-app-domain/target/classes/com/union/app/domain/pk/UserCode.class&#10;#&#9;union-app-domain/target/classes/com/union/app/domain/房间/Room.class&#10;#&#9;union-app-domain/target/classes/com/union/app/domain/支付/City.class&#10;#&#9;union-app-domain/target/classes/com/union/app/domain/支付/Job.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/order/PkOrderEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/pk/EmptyPostEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/pk/OrderEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/pk/PostEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/pk/PostStatu.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/pk/UserCollectionEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/pk/share/ShareEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/pk/助力浏览评论分享/UserLikeEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/share/ShareFeeEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/应用信息表/ApplicationEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/标签/LabelEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/用户/InviteViewHistoryEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/用户/UserBalanceEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/用户/UserBalanceHistoryEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/用户/UserFollowEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/用户/UserInviteFromUserEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/用户/UserShareHistoryEntity.class&#10;#&#9;union-app-plateform/src/main/java/com/union/app/plateform/constant/常量值.java&#10;#&#9;union-app-plateform/target/classes/com/union/app/plateform/constant/常量值.class&#10;#&#9;union-app-plateform/target/classes/com/union/app/plateform/storgae/RedisConfig.class&#10;#&#9;union-app-plateform/target/classes/com/union/app/plateform/storgae/redis/RedisStringUtil.class&#10;#&#9;union-app-service/src/main/java/com/union/app/service/pk/complain/ComplainService.java&#10;#&#9;union-app-service/src/main/java/com/union/app/service/pk/dynamic/DynamicItem.java&#10;#&#9;union-app-service/src/main/java/com/union/app/service/pk/dynamic/DynamicService.java&#10;#&#9;union-app-service/src/main/java/com/union/app/service/pk/service/ApproveService.java&#10;#&#9;union-app-service/src/main/java/com/union/app/service/pk/service/PostService.java&#10;#&#9;union-app-service/src/main/java/com/union/app/service/pk/service/UserInfoService.java&#10;#&#9;union-app-service/src/main/java/com/union/app/service/quartz/TEST.java&#10;#&#9;union-app-service/target/classes/com/union/app/service/pk/click/ClickItem.class&#10;#&#9;union-app-service/target/classes/com/union/app/service/pk/click/ClickService.class&#10;#&#9;union-app-service/target/classes/com/union/app/service/pk/dynamic/DynamicItem.class&#10;#&#9;union-app-service/target/classes/com/union/app/service/pk/dynamic/DynamicService.class&#10;#&#9;union-app-service/target/classes/com/union/app/service/pk/service/PkService.class&#10;#&#9;union-app-service/target/classes/com/union/app/service/pk/service/PostService.class&#10;#&#9;union-app-service/target/classes/com/union/app/service/pk/service/UserInfoService.class&#10;#&#9;union-app-service/target/classes/com/union/app/service/quartz/TEST.class&#10;#&#9;union-app-start/src/main/resources/application.properties&#10;#&#9;union-app-util/target/classes/com/union/app/util/http/AppHttpUtil.class&#10;#&#9;union-app-util/target/classes/com/union/app/util/jar/JarLoader.class&#10;#&#9;union-app-util/target/classes/com/union/app/util/jar/JarUtil.class&#10;#&#9;union-app-util/target/classes/com/union/app/util/reflect/EntityAnalyser.class&#10;#&#9;union-app-util/target/classes/com/union/app/util/time/TimeUtils.class" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="378" y="46" key="#Plugins" timestamp="1606739381015">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="378" y="46" key="#Plugins/0.0.1536.824@0.0.1536.824" timestamp="1606739381015" />
+    <state x="249" y="0" key="#Project_Structure" timestamp="1606725796042">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="249" y="0" key="#Project_Structure/0.0.1536.824@0.0.1536.824" timestamp="1606725796042" />
+    <state width="1489" height="466" key="DebuggerActiveHint" timestamp="1606984862166">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1489" height="466" key="DebuggerActiveHint/0.0.1536.824@0.0.1536.824" timestamp="1606984862166" />
+    <state x="549" y="167" key="FileChooserDialogImpl" timestamp="1606655271575">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1606655271575" />
+    <state width="1493" height="221" key="GridCell.Tab.0.bottom" timestamp="1607072959940">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="221" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1607072959940" />
+    <state width="1493" height="221" key="GridCell.Tab.0.center" timestamp="1607072959939">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="221" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1607072959939" />
+    <state width="1493" height="221" key="GridCell.Tab.0.left" timestamp="1607072959924">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="221" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1607072959924" />
+    <state width="1493" height="221" key="GridCell.Tab.0.right" timestamp="1607072959940">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="221" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1607072959940" />
+    <state width="1493" height="221" key="GridCell.Tab.1.bottom" timestamp="1607072959940">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="221" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1607072959940" />
+    <state width="1493" height="221" key="GridCell.Tab.1.center" timestamp="1607072959940">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="221" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1607072959940" />
+    <state width="1493" height="221" key="GridCell.Tab.1.left" timestamp="1607072959940">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="221" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1607072959940" />
+    <state width="1493" height="221" key="GridCell.Tab.1.right" timestamp="1607072959940">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="221" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1607072959940" />
+    <state x="270" y="56" key="SettingsEditor" timestamp="1606727967091">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="270" y="56" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1606727967091" />
+    <state x="564" y="325" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1606574091166">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="564" y="325" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1536.824@0.0.1536.824" timestamp="1606574091166" />
+    <state x="467" y="20" width="602" height="804" key="find.popup" timestamp="1607050294604">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="467" y="20" width="602" height="804" key="find.popup/0.0.1536.824@0.0.1536.824" timestamp="1607050294604" />
+    <state x="425" y="187" key="run.anything.popup" timestamp="1607066521356">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="425" y="187" key="run.anything.popup/0.0.1536.824@0.0.1536.824" timestamp="1607066521356" />
+    <state x="425" y="66" width="672" height="676" key="search.everywhere.popup" timestamp="1606997985222">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="425" y="66" width="672" height="676" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1606997985222" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1385,38 +1328,44 @@
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/审核/审核.java</url>
           <line>93</line>
-          <properties />
           <option name="timeStamp" value="2981" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/喜欢收藏投诉审核页面/展示页面.java</url>
           <line>72</line>
-          <properties />
           <option name="timeStamp" value="3023" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/搜索创建/创建卡点.java</url>
           <line>21</line>
-          <properties />
           <option name="timeStamp" value="3074" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/邀请/查询用户邀请.java</url>
           <line>69</line>
-          <properties />
           <option name="timeStamp" value="3102" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/邀请/查询用户邀请.java</url>
           <line>67</line>
-          <properties />
           <option name="timeStamp" value="3103" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/zone/发布Post.java</url>
+          <line>132</line>
+          <option name="timeStamp" value="3113" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/service/AppService.java</url>
+          <line>1601</line>
+          <option name="timeStamp" value="3114" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/搜索创建/顶置删除.java</url>
+          <line>102</line>
+          <option name="timeStamp" value="3118" />
+        </line-breakpoint>
       </breakpoints>
-      <breakpoints-dialog>
-        <breakpoints-dialog />
-      </breakpoints-dialog>
-      <option name="time" value="3106" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="SpringBootApplicationConfigurationType">
@@ -1428,520 +1377,5 @@
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
     <option name="FILTER_TARGETS" value="false" />
-  </component>
-  <component name="debuggerHistoryManager">
-    <expressions id="setValue">
-      <expression>
-        <expression-string>&quot;wxcode/15374604-8b0a-4b1a-b284-7a38042b94b9/e9327f25-a7fb-4ed3-84de-15f3917a8ba7&quot;</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>null</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>已关闭</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>true</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>0</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>&quot;U8&quot;</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>&quot;https://fenghao211.oss-cn-beijing.aliyuncs.com/1526652867289.jpg&quot;</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>&quot;PK02&quot;</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>&quot;PK01&quot;</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>76896</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-    </expressions>
-    <expressions id="evaluateExpression">
-      <expression>
-        <expression-string>User creator = pkService.queryPkCreator(order.getPkId());
-        if(StringUtils.equals(creator.getUserId(),order.getPayerId())){
-            //更新任务状态
-            dynamicService.修改任务状态(order.getPkId(),DynamicKeyName.getTaskId(order.getPayerId(),order.getCashierId()),order.getOrderStatu());
-        }</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-    </expressions>
-  </component>
-  <component name="editorHistoryManager">
-    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-core/5.1.8.RELEASE/spring-core-5.1.8.RELEASE.jar!/org/springframework/util/CollectionUtils.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="30" column="26" selection-start-line="30" selection-start-column="26" selection-end-line="30" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/浏览动态/点赞添加邀请.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="305">
-          <caret line="63" lean-forward="true" selection-start-line="63" selection-end-line="63" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/union-app-entity/src/main/java/com/union/app/entity/pk/PostEntity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/zone/发布Post.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="585">
-          <caret line="66" column="38" selection-start-line="66" selection-start-column="38" selection-end-line="66" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/union-app-domain/src/main/java/com/union/app/domain/user/User.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="17" column="28" lean-forward="true" selection-start-line="17" selection-start-column="28" selection-end-line="17" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/union-app-domain/src/main/java/com/union/app/domain/pk/PkLocation.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="21" column="16" selection-start-line="21" selection-start-column="12" selection-end-line="21" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/union-app-util/src/main/java/com/union/app/util/time/TimeUtils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="31" column="42" selection-start-line="31" selection-start-column="42" selection-end-line="31" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/union-app-domain/src/main/java/com/union/app/domain/pk/daka/Location.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/审核/提交激活码.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="915">
-          <caret line="102" column="36" selection-start-line="102" selection-start-column="36" selection-end-line="102" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/审核/查询审核页面.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="86" lean-forward="true" selection-start-line="86" selection-end-line="86" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/消息/查询审核员消息.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-585">
-          <caret line="30" column="13" selection-start-line="30" selection-start-column="13" selection-end-line="30" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/审核/审核.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="397">
-          <caret line="72" lean-forward="true" selection-start-line="72" selection-end-line="72" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/zone/解锁.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="64" column="34" lean-forward="true" selection-start-line="64" selection-start-column="34" selection-end-line="64" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/zone/查询单个POST.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="143" column="96" lean-forward="true" selection-start-line="143" selection-start-column="96" selection-end-line="143" selection-end-column="96" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/zone/进入PK.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="75" column="33" lean-forward="true" selection-start-line="75" selection-start-column="33" selection-end-line="75" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/管理/激活榜.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="30" column="14" lean-forward="true" selection-start-line="30" selection-start-column="14" selection-end-line="30" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/service/ApproveService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="46">
-          <caret line="312" column="122" selection-start-line="312" selection-start-column="122" selection-end-line="312" selection-end-column="122" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/complain/ComplainService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="203">
-          <caret line="116" column="52" lean-forward="true" selection-start-line="116" selection-start-column="52" selection-end-line="116" selection-end-column="52" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/管理/添加相册到主页预览.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="353">
-          <caret line="81" lean-forward="true" selection-start-line="81" selection-end-line="81" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/管理/查询单个预置PK.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="495">
-          <caret line="110" column="5" lean-forward="true" selection-start-line="110" selection-start-column="5" selection-end-line="110" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/quartz/定时刷新首页.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="109">
-          <caret line="52" lean-forward="true" selection-start-line="52" selection-start-column="2" selection-end-line="57" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/union-app-common/src/main/java/com/union/app/common/dao/AppDaoService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="229">
-          <caret line="68" column="17" lean-forward="true" selection-start-line="68" selection-start-column="17" selection-end-line="68" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-core/5.1.8.RELEASE/spring-core-5.1.8.RELEASE.jar!/org/springframework/cglib/proxy/MethodProxy.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="117">
-          <caret line="105" selection-start-line="105" selection-end-line="105" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-aop/5.1.8.RELEASE/spring-aop-5.1.8.RELEASE.jar!/org/springframework/aop/framework/CglibAopProxy.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="512" selection-start-line="512" selection-end-line="512" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-tx/5.1.8.RELEASE/spring-tx-5.1.8.RELEASE.jar!/org/springframework/transaction/interceptor/TransactionAspectSupport.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="100">
-          <caret line="117" column="39" selection-start-line="117" selection-start-column="39" selection-end-line="117" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/union-app-common/src/main/java/com/union/app/common/dao/EntityCacheService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="97">
-          <caret line="57" lean-forward="true" selection-start-line="57" selection-end-line="57" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/service/PkService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="137">
-          <caret line="213" column="15" selection-start-line="213" selection-start-column="15" selection-end-line="213" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_161/src.zip!/java/lang/Math.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="218">
-          <caret line="715" column="23" selection-start-line="715" selection-start-column="23" selection-end-line="715" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/搜索创建/搜索卡点.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="242">
-          <caret line="66" column="48" selection-start-line="66" selection-start-column="48" selection-end-line="66" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/union-app-entity/src/main/java/com/union/app/entity/pk/PkEntity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="268">
-          <caret line="39" lean-forward="true" selection-start-line="39" selection-end-line="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/union-app-domain/src/main/java/com/union/app/domain/pk/Post.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="84">
-          <caret line="27" column="26" selection-start-line="27" selection-start-column="19" selection-end-line="27" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/用户相册/指定用户图册.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="151">
-          <caret line="98" column="9" lean-forward="true" selection-start-line="98" selection-start-column="9" selection-end-line="98" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-web/5.1.8.RELEASE/spring-web-5.1.8.RELEASE.jar!/org/springframework/web/method/support/InvocableHandlerMethod.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="317">
-          <caret line="107" selection-start-line="107" selection-end-line="107" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/用户相册/用户相册.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="66" lean-forward="true" selection-start-line="66" selection-end-line="66" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/zone/查询单个PK.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="91" column="16" lean-forward="true" selection-start-line="91" selection-start-column="16" selection-end-line="91" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/union-app-domain/src/main/java/com/union/app/domain/pk/daka/CreateLocation.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="202">
-          <caret line="27" lean-forward="true" selection-start-line="27" selection-end-line="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/邀请/查询用户邀请.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="70" column="25" selection-start-line="70" selection-start-column="25" selection-end-line="70" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/邀请/查询邀请.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="346">
-          <caret line="71" lean-forward="true" selection-start-line="71" selection-end-line="71" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/data/PkDataService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="78" column="26" selection-start-line="78" selection-start-column="26" selection-end-line="78" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/service/AppService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="159">
-          <caret line="1808" column="45" lean-forward="true" selection-start-line="1808" selection-start-column="15" selection-end-line="1808" selection-end-column="45" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/service/LocationService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="178">
-          <caret line="246" column="52" lean-forward="true" selection-start-line="246" selection-start-column="52" selection-end-line="246" selection-end-column="52" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/union-app-domain/src/main/java/com/union/app/domain/pk/Marker.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/union-app-domain/src/main/java/com/union/app/domain/pk/Callout.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/union-app-start/src/main/resources/application.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="15" column="6" lean-forward="true" selection-start-line="15" selection-start-column="6" selection-end-line="15" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/union-app-domain/src/main/java/com/union/app/domain/pk/PkDetail.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="42" column="12" lean-forward="true" selection-start-line="42" selection-start-column="12" selection-end-line="42" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/union-app-domain/src/main/java/com/union/app/domain/pk/LocationType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/zone/创建单个PK.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="361">
-          <caret line="65" column="13" selection-start-line="65" selection-start-column="13" selection-end-line="65" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/主页/查询主页.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="233">
-          <caret line="74" lean-forward="true" selection-start-line="74" selection-end-line="74" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/搜索创建/创建卡点.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="70">
-          <caret line="57" column="14" lean-forward="true" selection-start-line="57" selection-start-column="14" selection-end-line="57" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/搜索创建/顶置删除.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="81" column="28" lean-forward="true" selection-start-line="81" selection-start-column="28" selection-end-line="81" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/service/PostService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="414">
-          <caret line="710" column="1" lean-forward="true" selection-start-line="710" selection-start-column="1" selection-end-line="710" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-  </component>
-  <component name="masterDetails">
-    <states>
-      <state key="ArtifactsStructureConfigurable.UI">
-        <settings>
-          <artifact-editor />
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="FacetStructureConfigurable.UI">
-        <settings>
-          <last-edited>Spring</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="GlobalLibrariesConfigurable.UI">
-        <settings>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="JdkListConfigurable.UI">
-        <settings>
-          <last-edited>1.8</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="ModuleStructureConfigurable.UI">
-        <settings>
-          <last-edited>union-app-api</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-                <option value="0.6" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="ProjectJDKs.UI">
-        <settings>
-          <last-edited>1.8</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="ProjectLibrariesConfigurable.UI">
-        <settings>
-          <last-edited>Maven: antlr:antlr:2.7.7</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-    </states>
   </component>
 </project>

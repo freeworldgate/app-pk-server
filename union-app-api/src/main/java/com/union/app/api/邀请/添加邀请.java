@@ -65,8 +65,8 @@ public class 添加邀请 {
 //        }
 
         List<DataSet> dataSets = new ArrayList<>();
-        dataSets.add(new DataSet("hasInivte",true));
-        dataSets.add(new DataSet("inviteStatu",appService.查询状态(pkId,userId,3)));
+
+        dataSets.add(new DataSet("inviteStatu",appService.查询收藏状态(pkId,userId)));
 
 
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));

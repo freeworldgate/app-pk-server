@@ -19,10 +19,6 @@ public class PostImageEntity {
 
     private String postId;
 
-    @Enumerated(EnumType.STRING)
-    private PostStatu statu;
-
-
     private String pkId;
 
     private String imgUrl;

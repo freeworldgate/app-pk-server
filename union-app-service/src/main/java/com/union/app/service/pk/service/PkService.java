@@ -103,9 +103,9 @@ public class PkService {
         {
             Post post = postService.查询帖子(pkId,postId,"");
             if(!ObjectUtils.isEmpty(post)) {
-                ApproveComment approveComment = approveService.获取留言信息(pkId,postId);
-
-                post.setApproveComment(approveComment);
+//                ApproveComment approveComment = approveService.获取留言信息(pkId,postId);
+//
+//                post.setApproveComment(approveComment);
 
                 posts.add(post);
             }
@@ -163,6 +163,8 @@ public class PkService {
         List<PostEntity> ids = new ArrayList<>();
         EntityFilterChain filter = EntityFilterChain.newFilterChain(PostEntity.class)
                 .compareFilter("pkId",CompareTag.Equal,pkId)
+                .andFilter()
+                .compareFilter("statu",CompareTag.NotEqual,PostStatu.隐藏)
                 .pageLimitFilter(page+1,20)
                 .orderByFilter("time",OrderTag.DESC);
 
@@ -242,6 +244,9 @@ public class PkService {
 
     public PkEntity querySinglePkEntity(String pkId)
     {
+        if(StringUtils.isBlank(pkId) || StringUtils.equalsIgnoreCase("undefined",pkId)|| StringUtils.equalsIgnoreCase("Nan",pkId)|| StringUtils.equalsIgnoreCase("null",pkId)){
+            return null;
+        }
         PkEntity pkEntity = EntityCacheService.getPkEntity(pkId);
         if(ObjectUtils.isEmpty(pkEntity))
         {
@@ -430,7 +435,7 @@ public class PkService {
         PkPostListEntity pkPostListEntity = 查询图册排列(pkId,postId);
         if(!ObjectUtils.isEmpty(pkPostListEntity))
         {
-            pkPostListEntity.setStatu(PostStatu.上线);
+//            pkPostListEntity.setStatu(PostStatu.上线);
             daoService.updateEntity(pkPostListEntity);
         }
 
@@ -488,8 +493,8 @@ public class PkService {
 
         EntityFilterChain filter = EntityFilterChain.newFilterChain(PkPostListEntity.class)
                 .compareFilter("pkId",CompareTag.Equal,pkId)
-                .andFilter()
-                .compareFilter("statu",CompareTag.Equal,PostStatu.审核中)
+//                .andFilter()
+//                .compareFilter("statu",CompareTag.Equal,PostStatu.审核中)
                 .orderByFilter("time",OrderTag.DESC);
         PkPostListEntity entity = daoService.querySingleEntity(PkPostListEntity.class,filter);
         return ObjectUtils.isEmpty(entity)?"":entity.getPostId();
@@ -502,8 +507,8 @@ public class PkService {
         List<String> ids = new ArrayList<>();
         EntityFilterChain filter = EntityFilterChain.newFilterChain(PkPostListEntity.class)
                 .compareFilter("pkId",CompareTag.Equal,pkId)
-                .andFilter()
-                .compareFilter("statu",CompareTag.NotEqual,PostStatu.上线)
+//                .andFilter()
+//                .compareFilter("statu",CompareTag.NotEqual,PostStatu.上线)
                 .pageLimitFilter(page+1,20)
                 .orderByFilter("time",OrderTag.DESC);
 
@@ -532,8 +537,8 @@ public class PkService {
 
     public boolean 是否审核中(String pkId, String postId) {
         PkPostListEntity pkPostListEntity = this.查询图册排列(pkId,postId);
-        if(!ObjectUtils.isEmpty(pkPostListEntity) && pkPostListEntity.getStatu() == PostStatu.审核中 ){return true;}else{return false;}
-
+//        if(!ObjectUtils.isEmpty(pkPostListEntity) && pkPostListEntity.getStatu() == PostStatu.审核中 ){return true;}else{return false;}
+        return true;
 
     }
 

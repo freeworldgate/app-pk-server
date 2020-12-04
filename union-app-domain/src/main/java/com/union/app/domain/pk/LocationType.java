@@ -11,6 +11,11 @@ public class LocationType {
 
 
     private String typeName;
-    private int range;
+    //翻译成语言长度
+    private String range;
+
+    private int rangeLength = 200;
+
+    private int scale = 16;
 
 }

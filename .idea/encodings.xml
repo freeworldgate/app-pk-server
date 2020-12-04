@@ -3,14 +3,23 @@
   <component name="Encoding" defaultCharsetForPropertiesFiles="UTF-8">
     <file url="file://$PROJECT_DIR$" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/union-app-api" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/union-app-api/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/union-app-common" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/union-app-common/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/union-app-dao" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/union-app-dao/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/union-app-domain" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/union-app-domain/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/union-app-entity" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/union-app-entity/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/union-app-plateform" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/union-app-plateform/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/union-app-service" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/union-app-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/union-app-start" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/union-app-start/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/union-app-util" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/union-app-util/src/main/java" charset="UTF-8" />
     <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>

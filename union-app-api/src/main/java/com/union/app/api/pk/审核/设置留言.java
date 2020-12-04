@@ -52,16 +52,16 @@ public class 设置留言 {
 
         Date currentDay = new Date();
 
-        List<DataSet> dataSets = new ArrayList<>();
-        PostEntity postEntity = postService.查询用户帖(pkId,userId);
-        if(postEntity.getStatu() != PostStatu.审核中){
-            throw AppException.buildException(PageAction.消息级别提示框(Level.错误消息,"当前状态不支持设置留言"));
-        }
+//        List<DataSet> dataSets = new ArrayList<>();
+//        PostEntity postEntity = postService.查询用户帖(pkId,userId);
+//        if(postEntity.getStatu() != PostStatu.审核中){
+//            throw AppException.buildException(PageAction.消息级别提示框(Level.错误消息,"当前状态不支持设置留言"));
+//        }
+//
+//        approveService.设置审核留言(pkId,postEntity.getPostId(),userId,text,imgUrl);
+//        ApproveComment approveComment = approveService.获取留言信息(pkId,postEntity.getPostId());
 
-        approveService.设置审核留言(pkId,postEntity.getPostId(),userId,text,imgUrl);
-        ApproveComment approveComment = approveService.获取留言信息(pkId,postEntity.getPostId());
-
-        return AppResponse.buildResponse(PageAction.执行处理器("message",approveComment));
+        return AppResponse.buildResponse(PageAction.执行处理器("message",""));
 
 
 

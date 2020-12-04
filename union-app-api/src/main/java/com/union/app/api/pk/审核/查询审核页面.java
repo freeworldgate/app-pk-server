@@ -77,8 +77,8 @@ public class 查询审核页面 {
         List<DataSet> dataSets = new ArrayList<>();
 
 
-        ApproveComment pkComment = approveService.获取留言信息(pkId, postId);
-        dataSets.add(new DataSet("pkComment",pkComment));
+//        ApproveComment pkComment = approveService.获取留言信息(pkId, postId);
+//        dataSets.add(new DataSet("pkComment",pkComment));
 
 
         Post post = postService.查询帖子(pkId,postId,null);

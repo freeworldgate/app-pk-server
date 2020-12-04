@@ -20,37 +20,19 @@ public class PostEntity {
 
     private String pkId;
 
-    @Enumerated(EnumType.STRING)
-    private PkType pkType;
-
     private String userId;
 
     private String topic;
 
-    private String selfComment;
-
-    private long selfCommentTime;
 
     private int imgNum;
 
-//    private String createTime;
+
     private long time;
 
-//    private String lastModifyTime;
 
     @Enumerated(EnumType.STRING)
     private PostStatu statu;
 
 
-
-    private String wxCode;
-
-    private long shareTime;
-
-    @Enumerated(EnumType.STRING)
-    private ApproveStatu approveStatu;
-
-
-    private int rejectTimes;
-    private String rejectTextBytes;
 }

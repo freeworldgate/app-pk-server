@@ -65,7 +65,7 @@ public class 查询审核信息1 {
 
         List<DataSet> dataSets = new ArrayList<>();
         PostEntity postEntity = postService.查询帖子ById(postId);
-        String approveUserId = dynamicService.查询审核用户(pkId,postId);
+//        String approveUserId = dynamicService.查询审核用户(pkId,postId);
 
         if(!org.apache.commons.lang.StringUtils.equals(userId,postEntity.getUserId())){
             return AppResponse.buildResponse(PageAction.消息级别提示框(Level.错误消息,"非法操作"));
@@ -78,7 +78,7 @@ public class 查询审核信息1 {
         dataSets.add(dataSet3);
         ApproveUser currentApprover = null;
         for(ApproveUser approveUser:approveUserList){
-                if(org.apache.commons.lang.StringUtils.equals(approveUser.getUser().getUserId(),approveUserId)){
+                if(org.apache.commons.lang.StringUtils.equals(approveUser.getUser().getUserId(),"")){
                     currentApprover = approveUser;
                     break;
                 }

@@ -44,7 +44,7 @@ public class Post {
 
     private List<PostImage> postImages;
 
-    private PostDynamic dynamic;
+//    private PostDynamic dynamic;
 
     private KeyNameValue statu;
 

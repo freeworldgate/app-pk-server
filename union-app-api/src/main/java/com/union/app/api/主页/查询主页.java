@@ -1,13 +1,11 @@
 package com.union.app.api.主页;
 
-import com.union.app.common.config.AppConfigService;
-import com.union.app.domain.pk.*;
-import com.union.app.domain.pk.审核.ApproveMessage;
+import com.union.app.domain.pk.Callout;
+import com.union.app.domain.pk.Circle;
+import com.union.app.domain.pk.Marker;
+import com.union.app.domain.pk.PkDetail;
 import com.union.app.domain.user.User;
 import com.union.app.domain.工具.RandomUtil;
-import com.union.app.entity.pk.PkLocationEntity;
-import com.union.app.plateform.constant.ConfigItem;
-import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.DataSet;
 import com.union.app.plateform.data.resultcode.PageAction;
@@ -16,19 +14,15 @@ import com.union.app.service.pk.click.ClickService;
 import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.service.*;
 import com.union.app.service.user.UserService;
-import com.union.app.util.time.TimeUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -67,52 +61,46 @@ public class 查询主页 {
     LocationService locationService;
 
     @RequestMapping(path="/queryHomePage",method = RequestMethod.GET)
-    public AppResponse 查询主页(@RequestParam("userId") String userId,@RequestParam("pkId") String pkId)  {
+    public AppResponse 查询主页(@RequestParam("userId") String userId,@RequestParam("latitude") double latitude,@RequestParam("longitude") double longitude)  {
 
 
 
-        List<PkDetail> pks = locationService.查询附近卡点("","");;
+        List<PkDetail> pks = locationService.查询附近卡点(userId,latitude,longitude);;
 
 
         List<Marker> markers = new ArrayList<>();
         List<Circle> circles = new ArrayList<>();
+        List<DataSet> dataSets = new ArrayList<>();
+
+        if(!CollectionUtils.isEmpty(pks)){
+            circles.add(pks.get(0).getCircle());
+            dataSets.add(new DataSet("latitude",pks.get(0).getLatitude()-0.003D));
+            dataSets.add(new DataSet("longitude",pks.get(0).getLongitude()));
+            dataSets.add(new DataSet("scale",pks.get(0).getType().getScale()));
+
+        }
 
         pks.forEach(pk ->{
 
-                Marker marker = new Marker();
-                marker.setId(RandomUtil.getRandomNumber());
-                marker.setLatitude(pk.getLatitude());
-                marker.setLongitude(pk.getLongitude());
-                Callout callout = new Callout();
-                callout.setContent(pk.getName());
-                marker.setCallout(callout);
-                markers.add(marker);
-
-                Circle circle = new Circle();
-                circle.setLatitude(pk.getLatitude());
-                circle.setLongitude(pk.getLongitude());
-                circles.add(circle);
-
-
-
+                markers.add(pk.getMarker());
 
         });
 
 
 
-        List<DataSet> dataSets = new ArrayList<>();
+
         dataSets.add(new DataSet("pageTag",true));
         dataSets.add(new DataSet("pks",pks));
         dataSets.add(new DataSet("circles",circles));
         dataSets.add(new DataSet("markers",markers));
-        dataSets.add(new DataSet("page",1));
+
 
         User user = userService.queryUser(userId);
-        if(ObjectUtils.isEmpty(user))
+        if(!ObjectUtils.isEmpty(user))
         {
             dataSets.add(new DataSet("user",user));
         }
-        dataSets.add(new DataSet("imgBack",appService.查询背景(1)));
+
 
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
 

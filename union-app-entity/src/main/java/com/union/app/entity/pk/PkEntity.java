@@ -30,7 +30,10 @@ public class PkEntity {
     String address;
 
     String type;
-
+    //范围
+    int typeRange;
+    //缩放等级
+    int typeScale;
     //创建时间
     long time;
 

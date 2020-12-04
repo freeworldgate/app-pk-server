@@ -54,7 +54,7 @@ public class 点赞添加邀请 {
 
         List<DataSet> dataSets = new ArrayList<>();
 
-        dataSets.add(new DataSet("greateStatu",appService.查询状态(pkId,userId,1)));
+        dataSets.add(new DataSet("greateStatu",appService.查询收藏状态(pkId,userId)));
         dataSets.add(new DataSet("pk.greate",dynamicService.getKeyValue(CacheKeyName.点赞,pkId)));
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
 
@@ -76,7 +76,7 @@ public class 点赞添加邀请 {
             appService.添加邀请(pkId,userId);
             List<DataSet> dataSets = new ArrayList<>();
 
-            dataSets.add(new DataSet("inviteStatu",appService.查询状态(pkId,userId,3)));
+            dataSets.add(new DataSet("inviteStatu",appService.查询收藏状态(pkId,userId)));
             dataSets.add(new DataSet("pk.invite",dynamicService.getKeyValue(CacheKeyName.收藏,pkId)));
             return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
 

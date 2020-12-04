@@ -9,6 +9,7 @@ import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.service.pk.click.ClickService;
 import com.union.app.service.pk.service.AppService;
+import com.union.app.service.pk.service.LocationService;
 import com.union.app.service.pk.service.PkService;
 import com.union.app.service.pk.service.PostService;
 import com.union.app.service.user.UserService;
@@ -45,10 +46,11 @@ public class 顶置删除 {
     @Autowired
     PostService postService;
 
-
-
     @Autowired
     AppService appService;
+
+    @Autowired
+    LocationService locationService;
 
     @RequestMapping(path="/topPost",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
@@ -90,5 +92,25 @@ public class 顶置删除 {
         }
 
     }
+    @RequestMapping(path="/hiddenPost",method = RequestMethod.GET)
+    @Transactional(rollbackOn = Exception.class)
+    public AppResponse 隐藏(@RequestParam("userId") String userId,@RequestParam("pkId") String pkId,@RequestParam("postId") String postId) throws AppException, IOException {
 
+        PostEntity postEntity = postService.查询帖子ById(postId);
+
+
+
+        if(pkService.isPkCreator(pkId,userId) && StringUtils.equalsIgnoreCase(postEntity.getPkId(),pkId))
+        {
+            postService.隐藏打卡信息(postId);
+            locationService.打卡次数减一(pkId,userId);
+
+            return AppResponse.buildResponse(PageAction.执行处理器("success",""));
+        }
+        else
+        {
+            return AppResponse.buildResponse(PageAction.信息反馈框("非法操作","不具备权限"));
+        }
+
+    }
 }

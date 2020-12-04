@@ -100,21 +100,35 @@ public class 查询单个PK {
         if(!ObjectUtils.isEmpty(pkDetail.getTopPost())){posts.add(0,pkDetail.getTopPost());}
 
         dataSets.add(new DataSet("pk",pkDetail));
-
+        dataSets.add(new DataSet("inviteStatu",appService.查询收藏状态(pkId,userId)));
         dataSets.add(new DataSet("posts",posts));
         dataSets.add(new DataSet("page",0));
+        dataSets.add(new DataSet("postTimes",0));
+        if(userService.isUserExist(userId))
+        {
+            PostEntity postEntity = locationService.查询最新用户Post发布时间(pkId,userId);
+            if(ObjectUtils.isEmpty(postEntity)){
+                dataSets.add(new DataSet("leftTime",0));
+            }
+            else
+            {
+                long postLastUpdateTime = postEntity.getTime();
+                long leftTime = System.currentTimeMillis() - postLastUpdateTime;
+                int timePerid = AppConfigService.getConfigAsInteger(ConfigItem.发帖的时间间隔);
+                if(leftTime > timePerid * 1000)
+                {
+                    dataSets.add(new DataSet("leftTime",0));
+                }
+                else
+                {
+                    dataSets.add(new DataSet("leftTime",timePerid-leftTime/1000));
+                }
 
 
-
-
-
-
-
-
-
-
-
-
+            }
+            dataSets.add(new DataSet("postTimes",locationService.查询用户打卡次数(pkId,userId)));
+            //查询用户打卡次数:
+        }
 
 
 

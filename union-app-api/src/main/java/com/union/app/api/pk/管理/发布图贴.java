@@ -94,7 +94,7 @@ public class 发布图贴 {
         PostEntity postEntity = postService.查询帖子ById(postId);
 
 
-        approveService.设置审核留言(postEntity.getPkId(),postEntity.getPostId(),postEntity.getUserId(),text,imgUrl);
+//        approveService.设置审核留言(postEntity.getPkId(),postEntity.getPostId(),postEntity.getUserId(),text,imgUrl);
 
         Post post = postService.查询预置帖子(postId);
 

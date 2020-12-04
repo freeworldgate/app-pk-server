@@ -42,14 +42,9 @@ public class UserEntity {
 
     private String fromUser;
 
+    private long postLastUpdateTime;
 
-//    private int postTimes;
-//    private int pkTimes;
-//    private int activePkTimes;
-//    private int inviteTimes;
-//
-//    private int feeTimes;
-//    private int usedTimes;
+
 
 
 

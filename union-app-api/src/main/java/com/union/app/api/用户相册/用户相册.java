@@ -59,10 +59,10 @@ public class 用户相册 {
 
 
     @RequestMapping(path="/userPks",method = RequestMethod.GET)
-    public AppResponse 用户相册(@RequestParam("userId") String userId) throws AppException, IOException {
+    public AppResponse 用户相册(@RequestParam("userId") String userId,@RequestParam("latitude") double latitude,@RequestParam("longitude") double longitude) throws AppException, IOException {
 
 
-        List<PkDetail> pks = appService.查询用户相册(userId,1);
+        List<PkDetail> pks = appService.查询用户相册(userId,latitude,longitude,1);
 
 
 
@@ -94,9 +94,9 @@ public class 用户相册 {
 
     }
     @RequestMapping(path="/nextUserPks",method = RequestMethod.GET)
-    public AppResponse 查询单个PK(@RequestParam("userId") String userId,@RequestParam("page") int page) throws AppException, IOException {
+    public AppResponse 查询单个PK(@RequestParam("userId") String userId,@RequestParam("page") int page,@RequestParam("latitude") double latitude,@RequestParam("longitude") double longitude) throws AppException, IOException {
 
-        List<PkDetail> pks = appService.查询用户相册(userId,page+1);
+        List<PkDetail> pks = appService.查询用户相册(userId,latitude,longitude,page+1);
 
 
         if(CollectionUtils.isEmpty(pks))

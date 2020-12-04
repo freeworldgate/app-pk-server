@@ -64,7 +64,7 @@ public class 审核 {
             throw AppException.buildException(PageAction.消息级别提示框(Level.错误消息,"非榜主用户"));
         }
 
-        postService.上线帖子(pkId,postId);
+//        postService.上线帖子(pkId,postId);
         dynamicService.已审核(pkId,postId);
 
         Post post = postService.查询帖子(pkId,postId,null);
@@ -91,7 +91,7 @@ public class 审核 {
             throw AppException.buildException(PageAction.消息级别提示框(Level.错误消息,"非榜主用户"));
         }
 
-        postService.上线帖子(pkId,postId);
+//        postService.上线帖子(pkId,postId);
         dynamicService.已审核(pkId,postId);
 
         List<DataSet> dataSets = new ArrayList<>();
@@ -119,9 +119,9 @@ public class 审核 {
         }
 
         PostEntity postEntity = postService.查询帖子ById(postId);
-        postEntity.setApproveStatu(ApproveStatu.驳回修改);
-        postEntity.setRejectTextBytes(text);
-        postEntity.setRejectTimes(postEntity.getRejectTimes() + 1);
+//        postEntity.setApproveStatu(ApproveStatu.驳回修改);
+//        postEntity.setRejectTextBytes(text);
+//        postEntity.setRejectTimes(postEntity.getRejectTimes() + 1);
         daoService.updateEntity(postEntity);
         dynamicService.驳回用户审核(pkId,postId);
 
@@ -167,9 +167,9 @@ public class 审核 {
         }
 
         PostEntity postEntity = postService.查询帖子ById(postId);
-        postEntity.setApproveStatu(ApproveStatu.驳回修改);
-        postEntity.setRejectTextBytes(text);
-        postEntity.setRejectTimes(postEntity.getRejectTimes() + 1);
+//        postEntity.setApproveStatu(ApproveStatu.驳回修改);
+//        postEntity.setRejectTextBytes(text);
+//        postEntity.setRejectTimes(postEntity.getRejectTimes() + 1);
         daoService.updateEntity(postEntity);
 
         dynamicService.驳回用户审核(pkId,postId);

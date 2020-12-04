@@ -51,15 +51,15 @@ public class 榜帖是否已经审核 {
 
             PostEntity postEntity    = postService.查询帖子ById(postId);
 
-            if(postEntity.getStatu() == PostStatu.审核中)
-            {
-                if(postEntity.getApproveStatu() == ApproveStatu.未处理)
-                {
-                    return AppResponse.buildResponse(PageAction.执行处理器("noApprove","/pages/pk/editApproveComment/editApproveComment?pkId=" + pkId + "&postId=" + postEntity.getPostId()));
-                }
-
-
-            }
+//            if(postEntity.getStatu() == PostStatu.审核中)
+//            {
+//                if(postEntity.getApproveStatu() == ApproveStatu.未处理)
+//                {
+//                    return AppResponse.buildResponse(PageAction.执行处理器("noApprove","/pages/pk/editApproveComment/editApproveComment?pkId=" + pkId + "&postId=" + postEntity.getPostId()));
+//                }
+//
+//
+//            }
             return AppResponse.buildResponse(PageAction.前端数据更新("verfiy",true));
 
 
@@ -76,16 +76,16 @@ public class 榜帖是否已经审核 {
 
 
             PostEntity postEntity    = postService.查询帖子ById(postId);
-            if(  (postEntity.getStatu() == PostStatu.审核中))
-            {
-                return AppResponse.buildResponse(PageAction.执行处理器("noApprove","/pages/pk/prepost/prepost?pkId=" + pkId + "&postId=" + postEntity.getPostId()));
-
-            }
-            else
-            {
-                return AppResponse.buildResponse(PageAction.前端数据更新("verfiy",true));
-            }
-
+//            if(  (postEntity.getStatu() == PostStatu.审核中))
+//            {
+//                return AppResponse.buildResponse(PageAction.执行处理器("noApprove","/pages/pk/prepost/prepost?pkId=" + pkId + "&postId=" + postEntity.getPostId()));
+//
+//            }
+//            else
+//            {
+//                return AppResponse.buildResponse(PageAction.前端数据更新("verfiy",true));
+//            }
+        return null;
     }
 
 }

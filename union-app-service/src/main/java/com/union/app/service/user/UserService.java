@@ -22,10 +22,10 @@ import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.service.pk.dynamic.DynamicService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import javax.transaction.Transactional;
@@ -52,8 +52,13 @@ public class UserService {
 
 
     public UserEntity queryUserEntity(String userId){
-        UserEntity userEntity = EntityCacheService.getUserEntity(userId);
+        if(StringUtils.isBlank(userId)||StringUtils.equalsIgnoreCase("null",userId)||StringUtils.equalsIgnoreCase("undefined",userId)||StringUtils.equalsIgnoreCase("Nan",userId))
+        {
+            return null;
+        }
 
+
+        UserEntity userEntity = EntityCacheService.getUserEntity(userId);
         if(ObjectUtils.isEmpty(userEntity))
         {
             if(org.apache.commons.lang.StringUtils.equalsIgnoreCase("undefined",userId)|| org.apache.commons.lang.StringUtils.equalsIgnoreCase("null",userId)|| org.apache.commons.lang.StringUtils.equalsIgnoreCase("Nan",userId))
@@ -435,5 +440,28 @@ public class UserService {
         UserKvEntity result = queryUserKvEntity(userId);
 
         return result.getActivePks();
+    }
+
+    public UserEntity 查询用户Post发布时间(String userId) {
+        if(StringUtils.isBlank(userId)||StringUtils.equalsIgnoreCase("null",userId)||StringUtils.equalsIgnoreCase("undefined",userId)||StringUtils.equalsIgnoreCase("Nan",userId))
+        {
+            return null;
+        }
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(UserEntity.class)
+                .compareFilter("userId",CompareTag.Equal,userId);
+        UserEntity userEntity = appDaoService.querySingleEntity(UserEntity.class,filter);
+        return userEntity;
+
+
+
+    }
+
+    public void 用户发布一个Post(String userId) {
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(UserEntity.class)
+                .compareFilter("userId",CompareTag.Equal,userId);
+        UserEntity userEntity = appDaoService.querySingleEntity(UserEntity.class,filter);
+        userEntity.setPostLastUpdateTime(System.currentTimeMillis());
+        appDaoService.updateEntity(userEntity);
+
     }
 }

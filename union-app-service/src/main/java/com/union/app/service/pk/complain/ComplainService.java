@@ -96,10 +96,10 @@ public class ComplainService {
 
             if(!ObjectUtils.isEmpty(postEntity))
             {
-                if(postEntity.getShareTime()>0)
-                {
-                    complainEntity.setActive(true);
-                }
+//                if(postEntity.getShareTime()>0)
+//                {
+//                    complainEntity.setActive(true);
+//                }
             }
 
 
@@ -121,10 +121,10 @@ public class ComplainService {
         {
             if(!ObjectUtils.isEmpty(postEntity))
             {
-                if(postEntity.getShareTime()>0 && postEntity.getShareTime()>complainEntity.getTime())
-                {
-                    complainEntity.setActive(true);
-                }
+//                if(postEntity.getShareTime()>0 && postEntity.getShareTime()>complainEntity.getTime())
+//                {
+//                    complainEntity.setActive(true);
+//                }
             }
 
 

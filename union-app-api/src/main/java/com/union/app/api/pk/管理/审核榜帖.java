@@ -81,7 +81,7 @@ public class 审核榜帖 {
         appService.验证Password(password);
 
 
-        postService.上线帖子(pkId,postId);
+//        postService.上线帖子(pkId,postId);
         dynamicService.已审核(pkId,postId);
 
         List<DataSet> dataSets  = appService.查询下一个审核榜帖(type);
@@ -93,27 +93,27 @@ public class 审核榜帖 {
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
 
     }
-
-    @RequestMapping(path="/hiddenPost",method = RequestMethod.GET)
-    @Transactional(rollbackOn = Exception.class)
-    public AppResponse hiddenPost(@RequestParam("password") String password,@RequestParam("postId") String postId,@RequestParam("pkId") String pkId,@RequestParam("text") String text,@RequestParam("type") int type) throws AppException, IOException {
-        appService.验证Password(password);
-
-
-
-        PostEntity postEntity = postService.查询帖子ById(postId);
-        postEntity.setApproveStatu(ApproveStatu.驳回修改);
-        postEntity.setRejectTimes(postEntity.getRejectTimes() + 1);
-        postEntity.setRejectTextBytes(text);
-        daoService.updateEntity(postEntity);
-        List<DataSet> dataSets  = appService.查询下一个审核榜帖(type);
-
-        dynamicService.驳回用户审核(pkId,postId);
-        return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
-
-
-    }
-
+//
+//    @RequestMapping(path="/hiddenPost",method = RequestMethod.GET)
+//    @Transactional(rollbackOn = Exception.class)
+//    public AppResponse hiddenPost(@RequestParam("password") String password,@RequestParam("postId") String postId,@RequestParam("pkId") String pkId,@RequestParam("text") String text,@RequestParam("type") int type) throws AppException, IOException {
+//        appService.验证Password(password);
+//
+//
+//
+//        PostEntity postEntity = postService.查询帖子ById(postId);
+//        postEntity.setApproveStatu(ApproveStatu.驳回修改);
+//        postEntity.setRejectTimes(postEntity.getRejectTimes() + 1);
+//        postEntity.setRejectTextBytes(text);
+//        daoService.updateEntity(postEntity);
+//        List<DataSet> dataSets  = appService.查询下一个审核榜帖(type);
+//
+//        dynamicService.驳回用户审核(pkId,postId);
+//        return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
+//
+//
+//    }
+//
 
 
 }

@@ -4,6 +4,7 @@ import com.union.app.domain.pk.PkDynamic.PkDynamic;
 import com.union.app.domain.pk.apply.KeyNameValue;
 import com.union.app.domain.pk.审核.ApproveMessage;
 import com.union.app.domain.user.User;
+import com.union.app.domain.工具.RandomUtil;
 import com.union.app.entity.pk.InviteType;
 import com.union.app.entity.pk.PkLocationEntity;
 import com.union.app.entity.pk.PkType;
@@ -52,5 +53,11 @@ public class PkDetail implements Serializable{
 
     private String topPostId;
     private Post topPost;
+    //距离
+    private int userLength = 0;
+    private String userLengthStr = "0m";
+
+    private Marker marker;
+    private Circle circle;
 
 }

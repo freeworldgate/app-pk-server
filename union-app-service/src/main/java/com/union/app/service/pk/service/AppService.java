@@ -40,6 +40,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -171,7 +172,7 @@ public class AppService {
         return pkDetails;
 
     }
-    public List<PkDetail> 查询用户邀请(String userId, int page) throws IOException {
+    public List<PkDetail> 查询用户邀请(String userId, int page,double latitude,double longitude) throws IOException {
 
         Date current = new Date();
         List<PkDetail> pkDetails = new ArrayList<>();
@@ -179,6 +180,9 @@ public class AppService {
         for(PkEntity pkEntity:invites)
         {
             PkDetail pkDetail = locationService.querySinglePk(pkEntity);
+            int length = locationService.计算坐标间距离(latitude,longitude,pkEntity.getLatitude(),pkEntity.getLongitude());
+            pkDetail.setUserLength(length);
+            pkDetail.setUserLengthStr(locationService.距离转换成描述(length));
             pkDetails.add(pkDetail);
         }
         return pkDetails;
@@ -256,7 +260,7 @@ public class AppService {
         return invitePkEntity;
     }
 
-    public List<PkDetail> 查询用户相册(String userId,int page) throws IOException {
+    public List<PkDetail> 查询用户相册(String userId,double latitude, double longitude,int page) throws IOException {
 
         Date current = new Date();
         List<PkDetail> pkDetails = new ArrayList<>();
@@ -264,6 +268,10 @@ public class AppService {
         for(PkEntity pkEntity:pkEntities)
         {
             PkDetail pkDetail = locationService.querySinglePk(pkEntity);
+            int length = locationService.计算坐标间距离(latitude,longitude,pkEntity.getLatitude(),pkEntity.getLongitude());
+            pkDetail.setUserLength(length);
+            pkDetail.setUserLengthStr(locationService.距离转换成描述(length));
+            System.out.println(pkEntity.getName() + " : " + locationService.距离转换成描述(length));
             pkDetails.add(pkDetail);
         }
 
@@ -1593,68 +1601,68 @@ public class AppService {
     public List<DataSet> 查询投诉榜帖(int type) throws IOException {
         List<DataSet> dataSets = new ArrayList<>();
         EntityFilterChain filter = null;
+//
+//        if(type == 1)
+//        {
+//             filter = EntityFilterChain.newFilterChain(ComplainEntity.class)
+//                     .compareFilter("complainStatu",CompareTag.Equal,ComplainStatu.处理中)
+//                     .andFilter()
+//                     .compareFilter("pkType",CompareTag.Equal,PkType.审核相册)
+//                     .andFilter()
+//                     .compareFilter("postStatu",CompareTag.Equal,PostStatu.审核中)
+//                     .andFilter()
+//                     .compareFilter("active",CompareTag.Equal,true);
+//        }
+//        else if(type == 2)
+//        {
+//            filter = EntityFilterChain.newFilterChain(ComplainEntity.class)
+//                    .compareFilter("complainStatu",CompareTag.Equal,ComplainStatu.处理中)
+//                    .andFilter()
+//                    .compareFilter("pkType",CompareTag.NotEqual,PkType.内置相册)
+//                    .andFilter()
+//                    .compareFilter("postStatu",CompareTag.Equal,PostStatu.审核中)
+//                    .andFilter()
+//                    .compareFilter("active",CompareTag.Equal,true);;
+//        }
+//        else if(type == 3)
+//        {
+//            filter = EntityFilterChain.newFilterChain(ComplainEntity.class)
+//                    .compareFilter("complainStatu",CompareTag.Equal,ComplainStatu.处理中)
+//                    .andFilter()
+//                    .compareFilter("pkType",CompareTag.NotEqual,PkType.运营相册)
+//                    .andFilter()
+//                    .compareFilter("postStatu",CompareTag.Equal,PostStatu.审核中)
+//                    .andFilter()
+//                    .compareFilter("active",CompareTag.Equal,true);;
+//        }
+//        else
+//        {
+//                filter = EntityFilterChain.newFilterChain(ComplainEntity.class)
+//                        .compareFilter("complainStatu",CompareTag.Equal,ComplainStatu.处理中)
+//                ;
+//        }
 
-        if(type == 1)
-        {
-             filter = EntityFilterChain.newFilterChain(ComplainEntity.class)
-                     .compareFilter("complainStatu",CompareTag.Equal,ComplainStatu.处理中)
-                     .andFilter()
-                     .compareFilter("pkType",CompareTag.Equal,PkType.审核相册)
-                     .andFilter()
-                     .compareFilter("postStatu",CompareTag.Equal,PostStatu.审核中)
-                     .andFilter()
-                     .compareFilter("active",CompareTag.Equal,true);
-        }
-        else if(type == 2)
-        {
-            filter = EntityFilterChain.newFilterChain(ComplainEntity.class)
-                    .compareFilter("complainStatu",CompareTag.Equal,ComplainStatu.处理中)
-                    .andFilter()
-                    .compareFilter("pkType",CompareTag.NotEqual,PkType.内置相册)
-                    .andFilter()
-                    .compareFilter("postStatu",CompareTag.Equal,PostStatu.审核中)
-                    .andFilter()
-                    .compareFilter("active",CompareTag.Equal,true);;
-        }
-        else if(type == 3)
-        {
-            filter = EntityFilterChain.newFilterChain(ComplainEntity.class)
-                    .compareFilter("complainStatu",CompareTag.Equal,ComplainStatu.处理中)
-                    .andFilter()
-                    .compareFilter("pkType",CompareTag.NotEqual,PkType.运营相册)
-                    .andFilter()
-                    .compareFilter("postStatu",CompareTag.Equal,PostStatu.审核中)
-                    .andFilter()
-                    .compareFilter("active",CompareTag.Equal,true);;
-        }
-        else
-        {
-                filter = EntityFilterChain.newFilterChain(ComplainEntity.class)
-                        .compareFilter("complainStatu",CompareTag.Equal,ComplainStatu.处理中)
-                ;
-        }
-
-        ComplainEntity entity = daoService.querySingleEntity(ComplainEntity.class,filter);
-        if(!ObjectUtils.isEmpty(entity))
-        {
-            Post post = postService.查询用户帖子(entity.getPkId(),entity.getUserId());
-            post.setApproveComment(approveService.获取留言信息(post.getPkId(),post.getPostId()));
-            dataSets.add(new DataSet("complainId",entity.getId()));
-            PkDetail pkDetail = pkService.querySinglePk(post.getPkId());
-
-//            pkDetail.setApproveMessage(approveService.获取审核人员消息(post.getPkId()));
-            dataSets.add(new DataSet("pk",pkDetail));
-            dataSets.add(new DataSet("post",post));
-            dataSets.add(new DataSet("text",entity.getText()));
-
-        }
-        else
-        {
-            dataSets.add(new DataSet("pk",null));
-            dataSets.add(new DataSet("post",null));
-        }
-
-
+//        ComplainEntity entity = daoService.querySingleEntity(ComplainEntity.class,filter);
+//        if(!ObjectUtils.isEmpty(entity))
+//        {
+//            Post post = postService.查询用户帖子(entity.getPkId(),entity.getUserId());
+//            post.setApproveComment(approveService.获取留言信息(post.getPkId(),post.getPostId()));
+//            dataSets.add(new DataSet("complainId",entity.getId()));
+//            PkDetail pkDetail = pkService.querySinglePk(post.getPkId());
+//
+////            pkDetail.setApproveMessage(approveService.获取审核人员消息(post.getPkId()));
+//            dataSets.add(new DataSet("pk",pkDetail));
+//            dataSets.add(new DataSet("post",post));
+//            dataSets.add(new DataSet("text",entity.getText()));
+//
+//        }
+//        else
+//        {
+//            dataSets.add(new DataSet("pk",null));
+//            dataSets.add(new DataSet("post",null));
+//        }
+//
+//
 
 
 
@@ -1750,23 +1758,23 @@ public class AppService {
 
     public void 有效投诉(String id) throws AppException, IOException {
 
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(ComplainEntity.class)
-                .compareFilter("id",CompareTag.Equal,Integer.valueOf(id));
-        ComplainEntity entity = daoService.querySingleEntity(ComplainEntity.class,filter);
-        PostEntity postEntity = postService.查询用户帖(entity.getPkId(),entity.getUserId());
-        if(postEntity.getStatu() != PostStatu.上线)
-        {
-            postService.上线帖子(postEntity.getPkId(),postEntity.getPostId());
-            dynamicService.已审核(postEntity.getPkId(),postEntity.getPostId());
-            //记录一次有效投诉。
-            PkEntity pkEntity = pkService.querySinglePkEntity(entity.getPkId());
-
-            daoService.updateEntity(pkEntity);
-        }
-
-
-        entity.setComplainStatu(ComplainStatu.已处理);
-        daoService.updateEntity(entity);
+//        EntityFilterChain filter = EntityFilterChain.newFilterChain(ComplainEntity.class)
+//                .compareFilter("id",CompareTag.Equal,Integer.valueOf(id));
+//        ComplainEntity entity = daoService.querySingleEntity(ComplainEntity.class,filter);
+//        PostEntity postEntity = postService.查询用户帖(entity.getPkId(),entity.getUserId());
+//        if(postEntity.getStatu() != PostStatu.上线)
+//        {
+//            postService.上线帖子(postEntity.getPkId(),postEntity.getPostId());
+//            dynamicService.已审核(postEntity.getPkId(),postEntity.getPostId());
+//            //记录一次有效投诉。
+//            PkEntity pkEntity = pkService.querySinglePkEntity(entity.getPkId());
+//
+//            daoService.updateEntity(pkEntity);
+//        }
+//
+//
+//        entity.setComplainStatu(ComplainStatu.已处理);
+//        daoService.updateEntity(entity);
 
 
     }
@@ -1805,10 +1813,6 @@ public class AppService {
 
     }
 
-    public List<PkDetail> 随机主题(String userId,String pkId) {
-        return locationService.查询附近卡点("","");
-
-    }
 
     public int 获取留言方式(String userId, String pkId) {
         int commentStyle = AppConfigService.getConfigAsInteger(ConfigItem.留言方式);
@@ -1950,7 +1954,7 @@ public class AppService {
             {
                 Post post = postService.translate(postEntity);
                 post.setPkTopic(pkEntity.getName());
-                post.setLocation(appService.查询PK位置(pkEntity.getPkId()));
+//                post.setLocation(appService.查询PK位置(pkEntity.getPkId()));
                 post.setPkBackUrl(pkEntity.getBackUrl());
                 posts.add(post);
             }
@@ -2011,8 +2015,6 @@ public class AppService {
     private List<PostEntity> queryUserPublishPosts(String userId, int page) {
         EntityFilterChain filter = EntityFilterChain.newFilterChain(PostEntity.class)
                 .compareFilter("userId",CompareTag.Equal,userId)
-                .andFilter()
-                .compareFilter("statu",CompareTag.Equal,PostStatu.上线)
                 .pageLimitFilter(page,AppConfigService.getConfigAsInteger(ConfigItem.单个PK页面的帖子数))
                 .orderByFilter("time",OrderTag.DESC);
 
@@ -2094,11 +2096,14 @@ public class AppService {
 
     }
 
-    public boolean 查询状态(String pkId, String userId, int gap) {
-//        if(gap == 1){return !ObjectUtils.isEmpty(pkService.查询用户点赞(pkId,userId));}
-        if(gap == 2){return !ObjectUtils.isEmpty(complainService.查询投诉信息(pkId,userId));}
-        if(gap == 3){  InvitePkEntity invitePkEntity = queryInvitePk(pkId,userId);return !ObjectUtils.isEmpty(invitePkEntity);}
-        return false;
+    public boolean 查询收藏状态(String pkId, String userId) {
+
+        if(StringUtils.isBlank(userId) || StringUtils.equalsIgnoreCase("undefined",userId)|| StringUtils.equalsIgnoreCase("Nan",userId)|| StringUtils.equalsIgnoreCase("null",userId)){
+            return false;
+        }
+        InvitePkEntity invitePkEntity = queryInvitePk(pkId,userId);
+        return !ObjectUtils.isEmpty(invitePkEntity);
+
 
     }
 

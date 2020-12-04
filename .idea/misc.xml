@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="JavaScriptSettings">
+    <option name="languageLevel" value="ES6" />
+  </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
@@ -10,12 +13,5 @@
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
-  </component>
-  <component name="RemoteRepositoriesConfiguration">
-    <remote-repository>
-      <option name="id" value="b79abace-d3bb-4dac-a8dc-e67555d45a41" />
-      <option name="name" value="b79abace-d3bb-4dac-a8dc-e67555d45a41" />
-      <option name="url" value="http://mvnrepository.com/" />
-    </remote-repository>
   </component>
 </project>
