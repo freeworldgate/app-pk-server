@@ -10,6 +10,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @ToString
+@AllArgsConstructor
 public class KeyValuePair implements Serializable {
 
     private int key;

@@ -91,9 +91,9 @@
                     <configuration>
                         <fork>true</fork>
                         <mainClass>com.union.app.AppApplication</mainClass>
-                        <!--<jvmArguments>-->
-                                    <!-- -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=443-->
-                        <!--</jvmArguments>-->
+<!--                        <jvmArguments>-->
+<!--                                     -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=443-->
+<!--                        </jvmArguments>-->
                     </configuration>
                     <executions>
                         <execution>

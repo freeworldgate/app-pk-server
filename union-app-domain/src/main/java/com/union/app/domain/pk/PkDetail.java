@@ -47,12 +47,14 @@ public class PkDetail implements Serializable{
     private int approved;
 
 
-
+    private String codeUrl;
     private String backUrl;
 
 
     private String topPostId;
+
     private Post topPost;
+
     //距离
     private int userLength = 0;
     private String userLengthStr = "0m";

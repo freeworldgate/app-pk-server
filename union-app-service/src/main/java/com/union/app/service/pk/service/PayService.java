@@ -17,6 +17,7 @@ import com.union.app.entity.pk.*;
 import com.union.app.entity.pk.complain.ComplainEntity;
 import com.union.app.entity.pk.complain.ComplainStatu;
 import com.union.app.entity.用户.UserEntity;
+import com.union.app.entity.用户.UserKvEntity;
 import com.union.app.entity.用户.support.UserType;
 import com.union.app.entity.配置表.ColumSwitch;
 import com.union.app.entity.配置表.ConfigEntity;
@@ -58,6 +59,8 @@ public class PayService {
     @Autowired
     UserService userService;
 
+    @Autowired
+    AppDaoService daoService;
 
     public Object all支付方案(String userId,HttpServletRequest request) {
         return getPayInfo(userId,request);
@@ -415,6 +418,10 @@ public class PayService {
     }
 
 
+    public void 充值时间(int day, String userId) {
+        UserKvEntity userKvEntity = userService.queryUserKvEntity(userId);
+        userKvEntity.setFindTimeLength(userKvEntity.getFindTimeLength() + day*24*3600*1000);
+        daoService.updateEntity(userKvEntity);
 
-
+    }
 }

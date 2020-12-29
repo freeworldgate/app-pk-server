@@ -1908,7 +1908,7 @@ public class AppService {
     public String 生成二维码(String pkId, String postId)  {
 
         try {
-            return WeChatUtil.生成二维码(pkId,postId);
+            return WeChatUtil.生成二维码(pkId);
         } catch (IOException e) {
             return this.查询背景(9);
         }

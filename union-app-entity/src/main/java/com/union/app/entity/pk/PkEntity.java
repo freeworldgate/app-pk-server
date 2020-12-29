@@ -16,6 +16,10 @@ import javax.persistence.*;
 public class PkEntity {
     @Id
     private String pkId;
+    //二维码场景值。
+    private String scene;
+
+    private String codeUrl;
 
     private String userId;
 

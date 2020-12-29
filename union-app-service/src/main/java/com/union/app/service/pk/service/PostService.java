@@ -268,8 +268,6 @@ public class PostService {
         post.setTime(TimeUtils.convertTime(postEntity.getTime()));
         post.setCreator(userService.queryUser(postEntity.getUserId()));
         post.setTopic(postEntity.getTopic());
-//        post.setDynamic(getPostDynamic(postEntity.getPostId(),postEntity.getPkId()));
-
 
         post.setPostImages(postEntity.getImgNum()<1?new ArrayList<>():getPostImages(postEntity.getPostId(),postEntity.getPkId()));
         post.setStatu(new KeyNameValue(postEntity.getStatu().getStatu(),postEntity.getStatu().getStatuStr()));
@@ -684,4 +682,30 @@ public class PostService {
     }
 
 
+    public Post 查询最新的图片列表(PkEntity pk) {
+        Post post = new Post();
+        List<PostImage> postImages = new ArrayList<>();
+        if(CollectionUtils.isEmpty(postImages))
+        {
+            EntityFilterChain filter = EntityFilterChain.newFilterChain(PostImageEntity.class)
+                    .compareFilter("pkId",CompareTag.Equal,pk.getPkId())
+                    .pageLimitFilter(1,9)
+                    .orderByFilter("time",OrderTag.DESC);
+            List<PostImageEntity> postImageEntity = daoService.queryEntities(PostImageEntity.class,filter);
+            postImageEntity.forEach(img->{
+                PostImage postImage = new PostImage();
+                postImage.setImgUrl(img.getImgUrl());
+                postImage.setImageId(img.getImgId());
+                postImage.setPkId(img.getPkId());
+                postImage.setPostId(img.getPostId());
+                postImage.setTime(TimeUtils.convertTime(img.getTime()));
+                postImages.add(postImage);
+            });
+        }
+        post.setPostImages(postImages);
+        return CollectionUtils.isEmpty(postImages)?null:post;
+
+
+
+    }
 }

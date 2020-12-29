@@ -79,8 +79,8 @@ public class OssStorage {
 
     }
 
-    public static String uploadFileBytes(String pkId,String postId,byte[] fileData) {
-        String key = "wxcode/" + pkId + "/" + postId + ".jpeg";
+    public static String uploadFileBytes(String pkId,byte[] fileData) {
+        String key = "wxcode/" + pkId + ".jpeg";
         PutObjectRequest request = new PutObjectRequest(bucketName, key, new ByteArrayInputStream(fileData));
         PutObjectResult putObjectResult = ossClient.putObject(request);
         if(ossClient.doesObjectExist(bucketName,key)){

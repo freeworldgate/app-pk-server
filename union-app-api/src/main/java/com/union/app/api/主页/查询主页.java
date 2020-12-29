@@ -74,7 +74,7 @@ public class 查询主页 {
 
         if(!CollectionUtils.isEmpty(pks)){
             circles.add(pks.get(0).getCircle());
-            dataSets.add(new DataSet("latitude",pks.get(0).getLatitude()-0.003D));
+            dataSets.add(new DataSet("latitude",pks.get(0).getLatitude()));
             dataSets.add(new DataSet("longitude",pks.get(0).getLongitude()));
             dataSets.add(new DataSet("scale",pks.get(0).getType().getScale()));
 

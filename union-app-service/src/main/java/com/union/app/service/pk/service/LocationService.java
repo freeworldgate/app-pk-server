@@ -1,9 +1,7 @@
 package com.union.app.service.pk.service;
 
-import com.alibaba.fastjson.JSONObject;
 import com.union.app.common.OSS存储.CacheStorage;
 import com.union.app.common.OSS存储.OssStorage;
-import com.union.app.common.config.AppConfigService;
 import com.union.app.common.dao.AppDaoService;
 import com.union.app.common.dao.EntityCacheService;
 import com.union.app.common.redis.RedisSortSetService;
@@ -12,21 +10,14 @@ import com.union.app.dao.spi.filter.CompareTag;
 import com.union.app.dao.spi.filter.EntityFilterChain;
 import com.union.app.dao.spi.filter.OrderTag;
 import com.union.app.domain.pk.*;
-import com.union.app.domain.pk.apply.KeyNameValue;
-import com.union.app.domain.pk.cashier.PkCashier;
+import com.union.app.domain.pk.apply.KeyValuePair;
 import com.union.app.domain.pk.daka.CreateLocation;
+import com.union.app.domain.user.User;
 import com.union.app.domain.工具.RandomUtil;
+import com.union.app.entity.ImgStatu;
 import com.union.app.entity.pk.*;
-import com.union.app.entity.pk.complain.ComplainEntity;
-import com.union.app.entity.pk.complain.ComplainStatu;
-import com.union.app.entity.用户.UserEntity;
-import com.union.app.entity.用户.UserKvEntity;
-import com.union.app.entity.用户.support.UserType;
-import com.union.app.entity.配置表.ColumSwitch;
-import com.union.app.entity.配置表.ConfigEntity;
-import com.union.app.plateform.constant.ConfigItem;
+import com.union.app.entity.pk.卡点.UserFollowEntity;
 import com.union.app.plateform.data.resultcode.AppException;
-import com.union.app.plateform.data.resultcode.DataSet;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.service.data.PkDataService;
@@ -36,16 +27,12 @@ import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.user.UserService;
 import com.union.app.util.idGenerator.IdGenerator;
 import com.union.app.util.time.TimeUtils;
-import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
@@ -112,7 +99,7 @@ public class LocationService {
         StringBuffer stringBuffer = new StringBuffer();
         stringBuffer.append(String.valueOf(getRealVaule(latitude,2)));
         stringBuffer.append(String.valueOf(getRealVaule(longitude,2)));
-        stringBuffer.append(name);
+        stringBuffer.append(name.replace("[","").replace("]",""));
         String locationId = UUID.nameUUIDFromBytes(stringBuffer.toString().getBytes()).toString();
         return locationId;
     }
@@ -122,7 +109,7 @@ public class LocationService {
                 int v2 = (int)v1;
                 double v3 = v2/(10.0D);
 
-                 return v3;
+                return v3;
       }
 
 
@@ -152,12 +139,19 @@ public class LocationService {
     }
 
 
-    public String 创建卡点(CreateLocation createLocation) {
+    public String 创建卡点(CreateLocation createLocation) throws IOException, AppException {
 
 
         String pkId = this.坐标转换成UUID(createLocation.getLatitude(),createLocation.getLongitude(),createLocation.getName());
+        String scene = IdGenerator.getScene();
         PkEntity pkEntity = new PkEntity();
         pkEntity.setPkId(pkId);
+        pkEntity.setScene(scene);
+        String codeUrl = WeChatUtil.生成二维码(scene);
+        if(StringUtils.isBlank(codeUrl)){
+            throw AppException.buildException(PageAction.信息反馈框("创建卡点错误...","创建卡点错误"));
+        }
+        pkEntity.setCodeUrl(codeUrl);
         pkEntity.setUserId(createLocation.getUserId());
         pkEntity.setLatitude(createLocation.getLatitude());
         pkEntity.setLongitude(createLocation.getLongitude());
@@ -214,6 +208,7 @@ public class LocationService {
         String pkId = pk.getPkId();
         PkDetail pkDetail = new PkDetail();
         pkDetail.setPkId(pk.getPkId());
+        pkDetail.setCodeUrl(pk.getCodeUrl());
         pkDetail.setSign(pk.getSign());
         pkDetail.setLatitude(pk.getLatitude());
         pkDetail.setLongitude(pk.getLongitude());
@@ -226,7 +221,16 @@ public class LocationService {
         pkDetail.setBackUrl(pk.getBackUrl());
         pkDetail.setApproved(dynamicService.getKeyValue(CacheKeyName.已审核数量,pkId));
         pkDetail.setTopPostId(pk.getTopPostId());
-        pkDetail.setTopPost(postService.查询顶置帖子(pk));
+        Post topPost = postService.查询顶置帖子(pk);
+        if(!ObjectUtils.isEmpty(topPost))
+        {
+            pkDetail.setTopPost(postService.查询顶置帖子(pk));
+        }
+        else
+        {
+            topPost = postService.查询最新的图片列表(pk);
+            pkDetail.setTopPost(ObjectUtils.isEmpty(topPost)?null:topPost);
+        }
         pkDetail.setMarker(this.查询Marker(pk));
         pkDetail.setCircle(this.查询Circle(pk,locationType));
 
@@ -410,6 +414,202 @@ public class LocationService {
             pkUserEntity.setUserId(userId);
             daoService.insertEntity(pkUserEntity);
         }
+
+
+    }
+
+    public PkImage 查询用户卡点图片(String pkId, String userId) {
+        EntityFilterChain cfilter = EntityFilterChain.newFilterChain(PkImageEntity.class)
+                .compareFilter("pkId",CompareTag.Equal,pkId)
+                .andFilter()
+                .compareFilter("userId",CompareTag.Equal,userId);
+        PkImageEntity pkImageEntity = daoService.querySingleEntity(PkImageEntity.class,cfilter);
+        if(!ObjectUtils.isEmpty(pkImageEntity))
+        {
+            PkImage image = new PkImage();
+            image.setImageId(pkImageEntity.getImgId());
+            image.setImgUrl(pkImageEntity.getImgUrl());
+            image.setPkId(pkImageEntity.getPkId());
+            image.setStatu(new KeyValuePair(pkImageEntity.getImgStatu().getKey(),pkImageEntity.getImgStatu().getValue()));
+            image.setUser(userService.queryUser(pkImageEntity.getUserId()));
+            image.setTime(TimeUtils.convertTime(System.currentTimeMillis()));
+            return image;
+        }
+        return null;
+    }
+    public List<PkImage> 查询待审核卡点图片(String pkId, int page) {
+        List<PkImage> images = new ArrayList<>();
+
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(PkImageEntity.class)
+                .compareFilter("pkId",CompareTag.Equal,pkId)
+                .andFilter()
+                .compareFilter("imgStatu",CompareTag.Equal,ImgStatu.审核中)
+                .pageLimitFilter(page,20)
+                .orderByFilter("time",OrderTag.DESC);
+        List<PkImageEntity> pkImageEntities = daoService.queryEntities(PkImageEntity.class,filter);
+
+        pkImageEntities.forEach(pkImageEntity->{
+            PkImage image = new PkImage();
+            image.setImageId(pkImageEntity.getImgId());
+            image.setImgUrl(pkImageEntity.getImgUrl());
+            image.setPkId(pkImageEntity.getPkId());
+            image.setStatu(new KeyValuePair(pkImageEntity.getImgStatu().getKey(),pkImageEntity.getImgStatu().getValue()));
+            image.setUser(userService.queryUser(pkImageEntity.getUserId()));
+            image.setTime(TimeUtils.convertTime(System.currentTimeMillis()));
+            images.add(image);
+        });
+        return images;
+
+    }
+
+    public List<PkImage> 查询卡点图片(String pkId, int page) {
+        List<PkImage> images = new ArrayList<>();
+
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(PkImageEntity.class)
+                .compareFilter("pkId",CompareTag.Equal,pkId)
+                .pageLimitFilter(page,20)
+                .orderByFilter("time",OrderTag.DESC);
+        List<PkImageEntity> pkImageEntities = daoService.queryEntities(PkImageEntity.class,filter);
+
+        pkImageEntities.forEach(pkImageEntity->{
+            PkImage image = new PkImage();
+            image.setImageId(pkImageEntity.getImgId());
+            image.setImgUrl(pkImageEntity.getImgUrl());
+            image.setPkId(pkImageEntity.getPkId());
+            image.setStatu(new KeyValuePair(pkImageEntity.getImgStatu().getKey(),pkImageEntity.getImgStatu().getValue()));
+            image.setUser(userService.queryUser(pkImageEntity.getUserId()));
+            image.setTime(TimeUtils.convertTime(System.currentTimeMillis()));
+            images.add(image);
+        });
+        return images;
+
+    }
+
+    public void 上传卡点图片(String pkId, String userId, String imgUrl) {
+
+        EntityFilterChain cfilter = EntityFilterChain.newFilterChain(PkImageEntity.class)
+                .compareFilter("pkId",CompareTag.Equal,pkId)
+                .andFilter()
+                .compareFilter("userId",CompareTag.Equal,userId);
+        PkImageEntity pkImageEntity = daoService.querySingleEntity(PkImageEntity.class,cfilter);
+        if(ObjectUtils.isEmpty(pkImageEntity))
+        {
+            pkImageEntity = new PkImageEntity();
+            pkImageEntity.setImgId(IdGenerator.getImageId());
+            pkImageEntity.setImgStatu(ImgStatu.审核中);
+            pkImageEntity.setImgUrl(imgUrl);
+            pkImageEntity.setPkId(pkId);
+            pkImageEntity.setUserId(userId);
+            pkImageEntity.setTime(System.currentTimeMillis());
+            daoService.insertEntity(pkImageEntity);
+        }
+        else
+        {
+            pkImageEntity.setImgStatu(ImgStatu.审核中);
+            pkImageEntity.setImgUrl(imgUrl);
+            pkImageEntity.setTime(System.currentTimeMillis());
+            daoService.updateEntity(pkImageEntity);
+        }
+
+
+    }
+
+    public List<User> 查询关注列表(String userId, int page) {
+
+        List<User> users = new ArrayList<>();
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(UserFollowEntity.class)
+                .compareFilter("followerId",CompareTag.Equal,userId)
+                .pageLimitFilter(page,20)
+                .orderByFilter("time",OrderTag.DESC);
+        List<UserFollowEntity> userFollowEntities = daoService.queryEntities(UserFollowEntity.class,filter);
+
+        userFollowEntities.forEach(follower->{
+
+            User user = userService.queryUser(follower.getUserId());
+            user.setFollowTime(TimeUtils.convertTime(follower.getTime()));
+            user.setFollowStatu(1);
+            users.add(user);
+        });
+        return users;
+
+
+    }
+
+    public void 添加关注(String userId, String followerId) {
+        UserFollowEntity userFollowEntity = new UserFollowEntity();
+        userFollowEntity.setUserId(followerId);
+        userFollowEntity.setFollowerId(userId);
+        userFollowEntity.setTime(System.currentTimeMillis());
+        daoService.insertEntity(userFollowEntity);
+
+    }
+
+    public void 取消关注(String userId, String followerId) {
+
+        UserFollowEntity userFollowEntity = 查询关注(userId,followerId);
+        if(!ObjectUtils.isEmpty(userFollowEntity))
+        {
+           daoService.deleteEntity(userFollowEntity);
+        }
+    }
+    public UserFollowEntity 查询关注(String userId, String followerId) {
+
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(UserFollowEntity.class)
+                .compareFilter("userId",CompareTag.Equal,followerId)
+                .andFilter()
+                .compareFilter("followerId",CompareTag.Equal,userId );
+        UserFollowEntity userFollowEntity = daoService.querySingleEntity(UserFollowEntity.class,filter);
+        return userFollowEntity;
+    }
+
+    public List<User> 查询粉丝列表(String userId, int page) {
+
+        List<User> users = new ArrayList<>();
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(UserFollowEntity.class)
+                .compareFilter("userId",CompareTag.Equal,userId)
+                .pageLimitFilter(page,20)
+                .orderByFilter("time",OrderTag.DESC);
+        List<UserFollowEntity> userFollowEntities = daoService.queryEntities(UserFollowEntity.class,filter);
+
+        userFollowEntities.forEach(follower->{
+
+            User user = userService.queryUser(follower.getUserId());
+            user.setFollowTime(TimeUtils.convertTime(follower.getTime()));
+            users.add(user);
+        });
+        return users;
+
+    }
+
+    public List<Post> queryHiddenPkPost(String pkId, int page) throws UnsupportedEncodingException {
+
+        List<Post> posts = new LinkedList<>();
+        List<PostEntity> pageList =  this.查询隐藏列表(pkId,page);
+        for(PostEntity postEntity:pageList)
+        {
+            Post post = postService.translate(postEntity);
+
+            if(!ObjectUtils.isEmpty(post)) {
+                posts.add(post);
+            }
+        }
+        return posts;
+
+    }
+
+    private List<PostEntity> 查询隐藏列表(String pkId, int page) {
+        List<PostEntity> ids = new ArrayList<>();
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(PostEntity.class)
+                .compareFilter("pkId",CompareTag.Equal,pkId)
+                .andFilter()
+                .compareFilter("statu",CompareTag.Equal,PostStatu.隐藏)
+                .pageLimitFilter(page,20)
+                .orderByFilter("time",OrderTag.DESC);
+
+        List<PostEntity> entities = daoService.queryEntities(PostEntity.class,filter);
+        if(!CollectionUtils.isEmpty(entities)){ids.addAll(entities);}
+        return ids;
+
 
 
     }

@@ -30,6 +30,7 @@ public class AppApplication {
     public static void main(String[] args) throws IOException
     {
 
+
         System.out.println("APP_HOME = " + System.getenv("APP_HOME"));
 
 //

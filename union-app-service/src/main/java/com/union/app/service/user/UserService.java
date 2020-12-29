@@ -9,12 +9,14 @@ import com.union.app.common.微信.WeChatUtil;
 import com.union.app.common.dao.AppDaoService;
 import com.union.app.dao.spi.filter.CompareTag;
 import com.union.app.dao.spi.filter.EntityFilterChain;
+import com.union.app.domain.pk.user.UserCardApply;
 import com.union.app.domain.pk.客服消息.WxImage;
 import com.union.app.domain.pk.客服消息.WxSendMessage;
 import com.union.app.domain.pk.客服消息.WxText;
 import com.union.app.domain.工具.RandomUtil;
 import com.union.app.domain.user.User;
 import com.union.app.entity.pk.PkEntity;
+import com.union.app.entity.pk.卡点.UserCardEntity;
 import com.union.app.entity.用户.UserEntity;
 import com.union.app.entity.用户.UserKvEntity;
 import com.union.app.entity.用户.support.UserType;
@@ -462,6 +464,86 @@ public class UserService {
         UserEntity userEntity = appDaoService.querySingleEntity(UserEntity.class,filter);
         userEntity.setPostLastUpdateTime(System.currentTimeMillis());
         appDaoService.updateEntity(userEntity);
+
+    }
+
+    public void 返还用户打捞时间(String userId, long endTime) {
+        long left = endTime - System.currentTimeMillis();
+        if(left>0){
+            UserKvEntity userKvEntity = userService.queryUserKvEntity(userId);
+            userKvEntity.setFindTimeLength(userKvEntity.getFindTimeLength() + left);
+            appDaoService.updateEntity(userKvEntity);
+        }
+
+    }
+    public void 返还用户打捞时间1(String userId, long length) {
+            UserKvEntity userKvEntity = userService.queryUserKvEntity(userId);
+            userKvEntity.setFindTimeLength(userKvEntity.getFindTimeLength() + length*24*3600*1000);
+            appDaoService.updateEntity(userKvEntity);
+
+
+    }
+
+    public String 查询Pk创建者名片(String userId) {
+        UserKvEntity userKvEntity = userService.queryUserKvEntity(userId);
+        return userKvEntity.getUserCard();
+    }
+
+    public UserCardApply 查询用户名片留言(String userId, String queryer) {
+        UserCardEntity userCardEntity = 查询UserCard记录(userId,queryer);
+        if(ObjectUtils.isEmpty(userCardEntity))
+        {
+            return null;
+        }
+        else
+        {
+            UserCardApply userCardApply = new UserCardApply();
+            userCardApply.setTarget(this.queryUser(userCardEntity.getUserId()));
+            userCardApply.setApplyer(userService.queryUser(userCardEntity.getApplyerId()));
+            userCardApply.setText(userCardEntity.getText());
+            userCardApply.setLock(userCardEntity.isCardLock());
+            return userCardApply;
+        }
+
+    }
+    public UserCardEntity 查询UserCard记录(String userId,String queryerId) {
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(UserCardEntity.class)
+                .compareFilter("userId",CompareTag.Equal,userId)
+                .andFilter()
+                .compareFilter("applyerId",CompareTag.Equal,queryerId);
+        UserCardEntity userCardEntity = appDaoService.querySingleEntity(UserCardEntity.class,filter);
+
+        return userCardEntity;
+
+    }
+
+    public void 上传UserCard(String userId, String userCard) {
+        UserKvEntity userKvEntity = userService.queryUserKvEntity(userId);
+        userKvEntity.setUserCard(userCard);
+        appDaoService.updateEntity(userKvEntity);
+    }
+
+    public void 申请UserCard(String targetId, String userId, String text) {
+        UserCardEntity userCardEntity = 查询UserCard记录(targetId,userId);
+        if(ObjectUtils.isEmpty(userCardEntity))
+        {
+            userCardEntity = new UserCardEntity();
+            userCardEntity.setUserId(userId);
+            userCardEntity.setText(text);
+            userCardEntity.setTime(System.currentTimeMillis());
+            userCardEntity.setCardLock(userCardEntity.isCardLock());
+            userCardEntity.setApplyerId(userId);
+            appDaoService.insertEntity(userCardEntity);
+        }
+        else
+        {
+            userCardEntity.setUserId(userId);
+            userCardEntity.setText(text);
+            userCardEntity.setTime(System.currentTimeMillis());
+            userCardEntity.setCardLock(userCardEntity.isCardLock());
+            userCardEntity.setApplyerId(userId);
+            appDaoService.updateEntity(userCardEntity);
+        }
 
     }
 }

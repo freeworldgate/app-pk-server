@@ -68,6 +68,9 @@ public class IdGenerator {
 
     public static String getPkId() {return RandomStringUtils.randomAlphanumeric(30); }
 
+    //二维码场景值:保证唯一性?,。
+    public static String getScene() {return System.nanoTime()+RandomStringUtils.randomAlphanumeric(10); }
+
     public static String getPostId() {return RandomStringUtils.randomAlphanumeric(30); }
 
     public static String getCommentId() {return UUID.randomUUID().toString(); }

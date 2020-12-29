@@ -21,6 +21,23 @@ public class UserKvEntity {
     @Id
     private String userId;
 
+    private long findTimeLength;
+
+    private String userCard;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     private int postTimes;
     private int pkTimes;
     private int publishPkTimes;

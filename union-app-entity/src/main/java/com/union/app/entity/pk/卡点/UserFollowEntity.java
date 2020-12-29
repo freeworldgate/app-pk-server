@@ -1,6 +1,6 @@
-package com.union.app.entity.用户;
+package com.union.app.entity.pk.卡点;
 
-
+import com.union.app.entity.ImgStatu;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,18 +13,17 @@ import javax.persistence.*;
 @EqualsAndHashCode
 @ToString
 @Entity
-@Table(name="T_User_Follow")
+@Table(name="T_USER_FOLLOW")
 public class UserFollowEntity {
-
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)//mysql数据库主键策略
     private int id;
 
     private String userId;
 
-    private String ownerId;
+    private String followerId;
 
-
+    private long time;
 
 
 }

@@ -33,4 +33,6 @@ public class User implements Serializable{
 
     private String time;
 
+    private String followTime;
+    private int followStatu;
 }

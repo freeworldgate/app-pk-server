@@ -102,7 +102,7 @@ public class WeChatUtil
 
     }
 
-    public static String 生成二维码(String pkId, String postId) throws IOException {
+    public static String 生成二维码(String pkId) throws IOException {
 
 
         String token = getAccess_token();
@@ -114,8 +114,8 @@ public class WeChatUtil
 
 
         Map<String,Object> param = new HashMap<>();
-        param.put("scene", postId);
-        param.put("path", "pages/pk/post/post");
+        param.put("scene", pkId);
+        param.put("path", "pages/pk/timepage/timepage");
         param.put("width", 430);
         param.put("auto_color", false);
         Map<String,Object> line_color = new HashMap<>();
@@ -129,7 +129,7 @@ public class WeChatUtil
         ResponseEntity<byte[]> responseEntity = restTemplate.exchange(requestUrl, HttpMethod.POST, requestEntity, byte[].class, new Object[0]);
 
         if (responseEntity.getStatusCode() == HttpStatus.OK) {
-            String url = OssStorage.uploadFileBytes(pkId,postId,responseEntity.getBody());
+            String url = OssStorage.uploadFileBytes(pkId,responseEntity.getBody());
             return url;
         }
         else

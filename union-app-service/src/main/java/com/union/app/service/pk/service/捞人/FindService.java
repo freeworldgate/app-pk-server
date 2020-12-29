@@ -1,0 +1,422 @@
+package com.union.app.service.pk.service.捞人;
+
+import com.union.app.common.OSS存储.CacheStorage;
+import com.union.app.common.OSS存储.OssStorage;
+import com.union.app.common.dao.AppDaoService;
+import com.union.app.common.dao.EntityCacheService;
+import com.union.app.common.dao.PkCacheService;
+import com.union.app.common.redis.RedisMapService;
+import com.union.app.common.redis.RedisSortSetService;
+import com.union.app.dao.spi.filter.CompareTag;
+import com.union.app.dao.spi.filter.EntityFilterChain;
+import com.union.app.dao.spi.filter.OrderTag;
+import com.union.app.domain.pk.PkButton;
+import com.union.app.domain.pk.PkButtonType;
+import com.union.app.domain.pk.PkDetail;
+import com.union.app.domain.pk.PkDynamic.FactualInfo;
+import com.union.app.domain.pk.PkDynamic.FeeTask;
+import com.union.app.domain.pk.Post;
+import com.union.app.domain.pk.apply.KeyValuePair;
+import com.union.app.domain.pk.捞人.CreateUserFind;
+import com.union.app.domain.pk.捞人.FindUser;
+import com.union.app.domain.user.User;
+import com.union.app.entity.pk.*;
+import com.union.app.entity.pk.卡点.捞人.FindStatu;
+import com.union.app.entity.pk.卡点.捞人.FindUserEntity;
+import com.union.app.entity.用户.UserEntity;
+import com.union.app.entity.用户.UserKvEntity;
+import com.union.app.entity.用户.support.UserType;
+import com.union.app.plateform.data.resultcode.AppException;
+import com.union.app.plateform.data.resultcode.DataSet;
+import com.union.app.plateform.data.resultcode.PageAction;
+import com.union.app.plateform.storgae.redis.RedisStringUtil;
+import com.union.app.service.pk.dynamic.CacheKeyName;
+import com.union.app.service.pk.dynamic.DynamicService;
+import com.union.app.service.pk.service.*;
+import com.union.app.service.user.UserService;
+import com.union.app.util.idGenerator.IdGenerator;
+import com.union.app.util.time.TimeUtils;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+
+@Service
+public class FindService {
+
+
+    @Autowired
+    RedisSortSetService redisSortSetService;
+
+    @Autowired
+    RedisMapService redisMapService;
+
+
+    @Autowired
+    AppDaoService daoService;
+
+    @Autowired
+    FindService pkService;
+
+    @Autowired
+    AppService appService;
+
+    @Autowired
+    DynamicService dynamicService;
+
+    @Autowired
+    PostService postService;
+
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    RedisStringUtil redisStringUtil;
+
+    @Autowired
+    OssStorage ossStorage;
+
+    @Autowired
+    CacheStorage cacheStorage;
+
+    @Autowired
+    PostCacheService postCacheService;
+
+    @Autowired
+    LocationService locationService;
+
+    @Autowired
+    PkCacheService pkCacheService;
+
+
+    public FindUser 查询用户捞人记录(String pkId, String userId) throws IOException {
+        FindUserEntity findUserEntity = this.查询用户捞人Entity(pkId,userId);
+
+        FindUser findUser = new FindUser();
+        findUser.setExist(false);
+        PkDetail pk = locationService.querySinglePk(pkId);
+        UserKvEntity userKvEntity = userService.queryUserKvEntity(userId);
+        User user = userService.queryUser(userId);
+        findUser.setUser(user);
+
+        findUser.setLeftTime(TimeUtils.剩余可打捞时间(userKvEntity.getFindTimeLength()));
+        findUser.setPkId(pkId);
+        findUser.setPk(pk);
+        findUser.setPkName(pk.getName());
+        if(!ObjectUtils.isEmpty(findUserEntity))
+        {
+            findUser.setExist(true);
+            findUser.setFindLength(findUserEntity.getFindLength());
+            findUser.setImg1(findUserEntity.getImg1());
+            findUser.setImg2(findUserEntity.getImg2());
+            findUser.setImg3(findUserEntity.getImg3());
+            findUser.setText(findUserEntity.getText());
+            long current = System.currentTimeMillis();
+            if(findUserEntity.getEndTime() > 0 && current > findUserEntity.getEndTime())
+            {
+                findUser.setStatu(new KeyValuePair(FindStatu.已过期.getStatu(),FindStatu.已过期.getStatuStr()));
+            }
+            else
+            {
+                findUser.setStatu(new KeyValuePair(findUserEntity.getFindStatu().getStatu(),findUserEntity.getFindStatu().getStatuStr()));
+            }
+
+            findUser.setTimeExpire(TimeUtils.已打捞时间(findUserEntity.getStartTime()));
+        }
+
+        return findUser;
+
+
+
+
+    }
+
+
+
+    public void 保存捞人信息(CreateUserFind createUserFind) throws AppException {
+        FindUserEntity findUserEntity = this.查询用户捞人Entity(createUserFind.getPkId(),createUserFind.getUserId());
+        if(ObjectUtils.isEmpty(findUserEntity)){
+            findUserEntity = new FindUserEntity();
+            findUserEntity.setPkId(createUserFind.getPkId());
+            findUserEntity.setUserId(createUserFind.getUserId());
+            findUserEntity.setFindLength(createUserFind.getFindLength());
+            findUserEntity.setText(createUserFind.getText());
+            findUserEntity.setImg1(createUserFind.getImg1());
+            findUserEntity.setImg2(createUserFind.getImg2());
+            findUserEntity.setImg3(createUserFind.getImg3());
+            findUserEntity.setApproverId(null);
+            findUserEntity.setStartTime(0);
+            findUserEntity.setEndTime(0);
+            findUserEntity.setFindStatu(FindStatu.新创建);
+            findUserEntity.setCreateTime(System.currentTimeMillis());
+            daoService.insertEntity(findUserEntity);
+
+        }
+        else {
+            if(findUserEntity.getFindStatu() != FindStatu.新创建)
+            {
+                throw AppException.buildException(PageAction.信息反馈框("无法保存","当前状态不支持修改"));
+            }
+            findUserEntity.setFindLength(createUserFind.getFindLength());
+            findUserEntity.setText(createUserFind.getText());
+            findUserEntity.setImg1(createUserFind.getImg1());
+            findUserEntity.setImg2(createUserFind.getImg2());
+            findUserEntity.setImg3(createUserFind.getImg3());
+            findUserEntity.setApproverId(null);
+            findUserEntity.setStartTime(0);
+            findUserEntity.setEndTime(0);
+            findUserEntity.setFindStatu(FindStatu.新创建);
+            findUserEntity.setCreateTime(System.currentTimeMillis());
+            daoService.updateEntity(findUserEntity);
+        }
+
+    }
+
+    public void 开始捞人(CreateUserFind createUserFind) throws AppException {
+            FindUserEntity findUserEntity = this.查询用户捞人Entity(createUserFind.getPkId(),createUserFind.getUserId());
+            if(ObjectUtils.isEmpty(findUserEntity)||findUserEntity.getFindStatu() != FindStatu.新创建)
+            {
+                throw AppException.buildException(PageAction.信息反馈框("无法保存","当前状态不支持该操作"));
+            }
+            findUserEntity.setFindLength(createUserFind.getFindLength());
+            findUserEntity.setText(createUserFind.getText());
+            findUserEntity.setImg1(createUserFind.getImg1());
+            findUserEntity.setImg2(createUserFind.getImg2());
+            findUserEntity.setImg3(createUserFind.getImg3());
+            findUserEntity.setApproverId(null);
+            findUserEntity.setStartTime(0);
+            findUserEntity.setEndTime(0);
+            findUserEntity.setFindStatu(FindStatu.审核中);
+            daoService.updateEntity(findUserEntity);
+
+    }
+
+    public void 校验时间(int findLength, String userId) throws AppException {
+        UserKvEntity userKvEntity = userService.queryUserKvEntity(userId);
+
+        if(userKvEntity.getFindTimeLength() >= findLength * 24 * 3600*1000)
+        {
+            userKvEntity.setFindTimeLength(userKvEntity.getFindTimeLength() - findLength * 24 * 3600*1000);
+            daoService.updateEntity(userKvEntity);
+            return;
+        }
+        else
+        {
+            throw AppException.buildException(PageAction.执行处理器("timePay",TimeUtils.剩余可打捞时间(userKvEntity.getFindTimeLength())));
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    }
+
+    public void 放弃捞人(String pkId, String userId) {
+        FindUserEntity findUserEntity = this.查询用户捞人Entity(pkId,userId);
+        if(findUserEntity.getFindStatu() == FindStatu.打捞中)
+        {
+            userService.返还用户打捞时间(userId,findUserEntity.getEndTime());
+            findUserEntity.setFindStatu(FindStatu.新创建);
+            findUserEntity.setEndTime(0);
+            findUserEntity.setStartTime(0);
+            findUserEntity.setApproverId(null);
+            daoService.updateEntity(findUserEntity);
+
+
+        }
+        if(findUserEntity.getFindStatu() == FindStatu.审核中)
+        {
+            userService.返还用户打捞时间1(userId,findUserEntity.getFindLength());
+            findUserEntity.setFindStatu(FindStatu.新创建);
+            findUserEntity.setEndTime(0);
+            findUserEntity.setStartTime(0);
+            findUserEntity.setApproverId(null);
+            daoService.updateEntity(findUserEntity);
+        }
+
+
+    }
+
+    public List<FindUser> 查询审核捞人记录(int page) throws IOException {
+        List<FindUser> findUsers = new ArrayList<>();
+        List<FindUserEntity> findUserEntities = this.查询要审核捞人Entity(page);
+
+        for(FindUserEntity findUserEntity:findUserEntities){
+
+            FindUser findUser = new FindUser();
+            PkDetail pk = locationService.querySinglePk(findUserEntity.getPkId());
+            UserKvEntity userKvEntity = userService.queryUserKvEntity(findUserEntity.getUserId());
+            User user = userService.queryUser(findUserEntity.getUserId());
+            findUser.setUser(user);
+            findUser.setFindId(findUserEntity.getFindId());
+            findUser.setTimeExpire(TimeUtils.已打捞时间(findUserEntity.getStartTime()));
+            findUser.setLeftTime(TimeUtils.剩余可打捞时间(userKvEntity.getFindTimeLength()));
+            findUser.setPkId(findUserEntity.getPkId());
+            findUser.setPk(pk);
+            findUser.setPkName(pk.getName());
+            findUser.setFindLength(findUserEntity.getFindLength());
+            findUser.setImg1(findUserEntity.getImg1());
+            findUser.setImg2(findUserEntity.getImg2());
+            findUser.setImg3(findUserEntity.getImg3());
+            findUser.setText(findUserEntity.getText());
+            findUser.setStatu(new KeyValuePair(findUserEntity.getFindStatu().getStatu(),findUserEntity.getFindStatu().getStatuStr()));
+//            findUser.setTimeLength(TimeUtils.已打捞时间(findUserEntity.getStartTime()));
+            findUsers.add(findUser);
+        };
+        return findUsers;
+    }
+
+    private List<FindUserEntity> 查询要审核捞人Entity(int page) {
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(FindUserEntity.class)
+                .compareFilter("findStatu",CompareTag.Equal,FindStatu.审核中)
+                .orderByFilter("createTime",OrderTag.DESC)
+                .pageLimitFilter(page,20);
+        List<FindUserEntity> findUserEntities = daoService.queryEntities(FindUserEntity.class,filter);
+        return findUserEntities;
+
+    }
+
+    public void 审批(int findId) {
+        FindUserEntity findUserEntity = 查询用户捞人EntityById(findId);
+        if(findUserEntity.getFindStatu() == FindStatu.审核中)
+        {
+            findUserEntity.setFindStatu(FindStatu.打捞中);
+            long startTime = System.currentTimeMillis();
+            long endTime = System.currentTimeMillis() + findUserEntity.getFindLength()*24*3600*1000;
+            findUserEntity.setStartTime(startTime);
+            findUserEntity.setEndTime(endTime);
+
+        }
+        else
+        {
+            findUserEntity.setFindStatu(FindStatu.审核中);
+            findUserEntity.setStartTime(0);
+            findUserEntity.setEndTime(0);
+
+        }
+        daoService.updateEntity(findUserEntity);
+
+
+    }
+
+    public FindUser 查询ByFindId(int findId) throws IOException {
+        FindUserEntity findUserEntity = 查询用户捞人EntityById(findId);
+        FindUser findUser = new FindUser();
+        PkDetail pk = locationService.querySinglePk(findUserEntity.getPkId());
+        UserKvEntity userKvEntity = userService.queryUserKvEntity(findUserEntity.getUserId());
+        User user = userService.queryUser(findUserEntity.getUserId());
+        findUser.setUser(user);
+        findUser.setFindId(findUserEntity.getFindId());
+        findUser.setTimeExpire(TimeUtils.已打捞时间(findUserEntity.getStartTime()));
+        findUser.setLeftTime(TimeUtils.剩余可打捞时间(userKvEntity.getFindTimeLength()));
+        findUser.setPkId(findUserEntity.getPkId());
+        findUser.setPk(pk);
+        findUser.setPkName(pk.getName());
+        findUser.setFindLength(findUserEntity.getFindLength());
+        findUser.setImg1(findUserEntity.getImg1());
+        findUser.setImg2(findUserEntity.getImg2());
+        findUser.setImg3(findUserEntity.getImg3());
+        findUser.setText(findUserEntity.getText());
+        findUser.setStatu(new KeyValuePair(findUserEntity.getFindStatu().getStatu(),findUserEntity.getFindStatu().getStatuStr()));
+//        findUser.setTimeLength(TimeUtils.已打捞时间(findUserEntity.getStartTime()));
+        return findUser;
+    }
+    private FindUserEntity 查询用户捞人EntityById(int findId) {
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(FindUserEntity.class)
+                .compareFilter("findId",CompareTag.Equal,findId);
+        FindUserEntity findUserEntity = daoService.querySingleEntity(FindUserEntity.class,filter);
+        return findUserEntity;
+    }
+    private FindUserEntity 查询用户捞人Entity(String pkId, String userId) {
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(FindUserEntity.class)
+                .compareFilter("pkId",CompareTag.Equal,pkId)
+                .andFilter()
+                .compareFilter("userId",CompareTag.Equal,userId);
+        FindUserEntity findUserEntity = daoService.querySingleEntity(FindUserEntity.class,filter);
+        return findUserEntity;
+    }
+
+    public List<FindUser> 查询卡点捞人列表(String pkId) throws IOException {
+        List<FindUser> findUsers = new ArrayList<>();
+        List<FindUserEntity> findUserEntities = this.查询打捞中Entity(pkId);
+        for(FindUserEntity findUserEntity:findUserEntities){
+            FindUser findUser = new FindUser();
+            PkDetail pk = locationService.querySinglePk(findUserEntity.getPkId());
+            UserKvEntity userKvEntity = userService.queryUserKvEntity(findUserEntity.getUserId());
+            User user = userService.queryUser(findUserEntity.getUserId());
+            findUser.setUser(user);
+            findUser.setFindId(findUserEntity.getFindId());
+            findUser.setTimeExpire(TimeUtils.已打捞时间(findUserEntity.getStartTime()));
+            findUser.setLeftTime(TimeUtils.剩余可打捞时间(userKvEntity.getFindTimeLength()));
+            findUser.setPkId(findUserEntity.getPkId());
+            findUser.setPk(pk);
+            findUser.setPkName(pk.getName());
+            findUser.setFindLength(findUserEntity.getFindLength());
+            findUser.setImg1(findUserEntity.getImg1());
+            findUser.setImg2(findUserEntity.getImg2());
+            findUser.setImg3(findUserEntity.getImg3());
+            findUser.setText(findUserEntity.getText());
+            findUser.setStatu(new KeyValuePair(findUserEntity.getFindStatu().getStatu(),findUserEntity.getFindStatu().getStatuStr()));
+//            findUser.setTimeLength(TimeUtils.已打捞时间(findUserEntity.getStartTime()));
+            findUsers.add(findUser);
+        };
+        return findUsers;
+
+
+
+
+    }
+
+
+    private List<FindUserEntity> 查询打捞中Entity(String pkId) {
+        long current = System.currentTimeMillis();
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(FindUserEntity.class)
+                .compareFilter("pkId",CompareTag.Equal,pkId)
+                .andFilter()
+                .compareFilter("endTime",CompareTag.Bigger,current)
+                .andFilter()
+                .compareFilter("startTime",CompareTag.Small,current)
+                .orderByRandomFilter();
+
+        List<FindUserEntity> findUserEntities = daoService.queryEntities(FindUserEntity.class,filter);
+        return findUserEntities;
+
+    }
+
+    public void 清除UserFind(String pkId, String userId) throws AppException {
+        FindUserEntity findUserEntity = this.查询用户捞人Entity(pkId,userId);
+        if(!ObjectUtils.isEmpty(findUserEntity))
+        {
+            boolean isNew = FindStatu.新创建 == findUserEntity.getFindStatu();
+            boolean isExpired = (FindStatu.打捞中 == findUserEntity.getFindStatu()) && (findUserEntity.getEndTime() > 0 && System.currentTimeMillis() > findUserEntity.getEndTime());
+            if(isNew||isExpired)
+            {
+                daoService.deleteEntity(findUserEntity);
+            }
+            else
+            {
+                throw AppException.buildException(PageAction.信息反馈框("","非法操作"));
+            }
+
+
+
+
+        }
+
+
+    }
+}
