@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+        <!--设置log4j2的自身log级别为warn-->
+        <!--日志级别以及优先级排序: OFF > FATAL > ERROR > WARN > INFO > DEBUG > TRACE > ALL -->
+        <!--Configuration后面的status，这个用于设置log4j2自身内部的信息输出，可以不设置，
+            当设置成trace时，你会看到log4j2内部各种详细输出-->
+        <!--monitorInterval：Log4j能够自动检测修改配置 文件和重新配置本身，设置间隔秒数-->
+<configuration status="OFF" monitorInterval="30">
+
+    <properties>
+        <property name="patternLayout">[%d{HH:mm:ss:SSS}]|[%p]|%C|%M|%m%n</property>
+    </properties>
+
+
+<!--先定义所有的appender-->
+<appenders>
+    <!--这个输出控制台的配置 ConsoleAppender-->
+    <console name="Console" target="SYSTEM_OUT">
+        <!--输出日志的格式-->
+        <PatternLayout pattern="${patternLayout}"/>
+    </console>
+    <!--Console的文件版本-->
+    <RollingFile name="Console_File" fileName="${env:APP_LOG_HOME}/logs/console/union-console.log"
+                 filePattern="${env:APP_LOG_HOME}/logs/console/$${date:yyyy-MM-dd}/resultset-%d{yyyy-MM-dd}-%i.log">
+        <ThresholdFilter level="ALL"/>
+        <PatternLayout pattern="${patternLayout}"/>
+        <Policies>
+            <TimeBasedTriggeringPolicy/>
+            <SizeBasedTriggeringPolicy size="1MB"/>
+        </Policies>
+    </RollingFile>
+
+
+    <!--Durid 数据库连接池-->
+    <RollingFile name="DataSource" fileName="${env:APP_LOG_HOME}/logs/druid/union-druid-datasource.log"
+                 filePattern="${env:APP_LOG_HOME}/logs/druid/$${date:yyyy-MM-dd}/datasource-%d{yyyy-MM-dd}-%i.log">
+        <ThresholdFilter level="ALL"/>
+        <PatternLayout pattern="${patternLayout}"/>
+        <Policies>
+            <TimeBasedTriggeringPolicy/>
+            <SizeBasedTriggeringPolicy size="10 MB"/>
+        </Policies>
+    </RollingFile>
+    <RollingFile name="Connection" fileName="${env:APP_LOG_HOME}/logs/druid/union-druid-connection.log"
+                 filePattern="${env:APP_LOG_HOME}/logs/druid/$${date:yyyy-MM}/connection-%d{yyyy-MM-dd}-%i.log">
+        <ThresholdFilter level="ALL"/>
+        <PatternLayout pattern="${patternLayout}"/>
+        <Policies>
+            <TimeBasedTriggeringPolicy/>
+            <SizeBasedTriggeringPolicy size="100 MB"/>
+        </Policies>
+    </RollingFile>
+    <RollingFile name="Statement" fileName="${env:APP_LOG_HOME}/logs/druid/union-druid-statement.log"
+                 filePattern="${env:APP_LOG_HOME}/logs/druid/$${date:yyyy-MM}/statement-%d{yyyy-MM-dd}-%i.log">
+        <ThresholdFilter level="ALL"/>
+        <PatternLayout pattern="${patternLayout}"/>
+        <Policies>
+            <TimeBasedTriggeringPolicy/>
+            <SizeBasedTriggeringPolicy size="100 MB"/>
+        </Policies>
+    </RollingFile>
+    <RollingFile name="ResultSet" fileName="${env:APP_LOG_HOME}/logs/druid/union-druid-resultset.log"
+                 filePattern="${env:APP_LOG_HOME}/logs/druid/$${date:yyyy-MM}/resultset-%d{yyyy-MM-dd}-%i.log">
+        <ThresholdFilter level="ALL"/>
+        <PatternLayout pattern="${patternLayout}"/>
+        <Policies>
+            <TimeBasedTriggeringPolicy/>
+            <SizeBasedTriggeringPolicy size="100 MB"/>
+        </Policies>
+    </RollingFile>
+    <!--Hibernate-->
+    <RollingFile name="Hibernate" fileName="${env:APP_LOG_HOME}/logs/hibernate/union-hibernate.log"
+                 filePattern="${env:APP_LOG_HOME}/logs/hibernate/$${date:yyyy-MM}/hibernate-%d{yyyy-MM-dd}-%i.log">
+        <ThresholdFilter level="ALL"/>
+        <PatternLayout pattern="${patternLayout}"/>
+        <Policies>
+            <TimeBasedTriggeringPolicy/>
+            <SizeBasedTriggeringPolicy size="100 MB"/>
+        </Policies>
+    </RollingFile>
+    <!--接口日志：运行日志：平台日志-->
+    <RollingFile name="interface" fileName="${env:APP_LOG_HOME}/logs/app/union-interface.log"
+                 filePattern="${env:APP_LOG_HOME}/logs/app/$${date:yyyy-MM-dd}/union-interface-%d{yyyy-MM-dd}-%i.log">
+        <ThresholdFilter level="ALL"/>
+        <PatternLayout pattern="${patternLayout}"/>
+        <Policies>
+            <TimeBasedTriggeringPolicy/>
+            <SizeBasedTriggeringPolicy size="100MB"/>
+        </Policies>
+    </RollingFile>
+    <RollingFile name="run" fileName="${env:APP_LOG_HOME}/logs/app/union-run.log"
+                 filePattern="${env:APP_LOG_HOME}/logs/app/$${date:yyyy-MM-dd}/union-run-%d{yyyy-MM-dd}-%i.log">
+        <ThresholdFilter level="ALL"/>
+        <PatternLayout pattern="${patternLayout}"/>
+        <Policies>
+            <TimeBasedTriggeringPolicy/>
+            <SizeBasedTriggeringPolicy size="100MB"/>
+        </Policies>
+    </RollingFile>
+    <RollingFile name="plateform" fileName="${env:APP_LOG_HOME}/logs/app/union-plateform.log"
+                 filePattern="${env:APP_LOG_HOME}/logs/app/$${date:yyyy-MM-dd}/union-plateform-%d{yyyy-MM-dd}-%i.log">
+        <ThresholdFilter level="ALL"/>
+        <PatternLayout pattern="${patternLayout}"/>
+        <Policies>
+            <TimeBasedTriggeringPolicy/>
+            <SizeBasedTriggeringPolicy size="100MB"/>
+        </Policies>
+    </RollingFile>
+
+</appenders>
+
+
+
+<!--然后定义logger，只有定义了logger并引入的appender，appender才会生效-->
+<loggers>
+
+    <!--接口日志：运行日志：平台日志-->
+    <logger name="interface" level="DEBUG">
+        <appender-ref ref="interface"/>
+    </logger>
+    <logger name="run" level="DEBUG">
+        <appender-ref ref="run"/>
+    </logger>
+    <logger name="plateform" level="DEBUG">
+        <appender-ref ref="plateform"/>
+    </logger>
+
+
+    <!--Hibernate日志-->
+    <logger name="org.hibernate" level="ERROR">
+        <appender-ref ref="Hibernate"/>
+    </logger>
+
+    <!--Druid默认的日志配置-->
+    <logger  name="druid.sql.DataSource" level="ERROR">
+        <appender-ref ref="DataSource"/>
+    </logger>
+    <logger  name="druid.sql.Connection" level="ERROR">
+        <appender-ref ref="Connection"/>
+    </logger>
+    <logger  name="druid.sql.Statement" level="ERROR">
+        <appender-ref ref="Statement"/>
+    </logger>
+    <logger  name="druid.sql.ResultSet" level="ERROR">
+        <appender-ref ref="ResultSet"/>
+    </logger>
+
+
+    <!--系统默认输出就是root日志,现在系统默认日志就有这两个，输出到控制台或者Console_File所在文件-->
+    <root level="ERROR">
+        <appender-ref ref="Console"/>
+        <appender-ref ref="Console_File"/>
+    </root>
+
+
+</loggers>
+
+</configuration>

@@ -528,7 +528,7 @@ public class UserService {
         if(ObjectUtils.isEmpty(userCardEntity))
         {
             userCardEntity = new UserCardEntity();
-            userCardEntity.setUserId(userId);
+            userCardEntity.setUserId(targetId);
             userCardEntity.setText(text);
             userCardEntity.setTime(System.currentTimeMillis());
             userCardEntity.setCardLock(userCardEntity.isCardLock());
@@ -537,7 +537,7 @@ public class UserService {
         }
         else
         {
-            userCardEntity.setUserId(userId);
+            userCardEntity.setUserId(targetId);
             userCardEntity.setText(text);
             userCardEntity.setTime(System.currentTimeMillis());
             userCardEntity.setCardLock(userCardEntity.isCardLock());
