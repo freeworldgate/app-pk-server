@@ -70,6 +70,7 @@ public class 用户相册 {
 
         if(CollectionUtils.isEmpty(pks))
         {
+            dataSets.add(new DataSet("emptyImage",appService.查询背景(4)));
             dataSets.add(new DataSet("pkEnd",true));}
         else
         {

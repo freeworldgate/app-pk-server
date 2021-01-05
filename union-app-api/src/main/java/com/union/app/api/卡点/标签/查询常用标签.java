@@ -1,4 +1,4 @@
-package com.union.app.api.pk.管理;
+package com.union.app.api.卡点.标签;
 
 import com.union.app.common.dao.AppDaoService;
 import com.union.app.domain.pk.ActiveTip;
@@ -25,7 +25,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(path="/pk")
-public class 标签Tip管理 {
+public class 查询常用标签 {
 
     @Autowired
     AppService appService;
@@ -62,9 +62,9 @@ public class 标签Tip管理 {
 
 
 
-    @RequestMapping(path="/queryTips",method = RequestMethod.GET)
-    public AppResponse 查询内置PK(@RequestParam("password") String password) throws AppException, IOException {
-        appService.验证Password(password);
+    @RequestMapping(path="/queryActiveTips",method = RequestMethod.GET)
+    public AppResponse 查询内置PK() throws AppException, IOException {
+
 
         List<ActiveTip> tips = appService.查询所有标签信息();
 
@@ -72,36 +72,7 @@ public class 标签Tip管理 {
 
 
 
-        return AppResponse.buildResponse(PageAction.前端数据更新("tips",tips));
-
-    }
-    @RequestMapping(path="/addTip",method = RequestMethod.GET)
-    @Transactional(rollbackOn = Exception.class)
-    public AppResponse 查询内置PK(@RequestParam("password") String password,@RequestParam("tip") String tip) throws AppException, IOException {
-        appService.验证Password(password);
-
-        appService.添加Tip(tip);
-
-
-        return AppResponse.buildResponse(PageAction.执行处理器("success",""));
-
-
-
-    }
-
-
-
-    @RequestMapping(path="/removeTip",method = RequestMethod.GET)
-    @Transactional(rollbackOn = Exception.class)
-    public AppResponse removeImg(@RequestParam("password") String password,@RequestParam("id") String id) throws AppException, IOException {
-        appService.验证Password(password);
-
-        appService.删除Tip(id);
-
-
-        return AppResponse.buildResponse(PageAction.执行处理器("success",""));
-
-
+        return AppResponse.buildResponse(PageAction.前端数据更新("types",tips));
 
     }
 

@@ -13,6 +13,7 @@ import java.io.Serializable;
 public class UserCardApply implements Serializable{
 
 
+    private int applyId;
 
     private User target;
 

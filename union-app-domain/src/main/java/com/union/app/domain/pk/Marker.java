@@ -16,6 +16,7 @@ public class Marker {
 
     Callout callout;
 
+//    String iconPath = "/images/daka.png";
     String iconPath = "/images/marker.png";
 
     String width = "34px";

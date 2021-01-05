@@ -60,4 +60,14 @@ public class TimeUtils {
         else{return day+"天"+hour+"小时";}
 
     }
+
+    public static String 全局时间(long startTime) {
+        if(startTime == 0){
+            return null;
+        }
+        else
+        {
+            return "9月3日23:00";
+        }
+    }
 }

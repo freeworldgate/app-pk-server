@@ -42,4 +42,6 @@ public class FindUser implements Serializable{
 
     private boolean exist;
 
+    private String startTime;
+    private String endTime;
 }

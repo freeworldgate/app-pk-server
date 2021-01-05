@@ -66,11 +66,13 @@ public class 粉丝 {
         //下一页
         List<User> followers = locationService.查询粉丝列表(targetId,1);
 
-
+        User target = userService.queryUser(targetId);
 
 
         List<DataSet> dataSets = new ArrayList<>();
+        dataSets.add(new DataSet("emptyImage",appService.查询背景(2)));
         dataSets.add(new DataSet("page",1));
+        dataSets.add(new DataSet("target",target));
         dataSets.add(new DataSet("followers",followers));
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
 

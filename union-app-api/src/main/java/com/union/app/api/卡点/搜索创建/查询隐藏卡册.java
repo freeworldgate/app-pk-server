@@ -75,7 +75,7 @@ public class 查询隐藏卡册 {
 
 
         List<Post> posts = locationService.queryHiddenPkPost(pkId,1);
-
+        dataSets.add(new DataSet("emptyImage",appService.查询背景(4)));
         dataSets.add(new DataSet("posts",posts));
         dataSets.add(new DataSet("page",1));
 

@@ -19,11 +19,12 @@ public class PostImageEntity {
 
     private String postId;
 
+
+
     private String pkId;
 
     private String imgUrl;
 
-//    private String createTime;
     private long time;
 
 

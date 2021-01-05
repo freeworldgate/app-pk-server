@@ -682,7 +682,35 @@ public class PostService {
     }
 
 
+    public void 移除隐藏打卡信息(String postId) {
+        //删除缓存数据：PKEntity   PostEntity  PostImageEntity 三个缓存
+
+        EntityFilterChain cfilter = EntityFilterChain.newFilterChain(PostEntity.class)
+                .compareFilter("postId",CompareTag.Equal,postId);
+        PostEntity postEntity = daoService.querySingleEntity(PostEntity.class,cfilter);
+        if(!ObjectUtils.isEmpty(postEntity))
+        {
+            postEntity.setStatu(PostStatu.显示);
+            daoService.updateEntity(postEntity);
+        }
+//
+//
+//
+//        //如果用户删除的卡册是顶置卡册，要把顶置清除掉
+//        PkEntity pkEntity = locationService.querySinglePkEntity(postEntity.getPkId());
+//        if(org.apache.commons.lang.StringUtils.equalsIgnoreCase(pkEntity.getTopPostId(),postEntity.getPostId()))
+//        {
+//            pkEntity.setTopPostId("");
+//            pkEntity.setTopPostSetTime(0L);
+//            daoService.updateEntity(pkEntity);
+//        }
+
+    }
+
+
     public Post 查询最新的图片列表(PkEntity pk) {
+
+
         Post post = new Post();
         List<PostImage> postImages = new ArrayList<>();
         if(CollectionUtils.isEmpty(postImages))

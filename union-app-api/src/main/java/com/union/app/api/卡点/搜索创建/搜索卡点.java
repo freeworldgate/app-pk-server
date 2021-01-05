@@ -80,7 +80,7 @@ public class 搜索卡点 {
         dataSets.add(new DataSet("markers",new Marker[]{marker}));
         dataSets.add(new DataSet("latitude",latitude));
         dataSets.add(new DataSet("longitude",longitude));
-
+        dataSets.add(new DataSet("emptyImage",appService.查询背景(1)));
         dataSets.add(new DataSet("pk",pkDetail));
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
 

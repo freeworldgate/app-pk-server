@@ -71,6 +71,7 @@ public class 关注 {
 
 
         List<DataSet> dataSets = new ArrayList<>();
+        dataSets.add(new DataSet("emptyImage",appService.查询背景(2)));
         dataSets.add(new DataSet("page",1));
         dataSets.add(new DataSet("followers",followers));
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));

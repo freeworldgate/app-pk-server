@@ -77,6 +77,8 @@ public class 查询用户捞人记录 {
         List<DataSet> dataSets = new ArrayList<>();
 
         dataSets.add(new DataSet("findUser",findUser));
+        dataSets.add(new DataSet("emptyImage",appService.查询背景(1)));
+        dataSets.add(new DataSet("createFindUserImage",appService.查询背景(3)));
 
 
 

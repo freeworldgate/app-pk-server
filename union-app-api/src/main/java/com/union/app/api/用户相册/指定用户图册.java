@@ -70,18 +70,18 @@ public class 指定用户图册 {
 
         if(CollectionUtils.isEmpty(posts))
         {
-            dataSets.add(new DataSet("pkEnd",true));
+            dataSets.add(new DataSet("nomore",true));
         }
         else
         {
             dataSets.add(new DataSet("posts",posts));
-            dataSets.add(new DataSet("pkEnd",false));
+            dataSets.add(new DataSet("nomore",false));
         }
 
         ;
         dataSets.add(new DataSet("page",1));
         dataSets.add(new DataSet("creator",userService.queryUser(targetId)));
-        dataSets.add(new DataSet("imgBack",appService.查询背景(1)));
+//        dataSets.add(new DataSet("imgBack",appService.查询背景(1)));
 
 
 
@@ -102,7 +102,7 @@ public class 指定用户图册 {
 
         if(CollectionUtils.isEmpty(posts))
         {
-            return AppResponse.buildResponse(PageAction.前端数据更新("pkEnd",true));
+            return AppResponse.buildResponse(PageAction.前端数据更新("nomore",true));
         }
         return AppResponse.buildResponse(PageAction.执行处理器("success",posts));
 

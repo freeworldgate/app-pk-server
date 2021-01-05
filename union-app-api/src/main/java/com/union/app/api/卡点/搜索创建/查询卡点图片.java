@@ -129,16 +129,33 @@ public class 查询卡点图片 {
     @RequestMapping(path="/uploadPkImages",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
     public AppResponse uploadPkImages(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId,@RequestParam("imgUrl") String imgUrl) throws AppException, IOException, InterruptedException {
-
         //创建者
-
         locationService.上传卡点图片(pkId,userId,imgUrl);
         PkImage userImage = locationService.查询用户卡点图片(pkId,userId);
-
-
-
         return AppResponse.buildResponse(PageAction.执行处理器("success",userImage));
-
     }
 
+
+    @RequestMapping(path="/deletePkImages",method = RequestMethod.GET)
+    @Transactional(rollbackOn = Exception.class)
+    public AppResponse deletePkImages(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId,@RequestParam("imageId") String imageId) throws AppException, IOException, InterruptedException {
+        //创建者
+        locationService.删除卡点图片(pkId,userId,imageId);
+        return AppResponse.buildResponse(PageAction.执行处理器("success",""));
+    }
+    @RequestMapping(path="/setPkBack",method = RequestMethod.GET)
+    @Transactional(rollbackOn = Exception.class)
+    public AppResponse setPkBack(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId,@RequestParam("imageId") String imageId) throws AppException, IOException, InterruptedException {
+        //创建者
+        locationService.设置卡点背景图片(pkId,userId,imageId);
+        return AppResponse.buildResponse(PageAction.执行处理器("success",""));
+    }
+
+    @RequestMapping(path="/agreePkImage",method = RequestMethod.GET)
+    @Transactional(rollbackOn = Exception.class)
+    public AppResponse agreePkImage(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId,@RequestParam("imageId") String imageId) throws AppException, IOException, InterruptedException {
+        //创建者
+        locationService.审核通过卡点图片(pkId,userId,imageId);
+        return AppResponse.buildResponse(PageAction.执行处理器("success",""));
+    }
 }

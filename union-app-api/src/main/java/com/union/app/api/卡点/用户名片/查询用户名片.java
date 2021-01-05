@@ -77,6 +77,7 @@ public class 查询用户名片 {
 
         dataSets.add(new DataSet("target",target));
         dataSets.add(new DataSet("userApply",userApply));
+        dataSets.add(new DataSet("emptyImage",appService.查询背景(1)));
         dataSets.add(new DataSet("userCard",userCard));
 
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));

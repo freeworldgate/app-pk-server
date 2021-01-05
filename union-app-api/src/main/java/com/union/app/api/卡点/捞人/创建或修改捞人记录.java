@@ -63,22 +63,22 @@ public class 创建或修改捞人记录 {
     @Autowired
     FindService findService;
 
-    @RequestMapping(path="/saveUserPkFind",method = RequestMethod.POST)
-    @Transactional(rollbackOn = Exception.class)
-    public AppResponse saveUserPkFind(@RequestBody CreateUserFind createUserFind) throws IOException, AppException {
-
-        //校验
-
-
-        findService.保存捞人信息(createUserFind);
-
-
-
-        FindUser findUser = findService.查询用户捞人记录(createUserFind.getPkId(),createUserFind.getUserId());
-
-        return AppResponse.buildResponse(PageAction.前端数据更新("findUser",findUser));
-
-    }
+//    @RequestMapping(path="/saveUserPkFind",method = RequestMethod.POST)
+//    @Transactional(rollbackOn = Exception.class)
+//    public AppResponse saveUserPkFind(@RequestBody CreateUserFind createUserFind) throws IOException, AppException {
+//
+//        //校验
+//
+//
+//        findService.保存捞人信息(createUserFind);
+//
+//
+//
+//        FindUser findUser = findService.查询用户捞人记录(createUserFind.getPkId(),createUserFind.getUserId());
+//
+//        return AppResponse.buildResponse(PageAction.前端数据更新("findUser",findUser));
+//
+//    }
 
 
 

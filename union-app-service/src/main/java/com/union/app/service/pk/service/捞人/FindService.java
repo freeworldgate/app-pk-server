@@ -2,6 +2,7 @@ package com.union.app.service.pk.service.捞人;
 
 import com.union.app.common.OSS存储.CacheStorage;
 import com.union.app.common.OSS存储.OssStorage;
+import com.union.app.common.config.AppConfigService;
 import com.union.app.common.dao.AppDaoService;
 import com.union.app.common.dao.EntityCacheService;
 import com.union.app.common.dao.PkCacheService;
@@ -26,6 +27,7 @@ import com.union.app.entity.pk.卡点.捞人.FindUserEntity;
 import com.union.app.entity.用户.UserEntity;
 import com.union.app.entity.用户.UserKvEntity;
 import com.union.app.entity.用户.support.UserType;
+import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.DataSet;
 import com.union.app.plateform.data.resultcode.PageAction;
@@ -117,6 +119,8 @@ public class FindService {
             findUser.setImg2(findUserEntity.getImg2());
             findUser.setImg3(findUserEntity.getImg3());
             findUser.setText(findUserEntity.getText());
+            findUser.setStartTime(TimeUtils.全局时间(findUserEntity.getStartTime()));
+            findUser.setEndTime(TimeUtils.全局时间(findUserEntity.getEndTime()));
             long current = System.currentTimeMillis();
             if(findUserEntity.getEndTime() > 0 && current > findUserEntity.getEndTime())
             {
@@ -144,6 +148,8 @@ public class FindService {
         if(ObjectUtils.isEmpty(findUserEntity)){
             findUserEntity = new FindUserEntity();
             findUserEntity.setPkId(createUserFind.getPkId());
+            PkEntity pkEntity = locationService.querySinglePkEntity(createUserFind.getPkId());
+            findUserEntity.setPkName(pkEntity.getName());
             findUserEntity.setUserId(createUserFind.getUserId());
             findUserEntity.setFindLength(createUserFind.getFindLength());
             findUserEntity.setText(createUserFind.getText());
@@ -179,11 +185,17 @@ public class FindService {
     }
 
     public void 开始捞人(CreateUserFind createUserFind) throws AppException {
-            FindUserEntity findUserEntity = this.查询用户捞人Entity(createUserFind.getPkId(),createUserFind.getUserId());
-            if(ObjectUtils.isEmpty(findUserEntity)||findUserEntity.getFindStatu() != FindStatu.新创建)
-            {
-                throw AppException.buildException(PageAction.信息反馈框("无法保存","当前状态不支持该操作"));
-            }
+//            FindUserEntity findUserEntity = this.查询用户捞人Entity(createUserFind.getPkId(),createUserFind.getUserId());
+//            if(ObjectUtils.isEmpty(findUserEntity)||findUserEntity.getFindStatu() != FindStatu.新创建)
+//            {
+//                throw AppException.buildException(PageAction.信息反馈框("无法保存","当前状态不支持该操作"));
+//            }
+            PkEntity pkEntity = locationService.querySinglePkEntity(createUserFind.getPkId());
+
+            FindUserEntity findUserEntity = new FindUserEntity();
+            findUserEntity.setPkId(pkEntity.getPkId());
+            findUserEntity.setPkName(pkEntity.getName());
+            findUserEntity.setUserId(createUserFind.getUserId());
             findUserEntity.setFindLength(createUserFind.getFindLength());
             findUserEntity.setText(createUserFind.getText());
             findUserEntity.setImg1(createUserFind.getImg1());
@@ -193,7 +205,8 @@ public class FindService {
             findUserEntity.setStartTime(0);
             findUserEntity.setEndTime(0);
             findUserEntity.setFindStatu(FindStatu.审核中);
-            daoService.updateEntity(findUserEntity);
+
+            daoService.insertEntity(findUserEntity);
 
     }
 
@@ -355,7 +368,7 @@ public class FindService {
         List<FindUserEntity> findUserEntities = this.查询打捞中Entity(pkId);
         for(FindUserEntity findUserEntity:findUserEntities){
             FindUser findUser = new FindUser();
-            PkDetail pk = locationService.querySinglePk(findUserEntity.getPkId());
+
             UserKvEntity userKvEntity = userService.queryUserKvEntity(findUserEntity.getUserId());
             User user = userService.queryUser(findUserEntity.getUserId());
             findUser.setUser(user);
@@ -363,13 +376,14 @@ public class FindService {
             findUser.setTimeExpire(TimeUtils.已打捞时间(findUserEntity.getStartTime()));
             findUser.setLeftTime(TimeUtils.剩余可打捞时间(userKvEntity.getFindTimeLength()));
             findUser.setPkId(findUserEntity.getPkId());
-            findUser.setPk(pk);
-            findUser.setPkName(pk.getName());
+            findUser.setPkName(findUserEntity.getPkName());
             findUser.setFindLength(findUserEntity.getFindLength());
             findUser.setImg1(findUserEntity.getImg1());
             findUser.setImg2(findUserEntity.getImg2());
             findUser.setImg3(findUserEntity.getImg3());
             findUser.setText(findUserEntity.getText());
+            findUser.setStartTime(TimeUtils.全局时间(findUserEntity.getStartTime()));
+            findUser.setEndTime(TimeUtils.全局时间(findUserEntity.getEndTime()));
             findUser.setStatu(new KeyValuePair(findUserEntity.getFindStatu().getStatu(),findUserEntity.getFindStatu().getStatuStr()));
 //            findUser.setTimeLength(TimeUtils.已打捞时间(findUserEntity.getStartTime()));
             findUsers.add(findUser);
@@ -417,6 +431,47 @@ public class FindService {
 
         }
 
+
+    }
+
+    public List<FindUser> 查询我的捞人记录(String userId, int page) {
+        List<FindUser> findUsers = new ArrayList<>();
+        List<FindUserEntity> findUserEntities = this.查询我的捞人Entity(userId,page);
+
+        for(FindUserEntity findUserEntity:findUserEntities)
+        {
+            FindUser findUser = new FindUser();
+
+            findUser.setPkId(findUserEntity.getPkId());
+            findUser.setPkName(findUserEntity.getPkName());
+            findUser.setFindLength(findUserEntity.getFindLength());
+            findUser.setImg1(findUserEntity.getImg1());
+            findUser.setImg2(findUserEntity.getImg2());
+            findUser.setImg3(findUserEntity.getImg3());
+            findUser.setText(findUserEntity.getText());
+            findUser.setStartTime(TimeUtils.全局时间(findUserEntity.getStartTime()));
+            findUser.setEndTime(TimeUtils.全局时间(findUserEntity.getEndTime()));
+            long current = System.currentTimeMillis();
+            if(findUserEntity.getEndTime() > 0 && current > findUserEntity.getEndTime())
+            {
+                findUser.setStatu(new KeyValuePair(FindStatu.已过期.getStatu(),FindStatu.已过期.getStatuStr()));
+            }
+            else
+            {
+                findUser.setStatu(new KeyValuePair(findUserEntity.getFindStatu().getStatu(),findUserEntity.getFindStatu().getStatuStr()));
+            }
+            findUsers.add(findUser);
+        }
+        return findUsers;
+    }
+
+    private List<FindUserEntity> 查询我的捞人Entity(String userId, int page) {
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(FindUserEntity.class)
+                .compareFilter("userId",CompareTag.Equal,userId)
+                .pageLimitFilter(page, 20)
+                .orderByFilter("createTime",OrderTag.DESC);
+        List<FindUserEntity> pkEntities = daoService.queryEntities(FindUserEntity.class,filter);
+        return pkEntities;
 
     }
 }

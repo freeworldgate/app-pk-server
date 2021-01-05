@@ -9,6 +9,7 @@ import com.union.app.common.微信.WeChatUtil;
 import com.union.app.common.dao.AppDaoService;
 import com.union.app.dao.spi.filter.CompareTag;
 import com.union.app.dao.spi.filter.EntityFilterChain;
+import com.union.app.dao.spi.filter.OrderTag;
 import com.union.app.domain.pk.user.UserCardApply;
 import com.union.app.domain.pk.客服消息.WxImage;
 import com.union.app.domain.pk.客服消息.WxSendMessage;
@@ -16,6 +17,8 @@ import com.union.app.domain.pk.客服消息.WxText;
 import com.union.app.domain.工具.RandomUtil;
 import com.union.app.domain.user.User;
 import com.union.app.entity.pk.PkEntity;
+import com.union.app.entity.pk.PostEntity;
+import com.union.app.entity.pk.PostStatu;
 import com.union.app.entity.pk.卡点.UserCardEntity;
 import com.union.app.entity.用户.UserEntity;
 import com.union.app.entity.用户.UserKvEntity;
@@ -24,9 +27,11 @@ import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.service.pk.dynamic.DynamicService;
+import com.union.app.util.time.TimeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.client.RestTemplate;
 
@@ -498,6 +503,7 @@ public class UserService {
         else
         {
             UserCardApply userCardApply = new UserCardApply();
+            userCardApply.setApplyId(userCardEntity.getId());
             userCardApply.setTarget(this.queryUser(userCardEntity.getUserId()));
             userCardApply.setApplyer(userService.queryUser(userCardEntity.getApplyerId()));
             userCardApply.setText(userCardEntity.getText());
@@ -543,6 +549,77 @@ public class UserService {
             userCardEntity.setCardLock(userCardEntity.isCardLock());
             userCardEntity.setApplyerId(userId);
             appDaoService.updateEntity(userCardEntity);
+        }
+
+    }
+
+    public List<UserCardApply> 查询UserCard申请列表(String targetUserId,int type, int page) {
+        List<UserCardApply> userCardApplies = new ArrayList<>();
+        List<UserCardEntity> userCardEntities = new ArrayList<>();
+        if(type == 0)
+        {
+            userCardEntities = this.查询想认识我的人(targetUserId,page);
+        }
+        else
+        {
+            userCardEntities = this.查询我想认识的人(targetUserId,page);
+        }
+        for(UserCardEntity userCardEntity:userCardEntities)
+        {
+            UserCardApply userCardApply = new UserCardApply();
+            userCardApply.setApplyId(userCardEntity.getId());
+            userCardApply.setTarget(this.queryUser(userCardEntity.getUserId()));
+            userCardApply.setApplyer(userService.queryUser(userCardEntity.getApplyerId()));
+            userCardApply.setText(userCardEntity.getText());
+            userCardApply.setLock(userCardEntity.isCardLock());
+            userCardApply.setTime(TimeUtils.convertTime(userCardEntity.getTime()));
+            userCardApplies.add(userCardApply);
+
+        }
+
+
+
+        return userCardApplies;
+
+    }
+
+    private List<UserCardEntity> 查询我想认识的人(String targetUserId, int page) {
+        List<UserCardEntity> applys = new ArrayList<>();
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(UserCardEntity.class)
+                .compareFilter("applyerId",CompareTag.Equal,targetUserId)
+                .pageLimitFilter(page,20)
+                .orderByFilter("time", OrderTag.DESC);
+
+        List<UserCardEntity> entities = appDaoService.queryEntities(UserCardEntity.class,filter);
+        if(!CollectionUtils.isEmpty(entities)){applys.addAll(entities);}
+        return applys;
+
+
+    }
+
+    private List<UserCardEntity> 查询想认识我的人(String targetUserId, int page) {
+        List<UserCardEntity> applys = new ArrayList<>();
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(UserCardEntity.class)
+                .compareFilter("userId",CompareTag.Equal,targetUserId)
+                .pageLimitFilter(page,20)
+                .orderByFilter("time", OrderTag.DESC);
+
+        List<UserCardEntity> entities = appDaoService.queryEntities(UserCardEntity.class,filter);
+        if(!CollectionUtils.isEmpty(entities)){applys.addAll(entities);}
+        return applys;
+    }
+
+    public void 删除申请留言(String userId, String applyId) {
+
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(UserCardEntity.class)
+                .compareFilter("id",CompareTag.Equal,Integer.valueOf(applyId));
+        UserCardEntity userCardEntity = appDaoService.querySingleEntity(UserCardEntity.class,filter);
+        if (!ObjectUtils.isEmpty(userCardEntity))
+        {
+            if(StringUtils.equalsIgnoreCase(userId,userCardEntity.getUserId()) || StringUtils.equalsIgnoreCase(userId,userCardEntity.getApplyerId()))
+            {
+                appDaoService.deleteEntity(userCardEntity);
+            }
         }
 
     }

@@ -96,6 +96,7 @@ public class 查询邀请 {
 
 
         List<DataSet> dataSets = new ArrayList<>();
+        dataSets.add(new DataSet("emptyImage",appService.查询背景(2)));
         dataSets.add(new DataSet("circles",circles));
         dataSets.add(new DataSet("markers",markers));
         if(CollectionUtils.isEmpty(pks))

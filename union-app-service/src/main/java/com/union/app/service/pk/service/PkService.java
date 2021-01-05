@@ -266,7 +266,7 @@ public class PkService {
 
 
 
-    public boolean isPkCreator(String pkId, String userId) throws IOException {
+    public boolean isPkCreator(String pkId, String userId) {
         PkEntity pk = this.querySinglePkEntity(pkId);
         if(ObjectUtils.isEmpty(pk)){return false;}
         return org.apache.commons.lang.StringUtils.equals(userId,pk.getUserId())? Boolean.TRUE:Boolean.FALSE;

@@ -72,9 +72,21 @@ public class 查询卡点捞人列表 {
 
         List<FindUser> findUsers = findService.查询卡点捞人列表(pkId);
 
+        List<DataSet> dataSets = new ArrayList<>();
 
 
-        return AppResponse.buildResponse(PageAction.前端数据更新("findUsers",findUsers));
+        dataSets.add(new DataSet("emptyImage",appService.查询背景(1)));
+        if(CollectionUtils.isEmpty(findUsers))
+        {
+            dataSets.add(new DataSet("emptyUrl",appService.查询背景(0)));
+        }
+        else
+        {
+
+            dataSets.add(new DataSet("findUsers",findUsers));
+        }
+        return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
+
 
     }
 

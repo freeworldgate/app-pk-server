@@ -20,6 +20,8 @@ public class FindUserEntity {
 
     private String pkId;
 
+    private String pkName;
+
     private String userId;
 
     private String text;

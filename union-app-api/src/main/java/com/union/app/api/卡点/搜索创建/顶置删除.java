@@ -113,4 +113,25 @@ public class 顶置删除 {
         }
 
     }
+    @RequestMapping(path="/removeFromHiddenPosts",method = RequestMethod.GET)
+    @Transactional(rollbackOn = Exception.class)
+    public AppResponse removeFromHiddenPosts(@RequestParam("userId") String userId,@RequestParam("postId") String postId) throws AppException, IOException {
+
+        PostEntity postEntity = postService.查询帖子ById(postId);
+
+
+
+        if(pkService.isPkCreator(postEntity.getPkId(),userId))
+        {
+            postService.移除隐藏打卡信息(postId);
+            locationService.打卡次数加一(postEntity.getPkId(),userId);
+
+            return AppResponse.buildResponse(PageAction.执行处理器("success",""));
+        }
+        else
+        {
+            return AppResponse.buildResponse(PageAction.信息反馈框("非法操作","不具备权限"));
+        }
+
+    }
 }
