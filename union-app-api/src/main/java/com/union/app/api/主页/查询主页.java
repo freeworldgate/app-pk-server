@@ -86,9 +86,9 @@ public class 查询主页 {
 
         });
 
-        pks.clear();
-        circles.clear();
-        markers.clear();
+//        pks.clear();
+//        circles.clear();
+//        markers.clear();
 
 
 
