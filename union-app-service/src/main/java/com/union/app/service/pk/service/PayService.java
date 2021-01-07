@@ -424,4 +424,30 @@ public class PayService {
         daoService.updateEntity(userKvEntity);
 
     }
+
+    public void 用户创建卡点(String userId) throws AppException {
+        UserKvEntity userKvEntity = userService.queryUserKvEntity(userId);
+        int pk = userKvEntity.getPk();
+        if(pk < 1)
+        {
+            throw AppException.buildException(PageAction.执行处理器("pay",""));
+        }
+        else
+        {
+            userKvEntity.setPk(pk-1);
+            daoService.updateEntity(userKvEntity);
+        }
+
+
+    }
+
+    public void 充值Pk(int pkTimes, String userId) {
+        UserKvEntity userKvEntity = userService.queryUserKvEntity(userId);
+        int pk = userKvEntity.getPk();
+
+        userKvEntity.setPk(pk+pkTimes);
+        daoService.updateEntity(userKvEntity);
+
+
+    }
 }

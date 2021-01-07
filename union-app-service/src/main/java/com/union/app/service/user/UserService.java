@@ -24,6 +24,7 @@ import com.union.app.entity.用户.UserEntity;
 import com.union.app.entity.用户.UserKvEntity;
 import com.union.app.entity.用户.support.UserType;
 import com.union.app.plateform.constant.ConfigItem;
+import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.service.pk.dynamic.DynamicService;
@@ -537,7 +538,7 @@ public class UserService {
             userCardEntity.setUserId(targetId);
             userCardEntity.setText(text);
             userCardEntity.setTime(System.currentTimeMillis());
-            userCardEntity.setCardLock(userCardEntity.isCardLock());
+            userCardEntity.setCardLock(false);
             userCardEntity.setApplyerId(userId);
             appDaoService.insertEntity(userCardEntity);
         }
@@ -621,6 +622,22 @@ public class UserService {
                 appDaoService.deleteEntity(userCardEntity);
             }
         }
+
+    }
+
+    public void 修改锁状态(String userId, String applyId) throws AppException {
+
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(UserCardEntity.class)
+                .compareFilter("id",CompareTag.Equal,Integer.valueOf(applyId));
+        UserCardEntity userCardEntity = appDaoService.querySingleEntity(UserCardEntity.class,filter);
+        if(!StringUtils.equalsIgnoreCase(userId,userCardEntity.getUserId())){ throw AppException.buildException(PageAction.信息反馈框("非法用户","非法用户"));}
+        if(!ObjectUtils.isEmpty(userCardEntity)){
+            userCardEntity.setCardLock(!userCardEntity.isCardLock());
+            appDaoService.updateEntity(userCardEntity);
+            return;
+        }
+        throw AppException.buildException(PageAction.信息反馈框("不存在的留言","不存在的留言"));
+
 
     }
 }

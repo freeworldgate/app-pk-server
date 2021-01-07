@@ -94,7 +94,7 @@ public class 查询卡点图片 {
         List<DataSet> dataSets = new ArrayList<>();
 
         dataSets.add(new DataSet("pkBackUrl",pk.getBackUrl()));
-
+        dataSets.add(new DataSet("emptyImage",appService.查询背景(1)));
         dataSets.add(new DataSet("images",images));
         dataSets.add(new DataSet("page",1));
         dataSets.add(new DataSet("creator",creator));

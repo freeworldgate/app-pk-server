@@ -297,8 +297,8 @@ public class LocationService {
 
     private LocationType 查询默认卡点类型(String type) {
         LocationType locationType = new LocationType();
-        locationType.setRangeLength(RandomUtil.getRandomNumber());
-        locationType.setScale(RandomUtil.getRandomScale());
+        locationType.setRangeLength(100);
+        locationType.setScale(16);
         locationType.setTypeName(type);
         return locationType;
     }
@@ -682,6 +682,13 @@ public class LocationService {
         PkImageEntity pkImageEntity = daoService.querySingleEntity(PkImageEntity.class,cfilter);
         pkImageEntity.setImgStatu(ImgStatu.审核通过);
         daoService.updateEntity(pkImageEntity);
+
+    }
+
+    public void 修改签名(String pkId, String sign) {
+        PkEntity pkEntity = this.querySinglePkEntity(pkId);
+        pkEntity.setSign(sign);
+        daoService.updateEntity(pkEntity);
 
     }
 }

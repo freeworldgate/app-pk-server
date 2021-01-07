@@ -142,47 +142,47 @@ public class FindService {
     }
 
 
-
-    public void 保存捞人信息(CreateUserFind createUserFind) throws AppException {
-        FindUserEntity findUserEntity = this.查询用户捞人Entity(createUserFind.getPkId(),createUserFind.getUserId());
-        if(ObjectUtils.isEmpty(findUserEntity)){
-            findUserEntity = new FindUserEntity();
-            findUserEntity.setPkId(createUserFind.getPkId());
-            PkEntity pkEntity = locationService.querySinglePkEntity(createUserFind.getPkId());
-            findUserEntity.setPkName(pkEntity.getName());
-            findUserEntity.setUserId(createUserFind.getUserId());
-            findUserEntity.setFindLength(createUserFind.getFindLength());
-            findUserEntity.setText(createUserFind.getText());
-            findUserEntity.setImg1(createUserFind.getImg1());
-            findUserEntity.setImg2(createUserFind.getImg2());
-            findUserEntity.setImg3(createUserFind.getImg3());
-            findUserEntity.setApproverId(null);
-            findUserEntity.setStartTime(0);
-            findUserEntity.setEndTime(0);
-            findUserEntity.setFindStatu(FindStatu.新创建);
-            findUserEntity.setCreateTime(System.currentTimeMillis());
-            daoService.insertEntity(findUserEntity);
-
-        }
-        else {
-            if(findUserEntity.getFindStatu() != FindStatu.新创建)
-            {
-                throw AppException.buildException(PageAction.信息反馈框("无法保存","当前状态不支持修改"));
-            }
-            findUserEntity.setFindLength(createUserFind.getFindLength());
-            findUserEntity.setText(createUserFind.getText());
-            findUserEntity.setImg1(createUserFind.getImg1());
-            findUserEntity.setImg2(createUserFind.getImg2());
-            findUserEntity.setImg3(createUserFind.getImg3());
-            findUserEntity.setApproverId(null);
-            findUserEntity.setStartTime(0);
-            findUserEntity.setEndTime(0);
-            findUserEntity.setFindStatu(FindStatu.新创建);
-            findUserEntity.setCreateTime(System.currentTimeMillis());
-            daoService.updateEntity(findUserEntity);
-        }
-
-    }
+//
+//    public void 保存捞人信息(CreateUserFind createUserFind) throws AppException {
+//        FindUserEntity findUserEntity = this.查询用户捞人Entity(createUserFind.getPkId(),createUserFind.getUserId());
+//        if(ObjectUtils.isEmpty(findUserEntity)){
+//            findUserEntity = new FindUserEntity();
+//            findUserEntity.setPkId(createUserFind.getPkId());
+//            PkEntity pkEntity = locationService.querySinglePkEntity(createUserFind.getPkId());
+//            findUserEntity.setPkName(pkEntity.getName());
+//            findUserEntity.setUserId(createUserFind.getUserId());
+//            findUserEntity.setFindLength(createUserFind.getFindLength());
+//            findUserEntity.setText(createUserFind.getText());
+//            findUserEntity.setImg1(createUserFind.getImg1());
+//            findUserEntity.setImg2(createUserFind.getImg2());
+//            findUserEntity.setImg3(createUserFind.getImg3());
+//            findUserEntity.setApproverId(null);
+//            findUserEntity.setStartTime(0);
+//            findUserEntity.setEndTime(0);
+//            findUserEntity.setFindStatu(FindStatu.新创建);
+//            findUserEntity.setCreateTime(System.currentTimeMillis());
+//            daoService.insertEntity(findUserEntity);
+//
+//        }
+//        else {
+//            if(findUserEntity.getFindStatu() != FindStatu.新创建)
+//            {
+//                throw AppException.buildException(PageAction.信息反馈框("无法保存","当前状态不支持修改"));
+//            }
+//            findUserEntity.setFindLength(createUserFind.getFindLength());
+//            findUserEntity.setText(createUserFind.getText());
+//            findUserEntity.setImg1(createUserFind.getImg1());
+//            findUserEntity.setImg2(createUserFind.getImg2());
+//            findUserEntity.setImg3(createUserFind.getImg3());
+//            findUserEntity.setApproverId(null);
+//            findUserEntity.setStartTime(0);
+//            findUserEntity.setEndTime(0);
+//            findUserEntity.setFindStatu(FindStatu.新创建);
+//            findUserEntity.setCreateTime(System.currentTimeMillis());
+//            daoService.updateEntity(findUserEntity);
+//        }
+//
+//    }
 
     public void 开始捞人(CreateUserFind createUserFind) throws AppException {
 //            FindUserEntity findUserEntity = this.查询用户捞人Entity(createUserFind.getPkId(),createUserFind.getUserId());
@@ -240,26 +240,19 @@ public class FindService {
 
     public void 放弃捞人(String pkId, String userId) {
         FindUserEntity findUserEntity = this.查询用户捞人Entity(pkId,userId);
+
+
+
         if(findUserEntity.getFindStatu() == FindStatu.打捞中)
         {
             userService.返还用户打捞时间(userId,findUserEntity.getEndTime());
-            findUserEntity.setFindStatu(FindStatu.新创建);
-            findUserEntity.setEndTime(0);
-            findUserEntity.setStartTime(0);
-            findUserEntity.setApproverId(null);
-            daoService.updateEntity(findUserEntity);
-
 
         }
         if(findUserEntity.getFindStatu() == FindStatu.审核中)
         {
             userService.返还用户打捞时间1(userId,findUserEntity.getFindLength());
-            findUserEntity.setFindStatu(FindStatu.新创建);
-            findUserEntity.setEndTime(0);
-            findUserEntity.setStartTime(0);
-            findUserEntity.setApproverId(null);
-            daoService.updateEntity(findUserEntity);
         }
+        daoService.deleteEntity(findUserEntity);
 
 
     }
@@ -415,9 +408,9 @@ public class FindService {
         FindUserEntity findUserEntity = this.查询用户捞人Entity(pkId,userId);
         if(!ObjectUtils.isEmpty(findUserEntity))
         {
-            boolean isNew = FindStatu.新创建 == findUserEntity.getFindStatu();
+
             boolean isExpired = (FindStatu.打捞中 == findUserEntity.getFindStatu()) && (findUserEntity.getEndTime() > 0 && System.currentTimeMillis() > findUserEntity.getEndTime());
-            if(isNew||isExpired)
+            if(isExpired)
             {
                 daoService.deleteEntity(findUserEntity);
             }

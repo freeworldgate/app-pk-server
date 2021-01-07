@@ -77,6 +77,24 @@ public class 充值 {
 
 
 
+    @RequestMapping(path="/payForPk",method = RequestMethod.GET)
+    @Transactional(rollbackOn = Exception.class)
+    public AppResponse payForPk(@RequestParam("userId") String userId) {
+
+        //校验
+
+
+        payService.充值Pk(1,userId);
+
+
+
+
+        return AppResponse.buildResponse(PageAction.前端数据更新("",""));
+
+    }
+
+
+
 
 
 

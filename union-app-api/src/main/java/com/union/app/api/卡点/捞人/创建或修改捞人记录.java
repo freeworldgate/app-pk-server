@@ -108,9 +108,9 @@ public class 创建或修改捞人记录 {
 
 
 
-        FindUser findUser = findService.查询用户捞人记录(pkId,userId);
+//        FindUser findUser = findService.查询用户捞人记录(pkId,userId);
 
-        return AppResponse.buildResponse(PageAction.前端数据更新("findUser",findUser));
+        return AppResponse.buildResponse(PageAction.执行处理器("success",""));
 
     }
     @RequestMapping(path="/clearUserFind",method = RequestMethod.GET)
@@ -123,6 +123,7 @@ public class 创建或修改捞人记录 {
 
 
         FindUser findUser = findService.查询用户捞人记录(pkId,userId);
+        findUser.setExist(true);
 
         return AppResponse.buildResponse(PageAction.前端数据更新("findUser",findUser));
 

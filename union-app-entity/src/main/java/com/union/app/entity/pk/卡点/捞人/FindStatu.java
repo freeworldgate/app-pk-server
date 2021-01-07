@@ -1,7 +1,7 @@
 package com.union.app.entity.pk.卡点.捞人;
 
 public enum FindStatu {
-    新创建(0,"已保存(可修改)"),
+//    新创建(0,"已保存(可修改)"),
 
     审核中(1,"审核中"),
 

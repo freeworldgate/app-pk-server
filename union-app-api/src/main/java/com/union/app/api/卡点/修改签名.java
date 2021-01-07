@@ -22,7 +22,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path="/pk")
-public class 创建卡点 {
+public class 修改签名 {
 
 
     @Autowired
@@ -61,24 +61,18 @@ public class 创建卡点 {
     @Autowired
     PayService payService;
 
-    @RequestMapping(path="/buildPk",method = RequestMethod.POST)
+    @RequestMapping(path="/changeSign",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse buildPk(@RequestBody CreateLocation createLocation ) throws AppException, IOException, InterruptedException {
+    public AppResponse buildPk(@RequestParam("userId") String userId,@RequestParam("pkId") String pkId,@RequestParam("sign") String sign) throws AppException, IOException, InterruptedException {
 
-        payService.用户创建卡点(createLocation.getUserId());
-
-
-        String locationId = locationService.创建卡点(createLocation);
-        PkDetail pkDetail = locationService.搜索卡点(locationId);
-
-
+        if(!pkService.isPkCreator(pkId,userId))
+        {
+            throw AppException.buildException(PageAction.信息反馈框("非法操作","非法操作!"));
+        }
+        locationService.修改签名(pkId,sign);
 
 
-
-        List<DataSet> dataSets = new ArrayList<>();
-        dataSets.add(new DataSet("pk",pkDetail));
-        dataSets.add(new DataSet("mode",0));
-        return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
+        return AppResponse.buildResponse(PageAction.执行处理器("success",null));
 
     }
 

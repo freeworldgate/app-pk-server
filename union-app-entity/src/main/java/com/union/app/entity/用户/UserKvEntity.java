@@ -23,6 +23,8 @@ public class UserKvEntity {
 
     private long findTimeLength;
 
+    private int pk;
+
     private String userCard;
 
 

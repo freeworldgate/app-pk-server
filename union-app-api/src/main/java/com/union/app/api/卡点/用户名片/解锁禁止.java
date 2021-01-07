@@ -1,9 +1,7 @@
 package com.union.app.api.卡点.用户名片;
 
-import com.union.app.domain.pk.user.UserCardApply;
-import com.union.app.domain.user.User;
+import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
-import com.union.app.plateform.data.resultcode.DataSet;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.service.pk.click.ClickService;
@@ -20,12 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequestMapping(path="/pk")
-public class 上传用户名片 {
+public class 解锁禁止 {
 
 
     @Autowired
@@ -64,31 +60,15 @@ public class 上传用户名片 {
     @Autowired
     FindService findService;
 
-    @RequestMapping(path="/setUserCard",method = RequestMethod.GET)
+    @RequestMapping(path="/changeLock",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse queryUserFind(@RequestParam("userCard") String userCard,@RequestParam("userId") String userId) throws IOException {
+    public AppResponse deleteApply(@RequestParam("applyId") String applyId,@RequestParam("userId") String userId) throws IOException, AppException {
 
-        userService.上传UserCard(userId,userCard);
+        userService.修改锁状态(userId,applyId);
 
         return AppResponse.buildResponse(PageAction.执行处理器("success",""));
 
     }
-    @RequestMapping(path="/userCardApply",method = RequestMethod.GET)
-    @Transactional(rollbackOn = Exception.class)
-    public AppResponse userCardApply(@RequestParam("text") String text,@RequestParam("userId") String userId,@RequestParam("targetId") String targetId) throws IOException {
 
-        userService.申请UserCard(targetId,userId,text);
-
-//        User target = userService.queryUser(targetId);
-//        UserCardApply userApply = userService.查询用户名片留言(target.getUserId(),userId);
-//        String userCard = userService.查询Pk创建者名片(target.getUserId());
-//        List<DataSet> dataSets = new ArrayList<>();
-//        dataSets.add(new DataSet("target",target));
-//        dataSets.add(new DataSet("userApply",userApply));
-//        dataSets.add(new DataSet("userCard",userCard));
-        UserCardApply userApply = userService.查询用户名片留言(targetId,userId);
-        return AppResponse.buildResponse(PageAction.前端数据更新("userApply",userApply));
-
-    }
 
 }

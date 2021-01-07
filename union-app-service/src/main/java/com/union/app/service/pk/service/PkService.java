@@ -2,6 +2,7 @@ package com.union.app.service.pk.service;
 
 import com.union.app.common.OSS存储.CacheStorage;
 import com.union.app.common.OSS存储.OssStorage;
+import com.union.app.common.config.AppConfigService;
 import com.union.app.common.dao.AppDaoService;
 import com.union.app.common.dao.EntityCacheService;
 import com.union.app.dao.spi.filter.CompareTag;
@@ -16,6 +17,7 @@ import com.union.app.domain.user.User;
 import com.union.app.entity.pk.*;
 import com.union.app.entity.用户.UserEntity;
 import com.union.app.entity.用户.support.UserType;
+import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.PageAction;
@@ -563,7 +565,7 @@ public class PkService {
 
         EntityCacheService.lockPkEntity(pkId);
         PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
-        if(!StringUtils.isBlank(pkEntity.getTopPostId()) && !TimeUtils.是否顶置已经过期(pkEntity.getTopPostSetTime()))
+        if(!StringUtils.isBlank(pkEntity.getTopPostId()) && !TimeUtils.是否顶置已经过期(pkEntity.getTopPostSetTime(), AppConfigService.getConfigAsLong(ConfigItem.顶置最少时间)))
         {
             throw AppException.buildException(PageAction.信息反馈框("操作失败!","当前顶置未到期!"));
         }

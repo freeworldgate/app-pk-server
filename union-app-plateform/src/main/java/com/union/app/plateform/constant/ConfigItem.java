@@ -62,7 +62,9 @@ public enum ConfigItem {
     主题可选择标签数量("maxTips", "MAX_TIPS", "主题可选择标签数量", "5"),
     发帖的时间间隔("time_period", "POST_TIME_PERIED", "发帖的时间间隔", "3600"),
     卡点默认打卡范围("defaultPkRange", "DEFAULT_PK_RANGE", "卡点默认打卡范围", "200"),
-    卡点默认缩放等级("defaultScale", "DEFAULT_SCALE", "默认缩放等级", "16");
+    卡点默认缩放等级("defaultScale", "DEFAULT_SCALE", "默认缩放等级", "16"),
+    顶置最少时间("topPostMinLength", "MIN_LENGTH_TOP_POST", "顶置最少时间", "1"),
+    创建卡点范围("maxPkLength", "MAX_PK_LENGTH_CREATE", "创建卡点范围","20" );
 
 
 

@@ -1,8 +1,10 @@
 package com.union.app.api.卡点.搜索创建;
 
+import com.union.app.common.config.AppConfigService;
 import com.union.app.domain.pk.Circle;
 import com.union.app.domain.pk.Marker;
 import com.union.app.domain.pk.PkDetail;
+import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.DataSet;
@@ -73,6 +75,7 @@ public class 搜索卡点 {
         Marker marker = locationService.buildMarker(name,latitude,longitude);
         List<DataSet> dataSets = new ArrayList<>();
         dataSets.add(new DataSet("scale",16));
+        dataSets.add(new DataSet("maxLength", AppConfigService.getConfigAsInteger(ConfigItem.创建卡点范围)));
         if(!ObjectUtils.isEmpty(pkDetail)) {
             dataSets.add(new DataSet("circles", new Circle[]{pkDetail.getCircle()}));
             dataSets.add(new DataSet("scale",pkDetail.getType().getScale()));
