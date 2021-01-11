@@ -321,6 +321,9 @@ public class FindService {
 
     public FindUser 查询ByFindId(int findId) throws IOException {
         FindUserEntity findUserEntity = 查询用户捞人EntityById(findId);
+
+        if(ObjectUtils.isEmpty(findUserEntity)){return null;}
+
         FindUser findUser = new FindUser();
         PkDetail pk = locationService.querySinglePk(findUserEntity.getPkId());
         UserKvEntity userKvEntity = userService.queryUserKvEntity(findUserEntity.getUserId());
@@ -378,7 +381,8 @@ public class FindService {
             findUser.setStartTime(TimeUtils.全局时间(findUserEntity.getStartTime()));
             findUser.setEndTime(TimeUtils.全局时间(findUserEntity.getEndTime()));
             findUser.setStatu(new KeyValuePair(findUserEntity.getFindStatu().getStatu(),findUserEntity.getFindStatu().getStatuStr()));
-//            findUser.setTimeLength(TimeUtils.已打捞时间(findUserEntity.getStartTime()));
+            findUser.setTimeExpire(TimeUtils.已打捞时间(findUserEntity.getStartTime()));
+            //            findUser.setTimeLength(TimeUtils.已打捞时间(findUserEntity.getStartTime()));
             findUsers.add(findUser);
         };
         return findUsers;
@@ -453,6 +457,7 @@ public class FindService {
             {
                 findUser.setStatu(new KeyValuePair(findUserEntity.getFindStatu().getStatu(),findUserEntity.getFindStatu().getStatuStr()));
             }
+            findUser.setTimeExpire(TimeUtils.已打捞时间(findUserEntity.getStartTime()));
             findUsers.add(findUser);
         }
         return findUsers;
@@ -467,4 +472,7 @@ public class FindService {
         return pkEntities;
 
     }
+
+
+
 }
