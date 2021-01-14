@@ -79,6 +79,8 @@ public class 查询Single捞人记录 {
         List<DataSet> dataSets = new ArrayList<>();
 
         dataSets.add(new DataSet("findUser",findUser));
+        dataSets.add(new DataSet("emptyImage",appService.查询背景(1)));
+        dataSets.add(new DataSet("userFindImage",appService.查询背景(3)));
 
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
 

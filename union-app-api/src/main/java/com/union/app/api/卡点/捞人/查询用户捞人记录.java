@@ -1,5 +1,6 @@
 package com.union.app.api.卡点.捞人;
 
+import com.union.app.domain.pk.PkDetail;
 import com.union.app.domain.pk.捞人.FindUser;
 import com.union.app.entity.pk.PkEntity;
 import com.union.app.entity.用户.UserKvEntity;
@@ -71,12 +72,16 @@ public class 查询用户捞人记录 {
     public AppResponse queryUserFind(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId) throws IOException {
 
         FindUser findUser = findService.查询用户捞人记录(pkId,userId);
-
-
+        PkDetail pk = locationService.querySinglePk(pkId);
+        UserKvEntity userKvEntity = userService.queryUserKvEntity(userId);
+        String leftTime = TimeUtils.剩余可打捞时间(userKvEntity.getFindTimeLength());
 
         List<DataSet> dataSets = new ArrayList<>();
 
         dataSets.add(new DataSet("findUser",findUser));
+        dataSets.add(new DataSet("pk",pk));
+        dataSets.add(new DataSet("leftTime",leftTime));
+
         dataSets.add(new DataSet("emptyImage",appService.查询背景(1)));
         dataSets.add(new DataSet("createFindUserImage",appService.查询背景(3)));
 

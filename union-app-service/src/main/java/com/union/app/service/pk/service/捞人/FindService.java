@@ -98,22 +98,20 @@ public class FindService {
 
 
     public FindUser 查询用户捞人记录(String pkId, String userId) throws IOException {
-        FindUserEntity findUserEntity = this.查询用户捞人Entity(pkId,userId);
+            FindUserEntity findUserEntity = this.查询用户捞人Entity(pkId,userId);
 
-        FindUser findUser = new FindUser();
-        findUser.setExist(false);
-        PkDetail pk = locationService.querySinglePk(pkId);
-        UserKvEntity userKvEntity = userService.queryUserKvEntity(userId);
-        User user = userService.queryUser(userId);
-        findUser.setUser(user);
+            if(ObjectUtils.isEmpty(findUserEntity)){return null;}
+            FindUser findUser = new FindUser();
+//            PkDetail pk = locationService.querySinglePk(pkId);
+            UserKvEntity userKvEntity = userService.queryUserKvEntity(userId);
+            User user = userService.queryUser(userId);
+            findUser.setUser(user);
+            findUser.setLeftTime(TimeUtils.剩余可打捞时间(userKvEntity.getFindTimeLength()));
+            findUser.setPkId(pkId);
 
-        findUser.setLeftTime(TimeUtils.剩余可打捞时间(userKvEntity.getFindTimeLength()));
-        findUser.setPkId(pkId);
-        findUser.setPk(pk);
-        findUser.setPkName(pk.getName());
-        if(!ObjectUtils.isEmpty(findUserEntity))
-        {
-            findUser.setExist(true);
+            findUser.setPkName(findUserEntity.getPkName());
+
+
             findUser.setFindLength(findUserEntity.getFindLength());
             findUser.setImg1(findUserEntity.getImg1());
             findUser.setImg2(findUserEntity.getImg2());
@@ -132,9 +130,8 @@ public class FindService {
             }
 
             findUser.setTimeExpire(TimeUtils.已打捞时间(findUserEntity.getStartTime()));
-        }
 
-        return findUser;
+            return findUser;
 
 
 
@@ -350,7 +347,7 @@ public class FindService {
         FindUserEntity findUserEntity = daoService.querySingleEntity(FindUserEntity.class,filter);
         return findUserEntity;
     }
-    private FindUserEntity 查询用户捞人Entity(String pkId, String userId) {
+    public FindUserEntity 查询用户捞人Entity(String pkId, String userId) {
         EntityFilterChain filter = EntityFilterChain.newFilterChain(FindUserEntity.class)
                 .compareFilter("pkId",CompareTag.Equal,pkId)
                 .andFilter()

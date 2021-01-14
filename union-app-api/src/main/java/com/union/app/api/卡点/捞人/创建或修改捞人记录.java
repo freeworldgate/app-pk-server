@@ -3,6 +3,7 @@ package com.union.app.api.卡点.捞人;
 import com.union.app.domain.pk.daka.CreateLocation;
 import com.union.app.domain.pk.捞人.CreateUserFind;
 import com.union.app.domain.pk.捞人.FindUser;
+import com.union.app.entity.用户.UserKvEntity;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.DataSet;
@@ -14,6 +15,7 @@ import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.service.*;
 import com.union.app.service.pk.service.捞人.FindService;
 import com.union.app.service.user.UserService;
+import com.union.app.util.time.TimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -92,8 +94,18 @@ public class 创建或修改捞人记录 {
         findService.开始捞人(createUserFind);
 
         FindUser findUser = findService.查询用户捞人记录(createUserFind.getPkId(),createUserFind.getUserId());
+        UserKvEntity userKvEntity = userService.queryUserKvEntity(createUserFind.getUserId());
+        String leftTime = TimeUtils.剩余可打捞时间(userKvEntity.getFindTimeLength());
 
-        return AppResponse.buildResponse(PageAction.前端数据更新("findUser",findUser));
+
+        List<DataSet> dataSets = new ArrayList<>();
+
+        dataSets.add(new DataSet("findUser",findUser));
+        dataSets.add(new DataSet("leftTime",leftTime));
+
+        return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
+
+
 
     }
 
@@ -106,11 +118,14 @@ public class 创建或修改捞人记录 {
         //校验
         findService.放弃捞人(pkId,userId);
 
+        UserKvEntity userKvEntity = userService.queryUserKvEntity(userId);
+        String leftTime = TimeUtils.剩余可打捞时间(userKvEntity.getFindTimeLength());
+
 
 
 //        FindUser findUser = findService.查询用户捞人记录(pkId,userId);
 
-        return AppResponse.buildResponse(PageAction.执行处理器("success",""));
+        return AppResponse.buildResponse(PageAction.执行处理器("success",leftTime));
 
     }
     @RequestMapping(path="/clearUserFind",method = RequestMethod.GET)
@@ -123,7 +138,7 @@ public class 创建或修改捞人记录 {
 
 
         FindUser findUser = findService.查询用户捞人记录(pkId,userId);
-        findUser.setExist(true);
+//        findUser.setExist(true);
 
         return AppResponse.buildResponse(PageAction.前端数据更新("findUser",findUser));
 

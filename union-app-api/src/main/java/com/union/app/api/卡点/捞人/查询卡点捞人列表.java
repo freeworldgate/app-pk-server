@@ -4,6 +4,8 @@ import com.union.app.domain.pk.PkImage;
 import com.union.app.domain.pk.捞人.FindUser;
 import com.union.app.domain.user.User;
 import com.union.app.entity.pk.PkEntity;
+import com.union.app.entity.pk.卡点.捞人.FindStatu;
+import com.union.app.entity.pk.卡点.捞人.FindUserEntity;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.DataSet;
@@ -69,8 +71,35 @@ public class 查询卡点捞人列表 {
 
     @RequestMapping(path="/queryPkFinds",method = RequestMethod.GET)
     public AppResponse queryPkImages(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId) throws AppException, IOException, InterruptedException {
-
         List<FindUser> findUsers = findService.查询卡点捞人列表(pkId);
+
+        FindUserEntity findUserEntity = findService.查询用户捞人Entity(pkId,userId);
+        long current = System.currentTimeMillis();
+        FindUser userFindUser = null;
+        if(!ObjectUtils.isEmpty(findUserEntity) &&(findUserEntity.getFindStatu() == FindStatu.打捞中)&&(current>findUserEntity.getStartTime() && current < findUserEntity.getEndTime()))
+        {
+            for(FindUser findUser:findUsers)
+            {
+                if(StringUtils.equals(findUser.getUser().getUserId(),userId)){
+                    findUsers.remove(findUser);
+                    userFindUser = findUser;
+                    break;
+                }
+
+            }
+
+            if(ObjectUtils.isEmpty(userFindUser)){
+                userFindUser = findService.查询用户捞人记录(pkId,userId);
+            }
+            if(!ObjectUtils.isEmpty(userFindUser)){
+                findUsers.add(0,userFindUser);
+            }
+
+
+
+        }
+
+
 
         List<DataSet> dataSets = new ArrayList<>();
 
