@@ -2,21 +2,14 @@ package com.union.app.service.pk.service.捞人;
 
 import com.union.app.common.OSS存储.CacheStorage;
 import com.union.app.common.OSS存储.OssStorage;
-import com.union.app.common.config.AppConfigService;
 import com.union.app.common.dao.AppDaoService;
-import com.union.app.common.dao.EntityCacheService;
 import com.union.app.common.dao.PkCacheService;
 import com.union.app.common.redis.RedisMapService;
 import com.union.app.common.redis.RedisSortSetService;
 import com.union.app.dao.spi.filter.CompareTag;
 import com.union.app.dao.spi.filter.EntityFilterChain;
 import com.union.app.dao.spi.filter.OrderTag;
-import com.union.app.domain.pk.PkButton;
-import com.union.app.domain.pk.PkButtonType;
 import com.union.app.domain.pk.PkDetail;
-import com.union.app.domain.pk.PkDynamic.FactualInfo;
-import com.union.app.domain.pk.PkDynamic.FeeTask;
-import com.union.app.domain.pk.Post;
 import com.union.app.domain.pk.apply.KeyValuePair;
 import com.union.app.domain.pk.捞人.CreateUserFind;
 import com.union.app.domain.pk.捞人.FindUser;
@@ -24,30 +17,20 @@ import com.union.app.domain.user.User;
 import com.union.app.entity.pk.*;
 import com.union.app.entity.pk.卡点.捞人.FindStatu;
 import com.union.app.entity.pk.卡点.捞人.FindUserEntity;
-import com.union.app.entity.用户.UserEntity;
-import com.union.app.entity.用户.UserKvEntity;
-import com.union.app.entity.用户.support.UserType;
-import com.union.app.plateform.constant.ConfigItem;
+import com.union.app.entity.用户.UserDynamicEntity;
 import com.union.app.plateform.data.resultcode.AppException;
-import com.union.app.plateform.data.resultcode.DataSet;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
-import com.union.app.service.pk.dynamic.CacheKeyName;
 import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.service.*;
 import com.union.app.service.user.UserService;
-import com.union.app.util.idGenerator.IdGenerator;
 import com.union.app.util.time.TimeUtils;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class FindService {
@@ -103,10 +86,10 @@ public class FindService {
             if(ObjectUtils.isEmpty(findUserEntity)){return null;}
             FindUser findUser = new FindUser();
 //            PkDetail pk = locationService.querySinglePk(pkId);
-            UserKvEntity userKvEntity = userService.queryUserKvEntity(userId);
+            UserDynamicEntity userDynamicEntity = userService.queryUserKvEntity(userId);
             User user = userService.queryUser(userId);
             findUser.setUser(user);
-            findUser.setLeftTime(TimeUtils.剩余可打捞时间(userKvEntity.getFindTimeLength()));
+            findUser.setLeftTime(TimeUtils.剩余可打捞时间(userDynamicEntity.getFindTimeLength()));
             findUser.setPkId(pkId);
 
             findUser.setPkName(findUserEntity.getPkName());
@@ -208,17 +191,17 @@ public class FindService {
     }
 
     public void 校验时间(int findLength, String userId) throws AppException {
-        UserKvEntity userKvEntity = userService.queryUserKvEntity(userId);
+        UserDynamicEntity userDynamicEntity = userService.queryUserKvEntity(userId);
 
-        if(userKvEntity.getFindTimeLength() >= findLength * 24 * 3600*1000)
+        if(userDynamicEntity.getFindTimeLength() >= findLength * 24 * 3600*1000)
         {
-            userKvEntity.setFindTimeLength(userKvEntity.getFindTimeLength() - findLength * 24 * 3600*1000);
-            daoService.updateEntity(userKvEntity);
+            userDynamicEntity.setFindTimeLength(userDynamicEntity.getFindTimeLength() - findLength * 24 * 3600*1000);
+            daoService.updateEntity(userDynamicEntity);
             return;
         }
         else
         {
-            throw AppException.buildException(PageAction.执行处理器("timePay",TimeUtils.剩余可打捞时间(userKvEntity.getFindTimeLength())));
+            throw AppException.buildException(PageAction.执行处理器("timePay",TimeUtils.剩余可打捞时间(userDynamicEntity.getFindTimeLength())));
         }
 
 
@@ -262,12 +245,12 @@ public class FindService {
 
             FindUser findUser = new FindUser();
             PkDetail pk = locationService.querySinglePk(findUserEntity.getPkId());
-            UserKvEntity userKvEntity = userService.queryUserKvEntity(findUserEntity.getUserId());
+            UserDynamicEntity userDynamicEntity = userService.queryUserKvEntity(findUserEntity.getUserId());
             User user = userService.queryUser(findUserEntity.getUserId());
             findUser.setUser(user);
             findUser.setFindId(findUserEntity.getFindId());
             findUser.setTimeExpire(TimeUtils.已打捞时间(findUserEntity.getStartTime()));
-            findUser.setLeftTime(TimeUtils.剩余可打捞时间(userKvEntity.getFindTimeLength()));
+            findUser.setLeftTime(TimeUtils.剩余可打捞时间(userDynamicEntity.getFindTimeLength()));
             findUser.setPkId(findUserEntity.getPkId());
             findUser.setPk(pk);
             findUser.setPkName(pk.getName());
@@ -323,12 +306,12 @@ public class FindService {
 
         FindUser findUser = new FindUser();
         PkDetail pk = locationService.querySinglePk(findUserEntity.getPkId());
-        UserKvEntity userKvEntity = userService.queryUserKvEntity(findUserEntity.getUserId());
+        UserDynamicEntity userDynamicEntity = userService.queryUserKvEntity(findUserEntity.getUserId());
         User user = userService.queryUser(findUserEntity.getUserId());
         findUser.setUser(user);
         findUser.setFindId(findUserEntity.getFindId());
         findUser.setTimeExpire(TimeUtils.已打捞时间(findUserEntity.getStartTime()));
-        findUser.setLeftTime(TimeUtils.剩余可打捞时间(userKvEntity.getFindTimeLength()));
+        findUser.setLeftTime(TimeUtils.剩余可打捞时间(userDynamicEntity.getFindTimeLength()));
         findUser.setPkId(findUserEntity.getPkId());
         findUser.setPk(pk);
         findUser.setPkName(pk.getName());
@@ -362,12 +345,12 @@ public class FindService {
         for(FindUserEntity findUserEntity:findUserEntities){
             FindUser findUser = new FindUser();
 
-            UserKvEntity userKvEntity = userService.queryUserKvEntity(findUserEntity.getUserId());
+            UserDynamicEntity userDynamicEntity = userService.queryUserKvEntity(findUserEntity.getUserId());
             User user = userService.queryUser(findUserEntity.getUserId());
             findUser.setUser(user);
             findUser.setFindId(findUserEntity.getFindId());
             findUser.setTimeExpire(TimeUtils.已打捞时间(findUserEntity.getStartTime()));
-            findUser.setLeftTime(TimeUtils.剩余可打捞时间(userKvEntity.getFindTimeLength()));
+            findUser.setLeftTime(TimeUtils.剩余可打捞时间(userDynamicEntity.getFindTimeLength()));
             findUser.setPkId(findUserEntity.getPkId());
             findUser.setPkName(findUserEntity.getPkName());
             findUser.setFindLength(findUserEntity.getFindLength());
@@ -398,6 +381,7 @@ public class FindService {
                 .compareFilter("endTime",CompareTag.Bigger,current)
                 .andFilter()
                 .compareFilter("startTime",CompareTag.Small,current)
+                .pageLimitFilter(1,5)
                 .orderByRandomFilter();
 
         List<FindUserEntity> findUserEntities = daoService.queryEntities(FindUserEntity.class,filter);

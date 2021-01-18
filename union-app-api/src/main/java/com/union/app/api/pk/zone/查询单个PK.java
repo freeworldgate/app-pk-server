@@ -14,6 +14,7 @@ package com.union.app.api.pk.zone;
         import com.union.app.entity.pk.PkEntity;
         import com.union.app.entity.pk.PostEntity;
         import com.union.app.entity.pk.PostStatu;
+        import com.union.app.entity.pk.用户Key.PkUserDynamicEntity;
         import com.union.app.entity.用户.UserEntity;
         import com.union.app.entity.用户.support.UserType;
         import com.union.app.plateform.constant.ConfigItem;
@@ -26,6 +27,7 @@ package com.union.app.api.pk.zone;
         import com.union.app.service.pk.complain.ComplainService;
         import com.union.app.service.pk.dynamic.DynamicService;
         import com.union.app.service.pk.service.*;
+        import com.union.app.service.pk.service.pkuser.PkUserDynamicService;
         import com.union.app.service.user.UserService;
         import com.union.app.util.time.TimeUtils;
         import org.springframework.beans.factory.annotation.Autowired;
@@ -82,6 +84,10 @@ public class 查询单个PK {
     @Autowired
     LocationService locationService;
 
+    @Autowired
+    PkUserDynamicService pkUserDynamicService;
+
+
     @RequestMapping(path="/queryPk",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
     public AppResponse 查询单个PK(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId) throws AppException, IOException, InterruptedException {
@@ -107,13 +113,14 @@ public class 查询单个PK {
         dataSets.add(new DataSet("postTimes",0));
         if(userService.isUserExist(userId))
         {
-            PostEntity postEntity = locationService.查询最新用户Post发布时间(pkId,userId);
-            if(ObjectUtils.isEmpty(postEntity)){
+            PkUserDynamicEntity pkUserDynamicEntity = pkUserDynamicService.查询卡点用户动态表(pkId,userId);
+
+            if(ObjectUtils.isEmpty(pkUserDynamicEntity)){
                 dataSets.add(new DataSet("leftTime",0));
             }
             else
             {
-                long postLastUpdateTime = postEntity.getTime();
+                long postLastUpdateTime = pkUserDynamicEntity.getLastPublishPostTime();
                 long leftTime = System.currentTimeMillis() - postLastUpdateTime;
                 int timePerid = AppConfigService.getConfigAsInteger(ConfigItem.发帖的时间间隔);
                 if(leftTime > timePerid * 1000)
@@ -127,7 +134,8 @@ public class 查询单个PK {
 
 
             }
-            dataSets.add(new DataSet("postTimes",locationService.查询用户打卡次数(pkId,userId)));
+            PkUserDynamicEntity entity = pkUserDynamicService.查询卡点用户动态表(pkId,userId);
+            dataSets.add(new DataSet("postTimes",ObjectUtils.isEmpty(entity)?0:entity.getPostTimes()));
             //查询用户打卡次数:
         }
 

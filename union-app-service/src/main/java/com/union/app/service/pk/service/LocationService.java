@@ -359,92 +359,7 @@ public class LocationService {
 
     }
 
-    public int 查询用户打卡次数(String pkId, String userId) {
 
-        EntityFilterChain cfilter = EntityFilterChain.newFilterChain(PkUserEntity.class)
-                .compareFilter("pkId",CompareTag.Equal,pkId)
-                .andFilter()
-                .compareFilter("userId",CompareTag.Equal,userId);
-        PkUserEntity pkUserEntity = daoService.querySingleEntity(PkUserEntity.class,cfilter);
-        if(ObjectUtils.isEmpty(pkUserEntity)){
-            return 0;
-        }
-        else
-        {
-            return  pkUserEntity.getPostTimes();
-        }
-
-    }
-
-    public void 用户发布打卡一次(String pkId, String userId) {
-        EntityFilterChain cfilter = EntityFilterChain.newFilterChain(PkUserEntity.class)
-                .compareFilter("pkId",CompareTag.Equal,pkId)
-                .andFilter()
-                .compareFilter("userId",CompareTag.Equal,userId);
-        PkUserEntity pkUserEntity = daoService.querySingleEntity(PkUserEntity.class,cfilter);
-        if(!ObjectUtils.isEmpty(pkUserEntity))
-        {
-            pkUserEntity.setPostTimes(pkUserEntity.getPostTimes()+1);
-            daoService.updateEntity(pkUserEntity);
-        }
-        else
-        {
-            pkUserEntity = new PkUserEntity();
-            pkUserEntity.setPostTimes(1);
-            pkUserEntity.setPkId(pkId);
-            pkUserEntity.setUserId(userId);
-            daoService.insertEntity(pkUserEntity);
-        }
-
-
-    }
-
-    public void 打卡次数减一(String pkId, String userId) {
-        EntityFilterChain cfilter = EntityFilterChain.newFilterChain(PkUserEntity.class)
-                .compareFilter("pkId",CompareTag.Equal,pkId)
-                .andFilter()
-                .compareFilter("userId",CompareTag.Equal,userId);
-        PkUserEntity pkUserEntity = daoService.querySingleEntity(PkUserEntity.class,cfilter);
-        if(!ObjectUtils.isEmpty(pkUserEntity))
-        {
-            pkUserEntity.setPostTimes(pkUserEntity.getPostTimes()-1<0?0:pkUserEntity.getPostTimes()-1);
-            daoService.updateEntity(pkUserEntity);
-        }
-        else
-        {
-            pkUserEntity = new PkUserEntity();
-            pkUserEntity.setPostTimes(0);
-            pkUserEntity.setPkId(pkId);
-            pkUserEntity.setUserId(userId);
-            daoService.insertEntity(pkUserEntity);
-        }
-
-
-    }
-
-
-    public void 打卡次数加一(String pkId, String userId) {
-        EntityFilterChain cfilter = EntityFilterChain.newFilterChain(PkUserEntity.class)
-                .compareFilter("pkId",CompareTag.Equal,pkId)
-                .andFilter()
-                .compareFilter("userId",CompareTag.Equal,userId);
-        PkUserEntity pkUserEntity = daoService.querySingleEntity(PkUserEntity.class,cfilter);
-        if(!ObjectUtils.isEmpty(pkUserEntity))
-        {
-            pkUserEntity.setPostTimes(pkUserEntity.getPostTimes()+1);
-            daoService.updateEntity(pkUserEntity);
-        }
-        else
-        {
-            pkUserEntity = new PkUserEntity();
-            pkUserEntity.setPostTimes(0);
-            pkUserEntity.setPkId(pkId);
-            pkUserEntity.setUserId(userId);
-            daoService.insertEntity(pkUserEntity);
-        }
-
-
-    }
 
 
     public PkImage 查询用户卡点图片(String pkId, String userId) {
@@ -691,4 +606,5 @@ public class LocationService {
         daoService.updateEntity(pkEntity);
 
     }
+
 }

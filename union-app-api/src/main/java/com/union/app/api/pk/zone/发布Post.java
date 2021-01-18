@@ -1,15 +1,9 @@
 package com.union.app.api.pk.zone;
 
 import com.union.app.common.dao.AppDaoService;
-import com.union.app.domain.pk.PayPolicy;
 import com.union.app.domain.pk.Post;
-import com.union.app.entity.pk.PostEntity;
-import com.union.app.entity.pk.PostStatu;
-import com.union.app.entity.用户.UserEntity;
-import com.union.app.entity.用户.UserKvEntity;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
-import com.union.app.plateform.data.resultcode.Level;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.service.pk.click.ClickService;
@@ -18,7 +12,6 @@ import com.union.app.service.pk.service.PkService;
 import com.union.app.service.pk.service.PostService;
 import com.union.app.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -64,7 +56,7 @@ public class 发布Post {
 
         //添加时间限制
 
-        String postId = postService.创建帖子(pkId,userId,title,images);
+        String postId = postService.打卡(pkId,userId,title,images);
 
 
         Post post = postService.查询帖子(pkId,postId,userId);

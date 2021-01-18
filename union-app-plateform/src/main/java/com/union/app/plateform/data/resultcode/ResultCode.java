@@ -1,6 +1,6 @@
 package com.union.app.plateform.data.resultcode;
 
-import com.union.app.entity.外部错误码映射表.ResultCodeEntity;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

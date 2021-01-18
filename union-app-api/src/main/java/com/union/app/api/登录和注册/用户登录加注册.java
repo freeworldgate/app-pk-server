@@ -1,6 +1,5 @@
 package com.union.app.api.登录和注册;
 
-import com.union.app.common.config.AppConfigService;
 import com.union.app.common.微信.WeChatUtil;
 import com.union.app.common.dao.AppDaoService;
 import com.union.app.dao.spi.filter.CompareTag;
@@ -8,9 +7,8 @@ import com.union.app.dao.spi.filter.EntityFilterChain;
 import com.union.app.domain.wechat.UserInfo;
 import com.union.app.domain.wechat.WeChatUser;
 import com.union.app.entity.用户.UserEntity;
-import com.union.app.entity.用户.UserKvEntity;
+import com.union.app.entity.用户.UserDynamicEntity;
 import com.union.app.entity.用户.support.UserType;
-import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.response.ApiResponse;
 import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.service.AppService;
@@ -77,28 +75,9 @@ public class 用户登录加注册 {
             else
             {
                 userEntity.setUserType(UserType.普通用户);
-//                userEntity.setPostTimes(AppConfigService.getConfigAsInteger(ConfigItem.非遗传用户默认榜单数量));
             }
             convert(userInfo,userEntity);
-//            userService.新增注册用户(userEntity,appName,pkId,userEntity.getUserId(),fromUser);
 
-
-
-//            appService.添加邀请(pkId,userEntity.getUserId());
-
-
-
-
-
-
-            UserKvEntity userKvEntity = new UserKvEntity();
-            userKvEntity.setPkTimes(0);
-            userKvEntity.setPostTimes(0);
-            userKvEntity.setPublishPkTimes(0);
-            userKvEntity.setActivePks(0);
-            userKvEntity.setPostTimes(0);
-            userKvEntity.setFeeTimes(0);
-            appDaoService.insertEntity(userKvEntity);
             appDaoService.insertEntity(userEntity);
 
         }

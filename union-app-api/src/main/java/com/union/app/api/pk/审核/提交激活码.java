@@ -104,7 +104,7 @@ public class 提交激活码 {
 //            pkActiveEntity.setStatu(ActiveStatu.处理过);
             daoService.updateEntity(pkEntity);
 //            daoService.updateEntity(pkActiveEntity);
-            userService.确认开通PK次数加1(pkEntity.getUserId());
+//            userService.确认开通PK次数加1(pkEntity.getUserId());
             return AppResponse.buildResponse(PageAction.页面跳转("/pages/pk/pk/pk?pkId=" + pkId,true));
 
 //        }

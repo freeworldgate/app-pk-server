@@ -2,9 +2,7 @@ package com.union.app.api.卡点.捞人;
 
 import com.union.app.domain.pk.PkDetail;
 import com.union.app.domain.pk.捞人.FindUser;
-import com.union.app.entity.pk.PkEntity;
-import com.union.app.entity.用户.UserKvEntity;
-import com.union.app.plateform.data.resultcode.AppException;
+import com.union.app.entity.用户.UserDynamicEntity;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.DataSet;
 import com.union.app.plateform.data.resultcode.PageAction;
@@ -16,7 +14,6 @@ import com.union.app.service.pk.service.*;
 import com.union.app.service.pk.service.捞人.FindService;
 import com.union.app.service.user.UserService;
 import com.union.app.util.time.TimeUtils;
-import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -73,8 +70,8 @@ public class 查询用户捞人记录 {
 
         FindUser findUser = findService.查询用户捞人记录(pkId,userId);
         PkDetail pk = locationService.querySinglePk(pkId);
-        UserKvEntity userKvEntity = userService.queryUserKvEntity(userId);
-        String leftTime = TimeUtils.剩余可打捞时间(userKvEntity.getFindTimeLength());
+        UserDynamicEntity userDynamicEntity = userService.queryUserKvEntity(userId);
+        String leftTime = TimeUtils.剩余可打捞时间(userDynamicEntity.getFindTimeLength());
 
         List<DataSet> dataSets = new ArrayList<>();
 

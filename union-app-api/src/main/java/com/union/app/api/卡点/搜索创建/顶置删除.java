@@ -12,6 +12,8 @@ import com.union.app.service.pk.service.AppService;
 import com.union.app.service.pk.service.LocationService;
 import com.union.app.service.pk.service.PkService;
 import com.union.app.service.pk.service.PostService;
+import com.union.app.service.pk.service.pkuser.PkUserDynamicService;
+import com.union.app.service.pk.service.pkuser.UserDynamicService;
 import com.union.app.service.user.UserService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +54,12 @@ public class 顶置删除 {
     @Autowired
     LocationService locationService;
 
+    @Autowired
+    PkUserDynamicService pkUserDynamicService;
+
+    @Autowired
+    UserDynamicService userDynamicService;
+
     @RequestMapping(path="/topPost",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
     public AppResponse 顶置(@RequestParam("userId") String userId,@RequestParam("pkId") String pkId,@RequestParam("postId") String postId) throws AppException, IOException {
@@ -82,6 +90,9 @@ public class 顶置删除 {
         if(StringUtils.equals(userId,postEntity.getUserId()))
         {
             postService.删除打卡信息(postId);
+            pkUserDynamicService.卡点用户打卡次数减一(pkId,userId);
+            userDynamicService.用户总打榜次数减一(userId);
+
 
 
             return AppResponse.buildResponse(PageAction.执行处理器("success",""));
@@ -103,7 +114,7 @@ public class 顶置删除 {
         if(pkService.isPkCreator(pkId,userId) && StringUtils.equalsIgnoreCase(postEntity.getPkId(),pkId))
         {
             postService.隐藏打卡信息(postId);
-            locationService.打卡次数减一(pkId,userId);
+//            locationService.打卡次数减一(pkId,userId);
 
             return AppResponse.buildResponse(PageAction.执行处理器("success",""));
         }
@@ -124,7 +135,7 @@ public class 顶置删除 {
         if(pkService.isPkCreator(postEntity.getPkId(),userId))
         {
             postService.移除隐藏打卡信息(postId);
-            locationService.打卡次数加一(postEntity.getPkId(),userId);
+//            locationService.打卡次数加一(postEntity.getPkId(),userId);
 
             return AppResponse.buildResponse(PageAction.执行处理器("success",""));
         }

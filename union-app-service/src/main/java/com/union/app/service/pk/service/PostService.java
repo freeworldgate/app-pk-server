@@ -2,7 +2,6 @@ package com.union.app.service.pk.service;
 
 import com.union.app.common.OSS存储.CacheStorage;
 import com.union.app.common.OSS存储.OssStorage;
-import com.union.app.common.config.AppConfigService;
 import com.union.app.common.dao.AppDaoService;
 import com.union.app.common.dao.EntityCacheService;
 import com.union.app.common.dao.PkCacheService;
@@ -10,23 +9,18 @@ import com.union.app.dao.spi.filter.CompareTag;
 import com.union.app.dao.spi.filter.EntityFilterChain;
 import com.union.app.dao.spi.filter.OrderTag;
 import com.union.app.domain.pk.*;
-import com.union.app.common.id.KeyGetter;
 import com.union.app.domain.pk.apply.KeyNameValue;
-import com.union.app.domain.pk.审核.ApproveComment;
 import com.union.app.domain.user.User;
-import com.union.app.domain.工具.RandomUtil;
 import com.union.app.entity.pk.*;
-import com.union.app.entity.pk.complain.ComplainEntity;
-import com.union.app.entity.pk.审核.ApproveCommentEntity;
-import com.union.app.entity.用户.UserKvEntity;
-import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.Level;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.service.pk.complain.ComplainService;
-import com.union.app.service.pk.dynamic.CacheService;
 import com.union.app.service.pk.dynamic.DynamicService;
+import com.union.app.service.pk.service.pkuser.PkDynamicService;
+import com.union.app.service.pk.service.pkuser.PkUserDynamicService;
+import com.union.app.service.pk.service.pkuser.UserDynamicService;
 import com.union.app.service.user.UserService;
 import com.union.app.util.idGenerator.IdGenerator;
 import com.union.app.util.time.TimeUtils;
@@ -77,6 +71,16 @@ public class PostService {
 
     @Autowired
     LocationService locationService;
+
+    @Autowired
+    PkUserDynamicService pkUserDynamicService;
+
+    @Autowired
+    UserDynamicService userDynamicService;
+
+    @Autowired
+    PkDynamicService pkDynamicService;
+
 
 
     @Autowired
@@ -138,7 +142,7 @@ public class PostService {
         return postId;
     }
 
-    public String 创建帖子(String pkId,String userId,String title,List<String> images) throws IOException, AppException
+    public String 打卡(String pkId,String userId,String title,List<String> images) throws IOException, AppException
     {
 
         String postId = IdGenerator.getPostId();
@@ -156,8 +160,13 @@ public class PostService {
             daoService.insertEntity(image);
         });
         daoService.insertEntity(postEntity);
-        userService.用户发布一个Post(userId);
-        locationService.用户发布打卡一次(pkId,userId);
+        pkUserDynamicService.记录用户卡点打卡时间(pkId,userId);
+        pkUserDynamicService.卡点用户打卡次数加一(pkId,userId);
+        userDynamicService.用户总打榜次数加一(userId);
+
+        pkDynamicService.卡点打卡人数更新(pkId,userId);
+
+
         return postId;
     }
 

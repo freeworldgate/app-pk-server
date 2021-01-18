@@ -14,18 +14,13 @@ import com.union.app.domain.pk.user.UserCardApply;
 import com.union.app.domain.pk.客服消息.WxImage;
 import com.union.app.domain.pk.客服消息.WxSendMessage;
 import com.union.app.domain.pk.客服消息.WxText;
-import com.union.app.domain.工具.RandomUtil;
 import com.union.app.domain.user.User;
-import com.union.app.entity.pk.PkEntity;
-import com.union.app.entity.pk.PostEntity;
-import com.union.app.entity.pk.PostStatu;
 import com.union.app.entity.pk.卡点.UserCardEntity;
 import com.union.app.entity.用户.UserEntity;
-import com.union.app.entity.用户.UserKvEntity;
+import com.union.app.entity.用户.UserDynamicEntity;
 import com.union.app.entity.用户.support.UserType;
 import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.AppException;
-import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.util.time.TimeUtils;
@@ -36,7 +31,6 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.client.RestTemplate;
 
-import javax.transaction.Transactional;
 import java.util.*;
 
 @Service
@@ -84,10 +78,10 @@ public class UserService {
 
     }
 
-    public UserKvEntity queryUserKvEntity(String userId){
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(UserKvEntity.class)
+    public UserDynamicEntity queryUserKvEntity(String userId){
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(UserDynamicEntity.class)
                 .compareFilter("userId",CompareTag.Equal,userId);
-        UserKvEntity userkvEntity = appDaoService.querySingleEntity(UserKvEntity.class,filter);
+        UserDynamicEntity userkvEntity = appDaoService.querySingleEntity(UserDynamicEntity.class,filter);
 
         return userkvEntity;
     }
@@ -295,87 +289,19 @@ public class UserService {
 
     }
 
-    public void 用户已打榜(String userId) {
-        synchronized (userId) {
-            UserKvEntity result = queryUserKvEntity(userId);
-            result.setPostTimes(result.getPostTimes() + 1);
-            appDaoService.updateEntity(result);
-        }
-    }
 
 
-    public int queryUserPkTimes(String userId) {
-        UserKvEntity result = queryUserKvEntity(userId);
-
-        return result.getPkTimes();
-    }
 
     public void 创建榜次数加1(String userId) {
         synchronized (userId) {
-            UserKvEntity result = queryUserKvEntity(userId);
+            UserDynamicEntity result = queryUserKvEntity(userId);
             result.setPkTimes(result.getPkTimes() + 1);
             appDaoService.updateEntity(result);
         }
 
     }
-    public void 解锁次数加1(String userId) {
-        UserKvEntity result = queryUserKvEntity(userId);
-        result.setUnlockTimes(result.getUnlockTimes() + 1);
-        appDaoService.updateEntity(result);
-    }
-//    public void 邀请次数加一(String userId) {
-//
-//            UserKvEntity result = queryUserKvEntity(userId);
-//            result.setInviteTimes(result.getInviteTimes() + 1);
-//            appDaoService.updateEntity(result);
-//
-//
-//    }
-//    public void 邀请次数减一(String userId) {
-//
-//        UserKvEntity result = queryUserKvEntity(userId);
-//        result.setInviteTimes(result.getInviteTimes() - 1);
-//        appDaoService.updateEntity(result);
-//    }
 
 
-    public void 确认开通PK次数加1(String userId) {
-
-
-            UserKvEntity result = queryUserKvEntity(userId);
-            result.setPublishPkTimes(result.getPublishPkTimes() + 1);
-            appDaoService.updateEntity(result);
-
-
-    }
-
-
-//
-//    public boolean 是否已经打榜(String userId) {
-//        if(org.apache.commons.lang.StringUtils.isBlank(userId)){return false;}
-//        UserEntity result  = queryUserEntity(userId);
-//        if(!ObjectUtils.isEmpty(result))
-//        {
-//            return result.getPostTimes() > 0;
-//        }
-//        return false;
-//
-//
-//    }
-
-    public void 删除一个未发布榜单(String userId) {
-
-            UserKvEntity result = queryUserKvEntity(userId);
-            if(result.getPkTimes() > 0)
-            {
-                result.setPkTimes(result.getPkTimes() - 1);
-                appDaoService.updateEntity(result);
-            }
-
-
-
-
-    }
 
     public void 修改用户头像(String userId, String url) {
         UserEntity result  = queryUserEntity(userId);
@@ -388,26 +314,7 @@ public class UserService {
 
     }
 
-//    public void 修改PKUser(String pkId, String userId) {
-//    }
-//
-//    public boolean 用户解锁(String userId) {
-////        if(!AppConfigService.getConfigAsBoolean(ConfigItem.普通用户发帖后解锁开关)){return true;}
-//
-//
-//
-//        UserEntity userEntity = userService.queryUserEntity(userId);
-//        if(userEntity.getUserType() == UserType.重点用户 && userEntity.getPostTimes() < 1)
-//        {
-//            return false;
-//        }
-//        else
-//        {
-//            return true;
-//        }
-//
-//
-//    }
+
 
     public boolean 是否可以创建主题(String userId) {
         //普通用户且不要求主题和榜帖数量绑定时返回可以创建
@@ -421,7 +328,7 @@ public class UserService {
         else
         {
 
-            UserKvEntity result = queryUserKvEntity(userId);
+            UserDynamicEntity result = queryUserKvEntity(userId);
             if(result.getPostTimes() > result.getPkTimes())
             {
                 return true;
@@ -439,60 +346,29 @@ public class UserService {
     }
 
 
-    public void 用户激活PK加一(String userId) {
-        UserKvEntity result = queryUserKvEntity(userId);
-        result.setActivePks(result.getActivePks() + 1);
-        appDaoService.updateEntity(result);
-    }
-    public int 查询用户激活PK数量(String userId) {
-        UserKvEntity result = queryUserKvEntity(userId);
-
-        return result.getActivePks();
-    }
-
-    public UserEntity 查询用户Post发布时间(String userId) {
-        if(StringUtils.isBlank(userId)||StringUtils.equalsIgnoreCase("null",userId)||StringUtils.equalsIgnoreCase("undefined",userId)||StringUtils.equalsIgnoreCase("Nan",userId))
-        {
-            return null;
-        }
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(UserEntity.class)
-                .compareFilter("userId",CompareTag.Equal,userId);
-        UserEntity userEntity = appDaoService.querySingleEntity(UserEntity.class,filter);
-        return userEntity;
 
 
-
-    }
-
-    public void 用户发布一个Post(String userId) {
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(UserEntity.class)
-                .compareFilter("userId",CompareTag.Equal,userId);
-        UserEntity userEntity = appDaoService.querySingleEntity(UserEntity.class,filter);
-        userEntity.setPostLastUpdateTime(System.currentTimeMillis());
-        appDaoService.updateEntity(userEntity);
-
-    }
 
     public void 返还用户打捞时间(String userId, long endTime) {
         long left = endTime - System.currentTimeMillis();
         if(left>0){
-            UserKvEntity userKvEntity = userService.queryUserKvEntity(userId);
-            userKvEntity.setFindTimeLength(userKvEntity.getFindTimeLength() + left);
-            appDaoService.updateEntity(userKvEntity);
+            UserDynamicEntity userDynamicEntity = userService.queryUserKvEntity(userId);
+            userDynamicEntity.setFindTimeLength(userDynamicEntity.getFindTimeLength() + left);
+            appDaoService.updateEntity(userDynamicEntity);
         }
 
     }
     public void 返还用户打捞时间1(String userId, long length) {
-            UserKvEntity userKvEntity = userService.queryUserKvEntity(userId);
-            userKvEntity.setFindTimeLength(userKvEntity.getFindTimeLength() + length*24*3600*1000);
-            appDaoService.updateEntity(userKvEntity);
+            UserDynamicEntity userDynamicEntity = userService.queryUserKvEntity(userId);
+            userDynamicEntity.setFindTimeLength(userDynamicEntity.getFindTimeLength() + length*24*3600*1000);
+            appDaoService.updateEntity(userDynamicEntity);
 
 
     }
 
     public String 查询Pk创建者名片(String userId) {
-        UserKvEntity userKvEntity = userService.queryUserKvEntity(userId);
-        return userKvEntity.getUserCard();
+        UserDynamicEntity userDynamicEntity = userService.queryUserKvEntity(userId);
+        return userDynamicEntity.getUserCard();
     }
 
     public UserCardApply 查询用户名片留言(String userId, String queryer) {
@@ -525,9 +401,9 @@ public class UserService {
     }
 
     public void 上传UserCard(String userId, String userCard) {
-        UserKvEntity userKvEntity = userService.queryUserKvEntity(userId);
-        userKvEntity.setUserCard(userCard);
-        appDaoService.updateEntity(userKvEntity);
+        UserDynamicEntity userDynamicEntity = userService.queryUserKvEntity(userId);
+        userDynamicEntity.setUserCard(userCard);
+        appDaoService.updateEntity(userDynamicEntity);
     }
 
     public void 申请UserCard(String targetId, String userId, String text) {
@@ -640,4 +516,6 @@ public class UserService {
 
 
     }
+
+
 }

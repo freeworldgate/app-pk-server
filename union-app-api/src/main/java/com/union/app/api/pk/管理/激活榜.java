@@ -94,7 +94,7 @@ public class 激活榜 {
         pkActiveEntity.setStatu(ActiveStatu.处理过);
         daoService.updateEntity(pkEntity);
         daoService.updateEntity(pkActiveEntity);
-        userService.确认开通PK次数加1(pkEntity.getUserId());
+//        userService.确认开通PK次数加1(pkEntity.getUserId());
 
         ActivePk activePk = appService.查询需要激活的PK();
         return AppResponse.buildResponse(PageAction.前端数据更新("pk",activePk));

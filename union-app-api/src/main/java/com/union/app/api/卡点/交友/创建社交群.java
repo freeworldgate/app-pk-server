@@ -2,7 +2,7 @@ package com.union.app.api.卡点.交友;
 
 import com.union.app.domain.pk.捞人.CreateUserFind;
 import com.union.app.domain.pk.捞人.FindUser;
-import com.union.app.entity.用户.UserKvEntity;
+import com.union.app.entity.用户.UserDynamicEntity;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.DataSet;
@@ -93,8 +93,8 @@ public class 创建社交群 {
         findService.开始捞人(createUserFind);
 
         FindUser findUser = findService.查询用户捞人记录(createUserFind.getPkId(),createUserFind.getUserId());
-        UserKvEntity userKvEntity = userService.queryUserKvEntity(createUserFind.getUserId());
-        String leftTime = TimeUtils.剩余可打捞时间(userKvEntity.getFindTimeLength());
+        UserDynamicEntity userDynamicEntity = userService.queryUserKvEntity(createUserFind.getUserId());
+        String leftTime = TimeUtils.剩余可打捞时间(userDynamicEntity.getFindTimeLength());
 
 
         List<DataSet> dataSets = new ArrayList<>();

@@ -1,23 +1,19 @@
 package com.union.app.api.pk.喜欢收藏投诉审核页面;
 
 import com.union.app.common.config.AppConfigService;
-import com.union.app.common.redis.RedisSortSetService;
-import com.union.app.domain.user.User;
 import com.union.app.entity.pk.PkEntity;
 import com.union.app.entity.pk.PostEntity;
-import com.union.app.entity.用户.UserEntity;
+import com.union.app.entity.pk.用户Key.PkUserDynamicEntity;
 import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.DataSet;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.service.pk.complain.ComplainService;
-import com.union.app.service.pk.dynamic.CacheKeyName;
-import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.service.*;
+import com.union.app.service.pk.service.pkuser.PkUserDynamicService;
 import com.union.app.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -52,6 +48,9 @@ public class 查询距离时间 {
     @Autowired
     UserService userService;
 
+    @Autowired
+    PkUserDynamicService pkUserDynamicService;
+
     @RequestMapping(path="/queryLengthTime",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
     public AppResponse 查询投诉信息List(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId,@RequestParam("latitude") double latitude,@RequestParam("longitude") double longitude) throws AppException, IOException {
@@ -77,7 +76,9 @@ public class 查询距离时间 {
 
 
         }
-        dataSets.add(new DataSet("postTimes",locationService.查询用户打卡次数(pkId,userId)));
+        PkUserDynamicEntity entity = pkUserDynamicService.查询卡点用户动态表(pkId,userId);
+        dataSets.add(new DataSet("postTimes",ObjectUtils.isEmpty(entity)?0:entity.getPostTimes()));
+
         //查询用户打卡次数:
 
 

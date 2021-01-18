@@ -70,7 +70,7 @@ public class 解锁 {
         {
             appService.添加解锁Pk(pkId,userId);
 
-            userService.解锁次数加1(userId);
+//            userService.解锁次数加1(userId);
         }
 
 

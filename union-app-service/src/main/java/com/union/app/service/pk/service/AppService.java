@@ -17,7 +17,7 @@ import com.union.app.entity.pk.*;
 import com.union.app.entity.pk.complain.ComplainEntity;
 import com.union.app.entity.pk.complain.ComplainStatu;
 import com.union.app.entity.用户.UserEntity;
-import com.union.app.entity.用户.UserKvEntity;
+import com.union.app.entity.用户.UserDynamicEntity;
 import com.union.app.entity.用户.support.UserType;
 import com.union.app.entity.配置表.ColumSwitch;
 import com.union.app.entity.配置表.ConfigEntity;
@@ -40,15 +40,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 @Service
@@ -1125,14 +1122,14 @@ public class AppService {
         daoService.insertEntity(userEntity);
 
 
-        UserKvEntity userKvEntity = new UserKvEntity();
-        userKvEntity.setPkTimes(0);
-        userKvEntity.setPostTimes(0);
-        userKvEntity.setPublishPkTimes(0);
-        userKvEntity.setActivePks(0);
-        userKvEntity.setPostTimes(0);
-        userKvEntity.setFeeTimes(1000000);
-        daoService.insertEntity(userKvEntity);
+//        UserDynamicEntity userDynamicEntity = new UserDynamicEntity();
+//        userDynamicEntity.setPkTimes(0);
+//        userDynamicEntity.setPostTimes(0);
+//        userDynamicEntity.setPublishPkTimes(0);
+//        userDynamicEntity.setActivePks(0);
+//        userDynamicEntity.setPostTimes(0);
+//        userDynamicEntity.setFeeTimes(1000000);
+//        daoService.insertEntity(userDynamicEntity);
 
 
 

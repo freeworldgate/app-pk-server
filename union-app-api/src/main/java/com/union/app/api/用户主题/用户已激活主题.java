@@ -1,8 +1,6 @@
 package com.union.app.api.用户主题;
 
 import com.union.app.domain.pk.PkDetail;
-import com.union.app.domain.pk.Post;
-import com.union.app.entity.用户.UserKvEntity;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.DataSet;
