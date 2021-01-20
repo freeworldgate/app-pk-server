@@ -1,8 +1,7 @@
 package com.union.app.api.卡点.交友;
 
-import com.union.app.domain.pk.捞人.CreateUserFind;
-import com.union.app.domain.pk.捞人.FindUser;
-import com.union.app.entity.用户.UserDynamicEntity;
+
+import com.union.app.domain.pk.交友.PkGroup;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.DataSet;
@@ -14,9 +13,11 @@ import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.service.*;
 import com.union.app.service.pk.service.捞人.FindService;
 import com.union.app.service.user.UserService;
-import com.union.app.util.time.TimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
@@ -64,43 +65,22 @@ public class 创建社交群 {
     @Autowired
     FindService findService;
 
-//    @RequestMapping(path="/saveUserPkFind",method = RequestMethod.POST)
-//    @Transactional(rollbackOn = Exception.class)
-//    public AppResponse saveUserPkFind(@RequestBody CreateUserFind createUserFind) throws IOException, AppException {
-//
-//        //校验
-//
-//
-//        findService.保存捞人信息(createUserFind);
-//
-//
-//
-//        FindUser findUser = findService.查询用户捞人记录(createUserFind.getPkId(),createUserFind.getUserId());
-//
-//        return AppResponse.buildResponse(PageAction.前端数据更新("findUser",findUser));
-//
-//    }
+    @Autowired
+    GroupService groupService;
 
 
 
-    @RequestMapping(path="/.AAAAAAAA",method = RequestMethod.POST)
+    @RequestMapping(path="/createGroup",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse startUserPkFind(@RequestBody CreateUserFind createUserFind) throws AppException, IOException {
+    public AppResponse createGroup(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId,@RequestParam("url") String url,@RequestParam("groupName") String groupName,@RequestParam("groupDesc") String groupDesc) throws AppException, IOException {
 
-        //校验
-        findService.校验时间(createUserFind.getFindLength(),createUserFind.getUserId());
+        groupService.创建群组(pkId,userId,url,groupName,groupDesc);
 
-        findService.开始捞人(createUserFind);
-
-        FindUser findUser = findService.查询用户捞人记录(createUserFind.getPkId(),createUserFind.getUserId());
-        UserDynamicEntity userDynamicEntity = userService.queryUserKvEntity(createUserFind.getUserId());
-        String leftTime = TimeUtils.剩余可打捞时间(userDynamicEntity.getFindTimeLength());
-
+        PkGroup pkGroup = groupService.查询用户群组(pkId,userId);
 
         List<DataSet> dataSets = new ArrayList<>();
 
-        dataSets.add(new DataSet("findUser",findUser));
-        dataSets.add(new DataSet("leftTime",leftTime));
+        dataSets.add(new DataSet("userGroup",pkGroup));
 
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
 
@@ -109,6 +89,20 @@ public class 创建社交群 {
     }
 
 
+
+
+    @RequestMapping(path="/cancelGroup",method = RequestMethod.GET)
+    @Transactional(rollbackOn = Exception.class)
+    public AppResponse cancelGroup(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId) throws AppException, IOException {
+
+        groupService.删除群组(pkId,userId);
+
+
+        return AppResponse.buildResponse(PageAction.前端数据更新("userGroup.statu",null));
+
+
+
+    }
 
 
 

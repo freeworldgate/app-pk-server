@@ -2,6 +2,7 @@ package com.union.app.api.卡点.交友;
 
 
 import com.union.app.domain.pk.交友.PkGroup;
+import com.union.app.entity.pk.PkEntity;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.DataSet;
@@ -26,7 +27,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path="/pk")
-public class 创建社交群 {
+public class 查詢用戶社交群 {
 
 
     @Autowired
@@ -70,21 +71,26 @@ public class 创建社交群 {
 
 
 
-    @RequestMapping(path="/createGroup",method = RequestMethod.POST)
-    @Transactional(rollbackOn = Exception.class)
-    public AppResponse createGroup(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId,@RequestParam("url") String url,@RequestParam("groupName") String groupName,@RequestParam("groupDesc") String groupDesc) throws AppException, IOException {
-
-        groupService.创建群组(pkId,userId,url,groupName,groupDesc);
+    @RequestMapping(path="/queryUserGroup",method = RequestMethod.GET)
+    public AppResponse createGroup(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId) throws AppException, IOException {
 
         PkGroup pkGroup = groupService.查询用户群组(pkId,userId);
-
         List<DataSet> dataSets = new ArrayList<>();
-
         dataSets.add(new DataSet("userGroup",pkGroup));
-
+        dataSets.add(new DataSet("emptyImage",appService.查询背景(1)));
+        dataSets.add(new DataSet("createFindUserImage",appService.查询背景(3)));
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
 
+    }
+    @RequestMapping(path="/queryGroupLength",method = RequestMethod.GET)
+    public AppResponse queryGroupLength(@RequestParam("pkId") String pkId) throws AppException, IOException {
 
+        PkEntity pk = locationService.querySinglePkEntity(pkId);
+//        List<DataSet> dataSets = new ArrayList<>();
+//        dataSets.add(new DataSet("userGroup",pkGroup));
+//        dataSets.add(new DataSet("emptyImage",appService.查询背景(1)));
+//        dataSets.add(new DataSet("createFindUserImage",appService.查询背景(3)));
+        return AppResponse.buildResponse(PageAction.执行处理器("length",pk));
 
     }
 

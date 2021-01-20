@@ -13,42 +13,23 @@ import javax.persistence.*;
 @EqualsAndHashCode
 @ToString
 @Entity
-@Table(name="T_FIND_USER")
+@Table(name="T_USER_CARD")
 public class UserCardEntity {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)//mysql数据库主键策略
-    private int findId;
-
-    private String pkId;
-
-    private String pkName;
-
     private String userId;
 
-    private String text;
+    private String userCard;
 
-    private String img1;
+    private int unLock;
 
-    private String img2;
+    private String member1;
 
-    private String img3;
+    private String member2;
 
-    private int findLength;
+    private String member3;
 
-    private long startTime;
-
-    private long endTime;
-
-    @Enumerated(EnumType.STRING)
-    private FindStatu findStatu;
-
-    private String approverId;
-
-
-
-    private long createTime;
-
-
+    private long time;
 
 
 }

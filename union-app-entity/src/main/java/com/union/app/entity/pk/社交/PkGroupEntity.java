@@ -1,6 +1,5 @@
 package com.union.app.entity.pk.社交;
 
-import com.union.app.entity.pk.消息.MessageType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,6 +24,9 @@ public class PkGroupEntity {
 
     private String groupDesc;
 
+    @Enumerated(EnumType.STRING)
+    private GroupStatu groupStatu;
+
     private String pkId;
 
     private String userId;
@@ -42,6 +44,6 @@ public class PkGroupEntity {
 
     private long time;
 
-
+    private long lastUpdateTime;
 
 }

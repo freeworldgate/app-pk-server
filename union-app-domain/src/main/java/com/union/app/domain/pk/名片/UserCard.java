@@ -10,35 +10,19 @@ import lombok.Setter;
 public class UserCard {
 
 
-
-    private int groupId;
-
-    private String pkId;
-
-    private int pkRange;
-
-    private double latitude;
-
-    private double longitude;
-
-    private String groupCard;
-
-    private String groupName;
-
-    private String groupDesc;
-
     private User user;
 
-    private KeyValuePair statu;
+    private String userCard;
 
-    private int members;
+    //想认识我的人
+    private int likeMe;
+    //我想认识的人
+    private int meLike;
+    //已解锁用户
+    private int unLock;
 
     private User member1;
-
     private User member2;
-
-    private String time;
-    private String lastUpdateTime;
-
+    private User member3;
 
 }

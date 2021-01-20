@@ -1,6 +1,7 @@
 package com.union.app.api.卡点.用户名片;
 
 import com.union.app.domain.pk.user.UserCardApply;
+import com.union.app.domain.pk.名片.UserCard;
 import com.union.app.domain.pk.捞人.FindUser;
 
 import com.union.app.domain.user.User;
@@ -67,18 +68,15 @@ public class 查询用户名片 {
 
     @RequestMapping(path="/queryUserCard",method = RequestMethod.GET)
     public AppResponse queryUserFind(@RequestParam("targetId") String targetId,@RequestParam("userId") String userId) throws IOException {
+        UserCard userCard = userService.查询UserCard(targetId);
 
-        User target = userService.queryUser(targetId);
-        UserCardApply userApply = userService.查询用户名片留言(target.getUserId(),userId);
-        String userCard = userService.查询Pk创建者名片(target.getUserId());
-
+        UserCardApply userApply = userService.查询用户名片留言(targetId,userId);
 
         List<DataSet> dataSets = new ArrayList<>();
 
-        dataSets.add(new DataSet("target",target));
         dataSets.add(new DataSet("userApply",userApply));
-        dataSets.add(new DataSet("emptyImage",appService.查询背景(1)));
         dataSets.add(new DataSet("userCard",userCard));
+        dataSets.add(new DataSet("emptyImage",appService.查询背景(1)));
 
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
 

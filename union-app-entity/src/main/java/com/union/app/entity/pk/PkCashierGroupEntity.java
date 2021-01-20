@@ -1,5 +1,6 @@
 package com.union.app.entity.pk;
 
+import com.union.app.entity.pk.社交.GroupStatu;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;

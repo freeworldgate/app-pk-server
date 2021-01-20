@@ -13,7 +13,7 @@ import javax.persistence.*;
 @ToString
 @Entity
 @Table(name="T_USER_CARD_APPLY")
-public class UserCardEntity {
+public class UserCardApplyEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)//mysql数据库主键策略
     private int id;

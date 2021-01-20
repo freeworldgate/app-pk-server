@@ -1,30 +1,46 @@
-package com.union.app.domain.pk;
+package com.union.app.domain.pk.交友;
 
+import com.union.app.domain.pk.Callout;
+import com.union.app.domain.pk.PkDetail;
+import com.union.app.domain.pk.apply.KeyValuePair;
+import com.union.app.domain.user.User;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class Marker {
+public class PkGroup {
 
-    //标记点 id
-    int id;
-    //标记点纬度
-    double latitude;
-    //标记点经度
-    double longitude;
 
-    Callout callout;
 
-//    String iconPath = "/images/daka.png";
-    String iconPath = "/images/marker.png";
+    private int groupId;
 
-    String width = "34px";
-    String height = "34px";
-    int borderRadius = 34;
-    int rotate = 0;
-    float alpha = 1;
+    private String pkId;
 
+    private int pkRange;
+
+    private double latitude;
+
+    private double longitude;
+
+    private String groupCard;
+
+    private String groupName;
+
+    private String groupDesc;
+
+    private User user;
+
+    private KeyValuePair statu;
+
+    private int members;
+
+    private User member1;
+
+    private User member2;
+
+    private String time;
+    private String lastUpdateTime;
 
 
 }

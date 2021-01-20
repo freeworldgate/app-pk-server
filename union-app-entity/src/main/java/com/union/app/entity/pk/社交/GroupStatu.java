@@ -1,12 +1,12 @@
-package com.union.app.entity.pk;
+package com.union.app.entity.pk.社交;
 
 public enum GroupStatu {
 
-    停用(0,"停用状态"),
+    审核中(0,"审核中"),
 
-    启用(1,"启用状态")
+    已通过(1,"已通过"),
 
-
+    已过期(1,"已过期"),
 
 
 

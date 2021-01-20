@@ -16,8 +16,8 @@ import com.union.app.domain.pk.cashier.PkCashier;
 import com.union.app.entity.pk.*;
 import com.union.app.entity.pk.complain.ComplainEntity;
 import com.union.app.entity.pk.complain.ComplainStatu;
+import com.union.app.entity.pk.社交.GroupStatu;
 import com.union.app.entity.用户.UserEntity;
-import com.union.app.entity.用户.UserDynamicEntity;
 import com.union.app.entity.用户.support.UserType;
 import com.union.app.entity.配置表.ColumSwitch;
 import com.union.app.entity.配置表.ConfigEntity;
@@ -513,58 +513,6 @@ public class AppService {
 //
 //    }
 
-    public void 上传群组(String cashierId, String imgUrl) throws IOException {
-
-        PkCashierGroupEntity pkCashierGroupEntity = new PkCashierGroupEntity();
-        pkCashierGroupEntity.setGroupId(com.union.app.util.idGenerator.IdGenerator.收款群组ID());
-        pkCashierGroupEntity.setCashierId(cashierId);
-        String mediaId = WeChatUtil.uploadImg2Wx(imgUrl);
-        pkCashierGroupEntity.setGroupMediaId(mediaId);
-        pkCashierGroupEntity.setCreateTime(System.currentTimeMillis());
-        pkCashierGroupEntity.setLastUpdateTime(System.currentTimeMillis());
-        pkCashierGroupEntity.setGroupUrl(imgUrl);
-        pkCashierGroupEntity.setStatu(GroupStatu.停用);
-        daoService.insertEntity(pkCashierGroupEntity);
-
-
-    }
-    public void 更新群组(String cashierId, String groupId, String imgUrl) throws IOException {
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(PkCashierGroupEntity.class)
-                .compareFilter("cashierId",CompareTag.Equal,cashierId)
-                .andFilter()
-                .compareFilter("groupId",CompareTag.Equal,groupId);
-        PkCashierGroupEntity pkCashierGroupEntity = daoService.querySingleEntity(PkCashierGroupEntity.class,filter);
-
-        pkCashierGroupEntity.setGroupUrl(imgUrl);
-        String mediaId = WeChatUtil.uploadImg2Wx(imgUrl);
-        pkCashierGroupEntity.setGroupMediaId(mediaId);
-        pkCashierGroupEntity.setLastUpdateTime(System.currentTimeMillis());
-        pkCashierGroupEntity.setCreateTime(System.currentTimeMillis());
-
-        daoService.updateEntity(pkCashierGroupEntity);
-
-
-    }
-
-
-
-
-
-    public void 删除群组(String cashierId, String groupId) {
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(PkCashierGroupEntity.class)
-                .compareFilter("cashierId",CompareTag.Equal,cashierId)
-                .andFilter()
-                .compareFilter("groupId",CompareTag.Equal,groupId);
-        PkCashierGroupEntity pkCashierGroupEntity = daoService.querySingleEntity(PkCashierGroupEntity.class,filter);
-        if(!ObjectUtils.isEmpty(pkCashierGroupEntity)){
-            daoService.deleteEntity(pkCashierGroupEntity);
-        }
-
-
-
-
-
-    }
 
     public List<CashierFeeCode> 查询用户收款码(String cashierId) {
 
@@ -660,48 +608,6 @@ public class AppService {
     }
 
 
-
-
-
-    public void 修改群组状态(String cashierId, String groupId) throws AppException {
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(PkCashierGroupEntity.class)
-                .compareFilter("cashierId",CompareTag.Equal,cashierId)
-                .andFilter()
-                .compareFilter("groupId",CompareTag.Equal,groupId);
-        PkCashierGroupEntity pkCashierGroupEntity = daoService.querySingleEntity(PkCashierGroupEntity.class,filter);
-        GroupStatu groupStatu = pkCashierGroupEntity.getStatu();
-
-        if(groupStatu == GroupStatu.启用)
-        {
-            pkCashierGroupEntity.setStatu(GroupStatu.停用);
-        }
-        else
-        {
-            //判断用户状态
-
-            EntityFilterChain filter1 = EntityFilterChain.newFilterChain(PkCashierEntity.class)
-                    .compareFilter("cashierId",CompareTag.Equal,cashierId);
-            PkCashierEntity pkCashierEntity = daoService.querySingleEntity(PkCashierEntity.class,filter1);
-            if(pkCashierEntity.getStatu() == CashierStatu.启用)
-            {
-                pkCashierGroupEntity.setStatu(GroupStatu.启用);
-            }
-            else
-            {
-                throw AppException.buildException(PageAction.执行处理器("openCashier",""));
-            }
-
-
-
-
-
-
-
-        }
-        daoService.updateEntity(pkCashierGroupEntity);
-
-
-    }
 
 
 
@@ -805,22 +711,6 @@ public class AppService {
         return dataSets;
     }
 
-    public List<PkCashierGroupEntity> 查询过期的群组() {
-
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(PkCashierGroupEntity.class)
-                .compareFilter("createTime",CompareTag.Small, System.currentTimeMillis() - (AppConfigService.getConfigAsInteger(ConfigItem.群组最长上传时间间隔)* 3600 * 1000))
-                .andFilter()
-                .compareFilter("statu",CompareTag.Equal,GroupStatu.启用)
-                .pageLimitFilter(1,20);
-        List<PkCashierGroupEntity> pkCashierGroupEntities = daoService.queryEntities(PkCashierGroupEntity.class,filter);
-        return pkCashierGroupEntities;
-
-
-
-
-
-
-    }
 
     public PkButton 显示按钮(PkButtonType pkButtonType) {
 //        if(pkButtonType == PkButtonType.榜帖){return new PkButton(PkButtonType.榜帖.getIcon(),PkButtonType.榜帖.getName(),PkButtonType.榜帖.getLinkMethod());}

@@ -70,7 +70,7 @@ public class 上传用户名片 {
 
         userService.上传UserCard(userId,userCard);
 
-        return AppResponse.buildResponse(PageAction.执行处理器("success",""));
+        return AppResponse.buildResponse(PageAction.前端数据更新("userCard.userCard",userCard));
 
     }
     @RequestMapping(path="/userCardApply",method = RequestMethod.GET)
