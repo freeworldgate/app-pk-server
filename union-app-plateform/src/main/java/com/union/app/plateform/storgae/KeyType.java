@@ -1,14 +1,15 @@
 package com.union.app.plateform.storgae;
 
-public enum  KeyName {
+public enum  KeyType {
 
-    守榜用户("WINNERS"),
+    Ta想认识的人("iLike"),
+    想认识的Ta人("likeMe"),
 
-    用户榜帖("UserPost"),
 
-    处理的Post最大值("MAX_POST_VALUE"),
 
-    用户浏览记录("VIEW_HISTORY");
+    ;
+
+
 
 
 
@@ -29,7 +30,7 @@ public enum  KeyName {
 
     private String name;
 
-    KeyName(String name) {
+    KeyType(String name) {
         this.name = name;
     }
 

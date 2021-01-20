@@ -14,7 +14,7 @@ import javax.persistence.*;
 @ToString
 @Entity
 @Table(name="T_PK_GROUP")
-public class PkGroup {
+public class PkGroupEntity {
 
 
     @Id
@@ -29,12 +29,16 @@ public class PkGroup {
 
     private String userId;
 
-    private String url;
+    private String groupCode;
 
     /**
      * 需要基于Redis并发锁老修改其值
      */
     private int members;
+
+    private String user1;
+
+    private String user2;
 
     private long time;
 
