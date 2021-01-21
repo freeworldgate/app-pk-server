@@ -27,24 +27,7 @@ public class UserDynamicService {
 
 
 
-
-
-
-
-
-
-    private UserDynamicEntity 初始化表(String userId){
-        UserDynamicEntity userDynamicEntity = new UserDynamicEntity();
-        userDynamicEntity.setUserId(userId);
-        userDynamicEntity.setPostTimes(0);
-        userDynamicEntity.setCollectTimes(0);
-        userDynamicEntity.setFindTimeLength(0);
-        userDynamicEntity.setPkTimes(0);
-        userDynamicEntity.setUserCard(null);
-        return userDynamicEntity;
-    }
-
-    private UserDynamicEntity queryUserDynamicEntity(String userId){
+    public UserDynamicEntity queryUserDynamicEntity(String userId){
         EntityFilterChain filter = EntityFilterChain.newFilterChain(UserDynamicEntity.class)
                 .compareFilter("userId", CompareTag.Equal,userId);
         UserDynamicEntity userkvEntity = daoService.querySingleEntity(UserDynamicEntity.class,filter);
@@ -59,37 +42,37 @@ public class UserDynamicService {
 
     public void 用户总打榜次数减一(String userId) {
         UserDynamicEntity userDynamicEntity = queryUserDynamicEntity(userId);
-
-        if(!ObjectUtils.isEmpty(userDynamicEntity))
-        {
-            userDynamicEntity.setPostTimes(userDynamicEntity.getPostTimes()<1?0:userDynamicEntity.getPostTimes()-1);
-            daoService.updateEntity(userDynamicEntity);
-        }
-        else
-        {
-            userDynamicEntity = 初始化表(userId);
-            daoService.insertEntity(userDynamicEntity);
-        }
-
-
+        userDynamicEntity.setPostTimes(userDynamicEntity.getPostTimes()<1?0:userDynamicEntity.getPostTimes()-1);
+        daoService.updateEntity(userDynamicEntity);
     }
 
     public void 用户总打榜次数加一(String userId) {
         UserDynamicEntity userDynamicEntity = queryUserDynamicEntity(userId);
+        userDynamicEntity.setPostTimes(userDynamicEntity.getPostTimes()+1);
+        daoService.updateEntity(userDynamicEntity);
 
-        if(!ObjectUtils.isEmpty(userDynamicEntity))
-        {
-            userDynamicEntity.setPostTimes(userDynamicEntity.getPostTimes()+1);
-            daoService.updateEntity(userDynamicEntity);
-        }
-        else
-        {
-            userDynamicEntity = 初始化表(userId);
-            userDynamicEntity.setPostTimes(1);
-            daoService.insertEntity(userDynamicEntity);
-        }
     }
 
+    public void 创建Dynamic表(String userId) {
+        UserDynamicEntity userkvEntity = new UserDynamicEntity();
+        userkvEntity.setUserId(userId);
+        userkvEntity.setMygroups(0);
+        userkvEntity.setPostTimes(0);
+        userkvEntity.setPkTimes(0);
+        userkvEntity.setUnLockTimes(0);
+        userkvEntity.setCollectTimes(0);
+        userkvEntity.setFindTimeLength(0);
+        userkvEntity.setPk(0);
+        daoService.insertEntity(userkvEntity);
 
 
+    }
+
+    public void 用户解锁群组加一(String userId) {
+        UserDynamicEntity userDynamicEntity = queryUserDynamicEntity(userId);
+        userDynamicEntity.setUnLockTimes(userDynamicEntity.getUnLockTimes()+1);
+        daoService.updateEntity(userDynamicEntity);
+
+
+    }
 }

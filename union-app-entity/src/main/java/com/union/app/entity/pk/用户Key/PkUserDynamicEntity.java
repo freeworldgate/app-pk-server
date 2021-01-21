@@ -28,6 +28,9 @@ public class PkUserDynamicEntity
 
     private int postTimes;
 
+    //卡点已解锁群组数量  递加
+    private int unLockGroups;
+
     //卡点最新打卡时间
     private long lastPublishPostTime;
 

@@ -344,7 +344,6 @@ public class FindService {
         List<FindUserEntity> findUserEntities = this.查询打捞中Entity(pkId);
         for(FindUserEntity findUserEntity:findUserEntities){
             FindUser findUser = new FindUser();
-
             UserDynamicEntity userDynamicEntity = userService.queryUserKvEntity(findUserEntity.getUserId());
             User user = userService.queryUser(findUserEntity.getUserId());
             findUser.setUser(user);
@@ -383,7 +382,6 @@ public class FindService {
                 .compareFilter("startTime",CompareTag.Small,current)
                 .pageLimitFilter(1,5)
                 .orderByRandomFilter();
-
         List<FindUserEntity> findUserEntities = daoService.queryEntities(FindUserEntity.class,filter);
         return findUserEntities;
 

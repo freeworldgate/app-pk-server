@@ -272,10 +272,30 @@ public class LocationService {
         locationType.setTypeName(pk.getType());
         locationType.setScale(pk.getTypeScale());
         locationType.setRange(this.长度转义(pk.getTypeRange()));
+        locationType.setRangeValue(this.长度转义不带单位(pk.getTypeRange()));
         locationType.setRangeLength(pk.getTypeRange());
         return locationType;
 
     }
+
+    private String 长度转义不带单位(int typeRange) {
+        if(typeRange > 1000)
+        {
+            double rangeLength = typeRange/1000.0D;
+            BigDecimal bg = new BigDecimal(rangeLength);
+            double d3 = bg.setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue();
+            return  String.valueOf(d3);
+
+        }
+        else
+        {
+            return  String.valueOf(typeRange);
+        }
+
+
+
+    }
+
 
     private String 长度转义(int typeRange) {
         if(typeRange > 1000)

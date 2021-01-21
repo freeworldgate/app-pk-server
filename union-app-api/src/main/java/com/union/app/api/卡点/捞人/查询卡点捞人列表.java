@@ -105,11 +105,10 @@ public class 查询卡点捞人列表 {
 
 
         dataSets.add(new DataSet("emptyImage",appService.查询背景(1)));
-        dataSets.add(new DataSet("userFindImage",appService.查询背景(3)));
-        dataSets.add(new DataSet("backUrl",appService.查询背景(5)));
+
         if(CollectionUtils.isEmpty(findUsers))
         {
-            dataSets.add(new DataSet("emptyUrl",appService.查询背景(0)));
+            dataSets.add(new DataSet("emptyData",appService.查询背景(4)));
         }
         else
         {

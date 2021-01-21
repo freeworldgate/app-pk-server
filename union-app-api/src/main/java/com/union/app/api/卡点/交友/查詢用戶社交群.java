@@ -1,8 +1,10 @@
 package com.union.app.api.卡点.交友;
 
 
+import com.union.app.domain.pk.apply.KeyValuePair;
 import com.union.app.domain.pk.交友.PkGroup;
 import com.union.app.entity.pk.PkEntity;
+import com.union.app.entity.pk.社交.GroupStatu;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.DataSet;
@@ -15,6 +17,7 @@ import com.union.app.service.pk.service.*;
 import com.union.app.service.pk.service.捞人.FindService;
 import com.union.app.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -75,6 +78,10 @@ public class 查詢用戶社交群 {
     public AppResponse createGroup(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId) throws AppException, IOException {
 
         PkGroup pkGroup = groupService.查询用户群组(pkId,userId);
+        if(!ObjectUtils.isEmpty(pkGroup) && pkGroup.getMembers() >= 200)
+        {
+            pkGroup.setStatu(new KeyValuePair(GroupStatu.已过期.getStatu(),GroupStatu.已过期.getStatuStr()));
+        }
         List<DataSet> dataSets = new ArrayList<>();
         dataSets.add(new DataSet("userGroup",pkGroup));
         dataSets.add(new DataSet("emptyImage",appService.查询背景(1)));

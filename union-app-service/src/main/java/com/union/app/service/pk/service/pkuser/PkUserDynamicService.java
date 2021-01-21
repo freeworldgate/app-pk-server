@@ -48,9 +48,10 @@ public class PkUserDynamicService {
 
     public PkUserDynamicEntity 初始化Entity(String pkId, String userId){
         PkUserDynamicEntity pkUserEntity = new PkUserDynamicEntity();
-        pkUserEntity.setPostTimes(0);
         pkUserEntity.setPkId(pkId);
         pkUserEntity.setUserId(userId);
+        pkUserEntity.setPostTimes(0);
+        pkUserEntity.setUnLockGroups(0);
         return pkUserEntity;
     }
 
@@ -84,11 +85,25 @@ public class PkUserDynamicService {
 
 
 
+    public void 卡点用户解锁群组加一(String pkId,String userId) {
+        PkUserDynamicEntity pkUserEntity = 查询卡点用户动态表(pkId,userId);
+        if(!ObjectUtils.isEmpty(pkUserEntity))
+        {
+            pkUserEntity.setUnLockGroups(pkUserEntity.getUnLockGroups()+1);
+            daoService.updateEntity(pkUserEntity);
+        }
+        else
+        {
+            pkUserEntity = 初始化Entity(pkId,userId);
+            pkUserEntity.setUnLockGroups(1);
+            daoService.insertEntity(pkUserEntity);
+        }
+    };
+
+
 
     public void 卡点用户打卡次数加一(String pkId,String userId) {
-
         PkUserDynamicEntity pkUserEntity = 查询卡点用户动态表(pkId,userId);
-
         if(!ObjectUtils.isEmpty(pkUserEntity))
         {
             pkUserEntity.setPostTimes(pkUserEntity.getPostTimes()+1);
@@ -100,10 +115,6 @@ public class PkUserDynamicService {
             pkUserEntity.setPostTimes(1);
             daoService.insertEntity(pkUserEntity);
         }
-
-
-
-
     };
 
 
@@ -121,8 +132,6 @@ public class PkUserDynamicService {
             pkUserEntity = 初始化Entity(pkId,userId);
             daoService.insertEntity(pkUserEntity);
         }
-
-
     }
 
 

@@ -1,6 +1,7 @@
-package com.union.app.api.卡点.次数排名;
+package com.union.app.api.卡点.交友;
 
-import com.union.app.domain.pk.排名.PkDynamic;
+import com.union.app.domain.pk.交友.PkGroup;
+import com.union.app.domain.pk.捞人.FindUser;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.DataSet;
@@ -10,9 +11,8 @@ import com.union.app.service.pk.click.ClickService;
 import com.union.app.service.pk.complain.ComplainService;
 import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.service.*;
-import com.union.app.service.pk.service.pkuser.PkUserDynamicService;
+import com.union.app.service.pk.service.捞人.FindService;
 import com.union.app.service.user.UserService;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +26,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path="/pk")
-public class 次数排名 {
+public class 查询我的群组 {
 
 
     @Autowired
@@ -61,56 +61,40 @@ public class 次数排名 {
 
     @Autowired
     LocationService locationService;
+
     @Autowired
-    PkUserDynamicService pkUserDynamicService;
+    GroupService groupService;
 
-    @RequestMapping(path="/queryPkSorts",method = RequestMethod.GET)
-    public AppResponse querypkSorts(@RequestParam("userId") String userId,@RequestParam("pkId") String pkId) throws AppException, IOException, InterruptedException {
+    @RequestMapping(path="/queryMyGroups",method = RequestMethod.GET)
+    public AppResponse queryMyFinds(@RequestParam("userId") String userId) throws IOException {
 
-        //下一页
-//        PkDynamic userSort = null;
-        List<PkDynamic> sorts = pkUserDynamicService.查询卡点打卡排名(pkId,1);
-        for(PkDynamic pkDynamic:sorts)
-        {
-            if(StringUtils.equals(userId,pkDynamic.getUser().getUserId()))
-            {
-//                userSort = pkDynamic;
-                sorts.remove(pkDynamic);
-                sorts.add(0,pkDynamic);
-                break;
-            }
-        }
+        List<PkGroup> pkGroups = groupService.查询我的Groups(userId,1);
+
 
 
         List<DataSet> dataSets = new ArrayList<>();
-        dataSets.add(new DataSet("emptyData",appService.查询背景(4)));
 
-//        dataSets.add(new DataSet("userSort",userSort));
+        dataSets.add(new DataSet("pkGroups",pkGroups));
+        dataSets.add(new DataSet("emptyImage",appService.查询背景(3)));
         dataSets.add(new DataSet("page",1));
-        dataSets.add(new DataSet("sorts",sorts));
+
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
 
-
     }
+    @RequestMapping(path="/nextMyGroups",method = RequestMethod.GET)
+    public AppResponse nextPkApprovingImagePage(@RequestParam("userId") String userId,@RequestParam("page") int page) throws AppException, IOException, InterruptedException {
 
-    @RequestMapping(path="/nextPkSorts",method = RequestMethod.GET)
-    public AppResponse nextPkApprovingImagePage(@RequestParam("userId") String userId,@RequestParam("pkId") String pkId,@RequestParam("page") int page) throws AppException, IOException, InterruptedException {
+        List<PkGroup> pkGroups = groupService.查询我的Groups(userId,page+1);
 
-
-        List<PkDynamic> sorts = pkUserDynamicService.查询卡点打卡排名(pkId,page+1);
-
-
-        if(CollectionUtils.isEmpty(sorts))
+        if(CollectionUtils.isEmpty(pkGroups))
         {
             return AppResponse.buildResponse(PageAction.前端数据更新("nomore",true));
 
         }
 
-        return AppResponse.buildResponse(PageAction.执行处理器("success",sorts));
+        return AppResponse.buildResponse(PageAction.执行处理器("success",pkGroups));
 
 
     }
-
-
 
 }

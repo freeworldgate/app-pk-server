@@ -27,7 +27,7 @@ public class OssUrlInfo
 
     private String signature = "4Jp/QohA85G/4pJ7cNlpSKeEjVI=";
 
-    private String oSSAccessKeyId = "LTAIzxViWZTSLgfe";
+    private String oSSAccessKeyId = "";
 
     private String aliyunServerURL = "https://oss.211shopper.com";
 

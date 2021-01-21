@@ -28,6 +28,7 @@ import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.KeyType;
 import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.service.KeyService;
+import com.union.app.service.pk.service.pkuser.UserDynamicService;
 import com.union.app.util.time.TimeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,8 @@ public class UserService {
     @Autowired
     DynamicService dynamicService;
 
+    @Autowired
+    UserDynamicService userDynamicService;
 
     @Autowired
     PkCacheService pkCacheService;
@@ -88,12 +91,9 @@ public class UserService {
 
     }
 
-    public UserDynamicEntity queryUserKvEntity(String userId){
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(UserDynamicEntity.class)
-                .compareFilter("userId",CompareTag.Equal,userId);
-        UserDynamicEntity userkvEntity = appDaoService.querySingleEntity(UserDynamicEntity.class,filter);
-
-        return userkvEntity;
+    public UserDynamicEntity queryUserKvEntity(String userId)
+    {
+        return userDynamicService.queryUserDynamicEntity(userId);
     }
 
 
@@ -158,6 +158,7 @@ public class UserService {
 
 
     public boolean isUserExist(String userId) {
+        if(StringUtils.isBlank(userId)){return false;}
         if(org.apache.commons.lang.StringUtils.equalsIgnoreCase(userId,"null")){
             return false;
         }
@@ -288,16 +289,6 @@ public class UserService {
         }
     }
 
-    public void 新增注册用户(UserEntity userEntity, String appName, String pkId, String userId, String fromUser) {
-
-
-        dynamicService.新增注册用户(appName,pkId,userEntity.getUserId(),fromUser,new Date());
-
-
-
-
-
-    }
 
 
 
@@ -356,13 +347,10 @@ public class UserService {
     }
 
 
-
-
-
     public void 返还用户打捞时间(String userId, long endTime) {
         long left = endTime - System.currentTimeMillis();
         if(left>0){
-            UserDynamicEntity userDynamicEntity = userService.queryUserKvEntity(userId);
+            UserDynamicEntity userDynamicEntity =  userService.queryUserKvEntity(userId);
             userDynamicEntity.setFindTimeLength(userDynamicEntity.getFindTimeLength() + left);
             appDaoService.updateEntity(userDynamicEntity);
         }
@@ -376,10 +364,6 @@ public class UserService {
 
     }
 
-    public String 查询Pk创建者名片(String userId) {
-        UserDynamicEntity userDynamicEntity = userService.queryUserKvEntity(userId);
-        return userDynamicEntity.getUserCard();
-    }
 
     public UserCardApply 查询用户名片留言(String userId, String queryer) {
         UserCardApplyEntity userCardApplyEntity = 查询UserCard记录(userId,queryer);
@@ -486,7 +470,7 @@ public class UserService {
 
     }
 
-    private UserCardEntity queryUserCardEntity(String userId) {
+    public UserCardEntity queryUserCardEntity(String userId) {
         EntityFilterChain filter = EntityFilterChain.newFilterChain(UserCardEntity.class)
                 .compareFilter("userId",CompareTag.Equal,userId);
         UserCardEntity userCardEntity = appDaoService.querySingleEntity(UserCardEntity.class,filter);

@@ -12,13 +12,17 @@ import javax.persistence.*;
 @EqualsAndHashCode
 @ToString
 @Entity
-@Table(name="T_PK_GROUP_MEMBER")
-public class PkGroupMember {
+@Table(name="T_PK_GROUP_MEMBERS")
+public class PkGroupMemberEntity {
 
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)//mysql数据库主键策略
+    private int memberId;
+
     private int groupId;
+
+    private String pkId;
 
     private String userId;
 

@@ -1764,7 +1764,8 @@ public class AppService {
     }
 
 
-    public static String getSignature(String accessKeySecret)  {
+    public static String getSignature(String accessKeySecret)
+    {
 
         String signaturecom = computeSignature(accessKeySecret, getPolicy());
 

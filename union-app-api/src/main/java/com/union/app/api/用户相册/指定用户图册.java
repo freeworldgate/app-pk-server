@@ -66,6 +66,7 @@ public class 指定用户图册 {
         List<DataSet> dataSets = new ArrayList<>();
         UserFollowEntity userFollowEntity = locationService.查询关注(userId,targetId);
 
+        dataSets.add(new DataSet("userCard",userService.查询UserCard(targetId)));
         dataSets.add(new DataSet("followStatu", !ObjectUtils.isEmpty(userFollowEntity)));
 
         if(CollectionUtils.isEmpty(posts))

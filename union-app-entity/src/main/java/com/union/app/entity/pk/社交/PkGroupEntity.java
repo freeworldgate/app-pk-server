@@ -29,6 +29,8 @@ public class PkGroupEntity {
 
     private String pkId;
 
+    private String pkName;
+
     private String userId;
 
     private String groupCode;
@@ -45,5 +47,9 @@ public class PkGroupEntity {
     private long time;
 
     private long lastUpdateTime;
+
+
+
+
 
 }

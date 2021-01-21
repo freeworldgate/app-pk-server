@@ -15,20 +15,26 @@ import javax.persistence.*;
 @EqualsAndHashCode
 @ToString
 @Entity
-@Table(name="T_User_KEY_VALUE")
+@Table(name="T_USER_KEY_VALUE_DYNAMIC")
 public class UserDynamicEntity {
 
     @Id
     private String userId;
 
+    //可打捞时间
     private long findTimeLength;
 
+    //可创建卡点数
     private int pk;
 
-    private String userCard;
+    //可创建群数量
+    private int mygroups;
 
     //打卡总次数
     private int postTimes;
+
+    //用户解锁群组总数
+    private int unLockTimes;
 
     //已创建Pk
     private int pkTimes;

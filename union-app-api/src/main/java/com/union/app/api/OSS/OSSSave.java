@@ -46,6 +46,7 @@ public class OSSSave {
         ossUrlInfo.setAliyunServerURL(AppConfigService.getConfigAsString(ConfigItem.OSS基础地址));
         ossUrlInfo.setDirectory(RandomUtil.getRandomDirName());
         ossUrlInfo.setPolicyBase64(policy);
+        ossUrlInfo.setOSSAccessKeyId(AppConfigService.getConfigAsString(ConfigItem.RAM秘钥ID));
         ossUrlInfo.setSignature(signature);
 
 

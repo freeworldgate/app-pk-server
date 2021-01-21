@@ -4,6 +4,7 @@ import com.union.app.domain.pk.Callout;
 import com.union.app.domain.pk.PkDetail;
 import com.union.app.domain.pk.apply.KeyValuePair;
 import com.union.app.domain.user.User;
+import com.union.app.entity.pk.社交.PkGroupMemberEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,6 +17,8 @@ public class PkGroup {
     private int groupId;
 
     private String pkId;
+
+    private String pkName;
 
     private int pkRange;
 
@@ -41,6 +44,10 @@ public class PkGroup {
 
     private String time;
     private String lastUpdateTime;
+
+
+
+    private PkGroupMemberEntity queryerMemberEntity;
 
 
 }

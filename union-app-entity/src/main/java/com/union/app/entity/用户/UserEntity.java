@@ -39,10 +39,8 @@ public class UserEntity {
 
     private String avatarUrl;
 
-
     private String fromUser;
 
-    private long postLastUpdateTime;
 
 
 

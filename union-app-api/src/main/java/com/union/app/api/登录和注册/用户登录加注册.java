@@ -13,6 +13,7 @@ import com.union.app.plateform.response.ApiResponse;
 import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.service.AppService;
 import com.union.app.service.pk.service.PkService;
+import com.union.app.service.pk.service.pkuser.UserDynamicService;
 import com.union.app.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
@@ -36,7 +37,7 @@ public class 用户登录加注册 {
     DynamicService dynamicService;
 
     @Autowired
-    AppService appService;
+    UserDynamicService userDynamicService;
 
     @Autowired
     PkService pkService;
@@ -77,7 +78,7 @@ public class 用户登录加注册 {
                 userEntity.setUserType(UserType.普通用户);
             }
             convert(userInfo,userEntity);
-
+            userDynamicService.创建Dynamic表(userEntity.getUserId());
             appDaoService.insertEntity(userEntity);
 
         }

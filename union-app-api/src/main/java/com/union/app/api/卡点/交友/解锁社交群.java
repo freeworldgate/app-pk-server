@@ -2,6 +2,7 @@ package com.union.app.api.卡点.交友;
 
 
 import com.union.app.domain.pk.交友.PkGroup;
+import com.union.app.entity.pk.社交.PkGroupMemberEntity;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.DataSet;
@@ -26,7 +27,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path="/pk")
-public class 创建社交群 {
+public class 解锁社交群 {
 
 
     @Autowired
@@ -70,43 +71,17 @@ public class 创建社交群 {
 
 
 
-    @RequestMapping(path="/createGroup",method = RequestMethod.GET)
+    @RequestMapping(path="/unLockGroup",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse createGroup(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId,@RequestParam("url") String url,@RequestParam("groupName") String groupName,@RequestParam("groupDesc") String groupDesc) throws AppException, IOException {
+    public AppResponse createGroup(@RequestParam("groupId") int groupId,@RequestParam("userId") String userId) throws AppException, IOException {
 
-        groupService.创建群组(pkId,userId,url,groupName,groupDesc);
+        PkGroupMemberEntity pkGroupMemberEntity = groupService.解锁群组(groupId,userId);
 
-        PkGroup pkGroup = groupService.查询用户群组(pkId,userId);
 
-        List<DataSet> dataSets = new ArrayList<>();
-
-        dataSets.add(new DataSet("userGroup",pkGroup));
-
-        return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
+        return AppResponse.buildResponse(PageAction.执行处理器("success",pkGroupMemberEntity));
 
 
 
-    }
-
-
-
-
-    @RequestMapping(path="/cancelGroup",method = RequestMethod.GET)
-    @Transactional(rollbackOn = Exception.class)
-    public AppResponse cancelGroup(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId) throws AppException, IOException {
-
-        groupService.删除群组(pkId,userId);
-
-        return AppResponse.buildResponse(PageAction.前端数据更新("userGroup.statu",null));
-    }
-
-    @RequestMapping(path="/updateGroup",method = RequestMethod.GET)
-    @Transactional(rollbackOn = Exception.class)
-    public AppResponse updateGroup(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId,@RequestParam("groupCard") String groupCard) throws AppException, IOException {
-
-        groupService.更新群二维码(pkId,userId,groupCard);
-
-        return AppResponse.buildResponse(PageAction.执行处理器("success",null));
     }
 
 

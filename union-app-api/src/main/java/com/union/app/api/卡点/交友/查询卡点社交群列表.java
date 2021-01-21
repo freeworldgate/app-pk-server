@@ -4,6 +4,7 @@ import com.union.app.domain.pk.交友.PkGroup;
 import com.union.app.domain.pk.捞人.FindUser;
 import com.union.app.entity.pk.卡点.捞人.FindStatu;
 import com.union.app.entity.pk.卡点.捞人.FindUserEntity;
+import com.union.app.entity.pk.用户Key.PkUserDynamicEntity;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.DataSet;
@@ -13,6 +14,7 @@ import com.union.app.service.pk.click.ClickService;
 import com.union.app.service.pk.complain.ComplainService;
 import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.service.*;
+import com.union.app.service.pk.service.pkuser.PkUserDynamicService;
 import com.union.app.service.pk.service.捞人.FindService;
 import com.union.app.service.user.UserService;
 import org.apache.commons.lang.StringUtils;
@@ -30,7 +32,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path="/pk")
-public class 查询社交群列表 {
+public class 查询卡点社交群列表 {
 
 
     @Autowired
@@ -66,6 +68,9 @@ public class 查询社交群列表 {
     @Autowired
     GroupService groupService;
 
+    @Autowired
+    PkUserDynamicService pkUserDynamicService;
+
     @RequestMapping(path="/queryPkGroups",method = RequestMethod.GET)
     public AppResponse queryPkGroups(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId) throws AppException, IOException, InterruptedException {
 
@@ -77,9 +82,10 @@ public class 查询社交群列表 {
 
 
         dataSets.add(new DataSet("pkGroups",pkGroups));
-        dataSets.add(new DataSet("emptyImage",appService.查询背景(1)));
-        dataSets.add(new DataSet("userFindImage",appService.查询背景(3)));
-        dataSets.add(new DataSet("backUrl",appService.查询背景(5)));
+        PkUserDynamicEntity entity = pkUserDynamicService.查询卡点用户动态表(pkId,userId);
+        dataSets.add(new DataSet("postTimes",ObjectUtils.isEmpty(entity)?0:entity.getPostTimes()));
+        dataSets.add(new DataSet("unLockGroups",ObjectUtils.isEmpty(entity)?0:entity.getUnLockGroups()));
+        dataSets.add(new DataSet("emptyData",appService.查询背景(4)));
 
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
 
