@@ -1,9 +1,6 @@
 package com.union.app.api.卡点.捞人;
 
-import com.union.app.domain.pk.PkImage;
 import com.union.app.domain.pk.捞人.FindUser;
-import com.union.app.domain.user.User;
-import com.union.app.entity.pk.PkEntity;
 import com.union.app.entity.pk.卡点.捞人.FindStatu;
 import com.union.app.entity.pk.卡点.捞人.FindUserEntity;
 import com.union.app.plateform.data.resultcode.AppException;
@@ -12,7 +9,6 @@ import com.union.app.plateform.data.resultcode.DataSet;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.service.pk.click.ClickService;
-import com.union.app.service.pk.complain.ComplainService;
 import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.service.*;
 import com.union.app.service.pk.service.捞人.FindService;
@@ -26,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,8 +46,6 @@ public class 查询卡点捞人列表 {
     @Autowired
     UserService userService;
 
-    @Autowired
-    OrderService orderService;
 
     @Autowired
     DynamicService dynamicService;
@@ -62,9 +55,6 @@ public class 查询卡点捞人列表 {
 
     @Autowired
     AppService appService;
-
-    @Autowired
-    ComplainService complainService;
 
     @Autowired
     FindService findService;
@@ -115,6 +105,7 @@ public class 查询卡点捞人列表 {
 
             dataSets.add(new DataSet("findUsers",findUsers));
         }
+        dataSets.add(new DataSet("backUrl",appService.查询背景(5)));
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
 
 

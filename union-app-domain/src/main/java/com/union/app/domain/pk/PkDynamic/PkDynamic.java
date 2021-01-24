@@ -1,6 +1,5 @@
 package com.union.app.domain.pk.PkDynamic;
 
-import com.union.app.entity.pk.PkStatu;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -8,17 +7,21 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class PkDynamic {
+public class PkDynamic
+{
+    private String pkId;
+    //总打卡人数
+    private int totalUsers;
+    //发帖总数
+    private int totalPosts;
+    //图片数量
+    private int totalImages;
 
-    private PkStatu pkStatu;
+    //群组
+    private int pkGroups;
 
-    private int totalCodeUrls;
-
-
-
-
-
-
+    //捞人
+    private int pkFinds;
 
 
 

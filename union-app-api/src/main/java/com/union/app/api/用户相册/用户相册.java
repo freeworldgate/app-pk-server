@@ -43,8 +43,6 @@ public class 用户相册 {
     @Autowired
     UserService userService;
 
-    @Autowired
-    OrderService orderService;
 
     @Autowired
     DynamicService dynamicService;

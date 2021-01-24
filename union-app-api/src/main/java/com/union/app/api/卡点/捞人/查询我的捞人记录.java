@@ -1,14 +1,12 @@
 package com.union.app.api.卡点.捞人;
 
 import com.union.app.domain.pk.捞人.FindUser;
-import com.union.app.domain.user.User;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.DataSet;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.service.pk.click.ClickService;
-import com.union.app.service.pk.complain.ComplainService;
 import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.service.*;
 import com.union.app.service.pk.service.捞人.FindService;
@@ -45,9 +43,6 @@ public class 查询我的捞人记录 {
     UserService userService;
 
     @Autowired
-    OrderService orderService;
-
-    @Autowired
     DynamicService dynamicService;
 
     @Autowired
@@ -55,9 +50,6 @@ public class 查询我的捞人记录 {
 
     @Autowired
     AppService appService;
-
-    @Autowired
-    ComplainService complainService;
 
     @Autowired
     LocationService locationService;

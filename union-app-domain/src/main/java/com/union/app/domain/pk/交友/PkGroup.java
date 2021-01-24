@@ -48,6 +48,7 @@ public class PkGroup {
 
 
     private PkGroupMemberEntity queryerMemberEntity;
+    private String tip;
 
 
 }

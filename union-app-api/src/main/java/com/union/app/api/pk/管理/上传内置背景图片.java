@@ -48,9 +48,6 @@ public class 上传内置背景图片 {
     UserService userService;
 
     @Autowired
-    OrderService orderService;
-
-    @Autowired
     DynamicService dynamicService;
 
     @Autowired

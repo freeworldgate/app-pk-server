@@ -221,7 +221,6 @@ public class PkService {
 //        pkDetail.setComplainTimes(pk.getComplainTimes());
 //        pkDetail.setPkStatu(ObjectUtils.isEmpty(pk.getAlbumStatu())?new KeyNameValue(PkStatu.审核中.getStatu(),PkStatu.审核中.getStatuStr()):new KeyNameValue(pk.getAlbumStatu().getStatu(),pk.getAlbumStatu().getStatuStr()));
         pkDetail.setBackUrl(pk.getBackUrl());
-        pkDetail.setApproved(dynamicService.getKeyValue(CacheKeyName.已审核数量,pkId));
 //        pkDetail.setGroupInfo(this.查询群组(pkDetail.getPkId()));
         pkDetail.setTopPostId(pk.getTopPostId());
         pkDetail.setTopPost(postService.查询顶置帖子(pk));

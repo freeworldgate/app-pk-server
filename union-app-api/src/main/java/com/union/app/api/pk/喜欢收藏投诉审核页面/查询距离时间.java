@@ -9,7 +9,6 @@ import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.DataSet;
 import com.union.app.plateform.data.resultcode.PageAction;
-import com.union.app.service.pk.complain.ComplainService;
 import com.union.app.service.pk.service.*;
 import com.union.app.service.pk.service.pkuser.PkUserDynamicService;
 import com.union.app.service.user.UserService;
@@ -30,8 +29,6 @@ import java.util.List;
 public class 查询距离时间 {
 
 
-    @Autowired
-    ComplainService complainService;
 
     @Autowired
     PostService postService;

@@ -47,9 +47,6 @@ public class 查询内置用户 {
     @Autowired
     UserService userService;
 
-    @Autowired
-    OrderService orderService;
-
 
     @Autowired
     DynamicService dynamicService;

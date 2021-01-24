@@ -48,9 +48,6 @@ public class 创建预置用户 {
     UserService userService;
 
     @Autowired
-    OrderService orderService;
-
-    @Autowired
     DynamicService dynamicService;
 
     @Autowired

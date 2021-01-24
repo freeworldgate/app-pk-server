@@ -16,7 +16,6 @@ import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.Level;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
-import com.union.app.service.pk.complain.ComplainService;
 import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.service.pkuser.PkDynamicService;
 import com.union.app.service.pk.service.pkuser.PkUserDynamicService;
@@ -65,9 +64,6 @@ public class PostService {
 
     @Autowired
     ApproveService approveService;
-
-    @Autowired
-    ComplainService complainService;
 
     @Autowired
     LocationService locationService;

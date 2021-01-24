@@ -19,8 +19,14 @@ public class PkDynamicEntity {
     @Id
     private String pkId;
 
-    private long postNum;
+    //图片数量
+    private int totalImages;
 
+    //群组
+    private int pkGroups;
+
+    //捞人
+    private int pkFinds;
 
 
 

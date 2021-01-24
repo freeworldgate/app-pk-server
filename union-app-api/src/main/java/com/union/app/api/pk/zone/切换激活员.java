@@ -48,8 +48,6 @@ public class 切换激活员 {
     @Autowired
     UserService userService;
 
-    @Autowired
-    OrderService orderService;
 
     @Autowired
     DynamicService dynamicService;

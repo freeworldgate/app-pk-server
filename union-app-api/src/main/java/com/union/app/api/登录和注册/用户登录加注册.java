@@ -77,8 +77,10 @@ public class 用户登录加注册 {
             {
                 userEntity.setUserType(UserType.普通用户);
             }
+
             convert(userInfo,userEntity);
             userDynamicService.创建Dynamic表(userEntity.getUserId());
+            userService.创建UserCardEntity(userEntity.getUserId());
             appDaoService.insertEntity(userEntity);
 
         }

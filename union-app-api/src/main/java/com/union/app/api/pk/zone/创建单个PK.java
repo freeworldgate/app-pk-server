@@ -1,14 +1,7 @@
 package com.union.app.api.pk.zone;
 
-import com.alibaba.fastjson.JSON;
 import com.union.app.common.OSS存储.OssStorage;
-import com.union.app.common.OSS存储.SceneType;
-import com.union.app.domain.pk.ActivePk;
 import com.union.app.domain.pk.PkDetail;
-import com.union.app.entity.pk.ActiveStatu;
-import com.union.app.entity.pk.PkActiveEntity;
-import com.union.app.entity.pk.PkEntity;
-import com.union.app.entity.pk.PkStatu;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.PageAction;
@@ -27,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
-import java.util.UUID;
 
 @RestController
 @RequestMapping(path="/pk")

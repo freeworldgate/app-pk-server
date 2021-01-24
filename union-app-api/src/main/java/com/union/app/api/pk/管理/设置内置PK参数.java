@@ -49,9 +49,6 @@ public class 设置内置PK参数 {
     @Autowired
     UserService userService;
 
-    @Autowired
-    OrderService orderService;
-
 
     @Autowired
     DynamicService dynamicService;

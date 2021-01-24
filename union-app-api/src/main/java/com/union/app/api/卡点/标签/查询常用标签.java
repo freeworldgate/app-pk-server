@@ -48,8 +48,6 @@ public class 查询常用标签 {
     @Autowired
     UserService userService;
 
-    @Autowired
-    OrderService orderService;
 
     @Autowired
     DynamicService dynamicService;

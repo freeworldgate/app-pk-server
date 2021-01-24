@@ -14,9 +14,7 @@ import com.union.app.domain.pk.*;
 import com.union.app.domain.pk.apply.KeyNameValue;
 import com.union.app.domain.pk.cashier.PkCashier;
 import com.union.app.entity.pk.*;
-import com.union.app.entity.pk.complain.ComplainEntity;
-import com.union.app.entity.pk.complain.ComplainStatu;
-import com.union.app.entity.pk.社交.GroupStatu;
+import com.union.app.entity.pk.卡点.标签.ActiveTipEntity;
 import com.union.app.entity.用户.UserEntity;
 import com.union.app.entity.用户.support.UserType;
 import com.union.app.entity.配置表.ColumSwitch;
@@ -27,10 +25,10 @@ import com.union.app.plateform.data.resultcode.DataSet;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.service.data.PkDataService;
-import com.union.app.service.pk.complain.ComplainService;
 import com.union.app.service.pk.dynamic.CacheKeyName;
 import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.common.redis.RedisSortSetService;
+import com.union.app.service.pk.service.pkuser.UserDynamicService;
 import com.union.app.service.user.UserService;
 import com.union.app.util.idGenerator.IdGenerator;
 import com.union.app.util.time.TimeUtils;
@@ -99,11 +97,13 @@ public class AppService {
     @Autowired
     PkDataService pkDataService;
 
-    @Autowired
-    ComplainService complainService;
 
     @Autowired
     LocationService locationService;
+
+
+    @Autowired
+    UserDynamicService userDynamicService;
 
     public List<PkDetail> 查询预设相册(int page,int type) throws IOException {
 
@@ -230,13 +230,13 @@ public class AppService {
             invitePkEntity.setUserId(userId);
             invitePkEntity.setCreateTime(System.currentTimeMillis());
             daoService.insertEntity(invitePkEntity);
-//            userService.邀请次数加一(userId);
+            userDynamicService.邀请次数加一(userId);
             dynamicService.valueIncr(CacheKeyName.收藏,pkId);
         }
         else
         {
             daoService.deleteEntity(invitePkEntity);
-//            userService.邀请次数减一(userId);
+            userDynamicService.邀请次数减一(userId);
             dynamicService.valueDecr(CacheKeyName.收藏,pkId);
         }
 
@@ -723,53 +723,6 @@ public class AppService {
 
 
 
-    public PkActiveEntity 查询PK激活信息(String pkId) {
-        EntityFilterChain filter2 = EntityFilterChain.newFilterChain(PkActiveEntity.class)
-                .compareFilter("pkId",CompareTag.Equal,pkId);
-        PkActiveEntity pkActiveEntity = daoService.querySingleEntity(PkActiveEntity.class,filter2);
-        return pkActiveEntity;
-    }
-
-    public ActivePk 查询需要激活的PK() throws IOException {
-        EntityFilterChain filter2 = EntityFilterChain.newFilterChain(PkActiveEntity.class)
-                .compareFilter("statu",CompareTag.Equal,ActiveStatu.待处理)
-                .orderByRandomFilter();
-        PkActiveEntity pkActiveEntity = daoService.querySingleEntity(PkActiveEntity.class,filter2);
-        if(ObjectUtils.isEmpty(pkActiveEntity))
-        {
-            return null;
-        }
-        else
-        {
-            ActivePk activePk = new ActivePk();
-            activePk.setPk(pkService.querySinglePk(pkActiveEntity.getPkId()));
-            activePk.setApproveMessage(approveService.获取审核人员消息(pkActiveEntity.getPkId()));
-            activePk.setRejectTimes(pkActiveEntity.rejectTime);
-            activePk.setTipId(pkActiveEntity.tipId);
-            return activePk;
-        }
-
-
-    }
-
-
-
-
-
-
-//    public void 修改激活处理的状态(String pkId) {
-//
-//        PkActiveEntity pkActiveEntity = this.查询PK激活信息(pkId);
-//        if(!ObjectUtils.isEmpty(pkActiveEntity) && !StringUtils.isBlank(pkActiveEntity.getScreenCutUrl()))
-//        {
-//            pkActiveEntity.setStatu(ActiveStatu.待处理);
-//            daoService.updateEntity(pkActiveEntity);
-//        }
-//
-//
-//
-//
-//    }
 
 
 
@@ -1256,307 +1209,6 @@ public class AppService {
 
     }
 
-    public PkActive 查询激活信息(String pkId) throws UnsupportedEncodingException {
-        PkActiveEntity pkActiveEntity = appService.查询PK激活信息(pkId);
-        if(ObjectUtils.isEmpty(pkActiveEntity))
-        {
-            return null;
-        }
-        else
-        {
-            PkActive pkActive = this.translatePkActive(pkActiveEntity);
-            return pkActive;
-        }
-
-    }
-
-    private PkActive translatePkActive(PkActiveEntity pkActiveEntity) throws UnsupportedEncodingException {
-        PkActive pkActive = new PkActive();
-        pkActive.setActiveCode(pkActiveEntity.getActiveCode());
-        pkActive.setPkId(pkActiveEntity.getPkId());
-        pkActive.setRejectTimes(pkActiveEntity.getRejectTime());
-        pkActive.setMaxModifyTimes(AppConfigService.getConfigAsInteger(ConfigItem.PK最大修改次数));
-//        pkActive.setTip(StringUtils.isBlank(pkActiveEntity.getTipId())?"":this.查询Tip(pkActiveEntity.getTipId()));
-        pkActive.setStatu(new KeyNameValue(pkActiveEntity.getStatu().getStatu(),pkActiveEntity.getStatu().getStatuStr()));
-
-        return pkActive;
-    }
-
-
-    public PkActive 提交激活码(String pkId, String userId, String activeCode) throws AppException, UnsupportedEncodingException {
-        PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
-        if(!StringUtils.equals(userId,pkEntity.getUserId())){throw AppException.buildException(PageAction.信息反馈框("非法操作","只有榜主才可以激活榜单..."));}
-        if(!appService.validActiveCode(userId,activeCode)){throw AppException.buildException(PageAction.信息反馈框("无效激活码","请获取有效激活码..."));}
-
-        EntityFilterChain filter =  EntityFilterChain.newFilterChain(PkActiveEntity.class)
-                .compareFilter("pkId",CompareTag.Equal,pkId);
-        PkActiveEntity activeEntity = daoService.querySingleEntity(PkActiveEntity.class,filter);
-
-        if(!ObjectUtils.isEmpty(activeEntity))
-        {
-//            PkEntity activePk = pkService.querySinglePkEntity(activeEntity.getPkId());
-//            if(pkEntity.getAlbumStatu() == PkStatu.已审核 || pkEntity.getAlbumStatu() == PkStatu.已关闭)
-//            {
-            throw AppException.buildException(PageAction.信息反馈框("审核中","榜单审核中。。。"));
-//            }
-//            else
-//            {
-//                activeEntity.setPkId(pkId);
-//                activeEntity.setTipId("");
-//                activeEntity.setStatu(ActiveStatu.待处理);
-//                daoService.updateEntity(activeEntity);
-//            }
-        }
-        else
-        {
-
-            activeEntity = new PkActiveEntity();
-            activeEntity.setPkId(pkId);
-            activeEntity.setActiveCode(activeCode);
-            activeEntity.setStatu(ActiveStatu.待处理);
-            activeEntity.setRejectTime(0);
-            activeEntity.setTipId("");
-            daoService.insertEntity(activeEntity);
-        }
-
-
-
-
-
-
-
-        return translatePkActive(activeEntity);
-    }
-
-    private boolean validActiveCode(String userId,String activeCode) throws AppException {
-
-//        激活码系统
-        ActiveCodeEntity activeCodeEntity = this.查询激活码ById(activeCode);
-        if(ObjectUtils.isEmpty(activeCodeEntity)){throw AppException.buildException(PageAction.信息反馈框("无效激活码","请获取有效激活码..."));}
-
-
-
-
-        if(StringUtils.isBlank(activeCodeEntity.getUserId()))
-        {
-            activeCodeEntity.setUserId(userId);
-            activeCodeEntity.setActiveTimes(activeCodeEntity.getActiveTimes() + 1);
-            daoService.updateEntity(activeCodeEntity);
-//            PkCashierEntity cashierEntity = this.查询收款人(activeCodeEntity.getCashierId());
-//            cashierEntity.setUsedActiveCode(cashierEntity.getUsedActiveCode() + 1);
-//            daoService.updateEntity(cashierEntity);
-            return true;
-        }
-        else
-        {
-            if(!StringUtils.equals(userId,activeCodeEntity.getUserId()))
-            {
-                throw AppException.buildException(PageAction.信息反馈框("无效激活码","该激活码已在其他用户名下..."));
-            }
-            else
-            {
-                int maxActiveTimes = AppConfigService.getConfigAsInteger(ConfigItem.激活码使用次数);
-                if(activeCodeEntity.getActiveTimes() >= maxActiveTimes)
-                {
-                    throw AppException.buildException(PageAction.信息反馈框("无效激活码","激活码已使用" + maxActiveTimes+",该激活码已失效，请获取新的激活码..."));
-                }
-                else
-                {
-                    activeCodeEntity.setUserId(userId);
-                    activeCodeEntity.setActiveTimes(activeCodeEntity.getActiveTimes() + 1);
-                    daoService.updateEntity(activeCodeEntity);
-                    PkCashierEntity cashierEntity = this.查询收款人(activeCodeEntity.getCashierId());
-
-                    daoService.updateEntity(cashierEntity);
-                    return true;
-                }
-            }
-
-
-        }
-
-
-
-
-    }
-
-    public void 重新激活PK(String pkId, String userId) throws AppException {
-
-        PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
-        if(!StringUtils.equals(userId,pkEntity.getUserId())){throw AppException.buildException(PageAction.信息反馈框("非法操作","只有榜主才可以激活榜单..."));}
-        PkActiveEntity pkActiveEntity = appService.查询PK激活信息(pkId);
-        if(pkActiveEntity.getRejectTime() >= AppConfigService.getConfigAsInteger(ConfigItem.PK最大修改次数) ){throw AppException.buildException(PageAction.信息反馈框("提交失败","榜单已经超过最大修改次数..."));}
-        pkActiveEntity.setStatu(ActiveStatu.待处理);
-        pkActiveEntity.setRejectTime(pkActiveEntity.getRejectTime() + 1);
-        daoService.updateEntity(pkActiveEntity);
-
-    }
-
-    public List<ActiveTip> 查询所有标签信息() {
-        EntityFilterChain filter =  EntityFilterChain.newFilterChain(ActiveTipEntity.class);
-        List<ActiveTipEntity> activeTipEntities = daoService.queryEntities(ActiveTipEntity.class,filter);
-
-
-        List<ActiveTip> activeTips = new ArrayList<>();
-        activeTipEntities.forEach(tip ->{
-            ActiveTip activeTip = new ActiveTip();
-            activeTip.setId(tip.getId());
-            activeTip.setStyle(查询标签Style());
-            activeTip.setTip(tip.getTip());
-            activeTips.add(activeTip);
-        });
-
-        return activeTips;
-    }
-
-    public List<ActiveTip> 查询PK标签信息(String pkId) {
-        //进缓存
-        EntityFilterChain filter =  EntityFilterChain.newFilterChain(PkTipEntity.class)
-                .compareFilter("pkId",CompareTag.Equal,pkId);
-        List<PkTipEntity> activeTipEntities = daoService.queryEntities(PkTipEntity.class,filter);
-
-        List<ActiveTip> activeTips = new ArrayList<>();
-        List<Object> tips = new ArrayList<>();
-        activeTipEntities.forEach(tip->{
-            tips.add(tip.getTipId());
-        });
-
-        activeTips = 查询Tip(tips);
-
-
-//        activeTipEntities.forEach(tip ->{
-//
-//            ActiveTip activeTip = 查询Tip(tip.getTipId());
-//            if(!ObjectUtils.isEmpty(activeTip))
-//            {
-//                activeTips.add(activeTip);
-//            }
-//
-//        });
-        
-        return activeTips;
-    }
-
-    private String 查询标签Style() {
-
-        return "";
-
-    }
-
-    public void 添加Tip(String tip) throws UnsupportedEncodingException {
-        ActiveTipEntity activeTipEntity = new ActiveTipEntity();
-        activeTipEntity.setId(com.union.app.util.idGenerator.IdGenerator.getActiveTipId());
-        activeTipEntity.setTip(tip);
-        daoService.insertEntity(activeTipEntity);
-
-    }
-    private List<ActiveTip> 查询Tip(List<Object> tips){
-        List<ActiveTip> activeTips = new ArrayList<>();
-        if(CollectionUtils.isEmpty(tips)){return activeTips;}
-        EntityFilterChain filter =  EntityFilterChain.newFilterChain(ActiveTipEntity.class)
-                .inFilter("id",tips);
-        List<ActiveTipEntity> activeTipEntities = daoService.queryEntities(ActiveTipEntity.class,filter);
-
-        if(!CollectionUtils.isEmpty(activeTipEntities))
-        {
-            activeTipEntities.forEach(activeTipEntity -> {
-                ActiveTip activeTip = new ActiveTip();
-                activeTip.setId(activeTipEntity.getId());
-                activeTip.setStyle(查询标签Style());
-                activeTip.setTip(activeTipEntity.getTip());
-                activeTips.add(activeTip);
-            });
-        }
-        return activeTips;
-
-
-    }
-
-
-    public void 删除Tip(String id) {
-        EntityFilterChain filter =  EntityFilterChain.newFilterChain(ActiveTipEntity.class)
-                .compareFilter("id",CompareTag.Equal,id);
-        ActiveTipEntity activeTipEntity = daoService.querySingleEntity(ActiveTipEntity.class,filter);
-        if(!ObjectUtils.isEmpty(activeTipEntity))
-        {
-            daoService.deleteEntity(activeTipEntity);
-        }
-
-
-
-    }
-    public List<DataSet> 查询投诉榜帖(int type) throws IOException {
-        List<DataSet> dataSets = new ArrayList<>();
-        EntityFilterChain filter = null;
-//
-//        if(type == 1)
-//        {
-//             filter = EntityFilterChain.newFilterChain(ComplainEntity.class)
-//                     .compareFilter("complainStatu",CompareTag.Equal,ComplainStatu.处理中)
-//                     .andFilter()
-//                     .compareFilter("pkType",CompareTag.Equal,PkType.审核相册)
-//                     .andFilter()
-//                     .compareFilter("postStatu",CompareTag.Equal,PostStatu.审核中)
-//                     .andFilter()
-//                     .compareFilter("active",CompareTag.Equal,true);
-//        }
-//        else if(type == 2)
-//        {
-//            filter = EntityFilterChain.newFilterChain(ComplainEntity.class)
-//                    .compareFilter("complainStatu",CompareTag.Equal,ComplainStatu.处理中)
-//                    .andFilter()
-//                    .compareFilter("pkType",CompareTag.NotEqual,PkType.内置相册)
-//                    .andFilter()
-//                    .compareFilter("postStatu",CompareTag.Equal,PostStatu.审核中)
-//                    .andFilter()
-//                    .compareFilter("active",CompareTag.Equal,true);;
-//        }
-//        else if(type == 3)
-//        {
-//            filter = EntityFilterChain.newFilterChain(ComplainEntity.class)
-//                    .compareFilter("complainStatu",CompareTag.Equal,ComplainStatu.处理中)
-//                    .andFilter()
-//                    .compareFilter("pkType",CompareTag.NotEqual,PkType.运营相册)
-//                    .andFilter()
-//                    .compareFilter("postStatu",CompareTag.Equal,PostStatu.审核中)
-//                    .andFilter()
-//                    .compareFilter("active",CompareTag.Equal,true);;
-//        }
-//        else
-//        {
-//                filter = EntityFilterChain.newFilterChain(ComplainEntity.class)
-//                        .compareFilter("complainStatu",CompareTag.Equal,ComplainStatu.处理中)
-//                ;
-//        }
-
-//        ComplainEntity entity = daoService.querySingleEntity(ComplainEntity.class,filter);
-//        if(!ObjectUtils.isEmpty(entity))
-//        {
-//            Post post = postService.查询用户帖子(entity.getPkId(),entity.getUserId());
-//            post.setApproveComment(approveService.获取留言信息(post.getPkId(),post.getPostId()));
-//            dataSets.add(new DataSet("complainId",entity.getId()));
-//            PkDetail pkDetail = pkService.querySinglePk(post.getPkId());
-//
-////            pkDetail.setApproveMessage(approveService.获取审核人员消息(post.getPkId()));
-//            dataSets.add(new DataSet("pk",pkDetail));
-//            dataSets.add(new DataSet("post",post));
-//            dataSets.add(new DataSet("text",entity.getText()));
-//
-//        }
-//        else
-//        {
-//            dataSets.add(new DataSet("pk",null));
-//            dataSets.add(new DataSet("post",null));
-//        }
-//
-//
-
-
-
-        return dataSets;
-    }
-
-
 
 
     public List<DataSet> 查询下一个审核榜帖(int type) throws IOException {
@@ -1581,110 +1233,6 @@ public class AppService {
         return dataSets;
     }
 
-    public void 移除预置表(String pkId) {
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(BuildInPkEntity.class)
-                .compareFilter("pkId",CompareTag.Equal,pkId);
-        BuildInPkEntity pkEntity = daoService.querySingleEntity(BuildInPkEntity.class,filter);
-        daoService.deleteEntity(pkEntity);
-    }
-
-
-
-    private ActiveCodeEntity 查询激活码ById(String activeCode)
-    {
-        EntityFilterChain filter1 = EntityFilterChain.newFilterChain(ActiveCodeEntity.class)
-                .compareFilter("activeCode",CompareTag.Equal,activeCode);
-        ActiveCodeEntity activeCodeEntity = daoService.querySingleEntity(ActiveCodeEntity.class,filter1);
-        return activeCodeEntity;
-
-    }
-    public PkCashierEntity 查询收款人(String cashierId)
-    {
-
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(PkCashierEntity.class)
-                .compareFilter("cashierId",CompareTag.Equal,cashierId);;
-        PkCashierEntity pkCashierEntity = daoService.querySingleEntity(PkCashierEntity.class,filter);
-        return pkCashierEntity;
-    }
-    public List<String> 获取收款码(String password) throws AppException {
-
-        List<String> activeCodeEntities = this.生成激活码(password);
-
-        return activeCodeEntities;
-
-
-    }
-
-    public List<String> 生成激活码(String password) {
-        int i=0;
-        List<String> codes = new ArrayList<>();
-        while(i<50)
-        {
-            String code = IdGenerator.getActiveCode();
-            ActiveCodeEntity activeCodeEntity = 查询激活码ById(code);
-            if(ObjectUtils.isEmpty(activeCodeEntity))
-            {
-                activeCodeEntity = new ActiveCodeEntity();
-                activeCodeEntity.setCashierId(password);
-                activeCodeEntity.setCodeStatu(CodeStatu.未启用);
-                activeCodeEntity.setActiveCode(code);
-                activeCodeEntity.setActiveTimes(0);
-                activeCodeEntity.setTime(System.currentTimeMillis());
-                daoService.insertEntity(activeCodeEntity);
-                i++;
-                codes.add(code);
-            }
-
-        }
-
-
-        return codes;
-    }
-
-
-
-    public void 有效投诉(String id) throws AppException, IOException {
-
-//        EntityFilterChain filter = EntityFilterChain.newFilterChain(ComplainEntity.class)
-//                .compareFilter("id",CompareTag.Equal,Integer.valueOf(id));
-//        ComplainEntity entity = daoService.querySingleEntity(ComplainEntity.class,filter);
-//        PostEntity postEntity = postService.查询用户帖(entity.getPkId(),entity.getUserId());
-//        if(postEntity.getStatu() != PostStatu.上线)
-//        {
-//            postService.上线帖子(postEntity.getPkId(),postEntity.getPostId());
-//            dynamicService.已审核(postEntity.getPkId(),postEntity.getPostId());
-//            //记录一次有效投诉。
-//            PkEntity pkEntity = pkService.querySinglePkEntity(entity.getPkId());
-//
-//            daoService.updateEntity(pkEntity);
-//        }
-//
-//
-//        entity.setComplainStatu(ComplainStatu.已处理);
-//        daoService.updateEntity(entity);
-
-
-    }
-
-    public void 无效投诉(String id) {
-
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(ComplainEntity.class)
-                .compareFilter("id",CompareTag.Equal,Integer.valueOf(id));
-        ComplainEntity entity = daoService.querySingleEntity(ComplainEntity.class,filter);
-        if(!ObjectUtils.isEmpty(entity)){
-
-            EntityCacheService.lockPkEntity(entity.getPkId());
-
-            PkEntity pkEntity = pkService.querySinglePkEntity(entity.getPkId());
-            entity.setComplainStatu(ComplainStatu.已处理);
-            daoService.updateEntity(entity);
-            daoService.updateEntity(pkEntity);
-            EntityCacheService.unlockPkEntity(entity.getPkId());
-
-        }
-
-
-    }
 
 
     public void 验证Password(String password) throws AppException {
@@ -1699,57 +1247,6 @@ public class AppService {
 
 
     }
-
-
-    public int 获取留言方式(String userId, String pkId) {
-        int commentStyle = AppConfigService.getConfigAsInteger(ConfigItem.留言方式);
-        if(commentStyle == 3)
-        {
-            PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
-//            if(pkEntity.getPkType() == PkType.运营相册)
-//            {
-//                return 1;
-//            }
-//            else
-//            {
-//                return 0;
-//            }
-
-        }
-        else if(commentStyle == 2)
-        {
-            return 1;
-        }
-        else
-        {
-            return 0;
-        }
-        return 0;
-    }
-
-    public void 设置主题标识码(String pkId, String value) {
-
-
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(PkCodeEntity.class)
-                .compareFilter("pkId",CompareTag.Equal,pkId);
-
-        PkCodeEntity entity = daoService.querySingleEntity(PkCodeEntity.class,filter);
-        if(ObjectUtils.isEmpty(entity))
-        {
-            PkCodeEntity pkCodeEntity = new PkCodeEntity();
-            pkCodeEntity.setPkId(pkId);
-            pkCodeEntity.setCode(value);
-            daoService.insertEntity(pkCodeEntity);
-        }
-        else {
-
-            entity.setCode(value);
-            daoService.updateEntity(entity);
-        }
-
-
-    }
-
 
 
 
@@ -2065,5 +1562,67 @@ public class AppService {
 //        String reg4 = AppConfigService.getConfigAsString(常量值.OSS基础地址,"https://oss.211shopper.com");
         tip = tip.replaceAll(reg3,"").replaceAll(reg1,"").replaceAll(reg2,"").trim();
         return tip;
+    }
+    private String 查询标签Style() {
+
+        return "";
+
+    }
+
+    public List<ActiveTip> 查询所有标签信息() {
+        EntityFilterChain filter =  EntityFilterChain.newFilterChain(ActiveTipEntity.class);
+        List<ActiveTipEntity> activeTipEntities = daoService.queryEntities(ActiveTipEntity.class,filter);
+
+
+        List<ActiveTip> activeTips = new ArrayList<>();
+        activeTipEntities.forEach(tip ->{
+            ActiveTip activeTip = new ActiveTip();
+            activeTip.setId(tip.getId());
+            activeTip.setStyle(查询标签Style());
+            activeTip.setTip(tip.getTip());
+            activeTips.add(activeTip);
+        });
+
+        return activeTips;
+    }
+    public void 添加Tip(String tip) throws UnsupportedEncodingException {
+        ActiveTipEntity activeTipEntity = new ActiveTipEntity();
+        activeTipEntity.setId(com.union.app.util.idGenerator.IdGenerator.getActiveTipId());
+        activeTipEntity.setTip(tip);
+        daoService.insertEntity(activeTipEntity);
+
+    }
+    private List<ActiveTip> 查询Tip(List<Object> tips){
+        List<ActiveTip> activeTips = new ArrayList<>();
+        if(CollectionUtils.isEmpty(tips)){return activeTips;}
+        EntityFilterChain filter =  EntityFilterChain.newFilterChain(ActiveTipEntity.class)
+                .inFilter("id",tips);
+        List<ActiveTipEntity> activeTipEntities = daoService.queryEntities(ActiveTipEntity.class,filter);
+
+        if(!CollectionUtils.isEmpty(activeTipEntities))
+        {
+            activeTipEntities.forEach(activeTipEntity -> {
+                ActiveTip activeTip = new ActiveTip();
+                activeTip.setId(activeTipEntity.getId());
+                activeTip.setStyle(查询标签Style());
+                activeTip.setTip(activeTipEntity.getTip());
+                activeTips.add(activeTip);
+            });
+        }
+        return activeTips;
+
+
+    }
+    public void 删除Tip(String id) {
+        EntityFilterChain filter =  EntityFilterChain.newFilterChain(ActiveTipEntity.class)
+                .compareFilter("id",CompareTag.Equal,id);
+        ActiveTipEntity activeTipEntity = daoService.querySingleEntity(ActiveTipEntity.class,filter);
+        if(!ObjectUtils.isEmpty(activeTipEntity))
+        {
+            daoService.deleteEntity(activeTipEntity);
+        }
+
+
+
     }
 }

@@ -1,17 +1,14 @@
 package com.union.app.api.卡点.交友;
 
 import com.union.app.domain.pk.交友.PkGroup;
-import com.union.app.domain.pk.捞人.FindUser;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.DataSet;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.service.pk.click.ClickService;
-import com.union.app.service.pk.complain.ComplainService;
 import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.service.*;
-import com.union.app.service.pk.service.捞人.FindService;
 import com.union.app.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
@@ -44,8 +41,6 @@ public class 查询我的群组 {
     @Autowired
     UserService userService;
 
-    @Autowired
-    OrderService orderService;
 
     @Autowired
     DynamicService dynamicService;
@@ -55,9 +50,6 @@ public class 查询我的群组 {
 
     @Autowired
     AppService appService;
-
-    @Autowired
-    ComplainService complainService;
 
     @Autowired
     LocationService locationService;
@@ -75,7 +67,7 @@ public class 查询我的群组 {
         List<DataSet> dataSets = new ArrayList<>();
 
         dataSets.add(new DataSet("pkGroups",pkGroups));
-        dataSets.add(new DataSet("emptyImage",appService.查询背景(3)));
+        dataSets.add(new DataSet("emptyImage",appService.查询背景(4)));
         dataSets.add(new DataSet("page",1));
 
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));

@@ -1,10 +1,10 @@
 package com.union.app.api.卡点.用户名片;
 
+import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.service.pk.click.ClickService;
-import com.union.app.service.pk.complain.ComplainService;
 import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.service.*;
 import com.union.app.service.pk.service.捞人.FindService;
@@ -38,8 +38,6 @@ public class 删除申请留言 {
     @Autowired
     UserService userService;
 
-    @Autowired
-    OrderService orderService;
 
     @Autowired
     DynamicService dynamicService;
@@ -51,9 +49,6 @@ public class 删除申请留言 {
     AppService appService;
 
     @Autowired
-    ComplainService complainService;
-
-    @Autowired
     LocationService locationService;
 
     @Autowired
@@ -61,9 +56,10 @@ public class 删除申请留言 {
 
     @RequestMapping(path="/deleteApply",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse deleteApply(@RequestParam("applyId") String applyId,@RequestParam("userId") String userId) throws IOException {
+    public AppResponse deleteApply(@RequestParam("applyId") String applyId,@RequestParam("userId") String userId) throws IOException, AppException {
 
         userService.删除申请留言(userId,applyId);
+
 
         return AppResponse.buildResponse(PageAction.执行处理器("success",""));
 

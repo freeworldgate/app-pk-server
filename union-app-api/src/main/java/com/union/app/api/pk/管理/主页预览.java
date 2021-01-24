@@ -45,9 +45,6 @@ public class 主页预览 {
     UserService userService;
 
     @Autowired
-    OrderService orderService;
-
-    @Autowired
     DynamicService dynamicService;
 
     @Autowired

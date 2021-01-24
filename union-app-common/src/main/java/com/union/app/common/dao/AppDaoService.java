@@ -3,6 +3,7 @@ package com.union.app.common.dao;
 import com.union.app.dao.jpa.JpaTransactionUtil;
 import com.union.app.dao.spi.filter.EntityFilterChain;
 import com.union.app.dao.spi.filter.PageLimitFilter;
+import com.union.app.entity.用户.UserDynamicEntity;
 import com.union.app.plateform.log4j2.AppLoggerFactory;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.transaction.TransactionStatus;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Map;
@@ -118,9 +120,8 @@ public class AppDaoService
      */
     public <T> void updateEntity(T t){
 
-
-
         entityManager.merge(t);
+
     }
 
     /**
@@ -131,6 +132,7 @@ public class AppDaoService
     public <T> void deleteEntity(T t){
 
         entityManager.remove(t);
+
     }
 
     /**
@@ -152,28 +154,19 @@ public class AppDaoService
     public void rollback(TransactionStatus transactionStatus){jpaTransactionUtil.rollback(transactionStatus);}
 
 
+    public <T> void updateColumById(Class<T> tClass, String idName,String idValue, String columName, int columValue) {
+        StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append("update ");
+        stringBuffer.append(tClass.getSimpleName());
+        stringBuffer.append(" p set p.");
+        stringBuffer.append(columName);
+        stringBuffer.append("=:columValue where p.");
+        stringBuffer.append(idName);
+        stringBuffer.append("=:idValue");
+        Query query = entityManager.createQuery(stringBuffer.toString());
+        query.setParameter("columValue", columValue);
+        query.setParameter("idValue", idValue);
+        query.executeUpdate();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    }
 }

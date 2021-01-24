@@ -45,10 +45,6 @@ public class 收款码列表 {
     UserService userService;
 
     @Autowired
-    OrderService orderService;
-
-
-    @Autowired
     DynamicService dynamicService;
 
     @Autowired

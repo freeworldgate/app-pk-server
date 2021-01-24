@@ -8,7 +8,6 @@ import com.union.app.plateform.data.resultcode.DataSet;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.service.pk.click.ClickService;
-import com.union.app.service.pk.complain.ComplainService;
 import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.service.*;
 import com.union.app.service.pk.service.捞人.FindService;
@@ -44,8 +43,6 @@ public class 查询用户捞人记录 {
     @Autowired
     UserService userService;
 
-    @Autowired
-    OrderService orderService;
 
     @Autowired
     DynamicService dynamicService;
@@ -55,9 +52,6 @@ public class 查询用户捞人记录 {
 
     @Autowired
     AppService appService;
-
-    @Autowired
-    ComplainService complainService;
 
     @Autowired
     LocationService locationService;
@@ -81,6 +75,7 @@ public class 查询用户捞人记录 {
 
         dataSets.add(new DataSet("emptyImage",appService.查询背景(1)));
         dataSets.add(new DataSet("createFindUserImage",appService.查询背景(3)));
+        dataSets.add(new DataSet("backUrl",appService.查询背景(5)));
 
 
 

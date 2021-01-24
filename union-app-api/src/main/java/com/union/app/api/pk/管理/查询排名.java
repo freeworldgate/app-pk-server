@@ -41,9 +41,6 @@ public class 查询排名 {
     UserService userService;
 
     @Autowired
-    OrderService orderService;
-
-    @Autowired
     DynamicService dynamicService;
 
     @Autowired

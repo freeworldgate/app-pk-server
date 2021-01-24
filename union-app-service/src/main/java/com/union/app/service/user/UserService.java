@@ -28,6 +28,8 @@ import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.KeyType;
 import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.service.KeyService;
+import com.union.app.service.pk.service.LockService;
+import com.union.app.service.pk.service.LockType;
 import com.union.app.service.pk.service.pkuser.UserDynamicService;
 import com.union.app.util.time.TimeUtils;
 import org.apache.commons.lang.StringUtils;
@@ -61,6 +63,9 @@ public class UserService {
 
     @Autowired
     KeyService keyService;
+
+    @Autowired
+    LockService lockService;
 
 
     public UserEntity queryUserEntity(String userId){
@@ -396,16 +401,9 @@ public class UserService {
 
     public void 上传UserCard(String userId, String userCard) {
         UserCardEntity userCardEntity = userService.queryUserCardEntity(userId);
-        if(ObjectUtils.isEmpty(userCardEntity))
-        {
-            userCardEntity = 创建UserCardEntity(userId,userCard);
-            appDaoService.insertEntity(userCardEntity);
-        }
-        else
-        {
-            userCardEntity.setUserCard(userCard);
-            appDaoService.updateEntity(userCardEntity);
-        }
+        userCardEntity.setUserCard(userCard);
+        appDaoService.updateEntity(userCardEntity);
+
     }
 
 
@@ -413,13 +411,15 @@ public class UserService {
     public UserCard 查询UserCard(String userId) {
         UserCard userCard = new UserCard();
         userCard.setUser(this.queryUser(userId));
-        userCard.setMeLike(keyService.queryKey(userId, KeyType.Ta想认识的人));
-        userCard.setLikeMe(keyService.queryKey(userId, KeyType.想认识的Ta人));
+//        userCard.setMeLike(keyService.queryKey(userId, KeyType.Ta想认识的人));
+//        userCard.setLikeMe(keyService.queryKey(userId, KeyType.想认识的Ta人));
 
         UserCardEntity userCardEntity = userService.queryUserCardEntity(userId);
 
         if(ObjectUtils.isEmpty(userCardEntity)){
             userCard.setUnLock(0);
+            userCard.setLikeMe(0);
+            userCard.setMeLike(0);
             userCard.setUserCard(null);
             userCard.setMember1(null);
             userCard.setMember2(null);
@@ -428,6 +428,8 @@ public class UserService {
         else
         {
             userCard.setUnLock(userCardEntity.getUnLock());
+            userCard.setLikeMe(keyService.queryKey(userId, KeyType.想认识我的人));
+            userCard.setMeLike(userCardEntity.getMeLike());
             userCard.setUserCard(userCardEntity.getUserCard());
             userCard.setMember1(this.queryUser(userCardEntity.getMember1()));
             userCard.setMember2(this.queryUser(userCardEntity.getMember2()));
@@ -446,7 +448,7 @@ public class UserService {
 
 
 
-    public void 申请UserCard(String targetId, String userId, String text) {
+    public void 申请UserCard(String targetId, String userId, String text) throws AppException {
         UserCardApplyEntity userCardApplyEntity = 查询UserCard记录(targetId,userId);
         if(ObjectUtils.isEmpty(userCardApplyEntity))
         {
@@ -456,7 +458,16 @@ public class UserService {
             userCardApplyEntity.setTime(System.currentTimeMillis());
             userCardApplyEntity.setCardLock(false);
             userCardApplyEntity.setApplyerId(userId);
+            //添加一条解锁请求
             appDaoService.insertEntity(userCardApplyEntity);
+
+            //更新用户名下他想认识和想认识他的人数量。
+            this.我想认识的人加一(userId);
+
+            this.想认识我的人加一(targetId);
+
+
+
         }
         else
         {
@@ -470,14 +481,57 @@ public class UserService {
 
     }
 
+    private void 想认识我的人加一(String userId) throws AppException {
+
+        keyService.想认识我的人加一(userId);
+//        if(lockService.getLock(userId, LockType.用户名片锁))
+//        {
+//            UserCardEntity userCardEntity = userService.queryUserCardEntity(userId);
+//            userCardEntity.setLikeMe(userCardEntity.getLikeMe()+1);
+//            appDaoService.updateEntity(userCardEntity);
+//            lockService.releaseLock(userId, LockType.用户名片锁);
+//        }
+//        else
+//        {
+//            throw AppException.buildException(PageAction.信息反馈框("系统错误","系统错误"));
+//        }
+    }
+    private void 想认识我的人减一(String userId) throws AppException {
+        keyService.想认识我的人减一(userId);
+//        if(lockService.getLock(userId, LockType.用户名片锁))
+//        {
+//            UserCardEntity userCardEntity = userService.queryUserCardEntity(userId);
+//            userCardEntity.setLikeMe(userCardEntity.getLikeMe()-1);
+//            appDaoService.updateEntity(userCardEntity);
+//            lockService.releaseLock(userId, LockType.用户名片锁);
+//        }
+//        else
+//        {
+//            throw AppException.buildException(PageAction.信息反馈框("系统错误","系统错误"));
+//        }
+    }
+    private void 我想认识的人加一(String userId) throws AppException {
+
+            UserCardEntity userCardEntity = userService.queryUserCardEntity(userId);
+            userCardEntity.setMeLike(userCardEntity.getMeLike()+1);
+            appDaoService.updateEntity(userCardEntity);
+            lockService.releaseLock(userId, LockType.用户名片锁);
+
+    }
+    private void 我想认识的人减一(String userId) throws AppException {
+
+
+            UserCardEntity userCardEntity = userService.queryUserCardEntity(userId);
+            userCardEntity.setMeLike(userCardEntity.getMeLike()-1);
+            appDaoService.updateEntity(userCardEntity);
+            lockService.releaseLock(userId, LockType.用户名片锁);
+    }
     public UserCardEntity queryUserCardEntity(String userId) {
         EntityFilterChain filter = EntityFilterChain.newFilterChain(UserCardEntity.class)
                 .compareFilter("userId",CompareTag.Equal,userId);
         UserCardEntity userCardEntity = appDaoService.querySingleEntity(UserCardEntity.class,filter);
 
         return userCardEntity;
-
-
     }
 
     public List<UserCardApply> 查询UserCard申请列表(String targetUserId,int type, int page) {
@@ -536,27 +590,37 @@ public class UserService {
         return applys;
     }
 
-    public void 删除申请留言(String userId, String applyId) {
+    public void 删除申请留言(String userId, String applyId) throws AppException {
 
         EntityFilterChain filter = EntityFilterChain.newFilterChain(UserCardApplyEntity.class)
                 .compareFilter("id",CompareTag.Equal,Integer.valueOf(applyId));
         UserCardApplyEntity userCardApplyEntity = appDaoService.querySingleEntity(UserCardApplyEntity.class,filter);
-        if (!ObjectUtils.isEmpty(userCardApplyEntity))
+        if (!ObjectUtils.isEmpty(userCardApplyEntity) && !userCardApplyEntity.isCardLock())
         {
             if(StringUtils.equalsIgnoreCase(userId, userCardApplyEntity.getUserId()) || StringUtils.equalsIgnoreCase(userId, userCardApplyEntity.getApplyerId()))
             {
                 appDaoService.deleteEntity(userCardApplyEntity);
+                this.我想认识的人减一(userId);
+                this.想认识我的人减一(userCardApplyEntity.getUserId());
             }
+        }
+        else
+        {
+            throw AppException.buildException(PageAction.信息反馈框("已审批留言不能删除","已审批留言不能删除"));
         }
 
     }
+
+
 
     public void 修改锁状态(String userId, String applyId) throws AppException {
 
         EntityFilterChain filter = EntityFilterChain.newFilterChain(UserCardApplyEntity.class)
                 .compareFilter("id",CompareTag.Equal,Integer.valueOf(applyId));
         UserCardApplyEntity userCardApplyEntity = appDaoService.querySingleEntity(UserCardApplyEntity.class,filter);
+
         if(!StringUtils.equalsIgnoreCase(userId, userCardApplyEntity.getUserId())){ throw AppException.buildException(PageAction.信息反馈框("非法用户","非法用户"));}
+
         if(!ObjectUtils.isEmpty(userCardApplyEntity)){
             if(userCardApplyEntity.isCardLock())
             {
@@ -578,18 +642,11 @@ public class UserService {
     private void 允许用户查看UserCard(String userId, String applyId) {
         新增一个可见UserCard成员(userId,applyId);
         UserCardEntity userCardEntity = this.queryUserCardEntity(userId);
-        if(ObjectUtils.isEmpty(userCardEntity)){
-            userCardEntity = 创建UserCardEntity(userId,null);
-            userCardEntity.setUnLock(userCardEntity.getUnLock()+1);
-            添加Member(userCardEntity,applyId);
-            appDaoService.insertEntity(userCardEntity);
-        }
-        else
-        {
-            userCardEntity.setUnLock(userCardEntity.getUnLock()+1);
-            添加Member(userCardEntity,applyId);
-            appDaoService.updateEntity(userCardEntity);
-        }
+
+        userCardEntity.setUnLock(userCardEntity.getUnLock()+1);
+        添加Member(userCardEntity,applyId);
+        appDaoService.updateEntity(userCardEntity);
+
 
 
     }
@@ -644,31 +701,29 @@ public class UserService {
 
     }
 
-    private UserCardEntity 创建UserCardEntity(String userId ,String userCard) {
+    public void 创建UserCardEntity(String userId) {
         UserCardEntity userCardEntity = new UserCardEntity();
         userCardEntity.setUserId(userId);
         userCardEntity.setUnLock(0);
-        userCardEntity.setUserCard(userCard);
-        userCardEntity.setTime(System.currentTimeMillis());
-        return userCardEntity;
+        userCardEntity.setMeLike(0);
+        userCardEntity.setLikeMe(0);
+        userCardEntity.setMember1(null);
+        userCardEntity.setMember2(null);
+        userCardEntity.setMember3(null);
+        userCardEntity.setUserCard(null);
+        userCardEntity.setTime(0);
+        appDaoService.insertEntity(userCardEntity);
+
     }
 
     private void 禁止用户查看UserCard(String userId, String applyId) {
 
         删除一个可见UserCard成员(userId,applyId);
         UserCardEntity userCardEntity = this.queryUserCardEntity(userId);
-        if(ObjectUtils.isEmpty(userCardEntity)){
-            userCardEntity = 创建UserCardEntity(userId,null);
-            userCardEntity.setUnLock(0);
-            删除Member(userCardEntity,applyId);
-            appDaoService.insertEntity(userCardEntity);
-        }
-        else
-        {
-            userCardEntity.setUnLock(userCardEntity.getUnLock()>0?userCardEntity.getUnLock()-1:0);
-            删除Member(userCardEntity,applyId);
-            appDaoService.updateEntity(userCardEntity);
-        }
+        userCardEntity.setUnLock(userCardEntity.getUnLock()>0?userCardEntity.getUnLock()-1:0);
+        删除Member(userCardEntity,applyId);
+        appDaoService.updateEntity(userCardEntity);
+
 
 
     }
@@ -693,6 +748,7 @@ public class UserService {
 
         }
     }
+
 
 
 }

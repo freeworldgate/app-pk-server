@@ -10,6 +10,7 @@ import com.union.app.dao.spi.filter.CompareTag;
 import com.union.app.dao.spi.filter.EntityFilterChain;
 import com.union.app.dao.spi.filter.OrderTag;
 import com.union.app.domain.pk.*;
+import com.union.app.domain.pk.PkDynamic.PkDynamic;
 import com.union.app.domain.pk.apply.KeyValuePair;
 import com.union.app.domain.pk.daka.CreateLocation;
 import com.union.app.domain.user.User;
@@ -21,9 +22,9 @@ import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.service.data.PkDataService;
-import com.union.app.service.pk.complain.ComplainService;
-import com.union.app.service.pk.dynamic.CacheKeyName;
 import com.union.app.service.pk.dynamic.DynamicService;
+import com.union.app.service.pk.service.pkuser.PkDynamicService;
+import com.union.app.service.pk.service.pkuser.UserDynamicService;
 import com.union.app.service.user.UserService;
 import com.union.app.util.idGenerator.IdGenerator;
 import com.union.app.util.time.TimeUtils;
@@ -90,8 +91,10 @@ public class LocationService {
     PkDataService pkDataService;
 
     @Autowired
-    ComplainService complainService;
+    UserDynamicService userDynamicService;
 
+    @Autowired
+    PkDynamicService pkDynamicService;
 
     public String 坐标转换成UUID(double latitude,double longitude,String name)
     {
@@ -171,6 +174,9 @@ public class LocationService {
         pkEntity.setBackUrl(createLocation.getBackUrl());
         pkEntity.setTime(System.currentTimeMillis());
         daoService.insertEntity(pkEntity);
+        pkDynamicService.创建DynamicEntity(pkId);
+        userDynamicService.用户卡点加一(createLocation.getUserId());
+
 
         return pkId;
     }
@@ -223,7 +229,8 @@ public class LocationService {
         pkDetail.setUser(userService.queryUser(pk.getUserId()));
         pkDetail.setTime(TimeUtils.convertTime(pk.getTime()));
         pkDetail.setBackUrl(pk.getBackUrl());
-        pkDetail.setApproved(dynamicService.getKeyValue(CacheKeyName.已审核数量,pkId));
+        PkDynamic pkDynamic = pkDynamicService.queryPkDynamic(pkId);
+        pkDetail.setPkDynamic(pkDynamic);
         pkDetail.setTopPostId(pk.getTopPostId());
         Post topPost = postService.查询顶置帖子(pk);
         if(!ObjectUtils.isEmpty(topPost))
@@ -335,8 +342,6 @@ public class LocationService {
                 .compareFilter("longitude",CompareTag.Small,longitude + 0.06D)
                 .andFilter()
                 .compareFilter("longitude",CompareTag.Bigger,longitude - 0.06D)
-                .andFilter()
-                .nullFilter("topPostId",false)
                 .orderByRandomFilter()
                 .pageLimitFilter(1,20);
         List<PkEntity> pkEntities = daoService.queryEntities(PkEntity.class,filter);
@@ -502,21 +507,34 @@ public class LocationService {
 
     }
 
-    public void 添加关注(String userId, String followerId) {
-        UserFollowEntity userFollowEntity = new UserFollowEntity();
-        userFollowEntity.setUserId(followerId);
-        userFollowEntity.setFollowerId(userId);
-        userFollowEntity.setTime(System.currentTimeMillis());
-        daoService.insertEntity(userFollowEntity);
+    public void 添加关注(String userId, String followerId) throws AppException {
+        UserFollowEntity userFollowEntity = 查询关注(userId,followerId);
+        if(ObjectUtils.isEmpty(userFollowEntity))
+        {
+            userFollowEntity = new UserFollowEntity();
+            userFollowEntity.setUserId(followerId);
+            userFollowEntity.setFollowerId(userId);
+            userFollowEntity.setTime(System.currentTimeMillis());
+            daoService.insertEntity(userFollowEntity);
+        }
+        else
+        {
+            throw AppException.buildException(PageAction.前端数据更新("followStatu",true));
+        }
+
 
     }
 
-    public void 取消关注(String userId, String followerId) {
+    public void 取消关注(String userId, String followerId) throws AppException {
 
         UserFollowEntity userFollowEntity = 查询关注(userId,followerId);
         if(!ObjectUtils.isEmpty(userFollowEntity))
         {
            daoService.deleteEntity(userFollowEntity);
+        }
+        else
+        {
+            throw AppException.buildException(PageAction.前端数据更新("followStatu",false));
         }
     }
     public UserFollowEntity 查询关注(String userId, String followerId) {

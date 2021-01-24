@@ -47,9 +47,6 @@ public class 查询主页 {
     @Autowired
     UserService userService;
 
-    @Autowired
-    OrderService orderService;
-
 
     @Autowired
     DynamicService dynamicService;

@@ -47,9 +47,6 @@ public class 查询单个预置PK {
     UserService userService;
 
     @Autowired
-    OrderService orderService;
-
-    @Autowired
     DynamicService dynamicService;
 
     @Autowired

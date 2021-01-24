@@ -3,8 +3,15 @@ package com.union.app.service.pk.service.pkuser;
 import com.union.app.common.dao.AppDaoService;
 import com.union.app.dao.spi.filter.CompareTag;
 import com.union.app.dao.spi.filter.EntityFilterChain;
+import com.union.app.domain.pk.PkDynamic.UserDynamic;
 import com.union.app.entity.pk.用户Key.PkUserDynamicEntity;
 import com.union.app.entity.用户.UserDynamicEntity;
+import com.union.app.plateform.data.resultcode.AppException;
+import com.union.app.plateform.data.resultcode.PageAction;
+import com.union.app.plateform.storgae.KeyType;
+import com.union.app.service.pk.service.KeyService;
+import com.union.app.service.pk.service.LockService;
+import com.union.app.service.pk.service.LockType;
 import com.union.app.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,8 +31,33 @@ public class UserDynamicService {
 
 
 
+    @Autowired
+    LockService lockService;
 
 
+
+    @Autowired
+    KeyService keyService;
+
+
+    public UserDynamic queryUserDynamic(String userId)
+    {
+        UserDynamicEntity userDynamicEntity = this.queryUserDynamicEntity(userId);
+        UserDynamic userDynamic = new UserDynamic();
+        userDynamic.setUserId(userDynamicEntity.getUserId());
+        userDynamic.setCollectTimes(userDynamicEntity.getCollectTimes());
+        userDynamic.setFans(keyService.queryKey(userId, KeyType.用户粉丝));
+        userDynamic.setFollow(userDynamicEntity.getFollow());
+        userDynamic.setMygroups(userDynamicEntity.getMygroups());
+        userDynamic.setPk(userDynamicEntity.getPk());
+        userDynamic.setPkTimes(userDynamicEntity.getPkTimes());
+        userDynamic.setPostTimes(userDynamicEntity.getPostTimes());
+        userDynamic.setUnLockTimes(userDynamicEntity.getUnLockTimes());
+        userDynamic.setFindTimeLength(userDynamicEntity.getFindTimeLength());
+
+        return userDynamic;
+
+    }
 
     public UserDynamicEntity queryUserDynamicEntity(String userId){
         EntityFilterChain filter = EntityFilterChain.newFilterChain(UserDynamicEntity.class)
@@ -62,6 +94,8 @@ public class UserDynamicService {
         userkvEntity.setUnLockTimes(0);
         userkvEntity.setCollectTimes(0);
         userkvEntity.setFindTimeLength(0);
+        userkvEntity.setFans(0);
+        userkvEntity.setFollow(0);
         userkvEntity.setPk(0);
         daoService.insertEntity(userkvEntity);
 
@@ -73,6 +107,76 @@ public class UserDynamicService {
         userDynamicEntity.setUnLockTimes(userDynamicEntity.getUnLockTimes()+1);
         daoService.updateEntity(userDynamicEntity);
 
+
+    }
+
+
+    public void 邀请次数加一(String userId) {
+        UserDynamicEntity userDynamicEntity = queryUserDynamicEntity(userId);
+        userDynamicEntity.setCollectTimes(userDynamicEntity.getCollectTimes()+1);
+        daoService.updateEntity(userDynamicEntity);
+    }
+
+    public void 邀请次数减一(String userId) {
+        UserDynamicEntity userDynamicEntity = queryUserDynamicEntity(userId);
+        userDynamicEntity.setCollectTimes(userDynamicEntity.getCollectTimes()-1);
+        daoService.updateEntity(userDynamicEntity);
+    }
+
+    public void 用户卡点加一(String userId) {
+        UserDynamicEntity userDynamicEntity = queryUserDynamicEntity(userId);
+        userDynamicEntity.setPkTimes(userDynamicEntity.getPkTimes()+1);
+        daoService.updateEntity(userDynamicEntity);
+
+    }
+
+
+    public void 用户关注数量加一(String userId) {
+        UserDynamicEntity userDynamicEntity = queryUserDynamicEntity(userId);
+        userDynamicEntity.setFollow(userDynamicEntity.getFollow()+1);
+        daoService.updateEntity(userDynamicEntity);
+
+
+    }
+    public void 用户关注数量减一(String userId) {
+        UserDynamicEntity userDynamicEntity = queryUserDynamicEntity(userId);
+        userDynamicEntity.setFollow(userDynamicEntity.getFollow()-1);
+        daoService.updateEntity(userDynamicEntity);
+    }
+
+
+
+
+    public void 用户粉丝数量加一(String userId) throws AppException {
+
+        keyService.用户粉丝加一(userId);
+
+//        if(lockService.getLock(userId, LockType.用户粉丝数量)) {
+//            UserDynamicEntity userDynamicEntity = queryUserDynamicEntity(userId);
+//            userDynamicEntity.setFans(userDynamicEntity.getFans() + 1);
+//            daoService.updateColumById(UserDynamicEntity.class,"userId",userDynamicEntity.getUserId(),"fans",userDynamicEntity.getFans());
+//            lockService.releaseLock(userId,LockType.用户粉丝数量);
+//        }
+//        else
+//        {
+//            throw AppException.buildException(PageAction.信息反馈框("系统错误","系统错误"));
+//        }
+    }
+
+
+    public void 用户粉丝数量减一(String userId) throws AppException {
+        keyService.用户粉丝减一(userId);
+
+//        if(lockService.getLock(userId, LockType.用户粉丝数量)) {
+//            UserDynamicEntity userDynamicEntity = queryUserDynamicEntity(userId);
+//            userDynamicEntity.setFans(userDynamicEntity.getFans() - 1);
+//            daoService.updateEntity(userDynamicEntity);
+//            lockService.releaseLock(userId,LockType.用户粉丝数量);
+//        }
+//        else
+//        {
+//            throw AppException.buildException(PageAction.信息反馈框("系统错误","系统错误"));
+//        }
 
     }
 }

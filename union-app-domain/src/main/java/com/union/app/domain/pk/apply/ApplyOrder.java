@@ -1,16 +1,9 @@
 package com.union.app.domain.pk.apply;
 
-import com.union.app.domain.pk.ShareDynamicMessage;
-import com.union.app.domain.pk.share.CreatorInfo;
-import com.union.app.domain.pk.share.PosterInfo;
-import com.union.app.domain.pk.share.ShareInfo;
 import com.union.app.domain.user.User;
-import com.union.app.entity.pk.OrderStatu;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
-import java.util.List;
 
 @Getter
 @Setter

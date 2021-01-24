@@ -1,6 +1,5 @@
 package com.union.app.api.卡点.关注;
 
-import com.union.app.domain.pk.PkImage;
 import com.union.app.domain.user.User;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
@@ -8,7 +7,6 @@ import com.union.app.plateform.data.resultcode.DataSet;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.service.pk.click.ClickService;
-import com.union.app.service.pk.complain.ComplainService;
 import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.service.*;
 import com.union.app.service.user.UserService;
@@ -43,8 +41,6 @@ public class 关注 {
     @Autowired
     UserService userService;
 
-    @Autowired
-    OrderService orderService;
 
     @Autowired
     DynamicService dynamicService;
@@ -54,9 +50,6 @@ public class 关注 {
 
     @Autowired
     AppService appService;
-
-    @Autowired
-    ComplainService complainService;
 
     @Autowired
     LocationService locationService;

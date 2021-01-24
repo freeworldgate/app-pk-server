@@ -4,7 +4,7 @@ import com.union.app.common.dao.AppDaoService;
 import com.union.app.dao.spi.filter.CompareTag;
 import com.union.app.dao.spi.filter.EntityFilterChain;
 import com.union.app.dao.spi.filter.OrderTag;
-import com.union.app.domain.pk.排名.PkDynamic;
+import com.union.app.domain.pk.排名.UserSort;
 import com.union.app.entity.pk.用户Key.PkUserDynamicEntity;
 import com.union.app.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,16 +29,16 @@ public class PkUserDynamicService {
 
 
 
-    public List<PkDynamic> 查询卡点打卡排名(String pkId, int page)
+    public List<UserSort> 查询卡点打卡排名(String pkId, int page)
     {
-        List<PkDynamic> sorts = new ArrayList<>();
+        List<UserSort> sorts = new ArrayList<>();
         List<PkUserDynamicEntity> dynamicEntities = this.查询排名信息Entity(pkId,page);
         dynamicEntities.forEach(dynamic->{
-            PkDynamic pkDynamic = new PkDynamic();
-            pkDynamic.setPkId(dynamic.getPkId());
-            pkDynamic.setPostTimes(dynamic.getPostTimes());
-            pkDynamic.setUser(userService.queryUser(dynamic.getUserId()));
-            sorts.add(pkDynamic);
+            UserSort userSort = new UserSort();
+            userSort.setPkId(dynamic.getPkId());
+            userSort.setPostTimes(dynamic.getPostTimes());
+            userSort.setUser(userService.queryUser(dynamic.getUserId()));
+            sorts.add(userSort);
         });
         return sorts;
     }
@@ -115,6 +115,7 @@ public class PkUserDynamicService {
             pkUserEntity.setPostTimes(1);
             daoService.insertEntity(pkUserEntity);
         }
+
     };
 
 
@@ -158,14 +159,5 @@ public class PkUserDynamicService {
 
     }
 
-    public PkDynamic 查询卡点用户动态(String pkId, String userId) {
-        PkUserDynamicEntity dynamic = 查询卡点用户动态表(pkId,userId);
-        if(ObjectUtils.isEmpty(dynamic)){return null;}
-        PkDynamic pkDynamic = new PkDynamic();
-        pkDynamic.setPkId(dynamic.getPkId());
-        pkDynamic.setPostTimes(dynamic.getPostTimes());
-        pkDynamic.setUser(userService.queryUser(dynamic.getUserId()));
 
-        return pkDynamic;
-    }
 }

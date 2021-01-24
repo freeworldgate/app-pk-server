@@ -7,7 +7,6 @@ import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.service.pk.click.ClickService;
-import com.union.app.service.pk.service.OrderService;
 import com.union.app.service.pk.service.PkService;
 import com.union.app.service.pk.service.PostService;
 import com.union.app.service.user.UserService;
@@ -39,10 +38,6 @@ public class Post审批 {
 
     @Autowired
     UserService userService;
-
-    @Autowired
-    OrderService orderService;
-
 
 
     @RequestMapping(path="/postApprove",method = RequestMethod.GET)

@@ -47,9 +47,6 @@ public class 添加相册到主页预览 {
     UserService userService;
 
     @Autowired
-    OrderService orderService;
-
-    @Autowired
     DynamicService dynamicService;
 
     @Autowired

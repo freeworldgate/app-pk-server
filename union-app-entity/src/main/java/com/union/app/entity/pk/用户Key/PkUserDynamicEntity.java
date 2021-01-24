@@ -1,6 +1,5 @@
 package com.union.app.entity.pk.用户Key;
 
-import com.union.app.entity.pk.消息.MessageType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;

@@ -1,19 +1,12 @@
 package com.union.app.domain.pk;
 
 import com.union.app.domain.pk.PkDynamic.PkDynamic;
-import com.union.app.domain.pk.apply.KeyNameValue;
-import com.union.app.domain.pk.审核.ApproveMessage;
 import com.union.app.domain.user.User;
-import com.union.app.domain.工具.RandomUtil;
-import com.union.app.entity.pk.InviteType;
-import com.union.app.entity.pk.PkLocationEntity;
-import com.union.app.entity.pk.PkType;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
-import java.util.List;
 
 @Getter
 @Setter
@@ -44,7 +37,7 @@ public class PkDetail implements Serializable{
     LocationType type;
 
     private String time;
-    private int approved;
+
 
 
     private String codeUrl;
@@ -61,5 +54,9 @@ public class PkDetail implements Serializable{
 
     private Marker marker;
     private Circle circle;
+
+    private PkDynamic pkDynamic;
+
+
 
 }

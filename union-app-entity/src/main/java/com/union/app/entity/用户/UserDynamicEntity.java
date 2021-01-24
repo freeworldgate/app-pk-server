@@ -43,6 +43,10 @@ public class UserDynamicEntity {
     private int collectTimes;
 
 
+    //用户关注
+    private int follow;
+    //用户粉丝
+    private int fans;
 
 
 

@@ -23,6 +23,10 @@ public class UserCardEntity {
 
     private int unLock;
 
+    private int likeMe;
+
+    private int meLike;
+
     private String member1;
 
     private String member2;

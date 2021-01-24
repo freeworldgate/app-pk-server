@@ -1,13 +1,12 @@
 package com.union.app.api.卡点.次数排名;
 
-import com.union.app.domain.pk.排名.PkDynamic;
+import com.union.app.domain.pk.排名.UserSort;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.DataSet;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.service.pk.click.ClickService;
-import com.union.app.service.pk.complain.ComplainService;
 import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.service.*;
 import com.union.app.service.pk.service.pkuser.PkUserDynamicService;
@@ -44,8 +43,6 @@ public class 次数排名 {
     @Autowired
     UserService userService;
 
-    @Autowired
-    OrderService orderService;
 
     @Autowired
     DynamicService dynamicService;
@@ -57,9 +54,6 @@ public class 次数排名 {
     AppService appService;
 
     @Autowired
-    ComplainService complainService;
-
-    @Autowired
     LocationService locationService;
     @Autowired
     PkUserDynamicService pkUserDynamicService;
@@ -69,14 +63,14 @@ public class 次数排名 {
 
         //下一页
 //        PkDynamic userSort = null;
-        List<PkDynamic> sorts = pkUserDynamicService.查询卡点打卡排名(pkId,1);
-        for(PkDynamic pkDynamic:sorts)
+        List<UserSort> sorts = pkUserDynamicService.查询卡点打卡排名(pkId,1);
+        for(UserSort userSort :sorts)
         {
-            if(StringUtils.equals(userId,pkDynamic.getUser().getUserId()))
+            if(StringUtils.equals(userId, userSort.getUser().getUserId()))
             {
 //                userSort = pkDynamic;
-                sorts.remove(pkDynamic);
-                sorts.add(0,pkDynamic);
+                sorts.remove(userSort);
+                sorts.add(0, userSort);
                 break;
             }
         }
@@ -97,7 +91,7 @@ public class 次数排名 {
     public AppResponse nextPkApprovingImagePage(@RequestParam("userId") String userId,@RequestParam("pkId") String pkId,@RequestParam("page") int page) throws AppException, IOException, InterruptedException {
 
 
-        List<PkDynamic> sorts = pkUserDynamicService.查询卡点打卡排名(pkId,page+1);
+        List<UserSort> sorts = pkUserDynamicService.查询卡点打卡排名(pkId,page+1);
 
 
         if(CollectionUtils.isEmpty(sorts))

@@ -1,22 +1,10 @@
 package com.union.app.api.pk.zone;
 
         import com.union.app.common.config.AppConfigService;
-        import com.union.app.domain.pk.PkButtonType;
         import com.union.app.domain.pk.PkDetail;
         import com.union.app.domain.pk.Post;
-        import com.union.app.domain.pk.UserCode;
-        import com.union.app.domain.pk.apply.KeyNameValue;
-        import com.union.app.domain.pk.integral.UserIntegral;
-        import com.union.app.domain.pk.审核.ApproveMessage;
-        import com.union.app.domain.pk.审核.ApproveUser;
-        import com.union.app.domain.user.User;
-        import com.union.app.domain.工具.RandomUtil;
         import com.union.app.entity.pk.PkEntity;
-        import com.union.app.entity.pk.PostEntity;
-        import com.union.app.entity.pk.PostStatu;
         import com.union.app.entity.pk.用户Key.PkUserDynamicEntity;
-        import com.union.app.entity.用户.UserEntity;
-        import com.union.app.entity.用户.support.UserType;
         import com.union.app.plateform.constant.ConfigItem;
         import com.union.app.plateform.data.resultcode.AppException;
         import com.union.app.plateform.data.resultcode.AppResponse;
@@ -24,16 +12,14 @@ package com.union.app.api.pk.zone;
         import com.union.app.plateform.data.resultcode.PageAction;
         import com.union.app.plateform.storgae.redis.RedisStringUtil;
         import com.union.app.service.pk.click.ClickService;
-        import com.union.app.service.pk.complain.ComplainService;
         import com.union.app.service.pk.dynamic.DynamicService;
         import com.union.app.service.pk.service.*;
+        import com.union.app.service.pk.service.pkuser.PkDynamicService;
         import com.union.app.service.pk.service.pkuser.PkUserDynamicService;
         import com.union.app.service.user.UserService;
-        import com.union.app.util.time.TimeUtils;
         import org.springframework.beans.factory.annotation.Autowired;
         import org.springframework.util.CollectionUtils;
         import org.springframework.util.ObjectUtils;
-        import org.springframework.util.StringUtils;
         import org.springframework.web.bind.annotation.RequestMapping;
         import org.springframework.web.bind.annotation.RequestMethod;
         import org.springframework.web.bind.annotation.RequestParam;
@@ -42,8 +28,6 @@ package com.union.app.api.pk.zone;
         import javax.transaction.Transactional;
         import java.io.IOException;
         import java.util.ArrayList;
-        import java.util.Collection;
-        import java.util.Date;
         import java.util.List;
 
 @RestController
@@ -67,9 +51,6 @@ public class 查询单个PK {
     UserService userService;
 
     @Autowired
-    OrderService orderService;
-
-    @Autowired
     DynamicService dynamicService;
 
     @Autowired
@@ -79,14 +60,12 @@ public class 查询单个PK {
     AppService appService;
 
     @Autowired
-    ComplainService complainService;
-
-    @Autowired
     LocationService locationService;
 
     @Autowired
     PkUserDynamicService pkUserDynamicService;
 
+    PkDynamicService pkDynamicService;
 
     @RequestMapping(path="/queryPk",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
@@ -105,7 +84,9 @@ public class 查询单个PK {
         Post topPost = postService.查询顶置帖子(pkEntity);
         if(!ObjectUtils.isEmpty(topPost)){posts.add(0,topPost);}
 
+
         dataSets.add(new DataSet("pk",pkDetail));
+
 
         dataSets.add(new DataSet("inviteStatu",appService.查询收藏状态(pkId,userId)));
         dataSets.add(new DataSet("posts",posts));

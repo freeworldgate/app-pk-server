@@ -1,7 +1,6 @@
 package com.union.app.entity.用户;
 
 
-import com.union.app.entity.用户.support.UserPostStatu;
 import com.union.app.entity.用户.support.UserType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -9,10 +8,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Random;
-import java.util.UUID;
 
 
 @Setter

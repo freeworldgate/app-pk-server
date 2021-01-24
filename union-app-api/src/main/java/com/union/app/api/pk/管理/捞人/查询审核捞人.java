@@ -47,9 +47,6 @@ public class 查询审核捞人 {
     UserService userService;
 
     @Autowired
-    OrderService orderService;
-
-    @Autowired
     DynamicService dynamicService;
 
     @Autowired

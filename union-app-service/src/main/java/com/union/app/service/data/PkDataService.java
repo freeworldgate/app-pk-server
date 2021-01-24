@@ -137,46 +137,6 @@ public class PkDataService {
 
     }
 
-    public void 更新相册列表() throws IOException {
-        List<HomePagePk> pkEntities = new ArrayList<>();
-        int page = 1;
-        List<HomePagePk> pks = null;
-        while(!CollectionUtils.isEmpty(pks = this.查询HomePagePk(page)))
-        {
-            pkEntities.addAll(pks);
-            page++;
-        }
-
-
-
-
-        List<PkDetail> 遗传主页列表Temp = new ArrayList<>();
-        List<PkDetail> 非遗传主页列表Temp = new ArrayList<>();
-
-
-        for(HomePagePk pk:pkEntities)
-        {
-
-
-
-            PkEntity pkEntity = pkService.querySinglePkEntity(pk.getPkId());
-//            String topUserId = pkEntity.getTopPostUserId();
-            PkDetail pkDetail = pkService.querySinglePk(pkEntity);
-//            pkDetail.setImgs(postService.查询PK展示图片(pkEntity.getPkId(),StringUtils.isEmpty(topUserId)?pkEntity.getUserId():topUserId));
-//            pkDetail.setGeneticPriority(pk.getGeneticPriority());
-//            pkDetail.setNonGeneticPriority(pk.getNonGeneticPriority());
-            非遗传主页列表Temp.add(pkDetail);
-            遗传主页列表Temp.add(pkDetail);
-
-
-        }
-
-
-        遗传主页列表 = 遗传主页列表Temp;
-        非遗传主页列表 = 非遗传主页列表Temp;
-
-    }
-
     private List<HomePagePk> 查询HomePagePk(int page) {
         EntityFilterChain filter = EntityFilterChain.newFilterChain(HomePagePk.class)
                 .pageLimitFilter(page,20);

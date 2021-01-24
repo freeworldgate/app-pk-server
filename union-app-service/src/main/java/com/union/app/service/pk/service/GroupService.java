@@ -9,18 +9,15 @@ import com.union.app.dao.spi.filter.EntityFilterChain;
 import com.union.app.dao.spi.filter.OrderTag;
 import com.union.app.domain.pk.apply.KeyValuePair;
 import com.union.app.domain.pk.交友.PkGroup;
-import com.union.app.entity.pk.BackImgEntity;
-import com.union.app.entity.pk.PkEntity;
-import com.union.app.entity.pk.名片.UserCardEntity;
 import com.union.app.entity.pk.社交.GroupStatu;
 import com.union.app.entity.pk.社交.PkGroupEntity;
 import com.union.app.entity.pk.社交.PkGroupMemberEntity;
 import com.union.app.entity.用户.UserDynamicEntity;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.PageAction;
+import com.union.app.plateform.storgae.KeyType;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.service.data.PkDataService;
-import com.union.app.service.pk.complain.ComplainService;
 import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.service.pkuser.PkUserDynamicService;
 import com.union.app.service.pk.service.pkuser.UserDynamicService;
@@ -89,9 +86,6 @@ public class GroupService {
     PkDataService pkDataService;
 
     @Autowired
-    ComplainService complainService;
-
-    @Autowired
     LocationService locationService;
 
     @Autowired
@@ -100,6 +94,11 @@ public class GroupService {
     @Autowired
     UserDynamicService userDynamicService;
 
+    @Autowired
+    LockService lockService;
+
+    @Autowired
+    KeyService keyService;
 
     public void 创建群组(String pkId, String userId, String url, String groupName, String groupDesc) throws AppException {
         PkGroupEntity pkGroupEntity = this.查询用户群组Entity(pkId,userId);
@@ -141,13 +140,42 @@ public class GroupService {
         pkGroup.setGroupDesc(pkGroupEntity.getGroupDesc());
         pkGroup.setUser(userService.queryUser(pkGroupEntity.getUserId()));
         pkGroup.setGroupId(pkGroupEntity.getGroupId());
-        pkGroup.setMembers(pkGroupEntity.getMembers());
+        pkGroup.setMembers(keyService.queryKey(String.valueOf(pkGroupEntity.getGroupId()), KeyType.群组成员));
         pkGroup.setMember1(userService.queryUser(pkGroupEntity.getUser1()));
         pkGroup.setMember2(userService.queryUser(pkGroupEntity.getUser2()));
-        pkGroup.setStatu(new KeyValuePair(pkGroupEntity.getGroupStatu().getStatu(),pkGroupEntity.getGroupStatu().getStatuStr()));
+        pkGroup.setStatu(getStatu(pkGroupEntity));
         pkGroup.setTime(TimeUtils.convertTime(pkGroupEntity.getTime()));
         pkGroup.setLastUpdateTime(TimeUtils.convertTime(pkGroupEntity.getLastUpdateTime()));
+        pkGroup.setTip(getTip(pkGroupEntity.getMembers(),pkGroupEntity.getLastUpdateTime()));
         return pkGroup;
+
+    }
+
+    private KeyValuePair getStatu(PkGroupEntity pkGroupEntity) {
+        if(pkGroupEntity.getMembers() >=200)
+        {
+            return new KeyValuePair(GroupStatu.已过期.getStatu(),GroupStatu.已过期.getStatuStr());
+        }
+        return new KeyValuePair(pkGroupEntity.getGroupStatu().getStatu(),pkGroupEntity.getGroupStatu().getStatuStr());
+
+    }
+
+    private String getTip(int members, long lastUpdateTime) {
+        if(members >= 200)
+        {
+            return "群组已满";
+        }
+        if((lastUpdateTime < System.currentTimeMillis() - 5*24*3600*1000)&&(lastUpdateTime > System.currentTimeMillis() - 7*24*3600*1000))
+        {
+            return "二维码即将过期，请更新";
+        }
+        if(lastUpdateTime < System.currentTimeMillis() - 7*24*3600*1000)
+        {
+            return "二维码已过期，请更新";
+        }
+        return "";
+
+
 
     }
 
@@ -224,17 +252,20 @@ public class GroupService {
         PkGroupEntity pkGroupEntity = 查询用户群组Entity(pkId,userId);
         if(pkGroupEntity.getMembers()>=200)
         {
-            //每次更新间隔至少三天
-            throw AppException.buildException(PageAction.信息反馈框("满员200后不再接受更新","满员200后不再接受更新"));
+            throw AppException.buildException(PageAction.信息反馈框("满员200后不再更新","满员200后不再更新"));
         }
-        if(pkGroupEntity.getLastUpdateTime()>System.currentTimeMillis() - 3 * 24 * 3600 * 1000 )
+        if(pkGroupEntity.getGroupStatu() != GroupStatu.已通过)
+        {
+            throw AppException.buildException(PageAction.信息反馈框("当前状态不支持更新二维码","当前状态不支持更新二维码"));
+        }
+        if(pkGroupEntity.getLastUpdateTime() > System.currentTimeMillis() - 3 * 24 * 3600 * 1000 )
         {
             //每次更新间隔至少三天
             throw AppException.buildException(PageAction.信息反馈框("每次更新间隔至少三天","每次更新间隔至少三天"));
         }
         pkGroupEntity.setGroupCode(groupCard);
         pkGroupEntity.setLastUpdateTime(System.currentTimeMillis());
-
+        daoService.updateEntity(pkGroupEntity);
 
 
     }
@@ -332,23 +363,25 @@ public class GroupService {
     }
 
 
-    public PkGroupMemberEntity 解锁群组(int groupId, String userId) {
+    public PkGroupMemberEntity 解锁群组(int groupId, String userId) throws AppException {
 
         PkGroupMemberEntity  pkGroupMemberEntity = this.查询用户所在群组PkGroupMemberEntity(groupId,userId);
         if(ObjectUtils.isEmpty(pkGroupMemberEntity))
         {
-            PkGroupEntity pkGroupEntity = 查询用户群组EntityById(groupId);
-            添加Member(pkGroupEntity,userId);
-            pkGroupMemberEntity = new PkGroupMemberEntity();
-            pkGroupMemberEntity.setGroupId(pkGroupEntity.getGroupId());
-            pkGroupMemberEntity.setPkId(pkGroupEntity.getPkId());
-            pkGroupMemberEntity.setUserId(userId);
-            pkGroupMemberEntity.setTime(System.currentTimeMillis());
-            pkUserDynamicService.卡点用户解锁群组加一(pkGroupEntity.getPkId(),userId);
-            userDynamicService.用户解锁群组加一(userId);
-            pkGroupEntity.setMembers(pkGroupEntity.getMembers()+1);
-            daoService.updateEntity(pkGroupEntity);
-            daoService.insertEntity(pkGroupMemberEntity);
+
+                PkGroupEntity pkGroupEntity = 查询用户群组EntityById(groupId);
+                添加Member(pkGroupEntity,userId);
+                pkGroupMemberEntity = new PkGroupMemberEntity();
+                pkGroupMemberEntity.setGroupId(pkGroupEntity.getGroupId());
+                pkGroupMemberEntity.setPkId(pkGroupEntity.getPkId());
+                pkGroupMemberEntity.setUserId(userId);
+                pkGroupMemberEntity.setTime(System.currentTimeMillis());
+                pkUserDynamicService.卡点用户解锁群组加一(pkGroupEntity.getPkId(),userId);
+                userDynamicService.用户解锁群组加一(userId);
+                keyService.群组成员加一(groupId);
+                daoService.insertEntity(pkGroupMemberEntity);
+
+
 
         }
         return pkGroupMemberEntity;
@@ -378,7 +411,7 @@ public class GroupService {
 
     }
 
-    private PkGroupEntity 查询用户群组EntityById(int groupId) {
+    public PkGroupEntity 查询用户群组EntityById(int groupId) {
         EntityFilterChain filter = EntityFilterChain.newFilterChain(PkGroupEntity.class)
                 .compareFilter("groupId", CompareTag.Equal,groupId);
         PkGroupEntity pkGroupEntity = daoService.querySingleEntity(PkGroupEntity.class,filter);
