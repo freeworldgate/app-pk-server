@@ -8,6 +8,8 @@ public enum GroupStatu {
 
     已过期(2,"已过期"),
 
+    已满(3,"群组已满"),
+
 
 
 

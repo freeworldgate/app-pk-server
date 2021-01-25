@@ -27,47 +27,18 @@ public class Post {
 
     private String pkTopic;
     private PkLocationEntity location;
-    private String pkBackUrl;
-
-//    private PkDetail pkDetail;
-
-
-    private long scan;
-
-    private String wxCode;
-
-    private boolean isQueryerCollect;
 
     private User creator;
 
     private String topic;
 
+    private int postTimes;
+
     private List<PostImage> postImages;
-
-//    private PostDynamic dynamic;
-
-    private KeyNameValue statu;
-
-    private UserIntegral userIntegral;
-
-
-    private ApproveComment approveComment;
-
 
     private String time;
 
-    private String selfComment;
-    private String selfCommentTime;
-
-    private int maxRejectTimes;
-    private int rejectTimes;
-    private String rejectText;
-
-
-    private int style = RandomUtil.getRandomNumber()%6 + 1;
-    private String backUrl ;
-
     private boolean flag = false;
 
-    private String imgBack;
+
 }

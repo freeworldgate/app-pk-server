@@ -41,23 +41,23 @@ public class 更新微信缓存媒体文件 {
         //需要更新群组文件
 
 
-
-        List<PkEntity> pks = null;
-        int page = 1;
-        while(!CollectionUtils.isEmpty(pks=mediaService.查询需要更新的群组(page)))
-        {
-
-            for(PkEntity pk:pks)
-            {
-                String mediaId = WeChatUtil.uploadImg2Wx(dynamicService.查询PK群组二维码Url(pk.getPkId()));
-                dynamicService.设置PK群组二维码MediaId(pk.getPkId(),mediaId);
-                pkService.更新群组时间(pk.getPkId());
-
-            }
-            page++;
-
-
-        }
+//
+//        List<PkEntity> pks = null;
+//        int page = 1;
+//        while(!CollectionUtils.isEmpty(pks=mediaService.查询需要更新的群组(page)))
+//        {
+//
+//            for(PkEntity pk:pks)
+//            {
+//                String mediaId = WeChatUtil.uploadImg2Wx(dynamicService.查询PK群组二维码Url(pk.getPkId()));
+//                dynamicService.设置PK群组二维码MediaId(pk.getPkId(),mediaId);
+//                pkService.更新群组时间(pk.getPkId());
+//
+//            }
+//            page++;
+//
+//
+//        }
 
 
 

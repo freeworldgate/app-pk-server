@@ -27,12 +27,11 @@ public class PostEntity {
 
     private int imgNum;
 
-
+    private int postTimes;
     private long time;
 
 
     @Enumerated(EnumType.STRING)
     private PostStatu statu;
-
 
 }

@@ -1,14 +1,21 @@
 package com.union.app.service.pk.service;
 
+import com.union.app.common.config.AppConfigService;
 import com.union.app.common.redis.RedisMapService;
+import com.union.app.common.redis.RedisSortSetService;
+import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.storgae.KeyType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 @Service
 public class KeyService {
 
-
+    @Resource
+    private RedisTemplate<String, String> redisTemplate;
 
     @Autowired
     RedisMapService redisMapService;
@@ -56,4 +63,29 @@ public class KeyService {
 
         值加一(pkId,KeyType.卡点人数);
     }
+
+
+
+
+    public String 获取同步PK(KeyType listkey)
+    {
+        return redisTemplate.opsForList().rightPop(listkey.getName());
+    }
+    public void 同步Pk人数(KeyType listkey,String pkId)
+    {
+        //上一次PK打卡人数同步时间
+        long lastUpdateTime = redisMapService.getIntValue(KeyType.PK同步时间Map.getName(),pkId);
+        //如果时间间隔大于同步时间
+        if(System.currentTimeMillis()-lastUpdateTime > AppConfigService.getConfigAsLong(ConfigItem.PK同步时间间隔)*1000)
+        {
+            redisTemplate.opsForList().leftPush(listkey.getName(),pkId);
+            redisMapService.setLongValue(KeyType.PK同步时间Map.getName(),pkId,System.currentTimeMillis());
+        }
+    }
+
+
+
+
+
+
 }

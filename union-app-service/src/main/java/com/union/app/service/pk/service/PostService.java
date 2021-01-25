@@ -12,6 +12,7 @@ import com.union.app.domain.pk.*;
 import com.union.app.domain.pk.apply.KeyNameValue;
 import com.union.app.domain.user.User;
 import com.union.app.entity.pk.*;
+import com.union.app.entity.pk.用户Key.PkUserDynamicEntity;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.Level;
 import com.union.app.plateform.data.resultcode.PageAction;
@@ -148,8 +149,9 @@ public class PostService {
         postEntity.setUserId(userId);
         postEntity.setTopic(noActiveTitle(title)?"...":title);
         postEntity.setImgNum(CollectionUtils.isEmpty(images)?0:images.size());
-        postEntity.setTime(System.currentTimeMillis());
         postEntity.setStatu(PostStatu.显示);
+        postEntity.setPostTimes(pkUserDynamicService.计算打卡次数(pkId,userId)+1);
+        postEntity.setTime(System.currentTimeMillis());
         List<PostImageEntity> postImageEntities = getLegalImgUrl(images,pkId,postId);
         daoService.insertEntity(postEntity);
         postImageEntities.forEach(image->{
@@ -159,12 +161,12 @@ public class PostService {
         pkUserDynamicService.记录用户卡点打卡时间(pkId,userId);
         pkUserDynamicService.卡点用户打卡次数加一(pkId,userId);
         userDynamicService.用户总打榜次数加一(userId);
-
         pkDynamicService.卡点打卡人数更新(pkId,userId);
 
 
         return postId;
     }
+
 
     private boolean noActiveTitle(String title) {
         if(org.apache.commons.lang.StringUtils.isBlank(title)){return true;}
@@ -273,9 +275,8 @@ public class PostService {
         post.setTime(TimeUtils.convertTime(postEntity.getTime()));
         post.setCreator(userService.queryUser(postEntity.getUserId()));
         post.setTopic(postEntity.getTopic());
-
+        post.setPostTimes(postEntity.getPostTimes());
         post.setPostImages(postEntity.getImgNum()<1?new ArrayList<>():getPostImages(postEntity.getPostId(),postEntity.getPkId()));
-        post.setStatu(new KeyNameValue(postEntity.getStatu().getStatu(),postEntity.getStatu().getStatuStr()));
         return post;
     }
 

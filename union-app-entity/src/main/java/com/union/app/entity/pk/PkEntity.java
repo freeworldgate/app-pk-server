@@ -33,6 +33,8 @@ public class PkEntity {
 
     String address;
 
+    String city;
+
     String type;
     //范围
     int typeRange;
@@ -43,10 +45,11 @@ public class PkEntity {
 
     long updateTime;
 
-
-
     private String backUrl;
 //    顶置贴
     private String topPostId;
     private long topPostSetTime;
+
+    private int totalUsers;
+
 }

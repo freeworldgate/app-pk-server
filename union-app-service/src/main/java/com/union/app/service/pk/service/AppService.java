@@ -1339,8 +1339,6 @@ public class AppService {
             {
                 Post post = postService.translate(postEntity);
                 post.setPkTopic(pkEntity.getName());
-//                post.setLocation(appService.查询PK位置(pkEntity.getPkId()));
-                post.setPkBackUrl(pkEntity.getBackUrl());
                 posts.add(post);
             }
 

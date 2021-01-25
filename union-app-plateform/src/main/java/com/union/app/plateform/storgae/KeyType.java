@@ -8,13 +8,12 @@ public enum  KeyType {
 
     想认识我的人("LIKE_ME"),
 
-
     卡点人数("PK_TOTAL_USERS"),
 
+    卡点POST("PK_TOTAL_POST"),
 
-    卡点POST("PK_TOTAL_POST")
-
-
+    要同步的PK列表("SYNC_PK_LIST"),
+    PK同步时间Map("SYNC_PK_LIST_TIME"),
 
     ;
 

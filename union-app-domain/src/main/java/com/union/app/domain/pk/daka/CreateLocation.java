@@ -20,6 +20,8 @@ public class CreateLocation {
 
     String address;
 
+    String city;
+
     String sign;
 
     String type;

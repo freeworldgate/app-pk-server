@@ -13,6 +13,7 @@ import com.union.app.service.pk.service.*;
 import com.union.app.service.pk.service.pkuser.PkUserDynamicService;
 import com.union.app.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -68,8 +69,17 @@ public class 查询卡点社交群列表 {
 
         List<DataSet> dataSets = new ArrayList<>();
 
+        if(CollectionUtils.isEmpty(pkGroups))
+        {
+            dataSets.add(new DataSet("backUrl",appService.查询背景(6)));
+        }
+        else
+        {
+            dataSets.add(new DataSet("backUrl",appService.查询背景(8)));
+            dataSets.add(new DataSet("pkGroups",pkGroups));
+        }
 
-        dataSets.add(new DataSet("pkGroups",pkGroups));
+
         PkUserDynamicEntity entity = pkUserDynamicService.查询卡点用户动态表(pkId,userId);
         dataSets.add(new DataSet("postTimes",ObjectUtils.isEmpty(entity)?0:entity.getPostTimes()));
         dataSets.add(new DataSet("unLockGroups",ObjectUtils.isEmpty(entity)?0:entity.getUnLockGroups()));

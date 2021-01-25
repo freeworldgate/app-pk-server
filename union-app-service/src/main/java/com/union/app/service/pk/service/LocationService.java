@@ -162,6 +162,7 @@ public class LocationService {
         pkEntity.setUserId(createLocation.getUserId());
         pkEntity.setLatitude(createLocation.getLatitude());
         pkEntity.setLongitude(createLocation.getLongitude());
+        pkEntity.setCity(createLocation.getCity());
         LocationType locationType = this.查询默认卡点类型(createLocation.getType());
 
         pkEntity.setType(locationType.getTypeName());
@@ -334,7 +335,7 @@ public class LocationService {
     public List<PkDetail> 查询附近卡点(String queryerId,double latitude, double longitude) {
         List<PkDetail> pks = new ArrayList<>();
 
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(PkEntity.class)
+        EntityFilterChain aroundFilter = EntityFilterChain.newFilterChain(PkEntity.class)
                 .compareFilter("latitude",CompareTag.Small,latitude + 0.06D)
                 .andFilter()
                 .compareFilter("latitude",CompareTag.Bigger,latitude - 0.06D)
@@ -342,9 +343,38 @@ public class LocationService {
                 .compareFilter("longitude",CompareTag.Small,longitude + 0.06D)
                 .andFilter()
                 .compareFilter("longitude",CompareTag.Bigger,longitude - 0.06D)
-                .orderByRandomFilter()
-                .pageLimitFilter(1,20);
-        List<PkEntity> pkEntities = daoService.queryEntities(PkEntity.class,filter);
+                .orderByFilter("totalUsers",OrderTag.DESC)
+                .pageLimitFilter(1,10);
+
+        EntityFilterChain cityAroundFilter = EntityFilterChain.newFilterChain(PkEntity.class)
+                .compareFilter("latitude",CompareTag.Small,latitude + 0.2D)
+                .andFilter()
+                .compareFilter("latitude",CompareTag.Bigger,latitude - 0.2D)
+                .andFilter()
+                .compareFilter("longitude",CompareTag.Small,longitude + 0.2D)
+                .andFilter()
+                .compareFilter("longitude",CompareTag.Bigger,longitude - 0.2D)
+                .orderByFilter("totalUsers",OrderTag.DESC)
+                .pageLimitFilter(1,10);
+
+        EntityFilterChain sortFilter = EntityFilterChain.newFilterChain(PkEntity.class)
+                .orderByFilter("totalUsers",OrderTag.DESC)
+                .pageLimitFilter(1,10);
+
+        List<PkEntity> pkEntities = daoService.queryEntities(PkEntity.class,aroundFilter);
+        if(CollectionUtils.isEmpty(pkEntities))
+        {
+            pkEntities = daoService.queryEntities(PkEntity.class,cityAroundFilter);
+        }
+        if(CollectionUtils.isEmpty(pkEntities))
+        {
+            pkEntities = daoService.queryEntities(PkEntity.class,sortFilter);
+        }
+
+
+
+
+
 
         if(!org.apache.commons.collections4.CollectionUtils.isEmpty(pkEntities))
         {

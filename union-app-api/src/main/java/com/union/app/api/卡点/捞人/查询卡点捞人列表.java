@@ -98,14 +98,14 @@ public class 查询卡点捞人列表 {
 
         if(CollectionUtils.isEmpty(findUsers))
         {
-            dataSets.add(new DataSet("emptyData",appService.查询背景(4)));
+            dataSets.add(new DataSet("backUrl",appService.查询背景(0)));
         }
         else
         {
-
+            dataSets.add(new DataSet("backUrl",appService.查询背景(5)));
             dataSets.add(new DataSet("findUsers",findUsers));
         }
-        dataSets.add(new DataSet("backUrl",appService.查询背景(5)));
+
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
 
 

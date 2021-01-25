@@ -160,4 +160,19 @@ public class PkUserDynamicService {
     }
 
 
+    public int 计算打卡次数(String pkId, String userId) {
+        PkUserDynamicEntity pkUserEntity = 查询卡点用户动态表(pkId,userId);
+
+        if(!ObjectUtils.isEmpty(pkUserEntity))
+        {
+            return pkUserEntity.getPostTimes();
+        }
+        else
+        {
+            pkUserEntity = 初始化Entity(pkId,userId);
+            daoService.insertEntity(pkUserEntity);
+            return 0;
+        }
+
+    }
 }

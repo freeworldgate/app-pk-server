@@ -77,8 +77,8 @@ public class 查詢用戶社交群 {
         }
         List<DataSet> dataSets = new ArrayList<>();
         dataSets.add(new DataSet("userGroup",pkGroup));
-        dataSets.add(new DataSet("emptyImage",appService.查询背景(1)));
-        dataSets.add(new DataSet("createFindUserImage",appService.查询背景(3)));
+        dataSets.add(new DataSet("backUrl",appService.查询背景(7)));
+
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
 
     }

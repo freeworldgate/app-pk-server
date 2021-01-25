@@ -154,8 +154,13 @@ public class GroupService {
     private KeyValuePair getStatu(PkGroupEntity pkGroupEntity) {
         if(pkGroupEntity.getMembers() >=200)
         {
+            return new KeyValuePair(GroupStatu.已满.getStatu(),GroupStatu.已满.getStatuStr());
+        }
+        if(pkGroupEntity.getLastUpdateTime() < System.currentTimeMillis() - 7*24*3600*1000)
+        {
             return new KeyValuePair(GroupStatu.已过期.getStatu(),GroupStatu.已过期.getStatuStr());
         }
+
         return new KeyValuePair(pkGroupEntity.getGroupStatu().getStatu(),pkGroupEntity.getGroupStatu().getStatuStr());
 
     }
