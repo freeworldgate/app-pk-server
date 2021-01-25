@@ -1,5 +1,6 @@
 package com.union.app.api.卡点.搜索创建;
 
+import com.union.app.api.卡点.搜索创建.返回对象.SearchResult;
 import com.union.app.common.config.AppConfigService;
 import com.union.app.domain.pk.Circle;
 import com.union.app.domain.pk.Marker;
@@ -59,6 +60,11 @@ public class 搜索卡点 {
     @Autowired
     LocationService locationService;
 
+    @Autowired
+    KeyService keyService;
+
+
+
     @RequestMapping(path="/searchPk",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
     public AppResponse searchPk(@RequestParam("latitude") double latitude,@RequestParam("longitude") double longitude,@RequestParam("name") String name) throws AppException, IOException, InterruptedException {
@@ -67,19 +73,38 @@ public class 搜索卡点 {
         System.out.println(locationId+"     经度:" + latitude + "纬度:" + longitude);
         PkDetail pkDetail = locationService.搜索卡点(locationId);
         Marker marker = locationService.buildMarker(name,latitude,longitude);
-        List<DataSet> dataSets = new ArrayList<>();
-        dataSets.add(new DataSet("scale",16));
-        dataSets.add(new DataSet("maxLength", AppConfigService.getConfigAsInteger(ConfigItem.创建卡点范围)));
+        SearchResult searchResult = new SearchResult();
+        searchResult.setMarkers(new Marker[]{marker});
+        searchResult.setMaxLength(AppConfigService.getConfigAsInteger(ConfigItem.创建卡点范围));
+
+
         if(!ObjectUtils.isEmpty(pkDetail)) {
-            dataSets.add(new DataSet("circles", new Circle[]{pkDetail.getCircle()}));
-            dataSets.add(new DataSet("scale",pkDetail.getType().getScale()));
+
+
+            double latitudeoff = latitude-pkDetail.getType().getOffSet();
+
+            searchResult.setCircles(new Circle[]{pkDetail.getCircle()});
+            searchResult.setScale(pkDetail.getType().getScale());
+            searchResult.setLatitude(latitudeoff);
+            searchResult.setLongitude(longitude);
+
+
+
+
         }
-        dataSets.add(new DataSet("markers",new Marker[]{marker}));
-        dataSets.add(new DataSet("latitude",latitude));
-        dataSets.add(new DataSet("longitude",longitude));
-        dataSets.add(new DataSet("emptyImage",appService.查询背景(1)));
-        dataSets.add(new DataSet("pk",pkDetail));
-        return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
+        else
+        {
+
+            double latitudeoff = latitude-keyService.获取偏移量(keyService.获取偏缩放等级(50));
+            searchResult.setCircles(new Circle[]{new Circle(latitude,longitude,50)});
+            searchResult.setScale(keyService.获取偏缩放等级(50));
+            searchResult.setLatitude(latitudeoff);
+            searchResult.setLongitude(longitude);
+        }
+
+        searchResult.setPk(pkDetail);
+
+        return AppResponse.buildResponse(PageAction.执行处理器("success",searchResult));
 
     }
 

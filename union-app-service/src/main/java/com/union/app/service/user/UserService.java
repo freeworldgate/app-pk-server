@@ -515,16 +515,14 @@ public class UserService {
             UserCardEntity userCardEntity = userService.queryUserCardEntity(userId);
             userCardEntity.setMeLike(userCardEntity.getMeLike()+1);
             appDaoService.updateEntity(userCardEntity);
-            lockService.releaseLock(userId, LockType.用户名片锁);
 
     }
     private void 我想认识的人减一(String userId) throws AppException {
 
-
             UserCardEntity userCardEntity = userService.queryUserCardEntity(userId);
             userCardEntity.setMeLike(userCardEntity.getMeLike()-1);
             appDaoService.updateEntity(userCardEntity);
-            lockService.releaseLock(userId, LockType.用户名片锁);
+
     }
     public UserCardEntity queryUserCardEntity(String userId) {
         EntityFilterChain filter = EntityFilterChain.newFilterChain(UserCardEntity.class)

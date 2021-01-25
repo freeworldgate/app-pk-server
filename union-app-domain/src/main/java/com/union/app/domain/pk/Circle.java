@@ -22,5 +22,12 @@ public class Circle {
 
     int strokeWidth =  0;
 
+    public Circle() {
+    }
 
+    public Circle(double latitude, double longitude, int radius) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.radius = radius;
+    }
 }

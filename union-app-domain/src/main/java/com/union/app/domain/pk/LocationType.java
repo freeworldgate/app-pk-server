@@ -20,4 +20,6 @@ public class LocationType {
 
     private int scale = 16;
 
+    private double offSet;
+
 }

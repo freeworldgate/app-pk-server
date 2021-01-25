@@ -84,8 +84,15 @@ public class KeyService {
     }
 
 
+    public double 获取偏移量(int value) {
+        Object key = redisTemplate.opsForValue().get("offset"+value);
+        return Double.valueOf(key.toString());
 
+    }
 
+    public int 获取偏缩放等级(int value) {
+        Object key = redisTemplate.opsForValue().get("scale"+value);
 
-
+        return (int)key;
+    }
 }
