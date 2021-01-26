@@ -9,6 +9,7 @@ import org.springframework.util.ObjectUtils;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class RedisMapService implements IRedisService {
@@ -28,6 +29,7 @@ public class RedisMapService implements IRedisService {
 
     public String getStringValue(String key,String mapKey){
         Object value = redisTemplate.opsForHash().get(key,mapKey);
+
         if(ObjectUtils.isEmpty(value)){
             return "";
         }
@@ -37,6 +39,7 @@ public class RedisMapService implements IRedisService {
     }
     public void setStringValue(String key,String mapKey,String value){
         redisTemplate.opsForHash().put(key,mapKey,value);
+        redisTemplate.expire(key,100, TimeUnit.MINUTES);
     }
 
     public long getIntValue(String key,String mapKey){

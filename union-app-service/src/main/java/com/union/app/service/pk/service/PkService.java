@@ -11,15 +11,12 @@ import com.union.app.dao.spi.filter.OrderTag;
 import com.union.app.domain.pk.*;
 import com.union.app.domain.pk.PkDynamic.FactualInfo;
 import com.union.app.domain.pk.PkDynamic.FeeTask;
-import com.union.app.domain.pk.apply.KeyNameValue;
-import com.union.app.domain.pk.审核.ApproveComment;
 import com.union.app.domain.user.User;
 import com.union.app.entity.pk.*;
-import com.union.app.entity.用户.UserEntity;
-import com.union.app.entity.用户.support.UserType;
+import com.union.app.entity.user.UserEntity;
+import com.union.app.entity.user.support.UserType;
 import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.AppException;
-import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.common.dao.PkCacheService;
@@ -145,7 +142,7 @@ public class PkService {
 
 
 
-    public List<Post> queryPosts(String pkId,int page) throws UnsupportedEncodingException {
+    public List<Post> queryPosts(String pkId,int page) {
         List<Post> posts = new LinkedList<>();
         List<PostEntity> pageList =  pkService.查询签到列表(pkId,page);
         for(PostEntity postEntity:pageList)

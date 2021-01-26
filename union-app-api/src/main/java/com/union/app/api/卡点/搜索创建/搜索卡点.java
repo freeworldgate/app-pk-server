@@ -80,8 +80,7 @@ public class 搜索卡点 {
 
         if(!ObjectUtils.isEmpty(pkDetail)) {
 
-
-            double latitudeoff = latitude-pkDetail.getType().getOffSet();
+            double latitudeoff = latitude- keyService.获取偏移量(pkDetail.getType().getScale());
 
             searchResult.setCircles(new Circle[]{pkDetail.getCircle()});
             searchResult.setScale(pkDetail.getType().getScale());
@@ -95,10 +94,10 @@ public class 搜索卡点 {
         else
         {
 
-            double latitudeoff = latitude-keyService.获取偏移量(keyService.获取偏缩放等级(50));
-            searchResult.setCircles(new Circle[]{new Circle(latitude,longitude,50)});
-            searchResult.setScale(keyService.获取偏缩放等级(50));
-            searchResult.setLatitude(latitudeoff);
+//            double latitudeoff = latitude-keyService.获取偏移量(keyService.获取偏缩放等级(100));
+            searchResult.setCircles(new Circle[]{new Circle(latitude,longitude,100)});
+            searchResult.setScale(keyService.获取缩放等级(100));
+            searchResult.setLatitude(latitude);
             searchResult.setLongitude(longitude);
         }
 

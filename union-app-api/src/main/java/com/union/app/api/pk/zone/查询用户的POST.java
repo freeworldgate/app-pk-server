@@ -2,11 +2,7 @@ package com.union.app.api.pk.zone;
 
 import com.union.app.common.OSS存储.CacheStorage;
 import com.union.app.common.OSS存储.OssStorage;
-import com.union.app.common.config.AppConfigService;
-import com.union.app.domain.pk.ValueStr;
 import com.union.app.entity.pk.PostEntity;
-import com.union.app.entity.用户.UserDynamicEntity;
-import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.PageAction;
@@ -22,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 @RestController

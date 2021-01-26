@@ -2,7 +2,7 @@ package com.union.app.api.卡点.捞人;
 
 import com.union.app.domain.pk.PkDetail;
 import com.union.app.domain.pk.捞人.FindUser;
-import com.union.app.entity.用户.UserDynamicEntity;
+import com.union.app.entity.user.UserDynamicEntity;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.DataSet;
 import com.union.app.plateform.data.resultcode.PageAction;

@@ -2,7 +2,7 @@ package com.union.app.service.pk.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.union.app.common.dao.AppDaoService;
-import com.union.app.entity.用户.UserDynamicEntity;
+import com.union.app.entity.user.UserDynamicEntity;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.service.user.UserService;

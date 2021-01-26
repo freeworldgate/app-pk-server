@@ -13,6 +13,7 @@ public class UserDynamic
 {
     private String userId;
 
+    private String userBack;
     //可打捞时间
     private long findTimeLength;
 

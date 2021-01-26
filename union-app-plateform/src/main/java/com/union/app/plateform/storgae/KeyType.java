@@ -15,7 +15,8 @@ public enum  KeyType {
     要同步的PK列表("SYNC_PK_LIST"),
     PK同步时间Map("SYNC_PK_LIST_TIME"),
 
-    ;
+    打卡图片("PK_POST_IMG_CACHE"),
+    用户缓存("USER_ENTITY_CACHE");
 
 
 

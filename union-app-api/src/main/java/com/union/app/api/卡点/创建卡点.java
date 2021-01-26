@@ -65,7 +65,7 @@ public class 创建卡点 {
         String pkId = locationService.坐标转换成UUID(createLocation.getLatitude(),createLocation.getLongitude(),createLocation.getName());
         if(lockService.getLock(pkId, LockType.创建卡点锁))
         {
-            PkEntity pkEntity = locationService.querySinglePkEntity(pkId);
+            PkEntity pkEntity = locationService.querySinglePkEntityWithoutCache(pkId);
             if(ObjectUtils.isEmpty(pkEntity))
             {
                 payService.用户创建卡点(createLocation.getUserId());

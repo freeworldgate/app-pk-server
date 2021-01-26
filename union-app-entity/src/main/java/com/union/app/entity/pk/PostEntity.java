@@ -1,6 +1,5 @@
 package com.union.app.entity.pk;
 
-import com.union.app.entity.用户.support.UserType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;

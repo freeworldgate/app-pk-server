@@ -12,7 +12,7 @@ import com.union.app.domain.pk.交友.PkGroup;
 import com.union.app.entity.pk.社交.GroupStatu;
 import com.union.app.entity.pk.社交.PkGroupEntity;
 import com.union.app.entity.pk.社交.PkGroupMemberEntity;
-import com.union.app.entity.用户.UserDynamicEntity;
+import com.union.app.entity.user.UserDynamicEntity;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.KeyType;

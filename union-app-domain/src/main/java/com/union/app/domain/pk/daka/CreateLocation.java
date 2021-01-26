@@ -28,6 +28,8 @@ public class CreateLocation {
 
     String backUrl;
 
+    int radius;
+
 //    String label;
 
 

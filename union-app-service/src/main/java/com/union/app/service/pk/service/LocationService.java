@@ -96,6 +96,10 @@ public class LocationService {
     @Autowired
     PkDynamicService pkDynamicService;
 
+    @Autowired
+    KeyService keyService;
+
+
     public String 坐标转换成UUID(double latitude,double longitude,String name)
     {
 
@@ -163,11 +167,11 @@ public class LocationService {
         pkEntity.setLatitude(createLocation.getLatitude());
         pkEntity.setLongitude(createLocation.getLongitude());
         pkEntity.setCity(createLocation.getCity());
-        LocationType locationType = this.查询默认卡点类型(createLocation.getType());
 
-        pkEntity.setType(locationType.getTypeName());
-        pkEntity.setTypeRange(locationType.getRangeLength());
-        pkEntity.setTypeScale(locationType.getScale());
+
+        pkEntity.setType(createLocation.getType());
+        pkEntity.setTypeRange(createLocation.getRadius());
+
 
         pkEntity.setName(createLocation.getName());
         pkEntity.setAddress(createLocation.getAddress());
@@ -188,7 +192,7 @@ public class LocationService {
     public PkDetail 搜索卡点(String pkId) throws IOException {
 
 
-        return this.querySinglePk(pkId);
+        return this.querySinglePkWithoutCache(pkId);
     }
 
 
@@ -197,7 +201,10 @@ public class LocationService {
         PkEntity pk = this.querySinglePkEntity(pkId);
         return this.querySinglePk(pk);
     }
-
+    public PkDetail querySinglePkWithoutCache(String pkId) throws IOException {
+        PkEntity pk = this.querySinglePkEntityWithoutCache(pkId);
+        return this.querySinglePk(pk);
+    }
     public PkEntity querySinglePkEntity(String pkId)
     {
         PkEntity pkEntity = EntityCacheService.getPkEntity(pkId);
@@ -211,7 +218,16 @@ public class LocationService {
 
         return pkEntity;
     }
+    public PkEntity querySinglePkEntityWithoutCache(String pkId)
+    {
 
+            EntityFilterChain filter = EntityFilterChain.newFilterChain(PkEntity.class)
+                    .compareFilter("pkId",CompareTag.Equal,pkId);
+            PkEntity pkEntity = daoService.querySingleEntity(PkEntity.class,filter);
+
+
+        return pkEntity;
+    }
 
 
     public PkDetail querySinglePk(PkEntity pk) throws IOException {
@@ -278,7 +294,7 @@ public class LocationService {
 
         LocationType locationType = new LocationType();
         locationType.setTypeName(pk.getType());
-        locationType.setScale(pk.getTypeScale());
+        locationType.setScale(keyService.获取缩放等级(pk.getTypeRange()));
         locationType.setRange(this.长度转义(pk.getTypeRange()));
         locationType.setRangeValue(this.长度转义不带单位(pk.getTypeRange()));
         locationType.setRangeLength(pk.getTypeRange());
@@ -384,6 +400,7 @@ public class LocationService {
                     int length = this.计算坐标间距离(latitude,longitude,pk.getLatitude(),pk.getLongitude());
                     pkDetail.setUserLength(length);
                     pkDetail.setUserLengthStr(this.距离转换成描述(length));
+                    pkDetail.setLatitude(pkDetail.getLatitude() - keyService.获取偏移量(pkDetail.getType().getScale()));
                     pks.add(pkDetail);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -596,7 +613,7 @@ public class LocationService {
 
     }
 
-    public List<Post> queryHiddenPkPost(String pkId, int page) throws UnsupportedEncodingException {
+    public List<Post> queryHiddenPkPost(String pkId, int page) {
 
         List<Post> posts = new LinkedList<>();
         List<PostEntity> pageList =  this.查询隐藏列表(pkId,page);

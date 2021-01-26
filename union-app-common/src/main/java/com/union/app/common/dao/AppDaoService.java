@@ -3,7 +3,6 @@ package com.union.app.common.dao;
 import com.union.app.dao.jpa.JpaTransactionUtil;
 import com.union.app.dao.spi.filter.EntityFilterChain;
 import com.union.app.dao.spi.filter.PageLimitFilter;
-import com.union.app.entity.用户.UserDynamicEntity;
 import com.union.app.plateform.log4j2.AppLoggerFactory;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

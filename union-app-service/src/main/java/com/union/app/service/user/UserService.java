@@ -3,7 +3,6 @@ package com.union.app.service.user;
 
 import com.alibaba.fastjson.JSON;
 import com.union.app.common.config.AppConfigService;
-import com.union.app.common.dao.EntityCacheService;
 import com.union.app.common.dao.PkCacheService;
 import com.union.app.common.微信.WeChatUtil;
 import com.union.app.common.dao.AppDaoService;
@@ -19,9 +18,9 @@ import com.union.app.domain.user.User;
 import com.union.app.entity.pk.卡点.UserCardApplyEntity;
 import com.union.app.entity.pk.名片.UserCardEntity;
 import com.union.app.entity.pk.名片.UserCardMemberEntity;
-import com.union.app.entity.用户.UserEntity;
-import com.union.app.entity.用户.UserDynamicEntity;
-import com.union.app.entity.用户.support.UserType;
+import com.union.app.entity.user.UserEntity;
+import com.union.app.entity.user.UserDynamicEntity;
+import com.union.app.entity.user.support.UserType;
 import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.PageAction;
@@ -29,7 +28,6 @@ import com.union.app.plateform.storgae.KeyType;
 import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.service.KeyService;
 import com.union.app.service.pk.service.LockService;
-import com.union.app.service.pk.service.LockType;
 import com.union.app.service.pk.service.pkuser.UserDynamicService;
 import com.union.app.util.time.TimeUtils;
 import org.apache.commons.lang.StringUtils;
@@ -75,7 +73,7 @@ public class UserService {
         }
 
 
-        UserEntity userEntity = EntityCacheService.getUserEntity(userId);
+        UserEntity userEntity = keyService.queryUserEntity(userId);
         if(ObjectUtils.isEmpty(userEntity))
         {
             if(org.apache.commons.lang.StringUtils.equalsIgnoreCase("undefined",userId)|| org.apache.commons.lang.StringUtils.equalsIgnoreCase("null",userId)|| org.apache.commons.lang.StringUtils.equalsIgnoreCase("Nan",userId))
@@ -87,7 +85,7 @@ public class UserService {
             userEntity = appDaoService.querySingleEntity(UserEntity.class,filter);
             if(!ObjectUtils.isEmpty(userEntity))
             {
-                EntityCacheService.saveUser(userEntity);
+                keyService.saveUser(userEntity);
             }
         }
 

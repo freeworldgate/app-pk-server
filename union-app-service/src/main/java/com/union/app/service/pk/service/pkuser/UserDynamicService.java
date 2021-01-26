@@ -4,18 +4,15 @@ import com.union.app.common.dao.AppDaoService;
 import com.union.app.dao.spi.filter.CompareTag;
 import com.union.app.dao.spi.filter.EntityFilterChain;
 import com.union.app.domain.pk.PkDynamic.UserDynamic;
-import com.union.app.entity.pk.用户Key.PkUserDynamicEntity;
-import com.union.app.entity.用户.UserDynamicEntity;
+import com.union.app.entity.user.UserDynamicEntity;
 import com.union.app.plateform.data.resultcode.AppException;
-import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.KeyType;
+import com.union.app.service.pk.service.AppService;
 import com.union.app.service.pk.service.KeyService;
 import com.union.app.service.pk.service.LockService;
-import com.union.app.service.pk.service.LockType;
 import com.union.app.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 
 @Service
 public class UserDynamicService {
@@ -34,7 +31,8 @@ public class UserDynamicService {
     @Autowired
     LockService lockService;
 
-
+    @Autowired
+    AppService appService;
 
     @Autowired
     KeyService keyService;
@@ -45,6 +43,7 @@ public class UserDynamicService {
         UserDynamicEntity userDynamicEntity = this.queryUserDynamicEntity(userId);
         UserDynamic userDynamic = new UserDynamic();
         userDynamic.setUserId(userDynamicEntity.getUserId());
+        userDynamic.setUserBack(userDynamicEntity.getUserBack());
         userDynamic.setCollectTimes(userDynamicEntity.getCollectTimes());
         userDynamic.setFans(keyService.queryKey(userId, KeyType.用户粉丝));
         userDynamic.setFollow(userDynamicEntity.getFollow());
@@ -88,6 +87,7 @@ public class UserDynamicService {
     public void 创建Dynamic表(String userId) {
         UserDynamicEntity userkvEntity = new UserDynamicEntity();
         userkvEntity.setUserId(userId);
+        userkvEntity.setUserBack(appService.查询背景(9));
         userkvEntity.setMygroups(0);
         userkvEntity.setPostTimes(0);
         userkvEntity.setPkTimes(0);
@@ -167,16 +167,14 @@ public class UserDynamicService {
     public void 用户粉丝数量减一(String userId) throws AppException {
         keyService.用户粉丝减一(userId);
 
-//        if(lockService.getLock(userId, LockType.用户粉丝数量)) {
-//            UserDynamicEntity userDynamicEntity = queryUserDynamicEntity(userId);
-//            userDynamicEntity.setFans(userDynamicEntity.getFans() - 1);
-//            daoService.updateEntity(userDynamicEntity);
-//            lockService.releaseLock(userId,LockType.用户粉丝数量);
-//        }
-//        else
-//        {
-//            throw AppException.buildException(PageAction.信息反馈框("系统错误","系统错误"));
-//        }
+
+    }
+
+    public void 修改背景(String userId, String url) {
+        UserDynamicEntity userDynamicEntity = queryUserDynamicEntity(userId);
+        userDynamicEntity.setUserBack(url);
+        daoService.updateEntity(userDynamicEntity);
+
 
     }
 }

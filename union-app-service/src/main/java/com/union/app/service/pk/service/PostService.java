@@ -3,16 +3,15 @@ package com.union.app.service.pk.service;
 import com.union.app.common.OSS存储.CacheStorage;
 import com.union.app.common.OSS存储.OssStorage;
 import com.union.app.common.dao.AppDaoService;
-import com.union.app.common.dao.EntityCacheService;
 import com.union.app.common.dao.PkCacheService;
 import com.union.app.dao.spi.filter.CompareTag;
 import com.union.app.dao.spi.filter.EntityFilterChain;
 import com.union.app.dao.spi.filter.OrderTag;
-import com.union.app.domain.pk.*;
-import com.union.app.domain.pk.apply.KeyNameValue;
+import com.union.app.domain.pk.Post;
+import com.union.app.domain.pk.PostDynamic;
+import com.union.app.domain.pk.PostImage;
 import com.union.app.domain.user.User;
 import com.union.app.entity.pk.*;
-import com.union.app.entity.pk.用户Key.PkUserDynamicEntity;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.Level;
 import com.union.app.plateform.data.resultcode.PageAction;
@@ -32,7 +31,8 @@ import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class PostService {
@@ -78,7 +78,8 @@ public class PostService {
     @Autowired
     PkDynamicService pkDynamicService;
 
-
+    @Autowired
+    KeyService keyService;
 
     @Autowired
     PkCacheService pkCacheService;
@@ -237,7 +238,7 @@ public class PostService {
 //        return post;
 //    }
 
-    public Post 查询顶置帖子(PkEntity pkEntity) throws UnsupportedEncodingException {
+    public Post 查询顶置帖子(PkEntity pkEntity) {
 
         long topPostSetTime = pkEntity.getTopPostSetTime();
         if(!org.apache.commons.lang.StringUtils.isBlank(pkEntity.getTopPostId()))
@@ -258,7 +259,7 @@ public class PostService {
 
 
 
-    public Post 查询帖子(String pkId,String postId,String queryUserId) throws UnsupportedEncodingException {
+    public Post 查询帖子(String pkId,String postId,String queryUserId) {
 
         PostEntity postEntity = this.查询帖子ById(postId);
         if(ObjectUtils.isEmpty(postEntity)){return null;}
@@ -268,7 +269,7 @@ public class PostService {
     }
 
 
-    public Post translate(PostEntity postEntity) throws UnsupportedEncodingException {
+    public Post translate(PostEntity postEntity){
         Post post = new Post();
         post.setPkId(postEntity.getPkId());
         post.setPostId(postEntity.getPostId());
@@ -287,7 +288,7 @@ public class PostService {
         List<PostImage> postImages = new ArrayList<>();
         if(StringUtils.isEmpty(postId)||StringUtils.isEmpty(pkId)) {return postImages; }
 
-        postImages.addAll(EntityCacheService.查询榜帖图片(pkId,postId));
+        postImages.addAll(keyService.查询榜帖图片(pkId,postId));
 
         if(CollectionUtils.isEmpty(postImages))
         {
@@ -309,7 +310,7 @@ public class PostService {
             });
             if(!CollectionUtils.isEmpty(postImageEntity))
             {
-                EntityCacheService.保存图片(pkId,postId,postImages);
+                keyService.保存图片(pkId,postId,postImages);
             }
         }
 
@@ -340,7 +341,7 @@ public class PostService {
     }
 
 
-    public Post 查询用户帖子(String pkId, String userId) throws UnsupportedEncodingException {
+    public Post 查询用户帖子(String pkId, String userId) {
 
             PostEntity userPostEntity = 查询用户帖(pkId,userId);
             if(ObjectUtils.isEmpty(userPostEntity)){
@@ -739,7 +740,28 @@ public class PostService {
         post.setPostImages(postImages);
         return CollectionUtils.isEmpty(postImages)?null:post;
 
+    }
 
+    public List<Post> 查询用户发帖列表(String userId, String pkId, int page) {
+        List<Post> posts = new ArrayList<>();
+        List<PostEntity> postEntities = this.查询用户帖列表(userId,pkId,page);
+        postEntities.forEach(postEntity -> {
+            posts.add(this.translate(postEntity));
+        });
+        return posts;
 
     }
+
+    private List<PostEntity> 查询用户帖列表(String userId, String pkId, int page) {
+        EntityFilterChain cfilter = EntityFilterChain.newFilterChain(PostEntity.class)
+                .compareFilter("pkId",CompareTag.Equal,pkId)
+                .andFilter()
+                .compareFilter("userId",CompareTag.Equal,userId)
+                .pageLimitFilter(page,10)
+                .orderByFilter("time",OrderTag.DESC);
+        List<PostEntity> postEntities = daoService.queryEntities(PostEntity.class,cfilter);
+        return postEntities;
+    }
+
+
 }
