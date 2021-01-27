@@ -39,7 +39,7 @@ public class UserDynamic
     private int follow;
 
     //用户粉丝
-    private int fans;
+    private long fans;
 
 
 

@@ -42,13 +42,13 @@ public class RedisMapService implements IRedisService {
         redisTemplate.expire(key,100, TimeUnit.MINUTES);
     }
 
-    public long getIntValue(String key,String mapKey){
+    public long getlongValue(String key,String mapKey){
         Object value = redisTemplate.opsForHash().get(key,mapKey);
         if(ObjectUtils.isEmpty(value)){
-            return 0;
+            return 0L;
         }
         else {
-            return (int)value;
+            return Long.valueOf(value.toString());
         }
     }
     public void setLongValue(String key,String mapKey,long value){

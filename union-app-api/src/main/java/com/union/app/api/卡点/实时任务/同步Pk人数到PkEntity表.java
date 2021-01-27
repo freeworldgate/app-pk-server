@@ -42,7 +42,7 @@ public class 同步Pk人数到PkEntity表
             String pkId = keyService.获取同步PK(KeyType.要同步的PK列表);
             if(!StringUtils.isBlank(pkId))
             {
-                int totalUser = keyService.queryKey(pkId,KeyType.卡点人数);
+                long totalUser = keyService.queryKey(pkId,KeyType.卡点人数);
                 PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
                 pkEntity.setTotalUsers(totalUser);
                 appDao.updateEntity(pkEntity);

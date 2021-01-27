@@ -96,7 +96,8 @@ public class 查询单个PK {
         {
             PkUserDynamicEntity pkUserDynamicEntity = pkUserDynamicService.查询卡点用户动态表(pkId,userId);
 
-            if(ObjectUtils.isEmpty(pkUserDynamicEntity)){
+            if(ObjectUtils.isEmpty(pkUserDynamicEntity))
+            {
                 dataSets.add(new DataSet("leftTime",0));
             }
             else

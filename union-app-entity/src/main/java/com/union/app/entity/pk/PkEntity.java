@@ -49,6 +49,6 @@ public class PkEntity {
     private String topPostId;
     private long topPostSetTime;
 
-    private int totalUsers;
+    private long totalUsers;
 
 }

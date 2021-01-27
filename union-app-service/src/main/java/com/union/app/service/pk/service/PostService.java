@@ -149,11 +149,12 @@ public class PostService {
         postEntity.setPostId(postId);
         postEntity.setUserId(userId);
         postEntity.setTopic(noActiveTitle(title)?"...":title);
-        postEntity.setImgNum(CollectionUtils.isEmpty(images)?0:images.size());
+
         postEntity.setStatu(PostStatu.显示);
         postEntity.setPostTimes(pkUserDynamicService.计算打卡次数(pkId,userId)+1);
         postEntity.setTime(System.currentTimeMillis());
         List<PostImageEntity> postImageEntities = getLegalImgUrl(images,pkId,postId);
+        postEntity.setImgNum(CollectionUtils.isEmpty(postImageEntities)?0:images.size());
         daoService.insertEntity(postEntity);
         postImageEntities.forEach(image->{
             daoService.insertEntity(image);
@@ -190,8 +191,10 @@ public class PostService {
             postImageEntity.setPkId(pkId);
             postImageEntity.setPostId(postId);
             postImageEntity.setTime(System.currentTimeMillis());
-//            postImageEntity.setStatu(PostStatu.审核中);
-            postImageEntities.add(postImageEntity);
+            if(!StringUtils.isEmpty(postImageEntity.getImgUrl()))
+            {
+                postImageEntities.add(postImageEntity);
+            }
 
         });
         return postImageEntities;

@@ -15,7 +15,7 @@ public class UserCard {
     private String userCard;
 
     //想认识我的人
-    private int likeMe;
+    private long likeMe;
     //我想认识的人
     private int meLike;
     //已解锁用户

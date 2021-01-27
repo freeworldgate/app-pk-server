@@ -36,10 +36,10 @@ public class KeyService {
     @Autowired
     AppDaoService daoService;
 
-    public int queryKey(String key, KeyType keyType)
+    public long queryKey(String key, KeyType keyType)
     {
-        long value = redisMapService.getIntValue(keyType.getName(),key);
-        return new Long(value).intValue();
+        long value = redisMapService.getlongValue(keyType.getName(),key);
+        return value;
     }
 
     private void 值加一(String key,KeyType keyType)
@@ -89,7 +89,7 @@ public class KeyService {
     public void 同步Pk人数(KeyType listkey,String pkId)
     {
         //上一次PK打卡人数同步时间
-        long lastUpdateTime = redisMapService.getIntValue(KeyType.PK同步时间Map.getName(),pkId);
+        long lastUpdateTime = redisMapService.getlongValue(KeyType.PK同步时间Map.getName(),pkId);
         //如果时间间隔大于同步时间
         if(System.currentTimeMillis()-lastUpdateTime > AppConfigService.getConfigAsLong(ConfigItem.PK同步时间间隔)*1000)
         {

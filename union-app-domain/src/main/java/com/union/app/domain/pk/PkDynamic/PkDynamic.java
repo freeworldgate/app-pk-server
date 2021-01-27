@@ -11,9 +11,9 @@ public class PkDynamic
 {
     private String pkId;
     //总打卡人数
-    private int totalUsers;
+    private long totalUsers;
     //发帖总数
-    private int totalPosts;
+    private long totalPosts;
     //图片数量
     private int totalImages;
 

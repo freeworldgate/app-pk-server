@@ -36,7 +36,7 @@ public class PkGroup {
 
     private KeyValuePair statu;
 
-    private int members;
+    private long members;
 
     private User member1;
 
