@@ -9,6 +9,7 @@ import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.service.pk.click.ClickService;
 import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.service.AppService;
+import com.union.app.service.pk.service.LocationService;
 import com.union.app.service.pk.service.PkService;
 import com.union.app.service.pk.service.PostService;
 import com.union.app.service.user.UserService;
@@ -46,6 +47,8 @@ public class 查询群组二维码 {
     @Autowired
     DynamicService dynamicService;
 
+    @Autowired
+    LocationService locationService;
 
     @Autowired
     AppService appService;
@@ -56,7 +59,7 @@ public class 查询群组二维码 {
 
 
 
-        if(pkService.isPkCreator(pkId,userId)){return AppResponse.buildResponse(PageAction.页面跳转("/pages/pk/message/message?pkId=" + pkId + "&type=1",true));}
+        if(locationService.isPkCreator(pkId,userId) ){return AppResponse.buildResponse(PageAction.页面跳转("/pages/pk/message/message?pkId=" + pkId + "&type=1",true));}
 
 
         if(!pkService.是否更新今日审核群(pkEntity)){return AppResponse.buildResponse(PageAction.信息反馈框("未更新主题群","请稍后再试..."));}

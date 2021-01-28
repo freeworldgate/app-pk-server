@@ -104,7 +104,7 @@ public class GroupService {
         PkGroupEntity pkGroupEntity = this.查询用户群组Entity(pkId,userId);
         if(!ObjectUtils.isEmpty(pkGroupEntity)){return;}
         UserDynamicEntity userDynamicEntity = userService.queryUserKvEntity(userId);
-        if(userDynamicEntity.getMygroups()<1)
+        if(!locationService.isPkCreator(pkId,userId) && userDynamicEntity.getMygroups()<1)
         {
             throw AppException.buildException(PageAction.执行处理器("groupPay",""));
         }

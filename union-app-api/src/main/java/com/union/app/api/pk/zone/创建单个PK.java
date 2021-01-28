@@ -63,7 +63,7 @@ public class 创建单个PK {
     @Transactional(rollbackOn = Exception.class)
     public AppResponse 删除单个PK(@RequestParam("userId") String userId,@RequestParam("pkId") String pkId) throws AppException, IOException {
 
-        if(!pkService.isPkCreator(pkId,userId)){ throw AppException.buildException(PageAction.信息反馈框("错误","非法用户"));}
+        if(!locationService.isPkCreator(pkId,userId) ){ throw AppException.buildException(PageAction.信息反馈框("错误","非法用户"));}
 //        pkService.删除PK(userId,pkId);
 
         return AppResponse.buildResponse(PageAction.执行处理器("success",""));
@@ -72,7 +72,7 @@ public class 创建单个PK {
     @RequestMapping(path="/updatePk",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
     public AppResponse updatePk(@RequestParam("userId") String userId,@RequestParam("topic") String topic,@RequestParam("watchWord") String watchWord,@RequestParam("pkId") String pkId) throws AppException, IOException {
-        if(!pkService.isPkCreator(pkId,userId)){ throw AppException.buildException(PageAction.信息反馈框("错误","非法用户"));}
+        if(!locationService.isPkCreator(pkId,userId) ){ throw AppException.buildException(PageAction.信息反馈框("错误","非法用户"));}
 
 //        pkService.修改PK(pkId,topic,watchWord);
         PkDetail pkDetail = pkService.querySinglePk(pkId);
@@ -82,7 +82,7 @@ public class 创建单个PK {
     @RequestMapping(path="/updatePkPage",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
     public AppResponse 修改封面(@RequestParam("userId") String userId,@RequestParam("pkId") String pkId,@RequestParam("imgUrl") String imgUrl) throws AppException, IOException {
-        if(!pkService.isPkCreator(pkId,userId)){ throw AppException.buildException(PageAction.信息反馈框("错误","非法用户"));}
+        if(!locationService.isPkCreator(pkId,userId) ){ throw AppException.buildException(PageAction.信息反馈框("错误","非法用户"));}
 
         pkService.修改封面(pkId,imgUrl);
         PkDetail pkDetail = locationService.querySinglePk(pkId);

@@ -111,6 +111,7 @@ public class 查询单个PK {
                 }
                 else
                 {
+//                    dataSets.add(new DataSet("leftTime",0));
                     dataSets.add(new DataSet("leftTime",timePerid-leftTime/1000));
                 }
 

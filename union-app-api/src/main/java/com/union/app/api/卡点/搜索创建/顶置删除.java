@@ -66,7 +66,7 @@ public class 顶置删除 {
 
 
 
-        if(pkService.isPkCreator(pkId,userId))
+        if(locationService.isPkCreator(pkId,userId))
         {
             pkService.修改首页图册(pkId,postId);
             Post post = postService.查询帖子(pkId,postId,userId);
@@ -111,7 +111,7 @@ public class 顶置删除 {
 
 
 
-        if(pkService.isPkCreator(pkId,userId) && StringUtils.equalsIgnoreCase(postEntity.getPkId(),pkId))
+        if(locationService.isPkCreator(pkId,userId)  && StringUtils.equalsIgnoreCase(postEntity.getPkId(),pkId))
         {
             postService.隐藏打卡信息(postId);
 //            locationService.打卡次数减一(pkId,userId);
@@ -132,7 +132,7 @@ public class 顶置删除 {
 
 
 
-        if(pkService.isPkCreator(postEntity.getPkId(),userId))
+        if(locationService.isPkCreator(postEntity.getPkId(),userId))
         {
             postService.移除隐藏打卡信息(postId);
 //            locationService.打卡次数加一(postEntity.getPkId(),userId);

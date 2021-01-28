@@ -54,7 +54,7 @@ public class 修改签名 {
     @Transactional(rollbackOn = Exception.class)
     public AppResponse buildPk(@RequestParam("userId") String userId,@RequestParam("pkId") String pkId,@RequestParam("sign") String sign) throws AppException, IOException, InterruptedException {
 
-        if(!pkService.isPkCreator(pkId,userId))
+        if(!locationService.isPkCreator(pkId,userId) )
         {
             throw AppException.buildException(PageAction.信息反馈框("非法操作","非法操作!"));
         }

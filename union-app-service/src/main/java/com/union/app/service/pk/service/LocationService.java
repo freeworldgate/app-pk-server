@@ -99,6 +99,8 @@ public class LocationService {
     @Autowired
     KeyService keyService;
 
+    @Autowired
+    LocationService locationService;
 
     public String 坐标转换成UUID(double latitude,double longitude,String name)
     {
@@ -229,7 +231,11 @@ public class LocationService {
         return pkEntity;
     }
 
-
+    public boolean isPkCreator(String pkId, String userId) {
+        PkEntity pk = this.querySinglePkEntity(pkId);
+        if(ObjectUtils.isEmpty(pk)){return false;}
+        return org.apache.commons.lang.StringUtils.equals(userId,pk.getUserId())? Boolean.TRUE:Boolean.FALSE;
+    }
     public PkDetail querySinglePk(PkEntity pk) throws IOException {
         if(ObjectUtils.isEmpty(pk)){return null;}
         String pkId = pk.getPkId();
@@ -514,7 +520,7 @@ public class LocationService {
         {
             pkImageEntity = new PkImageEntity();
             pkImageEntity.setImgId(IdGenerator.getImageId());
-            if(pkService.isPkCreator(pkId,userId)){pkImageEntity.setImgStatu(ImgStatu.审核通过);}else{pkImageEntity.setImgStatu(ImgStatu.审核中);}
+            if(locationService.isPkCreator(pkId,userId)){pkImageEntity.setImgStatu(ImgStatu.审核通过);}else{pkImageEntity.setImgStatu(ImgStatu.审核中);}
 
             pkImageEntity.setImgUrl(imgUrl);
             pkImageEntity.setPkId(pkId);
@@ -652,14 +658,14 @@ public class LocationService {
         PkImageEntity pkImageEntity = daoService.querySingleEntity(PkImageEntity.class,cfilter);
         if(StringUtils.equalsIgnoreCase(userId,pkImageEntity.getUserId())){
             daoService.deleteEntity(pkImageEntity);
-        }else if(pkService.isPkCreator(pkId,userId)){
+        }else if(this.isPkCreator(pkId,userId) ){
             pkImageEntity.setImgStatu(ImgStatu.审核中);
             daoService.updateEntity(pkImageEntity);
         }else{}
     }
 
     public void 设置卡点背景图片(String pkId, String userId, String imageId) throws AppException {
-        if(!pkService.isPkCreator(pkId,userId))
+        if(!this.isPkCreator(pkId,userId) )
         {
             throw AppException.buildException(PageAction.信息反馈框("用户无权限...","非法用户"));
         }
@@ -673,7 +679,7 @@ public class LocationService {
     }
 
     public void 审核通过卡点图片(String pkId, String userId, String imageId) throws AppException {
-        if(!pkService.isPkCreator(pkId,userId))
+        if(!locationService.isPkCreator(pkId,userId))
         {
             throw AppException.buildException(PageAction.信息反馈框("用户无权限...","非法用户"));
         }
