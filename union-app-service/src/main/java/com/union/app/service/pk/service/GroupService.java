@@ -7,8 +7,13 @@ import com.union.app.common.redis.RedisSortSetService;
 import com.union.app.dao.spi.filter.CompareTag;
 import com.union.app.dao.spi.filter.EntityFilterChain;
 import com.union.app.dao.spi.filter.OrderTag;
+import com.union.app.domain.pk.PkDetail;
 import com.union.app.domain.pk.apply.KeyValuePair;
 import com.union.app.domain.pk.交友.PkGroup;
+import com.union.app.domain.pk.捞人.FindUser;
+import com.union.app.domain.user.User;
+import com.union.app.entity.pk.卡点.捞人.FindStatu;
+import com.union.app.entity.pk.卡点.捞人.FindUserEntity;
 import com.union.app.entity.pk.社交.GroupStatu;
 import com.union.app.entity.pk.社交.PkGroupEntity;
 import com.union.app.entity.pk.社交.PkGroupMemberEntity;
@@ -133,13 +138,14 @@ public class GroupService {
 
     private PkGroup translate(PkGroupEntity pkGroupEntity) {
         PkGroup pkGroup = new PkGroup();
+        pkGroup.setGroupId(pkGroupEntity.getGroupId());
         pkGroup.setPkId(pkGroupEntity.getPkId());
         pkGroup.setPkName(pkGroupEntity.getPkName());
         pkGroup.setGroupCard(pkGroupEntity.getGroupCode());
         pkGroup.setGroupName(pkGroupEntity.getGroupName());
         pkGroup.setGroupDesc(pkGroupEntity.getGroupDesc());
         pkGroup.setUser(userService.queryUser(pkGroupEntity.getUserId()));
-        pkGroup.setGroupId(pkGroupEntity.getGroupId());
+        pkGroup.setUpdateGroupCode(pkGroupEntity.getUpdateGroupCode());
         pkGroup.setMembers(keyService.queryKey(String.valueOf(pkGroupEntity.getGroupId()), KeyType.群组成员));
         pkGroup.setMember1(userService.queryUser(pkGroupEntity.getUser1()));
         pkGroup.setMember2(userService.queryUser(pkGroupEntity.getUser2()));
@@ -263,12 +269,12 @@ public class GroupService {
         {
             throw AppException.buildException(PageAction.信息反馈框("当前状态不支持更新二维码","当前状态不支持更新二维码"));
         }
-        if(pkGroupEntity.getLastUpdateTime() > System.currentTimeMillis() - 3 * 24 * 3600 * 1000 )
+        if(pkGroupEntity.getLastUpdateTime() > System.currentTimeMillis() - 4 * 24 * 3600 * 1000 )
         {
             //每次更新间隔至少三天
-            throw AppException.buildException(PageAction.信息反馈框("每次更新间隔至少三天","每次更新间隔至少三天"));
+            throw AppException.buildException(PageAction.信息反馈框("每次更新间隔至少四天","每次更新间隔至少四天"));
         }
-        pkGroupEntity.setGroupCode(groupCard);
+        pkGroupEntity.setUpdateGroupCode(groupCard);
         pkGroupEntity.setLastUpdateTime(System.currentTimeMillis());
         daoService.updateEntity(pkGroupEntity);
 
@@ -424,5 +430,81 @@ public class GroupService {
     }
 
 
+    public List<PkGroup> 查询待审核的群组(int page) {
+        List<PkGroup> groups = new ArrayList<>();
+        List<PkGroupEntity> groupEntities = this.查询要审核GroupEntity(page);
+        for(PkGroupEntity pkGroupEntity:groupEntities){
+            groups.add(this.translate(pkGroupEntity));
+        };
+        return groups;
+    }
 
+    private List<PkGroupEntity> 查询要审核GroupEntity(int page) {
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(PkGroupEntity.class)
+                .compareFilter("groupStatu",CompareTag.Equal,GroupStatu.审核中)
+                .orderByFilter("time",OrderTag.DESC)
+                .pageLimitFilter(page,20);
+        List<PkGroupEntity> pkGroupEntities = daoService.queryEntities(PkGroupEntity.class,filter);
+        return pkGroupEntities;
+
+
+
+    }
+
+    public void 审批(int groupId) {
+        PkGroupEntity groupEntity = this.查询用户群组EntityById(groupId);
+        if(groupEntity.getGroupStatu() == GroupStatu.审核中)
+        {
+            groupEntity.setGroupStatu(GroupStatu.已通过);
+
+        }
+        else
+        {
+            groupEntity.setGroupStatu(GroupStatu.审核中);
+
+        }
+        daoService.updateEntity(groupEntity);
+    }
+
+    public PkGroup 查询ByGroupId(int groupId) {
+        PkGroupEntity groupEntity = this.查询用户群组EntityById(groupId);
+        return this.translate(groupEntity);
+    }
+
+    public List<PkGroup> 查询待替换的群组(int page) {
+
+        List<PkGroup> groups = new ArrayList<>();
+        List<PkGroupEntity> groupEntities = this.查询要替换的GroupEntity(page);
+        for(PkGroupEntity pkGroupEntity:groupEntities){
+            groups.add(this.translate(pkGroupEntity));
+        };
+        return groups;
+
+    }
+
+    private List<PkGroupEntity> 查询要替换的GroupEntity(int page) {
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(PkGroupEntity.class)
+                .compareFilter("groupStatu",CompareTag.Equal,GroupStatu.已通过)
+                .andFilter()
+                .nullFilter("updateGroupCode",false)
+                .orderByFilter("lastUpdateTime",OrderTag.DESC)
+                .pageLimitFilter(page,20);
+        List<PkGroupEntity> pkGroupEntities = daoService.queryEntities(PkGroupEntity.class,filter);
+        return pkGroupEntities;
+    }
+
+    public void 审批UpdatingGroup(int groupId) {
+
+        PkGroupEntity groupEntity = this.查询用户群组EntityById(groupId);
+        if(groupEntity.getGroupStatu() == GroupStatu.已通过 && !StringUtils.isBlank(groupEntity.getUpdateGroupCode()))
+        {
+            groupEntity.setGroupCode(groupEntity.getUpdateGroupCode());
+            groupEntity.setUpdateGroupCode(null);
+            daoService.updateEntity(groupEntity);
+        }
+
+
+
+
+    }
 }

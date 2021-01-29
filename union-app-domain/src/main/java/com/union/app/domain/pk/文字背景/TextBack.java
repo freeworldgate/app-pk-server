@@ -20,6 +20,8 @@ public class TextBack implements Serializable{
     private String backUrl;
 
     private String fontColor;
+
+    private float opacity;
     
 
 }

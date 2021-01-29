@@ -94,6 +94,7 @@ public class TextService {
         textBack.setBackId(-1);
         textBack.setBackColor("fafafa");
         textBack.setFontColor("000000");
+        textBack.setOpacity(0.0f);
         textBack.setBackUrl("");
 
         EntityFilterChain filter = EntityFilterChain.newFilterChain(TextBackEntity.class)
@@ -105,6 +106,7 @@ public class TextService {
             textBack.setBackUrl(textBackEntity.getBackUrl());
             textBack.setFontColor(textBackEntity.getFontColor());
             textBack.setBackColor(textBackEntity.getBackColr());
+            textBack.setOpacity(textBackEntity.getOpacity());
         }
 
         return textBack;

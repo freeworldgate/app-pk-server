@@ -35,6 +35,7 @@ public class PkGroupEntity {
 
     private String groupCode;
 
+    private String updateGroupCode;
     /**
      * 需要基于Redis并发锁老修改其值
      */

@@ -36,6 +36,8 @@ public class Post {
 
     private String fontColor;
 
+    private float opacity;;
+
     private String backUrl;
 
     private int postTimes;

@@ -28,6 +28,8 @@ public class PkGroup {
 
     private String groupCard;
 
+    private String updateGroupCode;
+
     private String groupName;
 
     private String groupDesc;

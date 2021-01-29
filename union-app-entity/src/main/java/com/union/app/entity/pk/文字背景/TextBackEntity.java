@@ -25,6 +25,7 @@ public class TextBackEntity {
 
     private String fontColor;
 
+    private float opacity;
 
 
 

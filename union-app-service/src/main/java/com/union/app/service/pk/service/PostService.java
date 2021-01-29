@@ -158,6 +158,7 @@ public class PostService {
         postEntity.setBackColor(textBack.getBackColor());
         postEntity.setFontColor(textBack.getFontColor());
         postEntity.setBackUrl(textBack.getBackUrl());
+        postEntity.setOpacity(textBack.getOpacity());
 
         postEntity.setStatu(PostStatu.显示);
         postEntity.setPostTimes(pkUserDynamicService.计算打卡次数(pkId,userId)+1);
@@ -290,6 +291,7 @@ public class PostService {
         post.setTopic(postEntity.getTopic());
         post.setBackColor(postEntity.getBackColor());
         post.setFontColor(postEntity.getFontColor());
+        post.setOpacity(postEntity.getOpacity());
         post.setBackUrl(postEntity.getBackUrl());
         post.setPostTimes(postEntity.getPostTimes());
         post.setPostImages(postEntity.getImgNum()<1?new ArrayList<>():getPostImages(postEntity.getPostId(),postEntity.getPkId()));

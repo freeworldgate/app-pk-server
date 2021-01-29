@@ -28,6 +28,7 @@ public class PostEntity {
     private String backColor;
 
     private String fontColor;
+    private float opacity;;
 
     private int imgNum;
 
