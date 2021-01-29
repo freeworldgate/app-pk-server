@@ -54,14 +54,14 @@ public class 发布Post {
 
     @RequestMapping(path="/createPost",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse 发布Post(@RequestParam("pkId") String pkId,@RequestParam("title") String title,@RequestParam("userId") String userId,@RequestParam("imgUrls") List<String> images) throws AppException, IOException {
+    public AppResponse 发布Post(@RequestParam("pkId") String pkId,@RequestParam("title") String title,@RequestParam("userId") String userId,@RequestParam("backId") int backId,@RequestParam("imgUrls") List<String> images) throws AppException, IOException {
 
 
 
 
         //添加时间限制
 
-        String postId = postService.打卡(pkId,userId,title,images);
+        String postId = postService.打卡(pkId,userId,title,images,backId);
 
 
         Post post = postService.查询帖子(pkId,postId,userId);

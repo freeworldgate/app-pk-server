@@ -32,6 +32,12 @@ public class Post {
 
     private String topic;
 
+    private String backColor;
+
+    private String fontColor;
+
+    private String backUrl;
+
     private int postTimes;
 
     private List<PostImage> postImages;

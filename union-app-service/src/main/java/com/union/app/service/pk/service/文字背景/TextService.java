@@ -44,7 +44,7 @@ public class TextService {
     @Autowired
     AppDaoService daoService;
 
-    private static Map<String,TextBack> backMap = new HashMap<>();
+    private static Map<Integer,TextBack> backMap = new HashMap<>();
 
     private static volatile long updateTime;
 
@@ -64,8 +64,8 @@ public class TextService {
 
     }
 
-    private synchronized Map<? extends String,? extends TextBack> 查询TextBackEntity() {
-        Map<String,TextBack> backMap = new HashMap<>();
+    private synchronized Map<Integer,TextBack> 查询TextBackEntity() {
+        Map<Integer,TextBack> backMap = new HashMap<>();
         if(backMap.isEmpty() || System.currentTimeMillis() - updateTime > 1 * 3600 * 1000)
         {
             EntityFilterChain filter = EntityFilterChain.newFilterChain(TextBackEntity.class)
@@ -87,5 +87,26 @@ public class TextService {
         }
         return backMap;
 
+    }
+
+    public TextBack 查询TextBackEntity(int backId) {
+        TextBack textBack = new TextBack();
+        textBack.setBackId(-1);
+        textBack.setBackColor("fafafa");
+        textBack.setFontColor("000000");
+        textBack.setBackUrl("");
+
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(TextBackEntity.class)
+                .compareFilter("backId",CompareTag.Equal,backId);
+        TextBackEntity textBackEntity = daoService.querySingleEntity(TextBackEntity.class,filter);
+        if(!ObjectUtils.isEmpty(textBackEntity))
+        {
+            textBack.setBackId(textBackEntity.getBackId());
+            textBack.setBackUrl(textBackEntity.getBackUrl());
+            textBack.setFontColor(textBackEntity.getFontColor());
+            textBack.setBackColor(textBackEntity.getBackColr());
+        }
+
+        return textBack;
     }
 }

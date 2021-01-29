@@ -74,7 +74,6 @@ public class 查询文字背景 {
         List<DataSet> dataSets = new ArrayList<>();
 
         dataSets.add(new DataSet("textBacks",textBacks));
-        dataSets.add(new DataSet("currentBack",CollectionUtils.isEmpty(textBacks)?null:textBacks.get(0)));
 
 
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));

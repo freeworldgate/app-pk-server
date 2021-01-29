@@ -13,7 +13,7 @@ import java.io.Serializable;
 public class TextBack implements Serializable{
 
 
-    private String backId;
+    private int backId;
 
     private String backColor;
 

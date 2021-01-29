@@ -23,6 +23,11 @@ public class PostEntity {
 
     private String topic;
 
+    private String backUrl;
+
+    private String backColor;
+
+    private String fontColor;
 
     private int imgNum;
 

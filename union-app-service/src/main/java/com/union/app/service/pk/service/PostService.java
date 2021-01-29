@@ -10,6 +10,7 @@ import com.union.app.dao.spi.filter.OrderTag;
 import com.union.app.domain.pk.Post;
 import com.union.app.domain.pk.PostDynamic;
 import com.union.app.domain.pk.PostImage;
+import com.union.app.domain.pk.文字背景.TextBack;
 import com.union.app.domain.user.User;
 import com.union.app.entity.pk.*;
 import com.union.app.plateform.data.resultcode.AppException;
@@ -20,6 +21,7 @@ import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.service.pkuser.PkDynamicService;
 import com.union.app.service.pk.service.pkuser.PkUserDynamicService;
 import com.union.app.service.pk.service.pkuser.UserDynamicService;
+import com.union.app.service.pk.service.文字背景.TextService;
 import com.union.app.service.user.UserService;
 import com.union.app.util.idGenerator.IdGenerator;
 import com.union.app.util.time.TimeUtils;
@@ -82,6 +84,9 @@ public class PostService {
     KeyService keyService;
 
     @Autowired
+    TextService textService;
+
+    @Autowired
     PkCacheService pkCacheService;
     public String 预置帖子(String pkId,String title,List<String> images) throws IOException, AppException
     {
@@ -140,7 +145,7 @@ public class PostService {
         return postId;
     }
 
-    public String 打卡(String pkId,String userId,String title,List<String> images) throws IOException, AppException
+    public String 打卡(String pkId,String userId,String title,List<String> images,int backId) throws IOException, AppException
     {
 
         String postId = IdGenerator.getPostId();
@@ -149,6 +154,10 @@ public class PostService {
         postEntity.setPostId(postId);
         postEntity.setUserId(userId);
         postEntity.setTopic(noActiveTitle(title)?"...":title);
+        TextBack textBack = textService.查询TextBackEntity(backId);
+        postEntity.setBackColor(textBack.getBackColor());
+        postEntity.setFontColor(textBack.getFontColor());
+        postEntity.setBackUrl(textBack.getBackUrl());
 
         postEntity.setStatu(PostStatu.显示);
         postEntity.setPostTimes(pkUserDynamicService.计算打卡次数(pkId,userId)+1);
@@ -279,6 +288,9 @@ public class PostService {
         post.setTime(TimeUtils.convertTime(postEntity.getTime()));
         post.setCreator(userService.queryUser(postEntity.getUserId()));
         post.setTopic(postEntity.getTopic());
+        post.setBackColor(postEntity.getBackColor());
+        post.setFontColor(postEntity.getFontColor());
+        post.setBackUrl(postEntity.getBackUrl());
         post.setPostTimes(postEntity.getPostTimes());
         post.setPostImages(postEntity.getImgNum()<1?new ArrayList<>():getPostImages(postEntity.getPostId(),postEntity.getPkId()));
         return post;
