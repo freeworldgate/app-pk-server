@@ -66,12 +66,15 @@ public class 查询用户捞人记录 {
         PkDetail pk = locationService.querySinglePk(pkId);
         UserDynamicEntity userDynamicEntity = userService.queryUserKvEntity(userId);
         String leftTime = TimeUtils.剩余可打捞时间(userDynamicEntity.getFindTimeLength());
+        String speedTime = TimeUtils.已打捞总时间(userDynamicEntity.getFindLength());
 
         List<DataSet> dataSets = new ArrayList<>();
 
         dataSets.add(new DataSet("findUser",findUser));
         dataSets.add(new DataSet("pk",pk));
         dataSets.add(new DataSet("leftTime",leftTime));
+        dataSets.add(new DataSet("speedTime",speedTime));
+        dataSets.add(new DataSet("findTimes",userDynamicEntity.getFindTimes()));
 
         dataSets.add(new DataSet("backUrl", appService.查询背景(3)));
 

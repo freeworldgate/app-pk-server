@@ -2,13 +2,13 @@ package com.union.app.api.卡点.搜索创建;
 
 import com.union.app.api.卡点.搜索创建.返回对象.SearchResult;
 import com.union.app.common.config.AppConfigService;
+import com.union.app.common.dao.KeyService;
 import com.union.app.domain.pk.Circle;
 import com.union.app.domain.pk.Marker;
 import com.union.app.domain.pk.PkDetail;
 import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
-import com.union.app.plateform.data.resultcode.DataSet;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.service.pk.click.ClickService;
@@ -24,8 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequestMapping(path="/pk")
@@ -80,7 +78,7 @@ public class 搜索卡点 {
 
         if(!ObjectUtils.isEmpty(pkDetail)) {
 
-            double latitudeoff = latitude- keyService.获取偏移量(pkDetail.getType().getScale());
+            double latitudeoff = latitude- appService.查询指定范围缩放偏移(pkDetail.getType().getRangeLength()).getOffset();
 
             searchResult.setCircles(new Circle[]{pkDetail.getCircle()});
             searchResult.setScale(pkDetail.getType().getScale());
@@ -96,7 +94,7 @@ public class 搜索卡点 {
 
 //            double latitudeoff = latitude-keyService.获取偏移量(keyService.获取偏缩放等级(100));
             searchResult.setCircles(new Circle[]{new Circle(latitude,longitude,100)});
-            searchResult.setScale(keyService.获取缩放等级(100));
+            searchResult.setScale(appService.查询指定范围缩放偏移(100).getScale());
             searchResult.setLatitude(latitude);
             searchResult.setLongitude(longitude);
         }

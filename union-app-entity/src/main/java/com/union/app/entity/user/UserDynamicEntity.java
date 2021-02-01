@@ -50,6 +50,12 @@ public class UserDynamicEntity {
     private int fans;
 
 
+    //已打捞次数
+    private int findTimes;
+    //已打捞时间
+    private long findLength;
+
+
 
 
 

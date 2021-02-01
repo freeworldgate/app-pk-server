@@ -18,11 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping(path="/oss")
@@ -44,7 +44,7 @@ public class OSSSave {
 
         OssUrlInfo ossUrlInfo = new OssUrlInfo();
         ossUrlInfo.setAliyunServerURL(AppConfigService.getConfigAsString(ConfigItem.OSS基础地址));
-        ossUrlInfo.setDirectory(RandomUtil.getRandomDirName());
+        ossUrlInfo.setDirectory(获取前缀(type));
         ossUrlInfo.setPolicyBase64(policy);
         ossUrlInfo.setOSSAccessKeyId(AppConfigService.getConfigAsString(ConfigItem.RAM秘钥ID));
         ossUrlInfo.setSignature(signature);
@@ -58,6 +58,18 @@ public class OSSSave {
         ossUrlInfo.setTaskId(UUID.randomUUID().toString());
 
         return AppResponse.buildResponse(PageAction.执行处理器("success",ossUrlInfo));
+    }
+    private static final Stack<String> names = new Stack<>();
+    private String 获取前缀(String type) {
+        String ip;
+        try {
+            ip = InetAddress.getLocalHost().getHostAddress();
+        } catch (UnknownHostException e) {
+            ip = UUID.randomUUID().toString();
+        }
+        String dir = "dir" + new Random(200).nextInt();
+        String path = ip+type+dir;
+        return path.replaceAll("-","");
     }
 
 //    @RequestMapping(path="/postUploadImgs",method = RequestMethod.GET)

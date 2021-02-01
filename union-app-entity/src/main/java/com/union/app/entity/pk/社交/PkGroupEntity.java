@@ -17,8 +17,7 @@ public class PkGroupEntity {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)//mysql数据库主键策略
-    private int groupId;
+    private String groupId;
 
     private String groupName;
 

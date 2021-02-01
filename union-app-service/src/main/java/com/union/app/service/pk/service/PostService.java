@@ -3,10 +3,12 @@ package com.union.app.service.pk.service;
 import com.union.app.common.OSS存储.CacheStorage;
 import com.union.app.common.OSS存储.OssStorage;
 import com.union.app.common.dao.AppDaoService;
+import com.union.app.common.dao.KeyService;
 import com.union.app.common.dao.PkCacheService;
 import com.union.app.dao.spi.filter.CompareTag;
 import com.union.app.dao.spi.filter.EntityFilterChain;
 import com.union.app.dao.spi.filter.OrderTag;
+import com.union.app.domain.pk.PkDetail;
 import com.union.app.domain.pk.Post;
 import com.union.app.domain.pk.PostDynamic;
 import com.union.app.domain.pk.PostImage;
@@ -34,7 +36,9 @@ import org.springframework.util.StringUtils;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class PostService {
@@ -145,12 +149,14 @@ public class PostService {
         return postId;
     }
 
-    public String 打卡(String pkId,String userId,String title,List<String> images,int backId) throws IOException, AppException
+    public String 打卡(String pkId,String userId,String title,List<String> images,String backId) throws IOException, AppException
     {
 
+        PkEntity pkEntity = locationService.querySinglePkEntityWithoutCache(pkId);
         String postId = IdGenerator.getPostId();
         PostEntity postEntity = new PostEntity();
         postEntity.setPkId(pkId);
+        postEntity.setPkName(pkEntity.getName());
         postEntity.setPostId(postId);
         postEntity.setUserId(userId);
         postEntity.setTopic(noActiveTitle(title)?"...":title);
@@ -158,13 +164,14 @@ public class PostService {
         postEntity.setBackColor(textBack.getBackColor());
         postEntity.setFontColor(textBack.getFontColor());
         postEntity.setBackUrl(textBack.getBackUrl());
-        postEntity.setOpacity(textBack.getOpacity());
+
 
         postEntity.setStatu(PostStatu.显示);
         postEntity.setPostTimes(pkUserDynamicService.计算打卡次数(pkId,userId)+1);
         postEntity.setTime(System.currentTimeMillis());
         List<PostImageEntity> postImageEntities = getLegalImgUrl(images,pkId,postId);
         postEntity.setImgNum(CollectionUtils.isEmpty(postImageEntities)?0:images.size());
+        keyService.pk图片总量递增(pkId,postEntity.getImgNum());
         daoService.insertEntity(postEntity);
         postImageEntities.forEach(image->{
             daoService.insertEntity(image);
@@ -253,7 +260,7 @@ public class PostService {
 
     public Post 查询顶置帖子(PkEntity pkEntity) {
 
-        long topPostSetTime = pkEntity.getTopPostSetTime();
+
         if(!org.apache.commons.lang.StringUtils.isBlank(pkEntity.getTopPostId()))
         {
             PostEntity postEntity = this.查询帖子ById(pkEntity.getTopPostId());
@@ -285,13 +292,13 @@ public class PostService {
     public Post translate(PostEntity postEntity){
         Post post = new Post();
         post.setPkId(postEntity.getPkId());
+        post.setPkTopic(postEntity.getPkName());
         post.setPostId(postEntity.getPostId());
         post.setTime(TimeUtils.convertTime(postEntity.getTime()));
         post.setCreator(userService.queryUser(postEntity.getUserId()));
         post.setTopic(postEntity.getTopic());
         post.setBackColor(postEntity.getBackColor());
         post.setFontColor(postEntity.getFontColor());
-        post.setOpacity(postEntity.getOpacity());
         post.setBackUrl(postEntity.getBackUrl());
         post.setPostTimes(postEntity.getPostTimes());
         post.setPostImages(postEntity.getImgNum()<1?new ArrayList<>():getPostImages(postEntity.getPostId(),postEntity.getPkId()));
@@ -306,32 +313,6 @@ public class PostService {
         if(StringUtils.isEmpty(postId)||StringUtils.isEmpty(pkId)) {return postImages; }
 
         postImages.addAll(keyService.查询榜帖图片(pkId,postId));
-
-        if(CollectionUtils.isEmpty(postImages))
-        {
-
-            EntityFilterChain filter = EntityFilterChain.newFilterChain(PostImageEntity.class)
-                    .compareFilter("pkId",CompareTag.Equal,pkId)
-                    .andFilter()
-                    .compareFilter("postId",CompareTag.Equal,postId);
-            List<PostImageEntity> postImageEntity = daoService.queryEntities(PostImageEntity.class,filter);
-
-            postImageEntity.forEach(img->{
-                PostImage postImage = new PostImage();
-                postImage.setImgUrl(img.getImgUrl());
-                postImage.setImageId(img.getImgId());
-                postImage.setPkId(img.getPkId());
-                postImage.setPostId(img.getPostId());
-                postImage.setTime(TimeUtils.convertTime(img.getTime()));
-                postImages.add(postImage);
-            });
-            if(!CollectionUtils.isEmpty(postImageEntity))
-            {
-                keyService.保存图片(pkId,postId,postImages);
-            }
-        }
-
-
 
         return postImages;
     }
@@ -675,6 +656,7 @@ public class PostService {
             pkEntity.setTopPostSetTime(0L);
             daoService.updateEntity(pkEntity);
         }
+        keyService.pk图片总量递减(pkEntity.getPkId(),postEntity.getImgNum());
 
     }
 
@@ -781,4 +763,16 @@ public class PostService {
     }
 
 
+    public void 批量查询POST(List<Object> postIds, List<PkDetail> pkDetails) {
+        Map<String, Post> postHashMap = new HashMap<>();
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(PostEntity.class)
+                .inFilter("postId",postIds);
+        List<PostEntity> postEntities = daoService.queryEntities(PostEntity.class,filter);
+        postEntities.forEach(postEntity -> {
+            postHashMap.put(postEntity.getPostId(),this.translate(postEntity));
+        });
+        pkDetails.forEach(pkDetail -> {
+            pkDetail.setTopPost(postHashMap.get(pkDetail.getTopPostId()));
+        });
+    }
 }

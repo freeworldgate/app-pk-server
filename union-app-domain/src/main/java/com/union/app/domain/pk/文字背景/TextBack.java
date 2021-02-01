@@ -13,7 +13,7 @@ import java.io.Serializable;
 public class TextBack implements Serializable{
 
 
-    private int backId;
+    private String backId;
 
     private String backColor;
 
@@ -21,7 +21,6 @@ public class TextBack implements Serializable{
 
     private String fontColor;
 
-    private float opacity;
-    
+
 
 }

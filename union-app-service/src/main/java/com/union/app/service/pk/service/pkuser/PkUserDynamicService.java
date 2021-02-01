@@ -44,7 +44,15 @@ public class PkUserDynamicService {
     }
 
 
-
+    public PkUserDynamicEntity initEntity(String pkId, String userId){
+        PkUserDynamicEntity pkUserEntity = new PkUserDynamicEntity();
+        pkUserEntity.setPkId(pkId);
+        pkUserEntity.setUserId(userId);
+        pkUserEntity.setPostTimes(0);
+        pkUserEntity.setUnLockGroups(0);
+        daoService.insertEntity(pkUserEntity);
+        return pkUserEntity;
+    }
 
     public PkUserDynamicEntity 初始化Entity(String pkId, String userId){
         PkUserDynamicEntity pkUserEntity = new PkUserDynamicEntity();
@@ -63,6 +71,7 @@ public class PkUserDynamicService {
                 .andFilter()
                 .compareFilter("userId",CompareTag.Equal,userId);
         PkUserDynamicEntity pkUserEntity = daoService.querySingleEntity(PkUserDynamicEntity.class,cfilter);
+
         return pkUserEntity;
 
     }

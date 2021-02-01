@@ -51,4 +51,5 @@ public class PkEntity {
 
     private long totalUsers;
 
+    private long totalImgs;
 }

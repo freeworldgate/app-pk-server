@@ -19,6 +19,8 @@ public class PostEntity {
 
     private String pkId;
 
+    private String pkName;
+
     private String userId;
 
     private String topic;
@@ -28,7 +30,6 @@ public class PostEntity {
     private String backColor;
 
     private String fontColor;
-    private float opacity;;
 
     private int imgNum;
 

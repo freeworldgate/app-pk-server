@@ -1,6 +1,7 @@
-package com.union.app.api.卡点.捞人;
+package com.union.app.api.pk.管理.文字背景;
 
 import com.union.app.domain.pk.捞人.FindUser;
+import com.union.app.domain.pk.文字背景.TextBack;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.DataSet;
@@ -8,8 +9,12 @@ import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.service.pk.click.ClickService;
 import com.union.app.service.pk.dynamic.DynamicService;
-import com.union.app.service.pk.service.*;
+import com.union.app.service.pk.service.AppService;
+import com.union.app.service.pk.service.ApproveService;
+import com.union.app.service.pk.service.PkService;
+import com.union.app.service.pk.service.PostService;
 import com.union.app.service.pk.service.捞人.FindService;
+import com.union.app.service.pk.service.文字背景.TextService;
 import com.union.app.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
@@ -24,8 +29,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path="/pk")
-public class 查询我的捞人记录 {
+public class 查询背景 {
 
+    @Autowired
+    AppService appService;
 
     @Autowired
     PkService pkService;
@@ -49,59 +56,34 @@ public class 查询我的捞人记录 {
     ApproveService approveService;
 
     @Autowired
-    AppService appService;
-
-    @Autowired
-    LocationService locationService;
-
-    @Autowired
-    FindService findService;
-
-    @RequestMapping(path="/queryMyFinds",method = RequestMethod.GET)
-    public AppResponse queryMyFinds(@RequestParam("userId") String userId) throws IOException {
-
-        List<FindUser> findUsers = findService.查询我的捞人记录(userId,1);
+    TextService textService;
 
 
+    @RequestMapping(path="/queryBacks",method = RequestMethod.GET)
+    public AppResponse 查询排名信息() throws AppException, IOException {
 
+//        appService.验证Password(password);
         List<DataSet> dataSets = new ArrayList<>();
-
-        if(CollectionUtils.isEmpty(findUsers))
-        {
-            dataSets.add(new DataSet("backUrl",appService.查询背景(0)));
-        }
-        else
-        {
-            dataSets.add(new DataSet("backUrl",appService.查询背景(5)));
-            dataSets.add(new DataSet("findUsers",findUsers));
-        }
-
-
-
-
-
-        dataSets.add(new DataSet("emptyImage",appService.查询背景(3)));
-
-
+        List<TextBack> textBacks = textService.查询TextBacks(1);
+        dataSets.add(new DataSet("backs",textBacks));
         dataSets.add(new DataSet("page",1));
-
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
 
     }
-    @RequestMapping(path="/nextMyFinds",method = RequestMethod.GET)
-    public AppResponse nextPkApprovingImagePage(@RequestParam("userId") String userId,@RequestParam("page") int page) throws AppException, IOException, InterruptedException {
 
-        List<FindUser> findUsers = findService.查询我的捞人记录(userId,page+1);
+    @RequestMapping(path="/nextBacks",method = RequestMethod.GET)
+    public AppResponse 查询排名信息(@RequestParam("page") int page) throws AppException, IOException {
 
-
-
-        if(CollectionUtils.isEmpty(findUsers))
+        //页数不断递增，但是只有一百页。
+        List<TextBack> textBacks = textService.查询TextBacks(page+1);
+        if(CollectionUtils.isEmpty(textBacks))
         {
-            return AppResponse.buildResponse(PageAction.前端数据更新("nomore",true));
-
+            return AppResponse.buildResponse(PageAction.前端数据更新("nomore",Boolean.TRUE));
         }
 
-        return AppResponse.buildResponse(PageAction.执行处理器("success",findUsers));
+        List<DataSet> dataSets = new ArrayList<>();
+        dataSets.add(new DataSet("backs",textBacks));
+        return AppResponse.buildResponse(PageAction.执行处理器("success",textBacks));
 
 
     }

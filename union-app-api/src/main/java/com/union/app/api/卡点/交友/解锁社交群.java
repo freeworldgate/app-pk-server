@@ -15,6 +15,7 @@ import com.union.app.service.pk.service.pkuser.PkUserDynamicService;
 import com.union.app.service.pk.service.捞人.FindService;
 import com.union.app.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -68,11 +69,17 @@ public class 解锁社交群 {
 
     @RequestMapping(path="/unLockGroup",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse createGroup(@RequestParam("groupId") int groupId,@RequestParam("userId") String userId) throws AppException, IOException {
+    public AppResponse unLockGroup(@RequestParam("groupId") String groupId,@RequestParam("userId") String userId) throws AppException, IOException {
 
         PkGroupEntity pkGroupEntity = groupService.查询用户群组EntityById(groupId);
 
         PkUserDynamicEntity pkUserDynamicEntity = pkUserDynamicService.查询卡点用户动态表(pkGroupEntity.getPkId(),userId);
+
+        if(ObjectUtils.isEmpty(pkUserDynamicEntity))
+        {
+            pkUserDynamicEntity = pkUserDynamicService.initEntity(pkGroupEntity.getPkId(),userId);
+        }
+
         if(pkUserDynamicEntity.getPostTimes()<=pkUserDynamicEntity.getUnLockGroups())
         {
             throw AppException.buildException(PageAction.信息反馈框("解锁群组超限","解锁群组超限,你可以通过发布打卡信息获得解锁权限"));

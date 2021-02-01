@@ -34,6 +34,4 @@ public class PkUserDynamicEntity
     private long lastPublishPostTime;
 
 
-
-
 }

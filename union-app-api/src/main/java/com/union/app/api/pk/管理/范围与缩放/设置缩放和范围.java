@@ -1,35 +1,33 @@
-package com.union.app.api.卡点.文字背景;
+package com.union.app.api.pk.管理.范围与缩放;
 
 import com.union.app.domain.pk.捞人.FindUser;
-import com.union.app.domain.pk.文字背景.TextBack;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
-import com.union.app.plateform.data.resultcode.DataSet;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.service.pk.click.ClickService;
 import com.union.app.service.pk.dynamic.DynamicService;
-import com.union.app.service.pk.service.*;
+import com.union.app.service.pk.service.AppService;
+import com.union.app.service.pk.service.ApproveService;
+import com.union.app.service.pk.service.PkService;
+import com.union.app.service.pk.service.PostService;
 import com.union.app.service.pk.service.捞人.FindService;
-import com.union.app.service.pk.service.文字背景.TextService;
 import com.union.app.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 @RestController
 @RequestMapping(path="/pk")
-public class 查询文字背景 {
+public class 设置缩放和范围 {
 
+    @Autowired
+    AppService appService;
 
     @Autowired
     PkService pkService;
@@ -53,33 +51,17 @@ public class 查询文字背景 {
     ApproveService approveService;
 
     @Autowired
-    AppService appService;
-
-    @Autowired
-    LocationService locationService;
-
-    @Autowired
     FindService findService;
 
-    @Autowired
-    TextService textService;
 
+    @RequestMapping(path="/setScaleRange",method = RequestMethod.GET)
+    @Transactional(rollbackOn = Exception.class)
+    public AppResponse 查询排名信息(@RequestParam("range") int range,@RequestParam("scale") int scale,@RequestParam("offset") double offset) throws AppException, IOException {
 
-    @RequestMapping(path="/queryTextBacks",method = RequestMethod.GET)
-    public AppResponse queryTextBacks() throws IOException {
+        appService.设置缩放(range,scale,offset);
 
-        List<TextBack> textBacks = textService.查询背景();
-        Collections.shuffle(textBacks);
-
-
-        List<DataSet> dataSets = new ArrayList<>();
-
-        dataSets.add(new DataSet("textBacks",textBacks));
-
-
-        return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
+        return AppResponse.buildResponse(PageAction.前端数据更新("key",""));
 
     }
-
 
 }

@@ -3,17 +3,13 @@ package com.union.app.service.pk.service;
 import com.union.app.common.OSS存储.CacheStorage;
 import com.union.app.common.OSS存储.OssStorage;
 import com.union.app.common.dao.AppDaoService;
+import com.union.app.common.dao.KeyService;
 import com.union.app.common.redis.RedisSortSetService;
 import com.union.app.dao.spi.filter.CompareTag;
 import com.union.app.dao.spi.filter.EntityFilterChain;
 import com.union.app.dao.spi.filter.OrderTag;
-import com.union.app.domain.pk.PkDetail;
 import com.union.app.domain.pk.apply.KeyValuePair;
 import com.union.app.domain.pk.交友.PkGroup;
-import com.union.app.domain.pk.捞人.FindUser;
-import com.union.app.domain.user.User;
-import com.union.app.entity.pk.卡点.捞人.FindStatu;
-import com.union.app.entity.pk.卡点.捞人.FindUserEntity;
 import com.union.app.entity.pk.社交.GroupStatu;
 import com.union.app.entity.pk.社交.PkGroupEntity;
 import com.union.app.entity.pk.社交.PkGroupMemberEntity;
@@ -27,6 +23,7 @@ import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.service.pkuser.PkUserDynamicService;
 import com.union.app.service.pk.service.pkuser.UserDynamicService;
 import com.union.app.service.user.UserService;
+import com.union.app.util.idGenerator.IdGenerator;
 import com.union.app.util.time.TimeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -116,6 +113,7 @@ public class GroupService {
         userDynamicEntity.setMygroups(userDynamicEntity.getMygroups()-1);
         daoService.updateEntity(userDynamicEntity);
         pkGroupEntity = new PkGroupEntity();
+        pkGroupEntity.setGroupId(IdGenerator.getGroupId());
         pkGroupEntity.setPkId(pkId);
         pkGroupEntity.setPkName(locationService.querySinglePkEntity(pkId).getName());
         pkGroupEntity.setUserId(userId);
@@ -123,6 +121,7 @@ public class GroupService {
         pkGroupEntity.setGroupDesc(groupDesc);
         pkGroupEntity.setGroupCode(url);
         pkGroupEntity.setMembers(1);
+//        keyService.群组成员加一(pkGroupEntity.getGroupId());
         pkGroupEntity.setGroupStatu(GroupStatu.审核中);
         pkGroupEntity.setTime(System.currentTimeMillis());
         pkGroupEntity.setLastUpdateTime(System.currentTimeMillis());
@@ -146,7 +145,7 @@ public class GroupService {
         pkGroup.setGroupDesc(pkGroupEntity.getGroupDesc());
         pkGroup.setUser(userService.queryUser(pkGroupEntity.getUserId()));
         pkGroup.setUpdateGroupCode(pkGroupEntity.getUpdateGroupCode());
-        pkGroup.setMembers(keyService.queryKey(String.valueOf(pkGroupEntity.getGroupId()), KeyType.群组成员));
+        pkGroup.setMembers(pkGroupEntity.getMembers());
         pkGroup.setMember1(userService.queryUser(pkGroupEntity.getUser1()));
         pkGroup.setMember2(userService.queryUser(pkGroupEntity.getUser2()));
         pkGroup.setStatu(getStatu(pkGroupEntity));
@@ -233,7 +232,7 @@ public class GroupService {
         }
         if(!CollectionUtils.isEmpty(groupIds)){
             //查询用户已解锁的群组
-            Map<Integer,PkGroupMemberEntity>  pkGroupMemberEntityMap = 查询已解锁群(groupIds,userId);
+            Map<String,PkGroupMemberEntity>  pkGroupMemberEntityMap = 查询已解锁群(groupIds,userId);
             for(PkGroup pkGroup:pkGroups)
             {
                 //添加解锁标志位。
@@ -244,8 +243,8 @@ public class GroupService {
         return pkGroups;
     }
 
-    private Map<Integer,PkGroupMemberEntity> 查询已解锁群(List<Object> groupIds, String userId) {
-        Map<Integer,PkGroupMemberEntity> pkGroupMemberEntityHashMap = new HashMap<>();
+    private Map<String,PkGroupMemberEntity> 查询已解锁群(List<Object> groupIds, String userId) {
+        Map<String,PkGroupMemberEntity> pkGroupMemberEntityHashMap = new HashMap<>();
         EntityFilterChain filter = EntityFilterChain.newFilterChain(PkGroupMemberEntity.class)
                 .compareFilter("userId", CompareTag.Equal,userId)
                 .andFilter()
@@ -374,10 +373,10 @@ public class GroupService {
     }
 
 
-    public PkGroupMemberEntity 解锁群组(int groupId, String userId) throws AppException {
+    public PkGroupMemberEntity 解锁群组(String groupId, String userId) throws AppException {
 
         PkGroupMemberEntity  pkGroupMemberEntity = this.查询用户所在群组PkGroupMemberEntity(groupId,userId);
-        if(ObjectUtils.isEmpty(pkGroupMemberEntity))
+        if(ObjectUtils.isEmpty(pkGroupMemberEntity) && lockService.getLock(groupId,LockType.群组锁))
         {
 
                 PkGroupEntity pkGroupEntity = 查询用户群组EntityById(groupId);
@@ -389,11 +388,11 @@ public class GroupService {
                 pkGroupMemberEntity.setTime(System.currentTimeMillis());
                 pkUserDynamicService.卡点用户解锁群组加一(pkGroupEntity.getPkId(),userId);
                 userDynamicService.用户解锁群组加一(userId);
-                keyService.群组成员加一(groupId);
+                pkGroupEntity.setMembers(pkGroupEntity.getMembers()+1);
+
                 daoService.insertEntity(pkGroupMemberEntity);
-
-
-
+                daoService.updateEntity(pkGroupEntity);
+                lockService.releaseLock(groupId,LockType.群组锁);
         }
         return pkGroupMemberEntity;
     }
@@ -412,7 +411,7 @@ public class GroupService {
         }
 
     }
-    private PkGroupMemberEntity 查询用户所在群组PkGroupMemberEntity(Integer groupId, String userId) {
+    private PkGroupMemberEntity 查询用户所在群组PkGroupMemberEntity(String groupId, String userId) {
         EntityFilterChain filter = EntityFilterChain.newFilterChain(PkGroupMemberEntity.class)
                 .compareFilter("groupId", CompareTag.Equal,groupId)
                 .andFilter()
@@ -422,7 +421,7 @@ public class GroupService {
 
     }
 
-    public PkGroupEntity 查询用户群组EntityById(int groupId) {
+    public PkGroupEntity 查询用户群组EntityById(String groupId) {
         EntityFilterChain filter = EntityFilterChain.newFilterChain(PkGroupEntity.class)
                 .compareFilter("groupId", CompareTag.Equal,groupId);
         PkGroupEntity pkGroupEntity = daoService.querySingleEntity(PkGroupEntity.class,filter);
@@ -451,7 +450,7 @@ public class GroupService {
 
     }
 
-    public void 审批(int groupId) {
+    public void 审批(String groupId) {
         PkGroupEntity groupEntity = this.查询用户群组EntityById(groupId);
         if(groupEntity.getGroupStatu() == GroupStatu.审核中)
         {
@@ -466,7 +465,7 @@ public class GroupService {
         daoService.updateEntity(groupEntity);
     }
 
-    public PkGroup 查询ByGroupId(int groupId) {
+    public PkGroup 查询ByGroupId(String groupId) {
         PkGroupEntity groupEntity = this.查询用户群组EntityById(groupId);
         return this.translate(groupEntity);
     }
@@ -493,7 +492,7 @@ public class GroupService {
         return pkGroupEntities;
     }
 
-    public void 审批UpdatingGroup(int groupId) {
+    public void 审批UpdatingGroup(String groupId) {
 
         PkGroupEntity groupEntity = this.查询用户群组EntityById(groupId);
         if(groupEntity.getGroupStatu() == GroupStatu.已通过 && !StringUtils.isBlank(groupEntity.getUpdateGroupCode()))

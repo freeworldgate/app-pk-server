@@ -48,34 +48,16 @@ public class 用户登录加注册 {
         String openId = weChatUser.getOpenid();
         UserInfo userInfo = WeChatUtil.getUserInfo(encryptedData,weChatUser.getSession_key(),iv);
 
-        EntityFilterChain entityFilterChain = EntityFilterChain.newFilterChain(UserEntity.class)
-                .compareFilter("openId",CompareTag.Equal,openId)
-                .andFilter()
-                .compareFilter("appName",CompareTag.Equal,appName);
-
-        UserEntity userEntity = appDaoService.querySingleEntity(UserEntity.class,entityFilterChain);
-
-
+        UserEntity userEntity = userService.queryUserEntity(openId);
         if(ObjectUtils.isEmpty(userEntity))
         {
             userEntity = new UserEntity();
-
-
             userEntity.setOpenId(openId);
             userEntity.setSessionId(weChatUser.getSession_key());
             userEntity.setAppName(appName);
             userEntity.setUserId(openId);
 
-            if(pkService.isCreatedByVip(pkId))
-            {
-                userEntity.setUserType(UserType.重点用户);
-
-            }
-            else
-            {
-                userEntity.setUserType(UserType.普通用户);
-            }
-
+            userEntity.setUserType(UserType.普通用户);
             convert(userInfo,userEntity);
             userDynamicService.创建Dynamic表(userEntity.getUserId());
             userService.创建UserCardEntity(userEntity.getUserId());

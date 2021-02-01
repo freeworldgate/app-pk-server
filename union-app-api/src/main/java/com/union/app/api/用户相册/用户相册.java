@@ -52,15 +52,15 @@ public class 用户相册 {
 
 
     @RequestMapping(path="/userPks",method = RequestMethod.GET)
-    public AppResponse 用户相册(@RequestParam("userId") String userId,@RequestParam("latitude") double latitude,@RequestParam("longitude") double longitude) throws AppException, IOException {
+    public AppResponse 用户相册(@RequestParam("targetId") String targetId,@RequestParam("latitude") double latitude,@RequestParam("longitude") double longitude) throws AppException, IOException {
 
 
-        List<PkDetail> pks = appService.查询用户相册(userId,latitude,longitude,1);
+        List<PkDetail> pks = appService.查询用户相册(targetId,latitude,longitude,1);
 
 
 
         List<DataSet> dataSets = new ArrayList<>();
-
+        dataSets.add(new DataSet("target",userService.queryUser(targetId)));
         if(CollectionUtils.isEmpty(pks))
         {
             dataSets.add(new DataSet("emptyImage",appService.查询背景(4)));
@@ -88,9 +88,9 @@ public class 用户相册 {
 
     }
     @RequestMapping(path="/nextUserPks",method = RequestMethod.GET)
-    public AppResponse 查询单个PK(@RequestParam("userId") String userId,@RequestParam("page") int page,@RequestParam("latitude") double latitude,@RequestParam("longitude") double longitude) throws AppException, IOException {
+    public AppResponse 查询单个PK(@RequestParam("targetId") String targetId,@RequestParam("page") int page,@RequestParam("latitude") double latitude,@RequestParam("longitude") double longitude) throws AppException, IOException {
 
-        List<PkDetail> pks = appService.查询用户相册(userId,latitude,longitude,page+1);
+        List<PkDetail> pks = appService.查询用户相册(targetId,latitude,longitude,page+1);
 
 
         if(CollectionUtils.isEmpty(pks))

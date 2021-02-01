@@ -16,8 +16,7 @@ import javax.persistence.*;
 public class TextBackEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)//mysql数据库主键策略
-    private int backId;
+    private String backId;
 
     private String backColr;
 

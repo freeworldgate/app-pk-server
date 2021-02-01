@@ -16,7 +16,14 @@ public enum  KeyType {
     PK同步时间Map("SYNC_PK_LIST_TIME"),
 
     打卡图片("PK_POST_IMG_CACHE"),
-    用户缓存("USER_ENTITY_CACHE");
+    顶置图片("PK_TOP_POST_IMG_CACHE"),
+    用户缓存("USER_ENTITY_CACHE"),
+
+    PK图片总量("PK_TOTAL_IMAGES_CACHE"),
+
+
+    配置缓存("CONFIG_CACHE_MAP"),
+    卡点偏移缩放("PK_RANGE_SCALE_OFFSET");
 
 
 

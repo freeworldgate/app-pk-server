@@ -3,9 +3,10 @@ package com.union.app.service.user;
 
 import com.alibaba.fastjson.JSON;
 import com.union.app.common.config.AppConfigService;
+import com.union.app.common.dao.AppDaoService;
+import com.union.app.common.dao.KeyService;
 import com.union.app.common.dao.PkCacheService;
 import com.union.app.common.微信.WeChatUtil;
-import com.union.app.common.dao.AppDaoService;
 import com.union.app.dao.spi.filter.CompareTag;
 import com.union.app.dao.spi.filter.EntityFilterChain;
 import com.union.app.dao.spi.filter.OrderTag;
@@ -18,15 +19,14 @@ import com.union.app.domain.user.User;
 import com.union.app.entity.pk.卡点.UserCardApplyEntity;
 import com.union.app.entity.pk.名片.UserCardEntity;
 import com.union.app.entity.pk.名片.UserCardMemberEntity;
-import com.union.app.entity.user.UserEntity;
 import com.union.app.entity.user.UserDynamicEntity;
+import com.union.app.entity.user.UserEntity;
 import com.union.app.entity.user.support.UserType;
 import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.KeyType;
 import com.union.app.service.pk.dynamic.DynamicService;
-import com.union.app.service.pk.service.KeyService;
 import com.union.app.service.pk.service.LockService;
 import com.union.app.service.pk.service.pkuser.UserDynamicService;
 import com.union.app.util.time.TimeUtils;
@@ -37,7 +37,10 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserService {
@@ -71,27 +74,8 @@ public class UserService {
         {
             return null;
         }
-
-
         UserEntity userEntity = keyService.queryUserEntity(userId);
-        if(ObjectUtils.isEmpty(userEntity))
-        {
-            if(org.apache.commons.lang.StringUtils.equalsIgnoreCase("undefined",userId)|| org.apache.commons.lang.StringUtils.equalsIgnoreCase("null",userId)|| org.apache.commons.lang.StringUtils.equalsIgnoreCase("Nan",userId))
-            {
-                return null;
-            }
-            EntityFilterChain filter = EntityFilterChain.newFilterChain(UserEntity.class)
-                    .compareFilter("userId",CompareTag.Equal,userId);
-            userEntity = appDaoService.querySingleEntity(UserEntity.class,filter);
-            if(!ObjectUtils.isEmpty(userEntity))
-            {
-                keyService.saveUser(userEntity);
-            }
-        }
-
         return userEntity;
-
-
     }
 
     public UserDynamicEntity queryUserKvEntity(String userId)
@@ -119,13 +103,8 @@ public class UserService {
         {
             User user = new User();
             user.setUserName(new String(result.getNickName()));
-//            user.setUserName(RandomUtil.getRandomName());
             user.setUserId(result.getUserId());
             user.setUserType(ObjectUtils.isEmpty(result.getUserType())?UserType.普通用户.getType():result.getUserType().getType());
-//            user.setImgUrl(result.getAvatarUrl());
-//            user.setPkTimes(kv.getPkTimes());
-//            user.setPostTimes(kv.getPostTimes());
-//            user.setInviteTimes(kv.getInviteTimes());
             user.setImgUrl(result.getAvatarUrl());
 
             return user;

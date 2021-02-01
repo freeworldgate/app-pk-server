@@ -51,55 +51,55 @@ public class 用户图册 {
     ApproveService approveService;
 
 
-    @RequestMapping(path="/userPosts",method = RequestMethod.GET)
-    public AppResponse 用户图册(@RequestParam("userId") String userId) throws AppException, IOException {
-
-
-        List<Post> posts = appService.查询用户图册(userId,1);
-        List<DataSet> dataSets = new ArrayList<>();
-        if(CollectionUtils.isEmpty(posts))
-        {
-            dataSets.add(new DataSet("pkEnd",true));}
-        else
-        {
-
-
-            dataSets.add(new DataSet("posts",posts));
-            dataSets.add(new DataSet("pkEnd",false));
-        }
-//        UserKvEntity result = userService.queryUserKvEntity(userId);
-//        dataSets.add(new DataSet("leftPks", result.getPostTimes()));
-//        dataSets.add(new DataSet("inviteTimes", result.getInviteTimes()));
-//        dataSets.add(new DataSet("pkTimes", result.getPkTimes()));
-//        dataSets.add(new DataSet("unlock", result.getUnlockTimes()));
-        dataSets.add(new DataSet("page",1));
-        dataSets.add(new DataSet("pageTag",true));
-        dataSets.add(new DataSet("imgBack",appService.查询背景(14)));
-
-
-
-
-
-
-
-
-        return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
-
-
-
-    }
-    @RequestMapping(path="/nextUserPosts",method = RequestMethod.GET)
-    public AppResponse 用户图册(@RequestParam("userId") String userId,@RequestParam("page") int page) throws AppException, IOException {
-
-        List<Post> posts = appService.查询用户图册(userId,page+1);
-
-        if(CollectionUtils.isEmpty(posts))
-        {
-            return AppResponse.buildResponse(PageAction.前端数据更新("pkEnd",true));
-        }
-        return AppResponse.buildResponse(PageAction.执行处理器("success",posts));
-
-    }
+//    @RequestMapping(path="/userPosts",method = RequestMethod.GET)
+//    public AppResponse 用户图册(@RequestParam("userId") String userId) throws AppException, IOException {
+//
+//
+//        List<Post> posts = appService.查询用户图册(userId,1);
+//        List<DataSet> dataSets = new ArrayList<>();
+//        if(CollectionUtils.isEmpty(posts))
+//        {
+//            dataSets.add(new DataSet("pkEnd",true));}
+//        else
+//        {
+//
+//
+//            dataSets.add(new DataSet("posts",posts));
+//            dataSets.add(new DataSet("pkEnd",false));
+//        }
+////        UserKvEntity result = userService.queryUserKvEntity(userId);
+////        dataSets.add(new DataSet("leftPks", result.getPostTimes()));
+////        dataSets.add(new DataSet("inviteTimes", result.getInviteTimes()));
+////        dataSets.add(new DataSet("pkTimes", result.getPkTimes()));
+////        dataSets.add(new DataSet("unlock", result.getUnlockTimes()));
+//        dataSets.add(new DataSet("page",1));
+//        dataSets.add(new DataSet("pageTag",true));
+//        dataSets.add(new DataSet("imgBack",appService.查询背景(14)));
+//
+//
+//
+//
+//
+//
+//
+//
+//        return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
+//
+//
+//
+//    }
+//    @RequestMapping(path="/nextUserPosts",method = RequestMethod.GET)
+//    public AppResponse 用户图册(@RequestParam("userId") String userId,@RequestParam("page") int page) throws AppException, IOException {
+//
+//        List<Post> posts = appService.查询用户图册(userId,page+1);
+//
+//        if(CollectionUtils.isEmpty(posts))
+//        {
+//            return AppResponse.buildResponse(PageAction.前端数据更新("pkEnd",true));
+//        }
+//        return AppResponse.buildResponse(PageAction.执行处理器("success",posts));
+//
+//    }
 
 
 }

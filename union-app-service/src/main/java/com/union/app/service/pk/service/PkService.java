@@ -245,14 +245,12 @@ public class PkService {
         if(StringUtils.isBlank(pkId) || StringUtils.equalsIgnoreCase("undefined",pkId)|| StringUtils.equalsIgnoreCase("Nan",pkId)|| StringUtils.equalsIgnoreCase("null",pkId)){
             return null;
         }
-        PkEntity pkEntity = EntityCacheService.getPkEntity(pkId);
-        if(ObjectUtils.isEmpty(pkEntity))
-        {
+
             EntityFilterChain filter = EntityFilterChain.newFilterChain(PkEntity.class)
                     .compareFilter("pkId",CompareTag.Equal,pkId);
-            pkEntity = daoService.querySingleEntity(PkEntity.class,filter);
-            EntityCacheService.savePk(pkEntity);
-        }
+            PkEntity pkEntity = daoService.querySingleEntity(PkEntity.class,filter);
+
+
 
         return pkEntity;
     }

@@ -14,7 +14,7 @@ public class PkGroup {
 
 
 
-    private int groupId;
+    private String groupId;
 
     private String pkId;
 

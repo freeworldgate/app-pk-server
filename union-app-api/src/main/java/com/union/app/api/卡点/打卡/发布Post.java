@@ -1,6 +1,7 @@
 package com.union.app.api.卡点.打卡;
 
 import com.union.app.common.dao.AppDaoService;
+import com.union.app.common.dao.KeyService;
 import com.union.app.domain.pk.Post;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
@@ -9,7 +10,6 @@ import com.union.app.plateform.storgae.KeyType;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.service.pk.click.ClickService;
 import com.union.app.service.pk.service.AppService;
-import com.union.app.service.pk.service.KeyService;
 import com.union.app.service.pk.service.PkService;
 import com.union.app.service.pk.service.PostService;
 import com.union.app.service.user.UserService;
@@ -54,7 +54,7 @@ public class 发布Post {
 
     @RequestMapping(path="/createPost",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse 发布Post(@RequestParam("pkId") String pkId,@RequestParam("title") String title,@RequestParam("userId") String userId,@RequestParam("backId") int backId,@RequestParam("imgUrls") List<String> images) throws AppException, IOException {
+    public AppResponse 发布Post(@RequestParam("pkId") String pkId,@RequestParam("title") String title,@RequestParam("userId") String userId,@RequestParam("backId") String backId,@RequestParam("imgUrls") List<String> images) throws AppException, IOException {
 
 
 

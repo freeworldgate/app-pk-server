@@ -117,8 +117,7 @@ public class 查询单个PK {
 
 
             }
-            PkUserDynamicEntity entity = pkUserDynamicService.查询卡点用户动态表(pkId,userId);
-            dataSets.add(new DataSet("postTimes",ObjectUtils.isEmpty(entity)?0:entity.getPostTimes()));
+            dataSets.add(new DataSet("postTimes",ObjectUtils.isEmpty(pkUserDynamicEntity)?0:pkUserDynamicEntity.getPostTimes()));
             //查询用户打卡次数:
         }
 

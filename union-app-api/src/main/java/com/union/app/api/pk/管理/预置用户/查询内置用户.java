@@ -2,6 +2,7 @@ package com.union.app.api.pk.管理.预置用户;
 
 import com.union.app.common.dao.AppDaoService;
 import com.union.app.domain.pk.PkDetail;
+import com.union.app.domain.user.User;
 import com.union.app.entity.pk.PreUserEntity;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
@@ -62,7 +63,7 @@ public class 查询内置用户 {
     @RequestMapping(path="/queryPreUsers",method = RequestMethod.GET)
     public AppResponse 查询内置PK(@RequestParam("password") String password) throws AppException, IOException {
 
-        List<PreUserEntity> users = appService.查询内置用户(1);
+        List<User> users = appService.查询内置用户(1);
 
 
         return AppResponse.buildResponse(PageAction.执行处理器("success",users));
@@ -75,7 +76,7 @@ public class 查询内置用户 {
     public AppResponse 查询内置PK(@RequestParam("password") String password,@RequestParam("page") int page) throws AppException, IOException {
 
 
-        List<PreUserEntity> users = appService.查询内置用户(page+1);
+        List<User> users = appService.查询内置用户(page+1);
 
 
         if(users.size() == 0)

@@ -59,44 +59,19 @@ public class 查询邀请 {
 
 
     @RequestMapping(path="/queryInvites",method = RequestMethod.GET)
-    public AppResponse 查询邀请信息(@RequestParam("userId") String userId,@RequestParam("latitude") double latitude,@RequestParam("longitude") double longitude) throws AppException, IOException {
+    public AppResponse 查询邀请信息(@RequestParam("targetId") String targetId,@RequestParam("latitude") double latitude,@RequestParam("longitude") double longitude) throws AppException, IOException {
 
 //        List<PkDetail> pkDetails = new ArrayList<>();
 
-        List<PkDetail> pks = appService.查询用户邀请(userId,1,latitude,longitude);
+        List<PkDetail> pks = appService.查询用户邀请(targetId,1,latitude,longitude);
 
-        List<Marker> markers = new ArrayList<>();
-        List<Circle> circles = new ArrayList<>();
 
-//        pks.forEach(pk ->{
-//            PkLocationEntity location = null;
-//            if(!ObjectUtils.isEmpty(location)) {
-//                Marker marker = new Marker();
-//                marker.setId(RandomUtil.getRandomNumber());
-//                marker.setLatitude(location.getLatitude() / 1000000.0d);
-//                marker.setLongitude(location.getLongitude() / 1000000.0d);
-////                marker.setIconPath(pk.getUser().getImgUrl());
-//                Callout callout = new Callout();
-////                callout.setContent(pk.getTopic().length()>10?pk.getTopic().substring(0,10)+"...":pk.getTopic());
-//                marker.setCallout(callout);
-//                markers.add(marker);
-//
-//                Circle circle = new Circle();
-//                circle.setLatitude(location.getLatitude() / 1000000.0d);
-//                circle.setLongitude(location.getLongitude() / 1000000.0d);
-//                circles.add(circle);
-//
-//            }
-//
-//
-//        });
 
 
 
         List<DataSet> dataSets = new ArrayList<>();
         dataSets.add(new DataSet("emptyImage",appService.查询背景(2)));
-        dataSets.add(new DataSet("circles",circles));
-        dataSets.add(new DataSet("markers",markers));
+        dataSets.add(new DataSet("target",userService.queryUser(targetId)));
         if(CollectionUtils.isEmpty(pks))
         {
             dataSets.add(new DataSet("pkEnd",true));}
@@ -113,20 +88,14 @@ public class 查询邀请 {
         dataSets.add(new DataSet("imgBack",appService.查询背景(3)));
 
 
-
-
-
-
-
-
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
 
     }
 
     @RequestMapping(path="/nextInvitePage",method = RequestMethod.GET)
-    public AppResponse 查询单个PK(@RequestParam("userId") String userId,@RequestParam("page") int page,@RequestParam("latitude") double latitude,@RequestParam("longitude") double longitude) throws AppException, IOException {
+    public AppResponse 查询单个PK(@RequestParam("targetId") String targetId,@RequestParam("page") int page,@RequestParam("latitude") double latitude,@RequestParam("longitude") double longitude) throws AppException, IOException {
 
-        List<PkDetail> pks = appService.查询用户邀请(userId,page+1,latitude,longitude);
+        List<PkDetail> pks = appService.查询用户邀请(targetId,page+1,latitude,longitude);
 
         if(pks.size() == 0)
         {

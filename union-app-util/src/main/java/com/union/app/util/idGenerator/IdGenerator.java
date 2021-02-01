@@ -74,5 +74,10 @@ public class IdGenerator {
     public static String getPostId() {return RandomStringUtils.randomAlphanumeric(30); }
 
     public static String getCommentId() {return UUID.randomUUID().toString(); }
+
+    public static String getBackId() {return UUID.randomUUID().toString(); }
+
+    public static String getGroupId() {return UUID.randomUUID().toString(); }
+
 }
 

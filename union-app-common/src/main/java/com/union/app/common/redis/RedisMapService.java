@@ -70,6 +70,9 @@ public class RedisMapService implements IRedisService {
         }
         return value;
     }
+    public void valueDecr(String key,String mapKey,long value){
+         redisTemplate.opsForHash().increment(key,mapKey,-value);
+    }
 
     public <T> List<T> values(String key,Class<T> tClass){
         List<T> allValues = new ArrayList<>();

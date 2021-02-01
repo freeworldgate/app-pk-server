@@ -59,6 +59,14 @@ public class TimeUtils {
         else{return day+"天"+hour+"小时";}
 
     }
+    public static String 已打捞总时间(long findTimeLength) {
+        long day = findTimeLength/(3600*24*1000);
+        long hour = findTimeLength%(3600*24*1000) / (3600*1000);
+//        long min = findTimeLength%(3600*24*1000)%(3600*1000)/(60*1000);
+        if(day == 0){return hour+"小时";}
+        else{return day+"天"+hour+"小时";}
+
+    }
 
     public static String 全局时间(long startTime) {
         if(startTime == 0){

@@ -64,8 +64,15 @@ public class 查询我已解锁群组 {
 
         List<DataSet> dataSets = new ArrayList<>();
 
-        dataSets.add(new DataSet("pkGroups",pkGroups));
-        dataSets.add(new DataSet("emptyData",appService.查询背景(4)));
+        if(CollectionUtils.isEmpty(pkGroups))
+        {
+            dataSets.add(new DataSet("backUrl",appService.查询背景(6)));
+        }
+        else
+        {
+            dataSets.add(new DataSet("backUrl",appService.查询背景(8)));
+            dataSets.add(new DataSet("pkGroups",pkGroups));
+        }
         dataSets.add(new DataSet("page",1));
 
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
@@ -79,8 +86,15 @@ public class 查询我已解锁群组 {
 
         List<DataSet> dataSets = new ArrayList<>();
 
-        dataSets.add(new DataSet("pkGroups",pkGroups));
-        dataSets.add(new DataSet("emptyData",appService.查询背景(4)));
+        if(CollectionUtils.isEmpty(pkGroups))
+        {
+            dataSets.add(new DataSet("backUrl",appService.查询背景(6)));
+        }
+        else
+        {
+            dataSets.add(new DataSet("backUrl",appService.查询背景(8)));
+            dataSets.add(new DataSet("pkGroups",pkGroups));
+        }
         dataSets.add(new DataSet("page",1));
 
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));

@@ -2,6 +2,7 @@ package com.union.app.api.pk.管理.预置用户;
 
 import com.union.app.common.dao.AppDaoService;
 import com.union.app.domain.pk.PkDetail;
+import com.union.app.domain.user.User;
 import com.union.app.entity.pk.PreUserEntity;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
@@ -62,15 +63,10 @@ public class 创建预置用户 {
     @Transactional(rollbackOn = Exception.class)
     public AppResponse 创建预置用户(@RequestParam("password") String password,@RequestParam("name") String name,@RequestParam("imgUrl") String imgUrl) throws AppException, IOException {
         appService.验证Password(password);
-        PreUserEntity user = appService.新增内置用户(name,imgUrl);
-//        PreUserEntity preUserEntity = new PreUserEntity();
-//        preUserEntity.setUserId(user.getUserId());
-//        preUserEntity.setUserName(name);
-//        preUserEntity.setImgUrl(user.getImgUrl());
+
+        User user = appService.新增内置用户(name,imgUrl);
 
         return AppResponse.buildResponse(PageAction.执行处理器("success",user));
-
-
 
     }
 
@@ -79,11 +75,7 @@ public class 创建预置用户 {
     @Transactional(rollbackOn = Exception.class)
     public AppResponse 修改预置用户(@RequestParam("password") String password,@RequestParam("name") String name,@RequestParam("id") String id) throws AppException, IOException {
 
-        PreUserEntity user = appService.修改内置用户名称(id,name);
-//        PreUserEntity preUserEntity = new PreUserEntity();
-//        preUserEntity.setUserId(user.getUserId());
-//        preUserEntity.setUserName(name);
-//        preUserEntity.setImgUrl(user.getImgUrl());
+        User user = appService.修改内置用户名称(id,name);
 
         return AppResponse.buildResponse(PageAction.执行处理器("success",user));
 
@@ -92,11 +84,7 @@ public class 创建预置用户 {
     @Transactional(rollbackOn = Exception.class)
     public AppResponse 修改预置用户头像(@RequestParam("password") String password,@RequestParam("imgUrl") String imgUrl,@RequestParam("id") String id) throws AppException, IOException {
 
-        PreUserEntity user = appService.修改内置用户头像(id,imgUrl);
-//        PreUserEntity preUserEntity = new PreUserEntity();
-//        preUserEntity.setUserId(user.getUserId());
-//        preUserEntity.setUserName(user.getUserName());
-//        preUserEntity.setImgUrl(user.getImgUrl());
+        User user = appService.修改内置用户头像(id,imgUrl);
 
         return AppResponse.buildResponse(PageAction.执行处理器("success",user));
 

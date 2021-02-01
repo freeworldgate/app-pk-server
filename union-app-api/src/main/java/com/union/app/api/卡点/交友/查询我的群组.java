@@ -65,8 +65,17 @@ public class 查询我的群组 {
 
 
         List<DataSet> dataSets = new ArrayList<>();
+        if(CollectionUtils.isEmpty(pkGroups))
+        {
+            dataSets.add(new DataSet("backUrl",appService.查询背景(6)));
+        }
+        else
+        {
+            dataSets.add(new DataSet("backUrl",appService.查询背景(8)));
+            dataSets.add(new DataSet("pkGroups",pkGroups));
+        }
 
-        dataSets.add(new DataSet("pkGroups",pkGroups));
+
         dataSets.add(new DataSet("emptyImage",appService.查询背景(4)));
         dataSets.add(new DataSet("page",1));
 

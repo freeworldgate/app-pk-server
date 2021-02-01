@@ -1,6 +1,7 @@
 package com.union.app.service.pk.service.pkuser;
 
 import com.union.app.common.dao.AppDaoService;
+import com.union.app.common.dao.KeyService;
 import com.union.app.dao.spi.filter.CompareTag;
 import com.union.app.dao.spi.filter.EntityFilterChain;
 import com.union.app.domain.pk.PkDynamic.UserDynamic;
@@ -8,7 +9,6 @@ import com.union.app.entity.user.UserDynamicEntity;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.storgae.KeyType;
 import com.union.app.service.pk.service.AppService;
-import com.union.app.service.pk.service.KeyService;
 import com.union.app.service.pk.service.LockService;
 import com.union.app.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -176,5 +176,12 @@ public class UserDynamicService {
         daoService.updateEntity(userDynamicEntity);
 
 
+    }
+
+    public void 添加用户已打捞时间(String userId, long startTime) {
+        long time = System.currentTimeMillis() - startTime;
+        UserDynamicEntity userDynamicEntity = queryUserDynamicEntity(userId);
+        userDynamicEntity.setFindLength(userDynamicEntity.getFindLength()+time);
+        daoService.updateEntity(userDynamicEntity);
     }
 }

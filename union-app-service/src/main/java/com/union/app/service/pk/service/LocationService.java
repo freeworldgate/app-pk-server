@@ -3,7 +3,7 @@ package com.union.app.service.pk.service;
 import com.union.app.common.OSS存储.CacheStorage;
 import com.union.app.common.OSS存储.OssStorage;
 import com.union.app.common.dao.AppDaoService;
-import com.union.app.common.dao.EntityCacheService;
+import com.union.app.common.dao.KeyService;
 import com.union.app.common.redis.RedisSortSetService;
 import com.union.app.common.微信.WeChatUtil;
 import com.union.app.dao.spi.filter.CompareTag;
@@ -16,7 +16,10 @@ import com.union.app.domain.pk.daka.CreateLocation;
 import com.union.app.domain.user.User;
 import com.union.app.domain.工具.RandomUtil;
 import com.union.app.entity.ImgStatu;
-import com.union.app.entity.pk.*;
+import com.union.app.entity.pk.PkEntity;
+import com.union.app.entity.pk.PkImageEntity;
+import com.union.app.entity.pk.PostEntity;
+import com.union.app.entity.pk.PostStatu;
 import com.union.app.entity.pk.卡点.UserFollowEntity;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.PageAction;
@@ -35,9 +38,11 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.UUID;
 
 @Service
 public class LocationService {
@@ -52,7 +57,7 @@ public class LocationService {
     AppDaoService daoService;
 
     @Autowired
-    LocationService appService;
+    AppService appService;
 
     @Autowired
     PkService pkService;
@@ -179,6 +184,8 @@ public class LocationService {
         pkEntity.setAddress(createLocation.getAddress());
         pkEntity.setSign(createLocation.getSign());
         pkEntity.setBackUrl(createLocation.getBackUrl());
+        pkEntity.setTotalImgs(0);
+        pkEntity.setTotalUsers(0);
         pkEntity.setTime(System.currentTimeMillis());
         daoService.insertEntity(pkEntity);
         pkDynamicService.创建DynamicEntity(pkId);
@@ -209,14 +216,13 @@ public class LocationService {
     }
     public PkEntity querySinglePkEntity(String pkId)
     {
-        PkEntity pkEntity = EntityCacheService.getPkEntity(pkId);
-        if(ObjectUtils.isEmpty(pkEntity))
-        {
+
+
             EntityFilterChain filter = EntityFilterChain.newFilterChain(PkEntity.class)
                     .compareFilter("pkId",CompareTag.Equal,pkId);
-            pkEntity = daoService.querySingleEntity(PkEntity.class,filter);
-            EntityCacheService.savePk(pkEntity);
-        }
+            PkEntity pkEntity = daoService.querySingleEntity(PkEntity.class,filter);
+
+
 
         return pkEntity;
     }
@@ -272,6 +278,30 @@ public class LocationService {
         return pkDetail;
     }
 
+    public PkDetail querySinglePkWidthList(PkEntity pk) throws IOException {
+        if(ObjectUtils.isEmpty(pk)){return null;}
+        PkDetail pkDetail = new PkDetail();
+        pkDetail.setPkId(pk.getPkId());
+        pkDetail.setCodeUrl(pk.getCodeUrl());
+        pkDetail.setSign(pk.getSign());
+        pkDetail.setLatitude(pk.getLatitude());
+        pkDetail.setLongitude(pk.getLongitude());
+        pkDetail.setName(pk.getName());
+        pkDetail.setAddress(pk.getAddress());
+        LocationType locationType = this.查询类型(pk);
+        pkDetail.setType(locationType);
+        pkDetail.setUser(userService.queryUser(pk.getUserId()));
+        pkDetail.setTime(TimeUtils.convertTime(pk.getTime()));
+        pkDetail.setBackUrl(pk.getBackUrl());
+        pkDetail.setTopPostId(pk.getTopPostId());
+        pkDetail.setMarker(this.查询Marker(pk));
+        pkDetail.setCircle(this.查询Circle(pk,locationType));
+
+
+        return pkDetail;
+    }
+
+
     private Circle 查询Circle(PkEntity pk, LocationType locationType) {
         Circle circle = new Circle();
         circle.setLatitude(pk.getLatitude());
@@ -300,7 +330,7 @@ public class LocationService {
 
         LocationType locationType = new LocationType();
         locationType.setTypeName(pk.getType());
-        locationType.setScale(keyService.获取缩放等级(pk.getTypeRange()));
+        locationType.setScale(appService.查询指定范围缩放偏移(locationType.getRangeLength()).getScale());
         locationType.setRange(this.长度转义(pk.getTypeRange()));
         locationType.setRangeValue(this.长度转义不带单位(pk.getTypeRange()));
         locationType.setRangeLength(pk.getTypeRange());
@@ -402,11 +432,11 @@ public class LocationService {
         {
             pkEntities.forEach(pk->{
                 try {
-                    PkDetail pkDetail = this.querySinglePk(pk);
+                    PkDetail pkDetail = this.querySinglePkWidthList(pk);
                     int length = this.计算坐标间距离(latitude,longitude,pk.getLatitude(),pk.getLongitude());
                     pkDetail.setUserLength(length);
                     pkDetail.setUserLengthStr(this.距离转换成描述(length));
-                    pkDetail.setLatitude(pkDetail.getLatitude() - keyService.获取偏移量(pkDetail.getType().getScale()));
+                    pkDetail.setLatitude(pkDetail.getLatitude() -  appService.查询指定范围缩放偏移(pkDetail.getType().getRangeLength()).getOffset() );
                     pks.add(pkDetail);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -415,6 +445,7 @@ public class LocationService {
 
             });
         }
+        this.批量查询Pk顶置内容图片(pks);
 
         return pks;
 
@@ -695,7 +726,14 @@ public class LocationService {
         PkEntity pkEntity = this.querySinglePkEntity(pkId);
         pkEntity.setSign(sign);
         daoService.updateEntity(pkEntity);
-
     }
 
+    public void 批量查询Pk顶置内容图片(List<PkDetail> pkDetails) {
+        pkDetails.forEach(pkDetail -> {
+            if(StringUtils.isBlank(pkDetail.getTopPostId()))
+            {
+                pkDetail.setTopPost(keyService.查询顶置图片集合(pkDetail.getPkId()));
+            }
+        });
+    }
 }

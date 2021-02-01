@@ -23,6 +23,7 @@ import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.service.*;
+import com.union.app.service.pk.service.pkuser.UserDynamicService;
 import com.union.app.service.user.UserService;
 import com.union.app.util.time.TimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,6 +80,8 @@ public class FindService {
     @Autowired
     PkCacheService pkCacheService;
 
+    @Autowired
+    UserDynamicService userDynamicService;
 
     public FindUser 查询用户捞人记录(String pkId, String userId) throws IOException {
             FindUserEntity findUserEntity = this.查询用户捞人Entity(pkId,userId);
@@ -221,13 +224,12 @@ public class FindService {
     public void 放弃捞人(String pkId, String userId) {
         FindUserEntity findUserEntity = this.查询用户捞人Entity(pkId,userId);
 
-
-
         if(findUserEntity.getFindStatu() == FindStatu.打捞中)
         {
             userService.返还用户打捞时间(userId,findUserEntity.getEndTime());
-
+            userDynamicService.添加用户已打捞时间(userId,findUserEntity.getStartTime());
         }
+
         if(findUserEntity.getFindStatu() == FindStatu.审核中)
         {
             userService.返还用户打捞时间1(userId,findUserEntity.getFindLength());
@@ -278,6 +280,7 @@ public class FindService {
 
     public void 审批(int findId) {
         FindUserEntity findUserEntity = 查询用户捞人EntityById(findId);
+        UserDynamicEntity userDynamicEntity = userDynamicService.queryUserDynamicEntity(findUserEntity.getUserId());
         if(findUserEntity.getFindStatu() == FindStatu.审核中)
         {
             findUserEntity.setFindStatu(FindStatu.打捞中);
@@ -285,6 +288,9 @@ public class FindService {
             long endTime = System.currentTimeMillis() + findUserEntity.getFindLength()*24*3600*1000;
             findUserEntity.setStartTime(startTime);
             findUserEntity.setEndTime(endTime);
+            //审批通过，用户打捞次数加1
+
+            userDynamicEntity.setFindTimes(userDynamicEntity.getFindTimes()+1);
 
         }
         else
@@ -292,10 +298,11 @@ public class FindService {
             findUserEntity.setFindStatu(FindStatu.审核中);
             findUserEntity.setStartTime(0);
             findUserEntity.setEndTime(0);
-
+            //审批不通过，用户打捞次数减1
+            userDynamicEntity.setFindTimes(userDynamicEntity.getFindTimes()-1);
         }
         daoService.updateEntity(findUserEntity);
-
+        daoService.updateEntity(userDynamicEntity);
 
     }
 

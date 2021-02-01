@@ -28,49 +28,6 @@ public class EntityCacheService {
     {
         pkCacheLock.remove(pkId);
     }
-    public static PkEntity getPkEntity(String pkId)
-    {
-        Long lockTime = pkCacheLock.get(pkId);
-        if(lockTime == null)
-        {
-            return pkEntityMap.get(pkId);
-        }
-        else
-        {
-            if(System.currentTimeMillis() - lockTime > 1000 * 60 * 3)
-            {
-                pkCacheLock.remove(pkId);
-                return pkEntityMap.get(pkId);
-            }
-            else
-            {
-                pkEntityMap.remove(pkId);
-                return null;
-            }
-
-        }
-
-
-    }
-
-    public static void savePk(PkEntity pkEntity)
-    {
-        if(ObjectUtils.isEmpty(pkEntity)){return;}
-        Long lockTime = pkCacheLock.get(pkEntity.getPkId());
-        if(lockTime == null)
-        {
-            pkEntityMap.put(pkEntity.getPkId(),pkEntity);
-        }
-        else
-        {
-            if(System.currentTimeMillis() - lockTime > 1000 * 60 * 3)
-            {
-                pkCacheLock.remove(pkEntity.getPkId());
-                pkEntityMap.put(pkEntity.getPkId(),pkEntity);
-            }
-
-        }
-    }
 
 
 
