@@ -4,10 +4,13 @@ import com.union.app.common.微信.WeChatUtil;
 import com.union.app.common.dao.AppDaoService;
 import com.union.app.dao.spi.filter.CompareTag;
 import com.union.app.dao.spi.filter.EntityFilterChain;
+import com.union.app.domain.user.User;
 import com.union.app.domain.wechat.UserInfo;
 import com.union.app.domain.wechat.WeChatUser;
 import com.union.app.entity.user.UserEntity;
 import com.union.app.entity.user.support.UserType;
+import com.union.app.plateform.data.resultcode.AppResponse;
+import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.response.ApiResponse;
 import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.service.PkService;
@@ -89,59 +92,28 @@ public class 用户登录加注册 {
 
 
 
-//
-//
-//    @RequestMapping(path="/register",method = RequestMethod.POST)
-//    @Transactional(rollbackOn = Exception.class)
-//    public ApiResponse 注册(@RequestBody UserBasicInfo userBasicInfo) throws UnsupportedEncodingException, InvalidAlgorithmParameterException {
-//
-//        EntityFilterChain entityFilterChain = EntityFilterChain.newFilterChain(UserEntity.class)
-//                .compareFilter("userId",CompareTag.Equal,userBasicInfo.getUserId());
-//        UserEntity userEntity = appDaoService.querySingleEntity(UserEntity.class,entityFilterChain);
-//
-//
-////        userEntity.setUserTel("13675118673");
-////        userEntity.setUserTel(userBasicInfo.getUserTel());
-////        userEntity.setUserSex(UserSex.valueOf(userBasicInfo.getUserSex()));
-////        userEntity.setCityCode(RandomUtil.getRandomName());
-////        userEntity.setCityCode(userBasicInfo.getUserCityCode());
-////        userEntity.setJobCode(RandomUtil.getRandomName());
-////        userEntity.setJobCode(userBasicInfo.getUserJobCode());
-//        userEntity.setAvatarUrl(RandomUtil.getRandomImage());
-////        userEntity.setAvatarUrl(userBasicInfo.getUserImg());
-//        userEntity.setNickName(RandomUtil.getRandomName().getBytes(Charset.forName("utf-8")));
-////        userEntity.setNickName(userBasicInfo.getUserName().getBytes(Charset.forName("utf-8")));
-////        userEntity.setUserAge(RandomUtil.getRandomNumber());
-////        userEntity.setUserAge(userBasicInfo.getUserAge());
-//
-//        if(!AppService.isBussinessApp(userBasicInfo.getAppName()))
-//        {
-//            userEntity.setUserType(userBasicInfo.getIsFromShare() == 1? UserType.重点用户:UserType.普通用户);
-//        }
-//        else
-//        {
-//            userEntity.setUserType(UserType.重点用户);
-//        }
-//
-//        UserBasicInfo userInfo = new UserBasicInfo();
-//        userInfo.setUserType(userEntity.getUserType().getType());
-////        userInfo.setUserTel(userEntity.getUserTel());
-////        userInfo.setUserAge(userEntity.getUserAge());
-//
-//        userInfo.setUserId(userEntity.getUserId());
-//        userInfo.setImgUrl(userEntity.getAvatarUrl());
-////        userInfo.setJob(RandomUtil.getRandomJob());
-////        userInfo.setCity(RandomUtil.getRandomCity());
-//        userInfo.setUserName(new String(userEntity.getNickName()));
-////        userInfo.setUserSex(userEntity.getUserSex() == null? -1:userEntity.getUserSex().getSex());
-//
-//        appDaoService.updateEntity(userEntity);
-//
-//
-//        return ApiResponse.buildSuccessResponse(userInfo);
-//    }
-//
-//
+
+
+    @RequestMapping(path="/changeUser",method = RequestMethod.GET)
+    public AppResponse changeUser() {
+
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(UserEntity.class)
+                .nullFilter("appName",false);
+        UserEntity result = appDaoService.querySingleEntity(UserEntity.class,filter);
+        if(ObjectUtils.isEmpty(result)){ return AppResponse.buildResponse(PageAction.信息反馈框("无appName用户","无appName用户"));}
+        User user = new User();
+
+        user.setUserName(new String(result.getNickName()));
+        user.setUserId(result.getUserId());
+        user.setUserType(ObjectUtils.isEmpty(result.getUserType())?UserType.普通用户.getType():result.getUserType().getType());
+        user.setImgUrl(result.getAvatarUrl());
+
+
+
+        return AppResponse.buildResponse(PageAction.执行处理器("success",user));
+    }
+
+
 
 
 

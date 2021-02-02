@@ -62,8 +62,6 @@ public class 查询卡点图片 {
     @RequestMapping(path="/queryPkImages",method = RequestMethod.GET)
     public AppResponse queryPkImages(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId) throws AppException, IOException, InterruptedException {
 
-        //创建者
-        PkEntity pk = locationService.querySinglePkEntity(pkId);
         User creator = pkService.queryPkCreator(pkId);
         //查询者图片
         PkImage userImage = locationService.查询用户卡点图片(pkId,userId);
@@ -87,8 +85,6 @@ public class 查询卡点图片 {
 
         List<DataSet> dataSets = new ArrayList<>();
 
-        dataSets.add(new DataSet("pkBackUrl",pk.getBackUrl()));
-        dataSets.add(new DataSet("emptyImage",appService.查询背景(1)));
         dataSets.add(new DataSet("images",images));
         dataSets.add(new DataSet("page",1));
         dataSets.add(new DataSet("creator",creator));

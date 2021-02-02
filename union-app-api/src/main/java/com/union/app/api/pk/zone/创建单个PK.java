@@ -49,47 +49,47 @@ public class 创建单个PK {
 
     @Autowired
     AppService appService;
-
-    @RequestMapping(path="/createPk",method = RequestMethod.GET)
-    @Transactional(rollbackOn = Exception.class)
-    public AppResponse 创建单个PK(@RequestParam("userId") String userId,@RequestParam("topic") String topic,@RequestParam("watchWord") String watchWord,@RequestParam("invite") boolean invite) throws AppException, IOException {
-
-        String pkId = pkService.创建PK(userId,topic,watchWord,invite);
-        PkDetail pkDetail = pkService.querySinglePk(pkId);
-
-        return AppResponse.buildResponse(PageAction.执行处理器("success",pkDetail));
-    }
-    @RequestMapping(path="/deletePk",method = RequestMethod.GET)
-    @Transactional(rollbackOn = Exception.class)
-    public AppResponse 删除单个PK(@RequestParam("userId") String userId,@RequestParam("pkId") String pkId) throws AppException, IOException {
-
-        if(!locationService.isPkCreator(pkId,userId) ){ throw AppException.buildException(PageAction.信息反馈框("错误","非法用户"));}
-//        pkService.删除PK(userId,pkId);
-
-        return AppResponse.buildResponse(PageAction.执行处理器("success",""));
-    }
-
-    @RequestMapping(path="/updatePk",method = RequestMethod.GET)
-    @Transactional(rollbackOn = Exception.class)
-    public AppResponse updatePk(@RequestParam("userId") String userId,@RequestParam("topic") String topic,@RequestParam("watchWord") String watchWord,@RequestParam("pkId") String pkId) throws AppException, IOException {
-        if(!locationService.isPkCreator(pkId,userId) ){ throw AppException.buildException(PageAction.信息反馈框("错误","非法用户"));}
-
-//        pkService.修改PK(pkId,topic,watchWord);
-        PkDetail pkDetail = pkService.querySinglePk(pkId);
-        return AppResponse.buildResponse(PageAction.执行处理器("success",pkDetail));
-    }
-
-    @RequestMapping(path="/updatePkPage",method = RequestMethod.GET)
-    @Transactional(rollbackOn = Exception.class)
-    public AppResponse 修改封面(@RequestParam("userId") String userId,@RequestParam("pkId") String pkId,@RequestParam("imgUrl") String imgUrl) throws AppException, IOException {
-        if(!locationService.isPkCreator(pkId,userId) ){ throw AppException.buildException(PageAction.信息反馈框("错误","非法用户"));}
-
-        pkService.修改封面(pkId,imgUrl);
-        PkDetail pkDetail = locationService.querySinglePk(pkId);
-        return AppResponse.buildResponse(PageAction.执行处理器("success",pkDetail));
-
-    }
-
+//
+//    @RequestMapping(path="/createPk",method = RequestMethod.GET)
+//    @Transactional(rollbackOn = Exception.class)
+//    public AppResponse 创建单个PK(@RequestParam("userId") String userId,@RequestParam("topic") String topic,@RequestParam("watchWord") String watchWord,@RequestParam("invite") boolean invite) throws AppException, IOException {
+//
+//        String pkId = pkService.创建PK(userId,topic,watchWord,invite);
+//        PkDetail pkDetail = pkService.querySinglePk(pkId);
+//
+//        return AppResponse.buildResponse(PageAction.执行处理器("success",pkDetail));
+//    }
+//    @RequestMapping(path="/deletePk",method = RequestMethod.GET)
+//    @Transactional(rollbackOn = Exception.class)
+//    public AppResponse 删除单个PK(@RequestParam("userId") String userId,@RequestParam("pkId") String pkId) throws AppException, IOException {
+//
+//        if(!locationService.isPkCreator(pkId,userId) ){ throw AppException.buildException(PageAction.信息反馈框("错误","非法用户"));}
+////        pkService.删除PK(userId,pkId);
+//
+//        return AppResponse.buildResponse(PageAction.执行处理器("success",""));
+//    }
+//
+//    @RequestMapping(path="/updatePk",method = RequestMethod.GET)
+//    @Transactional(rollbackOn = Exception.class)
+//    public AppResponse updatePk(@RequestParam("userId") String userId,@RequestParam("topic") String topic,@RequestParam("watchWord") String watchWord,@RequestParam("pkId") String pkId) throws AppException, IOException {
+//        if(!locationService.isPkCreator(pkId,userId) ){ throw AppException.buildException(PageAction.信息反馈框("错误","非法用户"));}
+//
+////        pkService.修改PK(pkId,topic,watchWord);
+//        PkDetail pkDetail = pkService.querySinglePk(pkId);
+//        return AppResponse.buildResponse(PageAction.执行处理器("success",pkDetail));
+//    }
+//
+//    @RequestMapping(path="/updatePkPage",method = RequestMethod.GET)
+//    @Transactional(rollbackOn = Exception.class)
+//    public AppResponse 修改封面(@RequestParam("userId") String userId,@RequestParam("pkId") String pkId,@RequestParam("imgUrl") String imgUrl) throws AppException, IOException {
+//        if(!locationService.isPkCreator(pkId,userId) ){ throw AppException.buildException(PageAction.信息反馈框("错误","非法用户"));}
+//
+//        pkService.修改封面(pkId,imgUrl);
+//        PkDetail pkDetail = locationService.querySinglePk(pkId);
+//        return AppResponse.buildResponse(PageAction.执行处理器("success",pkDetail));
+//
+//    }
+//
 
 
 

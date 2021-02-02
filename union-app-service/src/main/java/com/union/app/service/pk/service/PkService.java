@@ -93,49 +93,17 @@ public class PkService {
 
 
 
-    public List<Post> queryPrePkPost(String pkId,int page) throws IOException {
-
-        List<Post> posts = new LinkedList<>();
-//        List<String> pageList = redisSortSetService.queryPage(CacheKeyName.榜主已审核列表(pkId),page);
-        List<String> pageList =  pkService.查询已审核页(pkId,page);
-        for(String postId:pageList)
-        {
-            Post post = postService.查询帖子(pkId,postId,"");
-            if(!ObjectUtils.isEmpty(post)) {
-//                ApproveComment approveComment = approveService.获取留言信息(pkId,postId);
-//
-//                post.setApproveComment(approveComment);
-
-                posts.add(post);
-            }
-        }
-
-        Collections.shuffle(posts);
-
-
-        return posts;
-    }
-
-
-
     public List<Post> queryPkPost(String pkId,int page) throws IOException {
 
         List<Post> posts = 查询Post(pkId,page);
-
-//        Collections.shuffle(posts);
 
         return posts;
     }
 
     private List<Post> 查询Post( String pkId, int page) throws UnsupportedEncodingException {
 
-//        List<Post> posts = pkCacheService.查询Post缓存(pkId,page);
         List<Post> posts = queryPosts(pkId,page);
-//        if(CollectionUtils.isEmpty(posts))
-//        {
-//
-//            pkCacheService.添加Post缓存(pkId,page,posts);
-//        }
+
         return posts;
 
     }
@@ -179,28 +147,6 @@ public class PkService {
     }
 
 
-    public PkButton 查询群组(String pkId)
-    {
-
-        boolean hasGroup = !StringUtils.isBlank(dynamicService.查询PK群组二维码MediaId(pkId));
-
-        if(hasGroup)
-        {
-            return appService.显示按钮(PkButtonType.群组已更新);
-        }
-        else
-        {
-            return appService.显示按钮(PkButtonType.群组未更新);
-        }
-
-    }
-
-    public PkDetail querySinglePk(String pkId) throws IOException {
-        PkEntity pk = this.querySinglePkEntity(pkId);
-        return this.querySinglePk(pk);
-    }
-
-
 
 
     public PkDetail querySinglePk(PkEntity pk) throws IOException {
@@ -208,23 +154,15 @@ public class PkService {
         String pkId = pk.getPkId();
         PkDetail pkDetail = new PkDetail();
         pkDetail.setPkId(pk.getPkId());
-//        pkDetail.setLocation(appService.查询PK位置(pkId));
-//        pkDetail.setPkTypeValue(pk.getPkType().getType());
-//        pkDetail.setPkType(pk.getPkType().getDesc());
 
         pkDetail.setUser(userService.queryUser(pk.getUserId()));
 
         pkDetail.setTime(TimeUtils.convertTime(pk.getTime()));
-//        pkDetail.setComplainTimes(pk.getComplainTimes());
-//        pkDetail.setPkStatu(ObjectUtils.isEmpty(pk.getAlbumStatu())?new KeyNameValue(PkStatu.审核中.getStatu(),PkStatu.审核中.getStatuStr()):new KeyNameValue(pk.getAlbumStatu().getStatu(),pk.getAlbumStatu().getStatuStr()));
         pkDetail.setBackUrl(pk.getBackUrl());
-//        pkDetail.setGroupInfo(this.查询群组(pkDetail.getPkId()));
         pkDetail.setTopPostId(pk.getTopPostId());
         pkDetail.setTopPost(postService.查询顶置帖子(pk));
         return pkDetail;
     }
-
-
 
 
     public User queryPkCreator(String pkId){
@@ -233,11 +171,6 @@ public class PkService {
         User user = userService.queryUser(pkEntity.getUserId());
         return user;
     }
-
-
-
-
-
 
 
     public PkEntity querySinglePkEntity(String pkId)

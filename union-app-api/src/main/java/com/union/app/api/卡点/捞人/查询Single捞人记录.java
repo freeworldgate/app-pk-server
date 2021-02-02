@@ -1,7 +1,7 @@
 package com.union.app.api.卡点.捞人;
 
 import com.union.app.domain.pk.捞人.FindUser;
-import com.union.app.entity.pk.卡点.捞人.FindStatu;
+import com.union.app.entity.pk.kadian.捞人.FindStatu;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.DataSet;
 import com.union.app.plateform.data.resultcode.PageAction;
@@ -73,7 +73,6 @@ public class 查询Single捞人记录 {
         List<DataSet> dataSets = new ArrayList<>();
 
         dataSets.add(new DataSet("findUser",findUser));
-
 
         dataSets.add(new DataSet("backUrl",appService.查询背景(5)));
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));

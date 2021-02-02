@@ -47,37 +47,4 @@ public class 查询排名 {
     ApproveService approveService;
 
 
-    @RequestMapping(path="/querySort",method = RequestMethod.GET)
-    public AppResponse 查询排名信息(@RequestParam("password") String password) throws AppException, IOException {
-
-        appService.验证Password(password);
-
-        List<PkDetail> pks = appService.查询PK排名(0);
-
-
-
-
-
-        return AppResponse.buildResponse(PageAction.执行处理器("success",pks));
-
-    }
-
-    @RequestMapping(path="/nextSortPage",method = RequestMethod.GET)
-    public AppResponse 查询排名信息(@RequestParam("password") String password,@RequestParam("page") int page) throws AppException, IOException {
-
-        appService.验证Password(password);
-        List<PkDetail> pks = appService.查询PK排名(page);
-
-
-
-        if(pks.size() == 0)
-        {
-            return AppResponse.buildResponse(PageAction.前端数据更新("pkEnd",true));
-
-        }
-
-        return AppResponse.buildResponse(PageAction.执行处理器("success",pks));
-
-    }
-
 }

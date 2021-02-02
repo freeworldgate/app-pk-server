@@ -1,8 +1,8 @@
 package com.union.app.api.卡点.交友;
 
 import com.union.app.domain.pk.捞人.FindUser;
-import com.union.app.entity.pk.卡点.捞人.FindStatu;
-import com.union.app.entity.pk.卡点.捞人.FindUserEntity;
+import com.union.app.entity.pk.kadian.捞人.FindStatu;
+import com.union.app.entity.pk.kadian.捞人.FindUserEntity;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.DataSet;

@@ -35,10 +35,7 @@ import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class PostService {
@@ -763,16 +760,19 @@ public class PostService {
     }
 
 
-    public void 批量查询POST(List<Object> postIds, List<PkDetail> pkDetails) {
-        Map<String, Post> postHashMap = new HashMap<>();
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(PostEntity.class)
-                .inFilter("postId",postIds);
-        List<PostEntity> postEntities = daoService.queryEntities(PostEntity.class,filter);
-        postEntities.forEach(postEntity -> {
-            postHashMap.put(postEntity.getPostId(),this.translate(postEntity));
-        });
+    public void 批量查询POST(List<PkDetail> pkDetails) {
+
         pkDetails.forEach(pkDetail -> {
-            pkDetail.setTopPost(postHashMap.get(pkDetail.getTopPostId()));
+            if(org.apache.commons.lang.StringUtils.isNotBlank(pkDetail.getTopPostId()))
+            {
+                Collection<PostImage> postImages =  keyService.查询榜帖图片(pkDetail.getPkId(),pkDetail.getTopPostId());
+                List<PostImage> postImagesList = new ArrayList<>();
+                postImagesList.addAll(postImages);
+                Post post = new Post();
+                post.setPostImages(postImagesList);
+                pkDetail.setTopPost(post);
+            }
         });
+
     }
 }

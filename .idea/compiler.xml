@@ -7,8 +7,8 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="union-app-start" />
-        <module name="union-app-domain" />
         <module name="union-app-dao" />
+        <module name="union-app-domain" />
         <module name="union-app-service" />
         <module name="union-app-plateform" />
         <module name="union-app-entity" />

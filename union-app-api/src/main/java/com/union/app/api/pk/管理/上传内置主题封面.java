@@ -58,20 +58,6 @@ public class 上传内置主题封面 {
 
 
 
-    @RequestMapping(path="/uploadPkBackImg",method = RequestMethod.GET)
-    @Transactional(rollbackOn = Exception.class)
-    public AppResponse 查询内置PK(@RequestParam("password") String password,@RequestParam("imgUrl") String imgUrl,@RequestParam("pkId") String pkId) throws AppException, IOException {
-        appService.验证Password(password);
-
-        pkService.修改封面(pkId,imgUrl);
-
-        PkDetail pkDetail = pkService.querySinglePk(pkId);
-
-        return AppResponse.buildResponse(PageAction.执行处理器("success",pkDetail));
-
-
-
-    }
 
 
 

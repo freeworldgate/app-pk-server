@@ -23,7 +23,9 @@ public enum  KeyType {
 
 
     配置缓存("CONFIG_CACHE_MAP"),
-    卡点偏移缩放("PK_RANGE_SCALE_OFFSET");
+    卡点偏移缩放("PK_RANGE_SCALE_OFFSET"),
+
+    配置图片类型缓存("PK_TYPE_IMAGE_CACHE");
 
 
 

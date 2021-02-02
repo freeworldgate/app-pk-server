@@ -8,10 +8,9 @@ import com.union.app.dao.spi.filter.EntityFilterChain;
 import com.union.app.dao.spi.filter.OrderTag;
 import com.union.app.domain.pk.Post;
 import com.union.app.domain.pk.PostImage;
+import com.union.app.entity.pk.BackImgEntity;
 import com.union.app.entity.pk.PostImageEntity;
-import com.union.app.entity.pk.卡点.标签.OffSetEntity;
-import com.union.app.entity.pk.卡点.标签.RangeEntity;
-import com.union.app.entity.pk.卡点.标签.ScaleEntity;
+import com.union.app.entity.pk.kadian.label.RangeEntity;
 import com.union.app.entity.user.UserEntity;
 import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.storgae.KeyType;
@@ -27,6 +26,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class KeyService {
@@ -144,11 +144,12 @@ public class KeyService {
                 {
                     this.保存图片(pkId,postId,postImageList);
                 }
-                return postImageList;
-
         }
-        List<PostImage> images = JSON.parseArray(postImgs,PostImage.class);
-        postImageList.addAll(images);
+        else
+        {
+            List<PostImage> images = JSON.parseArray(postImgs,PostImage.class);
+            postImageList.addAll(images);
+        }
         return postImageList;
     }
 
@@ -182,11 +183,11 @@ public class KeyService {
                 {
                     this.saveUser(userEntity);
                 }
-
-                return userEntity;
-
         }
-        userEntity = JSON.parseObject(userStr,UserEntity.class);
+        else
+        {
+            userEntity = JSON.parseObject(userStr,UserEntity.class);
+        }
         return userEntity;
     }
 
@@ -208,11 +209,9 @@ public class KeyService {
     private List<PostImage> 查询PostImgsByPk(String pkId) {
         List<PostImage> postImages = new ArrayList<>();
         String postImgs = redisMapService.getStringValue(KeyType.顶置图片.getName(),pkId);
-
         if(StringUtils.isBlank(postImgs))
         {
             if(redisMapService.getlongValue(KeyType.PK图片总量.getName(),pkId)<1){return postImages;}
-
             EntityFilterChain filter = EntityFilterChain.newFilterChain(PostImageEntity.class)
                     .compareFilter("pkId",CompareTag.Equal,pkId)
                     .pageLimitFilter(1,9)
@@ -231,10 +230,13 @@ public class KeyService {
             {
                 this.保存顶置POST图片(pkId,postImages);
             }
-            return postImages;
         }
-        List<PostImage> images = JSON.parseArray(postImgs,PostImage.class);
-        postImages.addAll(images);
+        else
+        {
+            List<PostImage> images = JSON.parseArray(postImgs,PostImage.class);
+            postImages.addAll(images);
+        }
+
         return postImages;
     }
 
@@ -256,9 +258,10 @@ public class KeyService {
     public RangeEntity 查询缩放偏移缓存(int range) {
         String rangeStr = redisMapService.getStringValue(KeyType.卡点偏移缩放.getName(),String.valueOf(range));
 
-        if(StringUtils.isBlank(rangeStr))
+        if(!StringUtils.isBlank(rangeStr))
         {
             return JSON.parseObject(rangeStr,RangeEntity.class);
+//            return null;
         }
         return null;
 
@@ -268,5 +271,39 @@ public class KeyService {
 
     public void 清除缩放缓存(int value) {
         redisMapService.removeMapKey(KeyType.卡点偏移缩放.getName(),String.valueOf(value));
+    }
+
+
+
+
+
+    public BackImgEntity 查询图片缓存(int type) {
+        BackImgEntity backImgEntity = null;
+        String backImgEntityStr = redisMapService.getStringValue(KeyType.配置图片类型缓存.getName(),String.valueOf(type));
+
+        if(StringUtils.isBlank(backImgEntityStr))
+        {
+            EntityFilterChain filter = EntityFilterChain.newFilterChain(BackImgEntity.class)
+                    .compareFilter("type",CompareTag.Equal,type)
+                    .orderByRandomFilter();
+            backImgEntity = daoService.querySingleEntity(BackImgEntity.class,filter);
+            if(!ObjectUtils.isEmpty(backImgEntity))
+            {
+                redisMapService.setStringValue(KeyType.配置图片类型缓存.getName(),String.valueOf(type),JSON.toJSONString(backImgEntity));
+            }
+
+        }
+        else
+        {
+            backImgEntity = JSON.parseObject(backImgEntityStr,BackImgEntity.class);
+        }
+
+        return backImgEntity;
+
+    }
+
+
+    public void 刷新图片缓存(int type) {
+        redisMapService.removeMapKey(KeyType.配置图片类型缓存.getName(),String.valueOf(type));
     }
 }

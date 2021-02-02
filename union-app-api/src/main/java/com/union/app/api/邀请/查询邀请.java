@@ -70,7 +70,6 @@ public class 查询邀请 {
 
 
         List<DataSet> dataSets = new ArrayList<>();
-        dataSets.add(new DataSet("emptyImage",appService.查询背景(2)));
         dataSets.add(new DataSet("target",userService.queryUser(targetId)));
         if(CollectionUtils.isEmpty(pks))
         {
@@ -85,7 +84,6 @@ public class 查询邀请 {
 ;
         dataSets.add(new DataSet("page",1));
 
-        dataSets.add(new DataSet("imgBack",appService.查询背景(3)));
 
 
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));

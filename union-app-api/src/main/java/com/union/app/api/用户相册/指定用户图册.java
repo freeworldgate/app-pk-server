@@ -4,7 +4,7 @@ import com.union.app.common.dao.KeyService;
 import com.union.app.domain.pk.PkDynamic.UserDynamic;
 import com.union.app.domain.pk.Post;
 import com.union.app.domain.pk.名片.UserCard;
-import com.union.app.entity.pk.卡点.UserFollowEntity;
+import com.union.app.entity.pk.kadian.UserFollowEntity;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.DataSet;

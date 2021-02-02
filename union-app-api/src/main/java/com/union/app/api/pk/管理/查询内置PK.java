@@ -56,39 +56,4 @@ public class 查询内置PK {
 
 
 
-
-    @RequestMapping(path="/queryPrePks",method = RequestMethod.GET)
-    public AppResponse 查询内置PK(@RequestParam("password") String password,@RequestParam("type") int type) throws AppException, IOException {
-        appService.验证Password(password);
-
-        List<PkDetail> pks = appService.查询内置相册(1,type);
-
-
-        return AppResponse.buildResponse(PageAction.执行处理器("success",pks));
-
-
-
-    }
-
-    @RequestMapping(path="/morePrePks",method = RequestMethod.GET)
-    public AppResponse 查询内置PK(@RequestParam("password") String password,@RequestParam("page") int page,@RequestParam("type") int type) throws AppException, IOException {
-
-        appService.验证Password(password);
-
-        List<PkDetail> pks = appService.查询内置相册(page+1,type);
-
-
-        if(pks.size() == 0)
-        {
-            return AppResponse.buildResponse(PageAction.前端数据更新("pkEnd",true));
-
-        }
-
-        return AppResponse.buildResponse(PageAction.执行处理器("success",pks));
-
-    }
-
-
-
-
 }

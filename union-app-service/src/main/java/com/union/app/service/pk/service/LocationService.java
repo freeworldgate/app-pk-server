@@ -20,7 +20,7 @@ import com.union.app.entity.pk.PkEntity;
 import com.union.app.entity.pk.PkImageEntity;
 import com.union.app.entity.pk.PostEntity;
 import com.union.app.entity.pk.PostStatu;
-import com.union.app.entity.pk.卡点.UserFollowEntity;
+import com.union.app.entity.pk.kadian.UserFollowEntity;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
@@ -330,7 +330,7 @@ public class LocationService {
 
         LocationType locationType = new LocationType();
         locationType.setTypeName(pk.getType());
-        locationType.setScale(appService.查询指定范围缩放偏移(locationType.getRangeLength()).getScale());
+        locationType.setScale(appService.查询指定范围缩放偏移(pk.getTypeRange()).getScale());
         locationType.setRange(this.长度转义(pk.getTypeRange()));
         locationType.setRangeValue(this.长度转义不带单位(pk.getTypeRange()));
         locationType.setRangeLength(pk.getTypeRange());
@@ -436,7 +436,7 @@ public class LocationService {
                     int length = this.计算坐标间距离(latitude,longitude,pk.getLatitude(),pk.getLongitude());
                     pkDetail.setUserLength(length);
                     pkDetail.setUserLengthStr(this.距离转换成描述(length));
-                    pkDetail.setLatitude(pkDetail.getLatitude() -  appService.查询指定范围缩放偏移(pkDetail.getType().getRangeLength()).getOffset() );
+                    pkDetail.setLatitude(pkDetail.getLatitude() -  appService.查询指定范围缩放偏移(pk.getTypeRange()).getOffset() );
                     pks.add(pkDetail);
                 } catch (IOException e) {
                     e.printStackTrace();

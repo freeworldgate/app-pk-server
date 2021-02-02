@@ -1,6 +1,5 @@
 package com.union.app.entity.pk.名片;
 
-import com.union.app.entity.pk.卡点.捞人.FindStatu;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;

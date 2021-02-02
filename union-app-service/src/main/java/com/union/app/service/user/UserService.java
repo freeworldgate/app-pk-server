@@ -16,7 +16,7 @@ import com.union.app.domain.pk.客服消息.WxImage;
 import com.union.app.domain.pk.客服消息.WxSendMessage;
 import com.union.app.domain.pk.客服消息.WxText;
 import com.union.app.domain.user.User;
-import com.union.app.entity.pk.卡点.UserCardApplyEntity;
+import com.union.app.entity.pk.kadian.UserCardApplyEntity;
 import com.union.app.entity.pk.名片.UserCardEntity;
 import com.union.app.entity.pk.名片.UserCardMemberEntity;
 import com.union.app.entity.user.UserDynamicEntity;

@@ -55,56 +55,56 @@ public class 查询单个预置PK {
     @Autowired
     AppService appService;
 
-
-    @RequestMapping(path="/queryPreInnerPk",method = RequestMethod.GET)
-    public AppResponse 查询单个PK(@RequestParam("password") String password,@RequestParam("pkId") String pkId) throws AppException, IOException, InterruptedException {
-        appService.验证Password(password);
-        List<DataSet> dataSets = new ArrayList<>();
-
-        //榜单有可能被关闭
-        PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
-        if(ObjectUtils.isEmpty(pkEntity)){throw AppException.buildException(PageAction.信息反馈框("榜单不存在","查询的榜单不存在"));}
-
-
-
-        //查询PK详情
-        PkDetail pkDetail = pkService.querySinglePk(pkId);
-//        pkDetail.setUserBack(appService.查询背景(8));
-        List<Post> posts = pkService.queryPrePkPost(pkId,0);
-
-
-
-
-        Post post = postService.查询用户帖子(pkId,pkService.queryPkCreator(pkId).getUserId());
-        dataSets.add(new DataSet("cpost", post));
-
-        dataSets.add(new DataSet("group",appService.显示按钮(PkButtonType.群组)));
-        dataSets.add(new DataSet("post",appService.显示按钮(PkButtonType.榜帖)));
-        dataSets.add(new DataSet("approve",appService.显示按钮(PkButtonType.评论)));
-        dataSets.add(new DataSet("approving",appService.显示按钮(PkButtonType.点赞)));
-
-        dataSets.add(new DataSet("pk",pkDetail));
-        dataSets.add(new DataSet("imgBack",appService.查询背景(0)));
-        dataSets.add(new DataSet("posts",posts));
-        dataSets.add(new DataSet("page",0));
-        return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
-
-    }
-
-    @RequestMapping(path="/nextPreInnerPage",method = RequestMethod.GET)
-    public AppResponse 查询单个PK(@RequestParam("password") String password,@RequestParam("pkId") String pkId,@RequestParam("userId") String userId,@RequestParam("page") int page) throws AppException, IOException {
-        appService.验证Password(password);
-        //页数不断递增，但是只有一百页。
-        List<Post> posts = pkService.queryPrePkPost(pkId,page+1);
-        if(CollectionUtils.isEmpty(posts))
-        {
-            return AppResponse.buildResponse(PageAction.前端数据更新("nomore",Boolean.TRUE));
-        }
-
-        List<DataSet> dataSets = new ArrayList<>();
-        dataSets.add(new DataSet("posts",posts));
-        return AppResponse.buildResponse(PageAction.执行处理器("success",posts));
-
-    }
+//
+//    @RequestMapping(path="/queryPreInnerPk",method = RequestMethod.GET)
+//    public AppResponse 查询单个PK(@RequestParam("password") String password,@RequestParam("pkId") String pkId) throws AppException, IOException, InterruptedException {
+//        appService.验证Password(password);
+//        List<DataSet> dataSets = new ArrayList<>();
+//
+//        //榜单有可能被关闭
+//        PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
+//        if(ObjectUtils.isEmpty(pkEntity)){throw AppException.buildException(PageAction.信息反馈框("榜单不存在","查询的榜单不存在"));}
+//
+//
+//
+//        //查询PK详情
+//        PkDetail pkDetail = pkService.querySinglePk(pkId);
+////        pkDetail.setUserBack(appService.查询背景(8));
+//        List<Post> posts = pkService.queryPrePkPost(pkId,0);
+//
+//
+//
+//
+//        Post post = postService.查询用户帖子(pkId,pkService.queryPkCreator(pkId).getUserId());
+//        dataSets.add(new DataSet("cpost", post));
+//
+//        dataSets.add(new DataSet("group",appService.显示按钮(PkButtonType.群组)));
+//        dataSets.add(new DataSet("post",appService.显示按钮(PkButtonType.榜帖)));
+//        dataSets.add(new DataSet("approve",appService.显示按钮(PkButtonType.评论)));
+//        dataSets.add(new DataSet("approving",appService.显示按钮(PkButtonType.点赞)));
+//
+//        dataSets.add(new DataSet("pk",pkDetail));
+//        dataSets.add(new DataSet("imgBack",appService.查询背景(0)));
+//        dataSets.add(new DataSet("posts",posts));
+//        dataSets.add(new DataSet("page",0));
+//        return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
+//
+//    }
+//
+//    @RequestMapping(path="/nextPreInnerPage",method = RequestMethod.GET)
+//    public AppResponse 查询单个PK(@RequestParam("password") String password,@RequestParam("pkId") String pkId,@RequestParam("userId") String userId,@RequestParam("page") int page) throws AppException, IOException {
+//        appService.验证Password(password);
+//        //页数不断递增，但是只有一百页。
+//        List<Post> posts = pkService.queryPrePkPost(pkId,page+1);
+//        if(CollectionUtils.isEmpty(posts))
+//        {
+//            return AppResponse.buildResponse(PageAction.前端数据更新("nomore",Boolean.TRUE));
+//        }
+//
+//        List<DataSet> dataSets = new ArrayList<>();
+//        dataSets.add(new DataSet("posts",posts));
+//        return AppResponse.buildResponse(PageAction.执行处理器("success",posts));
+//
+//    }
 
 }
