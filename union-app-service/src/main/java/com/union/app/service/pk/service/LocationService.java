@@ -445,7 +445,7 @@ public class LocationService {
 
             });
         }
-        this.批量查询Pk顶置内容图片(pks);
+        appService.批量查询Pk动态表和顶置(pks);
 
         return pks;
 
@@ -642,7 +642,7 @@ public class LocationService {
 
         userFollowEntities.forEach(follower->{
 
-            User user = userService.queryUser(follower.getUserId());
+            User user = userService.queryUser(follower.getFollowerId());
             user.setFollowTime(TimeUtils.convertTime(follower.getTime()));
             users.add(user);
         });

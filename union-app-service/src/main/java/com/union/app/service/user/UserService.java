@@ -557,6 +557,8 @@ public class UserService {
         List<UserCardApplyEntity> applys = new ArrayList<>();
         EntityFilterChain filter = EntityFilterChain.newFilterChain(UserCardApplyEntity.class)
                 .compareFilter("userId",CompareTag.Equal,targetUserId)
+                .andFilter()
+                .compareFilter("cardLock",CompareTag.Equal,false)
                 .pageLimitFilter(page,20)
                 .orderByFilter("time", OrderTag.DESC);
 

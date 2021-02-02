@@ -76,7 +76,7 @@ public class 指定用户图册 {
         UserFollowEntity userFollowEntity = locationService.查询关注(userId,targetId);
         UserDynamic userDynamic = userDynamicService.queryUserDynamic(targetId);
 
-        UserCard userCard = userService.查询UserCard(userId);
+        UserCard userCard = userService.查询UserCard(targetId);
 
 
         dataSets.add(new DataSet("userDynamic",userDynamic));

@@ -64,7 +64,7 @@ public class 粉丝 {
 
 
         List<DataSet> dataSets = new ArrayList<>();
-        dataSets.add(new DataSet("emptyImage",appService.查询背景(2)));
+
         dataSets.add(new DataSet("page",1));
         dataSets.add(new DataSet("target",target));
         dataSets.add(new DataSet("followers",followers));

@@ -58,18 +58,14 @@ public class 添加取消关注 {
     public AppResponse 添加关注(@RequestParam("userId") String userId,@RequestParam("followerId") String followerId) throws AppException {
 
         //创建者
-        try {
+
             locationService.添加关注(userId, followerId);
             //无并发场景
             userDynamicService.用户关注数量加一(userId);
             //高并发场景
             userDynamicService.用户粉丝数量加一(followerId);
             return AppResponse.buildResponse(PageAction.前端数据更新("followStatu",true));
-        }catch (Exception e)
-        {
-            e.printStackTrace();
-            throw e;
-        }
+
 
 
 
