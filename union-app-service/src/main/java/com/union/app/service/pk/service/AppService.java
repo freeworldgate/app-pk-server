@@ -568,7 +568,7 @@ public class AppService {
         configEntity.setConfigValue(value);
 
         daoService.updateEntity(configEntity);
-        AppConfigService.refreshConfig(value);
+        AppConfigService.refreshConfig(configEntity.getConfigName());
     }
     public ConfigEntity 查询参数(String configTag){
         ConfigItem configItem = ConfigItem.valueOfConfigItem(configTag);

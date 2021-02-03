@@ -1,5 +1,6 @@
 package com.union.app.api.pk.管理.文字背景;
 
+import com.union.app.common.dao.KeyService;
 import com.union.app.domain.pk.捞人.FindUser;
 import com.union.app.domain.pk.文字背景.TextBack;
 import com.union.app.plateform.data.resultcode.AppException;
@@ -58,6 +59,9 @@ public class 添加文字背景 {
     @Autowired
     TextService textService;
 
+    @Autowired
+    KeyService keyService;
+
     @RequestMapping(path="/addTextBack",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
     public AppResponse addTextBack(@RequestParam("backColor") String backColor,@RequestParam("fontColor") String fontColor,@RequestParam("imgUrl") String imgUrl) throws AppException, IOException {
@@ -69,6 +73,7 @@ public class 添加文字背景 {
 
 
         String backId = textService.添加背景(backColor,fontColor,imgUrl);
+        keyService.setBackUpdateFlag(System.currentTimeMillis());
         TextBack textBack = textService.查询TextBackEntity(backId);
 
         return AppResponse.buildResponse(PageAction.执行处理器("success",textBack));

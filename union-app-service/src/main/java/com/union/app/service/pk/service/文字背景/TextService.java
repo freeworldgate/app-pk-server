@@ -1,6 +1,7 @@
 package com.union.app.service.pk.service.文字背景;
 
 import com.union.app.common.dao.AppDaoService;
+import com.union.app.common.dao.KeyService;
 import com.union.app.dao.spi.filter.CompareTag;
 import com.union.app.dao.spi.filter.EntityFilterChain;
 import com.union.app.domain.pk.文字背景.TextBack;
@@ -23,16 +24,17 @@ public class TextService {
 
     private static volatile long updateTime;
 
+    @Autowired
+    KeyService keyService;
 
+    private static volatile long lastUpdateTime;
 
     public List<TextBack> 查询背景() {
         List<TextBack> list = new ArrayList<>();
-        if(backMap.isEmpty())
+        if(backMap.isEmpty()|| (keyService.getBackUpdate() != lastUpdateTime))
         {
-            
+            backMap.clear();
             更新背景列表();
-
-
         }
         list.addAll(backMap.values());
         return list;
@@ -58,7 +60,7 @@ public class TextService {
 
             });
             backMap.putAll(sBackMap);
-
+            lastUpdateTime = keyService.getBackUpdate();
         }
         return backMap;
 

@@ -1,6 +1,7 @@
 package com.union.app.api.pk.管理.预置用户;
 
 import com.union.app.common.dao.AppDaoService;
+import com.union.app.common.dao.KeyService;
 import com.union.app.domain.pk.PkDetail;
 import com.union.app.domain.user.User;
 import com.union.app.entity.pk.PreUserEntity;
@@ -54,6 +55,8 @@ public class 创建预置用户 {
     @Autowired
     ApproveService approveService;
 
+    @Autowired
+    KeyService keyService;
     public static Map<String,PkDetail> pkDetailMap = new HashMap<>();
 
 
@@ -76,7 +79,7 @@ public class 创建预置用户 {
     public AppResponse 修改预置用户(@RequestParam("password") String password,@RequestParam("name") String name,@RequestParam("id") String id) throws AppException, IOException {
 
         User user = appService.修改内置用户名称(id,name);
-
+        keyService.刷新用户User缓存(user.getUserId());
         return AppResponse.buildResponse(PageAction.执行处理器("success",user));
 
     }

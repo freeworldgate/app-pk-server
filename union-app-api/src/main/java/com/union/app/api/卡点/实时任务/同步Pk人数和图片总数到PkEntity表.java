@@ -18,7 +18,7 @@ import javax.transaction.Transactional;
  * @author root
  */
 @Component
-public class 同步Pk人数到PkEntity表
+public class 同步Pk人数和图片总数到PkEntity表
 {
 
     @Autowired
@@ -34,25 +34,23 @@ public class 同步Pk人数到PkEntity表
     /**
      * 附近卡点的排序是按照PKEntity表的totalUser字段来排序的。所以要定时排序
      */
-    @Scheduled(cron = "0 1 * * * ?") //每天5点执行一次
+    @Scheduled(cron = "0 */1 * * * ?") //每天5点执行一次
     @Transactional(rollbackOn = Exception.class)
     public void work() {
-
-        for(int i=0;i<1000;i++)
+        String pkId = "";
+        while(StringUtils.isNotBlank(pkId = keyService.获取待同步图片和用户数量的卡点() ))
         {
-            String pkId = keyService.获取同步PK(KeyType.要同步的PK列表);
-            if(!StringUtils.isBlank(pkId))
-            {
+
+                System.out.println("定时线程执行同步任务:"+Thread.currentThread().getId());
                 long totalUser = keyService.queryKey(pkId,KeyType.卡点人数);
                 long totalImgs = keyService.queryKey(pkId,KeyType.PK图片总量);
                 PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
                 pkEntity.setTotalUsers(totalUser);
                 pkEntity.setTotalImgs(totalImgs);
                 appDao.updateEntity(pkEntity);
-            }
 
         }
-
+        System.out.println("结束定时线程:"+Thread.currentThread().getId());
 
 
 

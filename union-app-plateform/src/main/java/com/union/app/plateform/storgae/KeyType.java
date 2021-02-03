@@ -12,8 +12,6 @@ public enum  KeyType {
 
     卡点POST("PK_TOTAL_POST"),
 
-    要同步的PK列表("SYNC_PK_LIST"),
-    PK同步时间Map("SYNC_PK_LIST_TIME"),
 
     打卡图片("PK_POST_IMG_CACHE"),
     顶置图片("PK_TOP_POST_IMG_CACHE"),
@@ -25,7 +23,13 @@ public enum  KeyType {
     配置缓存("CONFIG_CACHE_MAP"),
     卡点偏移缩放("PK_RANGE_SCALE_OFFSET"),
 
-    配置图片类型缓存("PK_TYPE_IMAGE_CACHE");
+    配置图片类型缓存("PK_TYPE_IMAGE_CACHE"),
+
+    文字背景更新时间("TEXT_BACK_UPDATE_TIME"),
+
+    卡点待同步队列("PK_DATA_SYNC_SET"),
+
+    PK热度排行("PK_SORT_ALL");
 
 
 

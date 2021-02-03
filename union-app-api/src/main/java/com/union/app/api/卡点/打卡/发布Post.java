@@ -66,7 +66,6 @@ public class 发布Post {
 
         Post post = postService.查询帖子(pkId,postId,userId);
 
-        keyService.同步Pk人数(KeyType.要同步的PK列表,pkId);
 
         //返回帖子  首页第一个要显示
         return AppResponse.buildResponse(PageAction.执行处理器("success",post));

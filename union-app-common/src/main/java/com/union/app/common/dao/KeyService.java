@@ -9,6 +9,7 @@ import com.union.app.dao.spi.filter.OrderTag;
 import com.union.app.domain.pk.Post;
 import com.union.app.domain.pk.PostImage;
 import com.union.app.entity.pk.BackImgEntity;
+import com.union.app.entity.pk.PkEntity;
 import com.union.app.entity.pk.PostImageEntity;
 import com.union.app.entity.pk.kadian.label.RangeEntity;
 import com.union.app.entity.user.UserEntity;
@@ -27,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class KeyService {
@@ -91,29 +93,14 @@ public class KeyService {
         值减一(userId,KeyType.想认识我的人);
     }
 
-    public void 卡点打卡人数加一(String pkId) {
-
+    public void 卡点打卡人数加一(String pkId)
+    {
         值加一(pkId,KeyType.卡点人数);
+        通知同步图片和用户数量(pkId);
     }
 
 
 
-
-    public String 获取同步PK(KeyType listkey)
-    {
-        return redisTemplate.opsForList().rightPop(listkey.getName());
-    }
-    public void 同步Pk人数(KeyType listkey,String pkId)
-    {
-        //上一次PK打卡人数同步时间
-        long lastUpdateTime = redisMapService.getlongValue(KeyType.PK同步时间Map.getName(),pkId);
-        //如果时间间隔大于同步时间
-        if(System.currentTimeMillis()-lastUpdateTime > AppConfigService.getConfigAsLong(ConfigItem.PK同步时间间隔)*1000)
-        {
-            redisTemplate.opsForList().leftPush(listkey.getName(),pkId);
-            redisMapService.setLongValue(KeyType.PK同步时间Map.getName(),pkId,System.currentTimeMillis());
-        }
-    }
 
 
 
@@ -164,7 +151,9 @@ public class KeyService {
 
 
 
-
+    public void 刷新用户User缓存(String userId) {
+        redisMapService.removeMapKey(KeyType.用户缓存.getName(),userId);
+    }
 
     //用户缓存
     public UserEntity queryUserEntity(String userId) {
@@ -242,12 +231,20 @@ public class KeyService {
 
     public void pk图片总量递增(String pkId, int num) {
         redisMapService.valueIncr(KeyType.PK图片总量.getName(),pkId,num);
+        通知同步图片和用户数量(pkId);
     }
 
     public void pk图片总量递减(String pkId, int imgNum) {
         redisMapService.valueDecr(KeyType.PK图片总量.getName(),pkId,imgNum);
+        通知同步图片和用户数量(pkId);
     }
 
+    private void 通知同步图片和用户数量(String pkId) {
+        redisTemplate.opsForSet().add(KeyType.卡点待同步队列.getName(),pkId);
+    }
+    public String 获取待同步图片和用户数量的卡点() {
+        return redisTemplate.opsForSet().pop(KeyType.卡点待同步队列.getName());
+    }
 
     public void 保存缩放偏移缓存(RangeEntity rangeEntity) {
 
@@ -305,5 +302,38 @@ public class KeyService {
 
     public void 刷新图片缓存(int type) {
         redisMapService.removeMapKey(KeyType.配置图片类型缓存.getName(),String.valueOf(type));
+    }
+
+
+    public List<PkEntity> 查询全网排行() {
+        List<PkEntity> pkEntities = new ArrayList<>();
+        String pks = redisTemplate.opsForValue().get(KeyType.PK热度排行.getName());
+        if(StringUtils.isBlank(pks))
+        {
+            EntityFilterChain sortFilter = EntityFilterChain.newFilterChain(PkEntity.class)
+                    .compareFilter("totalImgs",CompareTag.Bigger,0L)
+                    .orderByFilter("totalUsers",OrderTag.DESC)
+                    .pageLimitFilter(1,10);
+            pkEntities = daoService.queryEntities(PkEntity.class,sortFilter);
+            if(!CollectionUtils.isEmpty(pkEntities))
+            {
+                redisTemplate.opsForValue().set(KeyType.PK热度排行.getName(),JSON.toJSONString(pks),1, TimeUnit.HOURS);
+            }
+        }
+        else
+        {
+            List<PkEntity> images = JSON.parseArray(pks,PkEntity.class);
+            pkEntities.addAll(images);
+        }
+        return pkEntities;
+    }
+
+    public long getBackUpdate() {
+        String updateTime = redisTemplate.opsForValue().get(KeyType.文字背景更新时间.getName());
+        return StringUtils.isBlank(updateTime)?-1L:Long.valueOf(updateTime);
+    }
+
+    public void setBackUpdateFlag(long updateTime) {
+        redisTemplate.opsForValue().set(KeyType.文字背景更新时间.getName(),String.valueOf(updateTime));
     }
 }

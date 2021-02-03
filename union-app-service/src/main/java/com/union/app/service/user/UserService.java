@@ -37,10 +37,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -727,5 +724,18 @@ public class UserService {
     }
 
 
+    public Map<String, UserDynamicEntity> 批量查询用户Dynamic(List<Object> userIds) {
+        Map<String,UserDynamicEntity> dynamicEntityMap = new HashMap<>();
+        if(CollectionUtils.isEmpty(userIds)){return dynamicEntityMap;}
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(UserDynamicEntity.class)
+                .inFilter("userId",userIds);
+        List<UserDynamicEntity> userDynamicEntites = appDaoService.queryEntities(UserDynamicEntity.class,filter);
+        userDynamicEntites.forEach(userDynamicEntity -> {
+            dynamicEntityMap.put(userDynamicEntity.getUserId(),userDynamicEntity);
+        });
+        return dynamicEntityMap;
 
+
+
+    }
 }

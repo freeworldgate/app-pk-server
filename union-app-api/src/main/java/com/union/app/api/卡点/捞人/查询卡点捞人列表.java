@@ -75,18 +75,13 @@ public class 查询卡点捞人列表 {
                     userFindUser = findUser;
                     break;
                 }
-
             }
-
             if(ObjectUtils.isEmpty(userFindUser)){
-                userFindUser = findService.查询用户捞人记录(pkId,userId);
+                userFindUser = findService.translate(findUserEntity);
             }
             if(!ObjectUtils.isEmpty(userFindUser)){
                 findUsers.add(0,userFindUser);
             }
-
-
-
         }
 
 
@@ -94,7 +89,6 @@ public class 查询卡点捞人列表 {
         List<DataSet> dataSets = new ArrayList<>();
 
 
-        dataSets.add(new DataSet("emptyImage",appService.查询背景(1)));
 
         if(CollectionUtils.isEmpty(findUsers))
         {

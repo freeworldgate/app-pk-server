@@ -79,7 +79,7 @@ public class 查询单个PK {
         PkDetail pkDetail = locationService.querySinglePk(pkEntity);
 
 
-        List<Post> posts = pkService.queryPkPost(pkId,0);
+        List<Post> posts = pkService.queryPkPost(pkId,1);
         去除顶置POST(posts,pkEntity.getTopPostId());
         Post topPost = postService.查询顶置帖子(pkEntity);
         if(!ObjectUtils.isEmpty(topPost)){posts.add(0,topPost);}

@@ -395,6 +395,8 @@ public class LocationService {
                 .compareFilter("longitude",CompareTag.Small,longitude + 0.06D)
                 .andFilter()
                 .compareFilter("longitude",CompareTag.Bigger,longitude - 0.06D)
+                .andFilter()
+                .compareFilter("totalImgs",CompareTag.Bigger,0L)
                 .orderByFilter("totalUsers",OrderTag.DESC)
                 .pageLimitFilter(1,10);
 
@@ -406,12 +408,12 @@ public class LocationService {
                 .compareFilter("longitude",CompareTag.Small,longitude + 0.2D)
                 .andFilter()
                 .compareFilter("longitude",CompareTag.Bigger,longitude - 0.2D)
+                .andFilter()
+                .compareFilter("totalImgs",CompareTag.Bigger,0L)
                 .orderByFilter("totalUsers",OrderTag.DESC)
                 .pageLimitFilter(1,10);
 
-        EntityFilterChain sortFilter = EntityFilterChain.newFilterChain(PkEntity.class)
-                .orderByFilter("totalUsers",OrderTag.DESC)
-                .pageLimitFilter(1,10);
+
 
         List<PkEntity> pkEntities = daoService.queryEntities(PkEntity.class,aroundFilter);
         if(CollectionUtils.isEmpty(pkEntities))
@@ -420,7 +422,8 @@ public class LocationService {
         }
         if(CollectionUtils.isEmpty(pkEntities))
         {
-            pkEntities = daoService.queryEntities(PkEntity.class,sortFilter);
+            pkEntities = keyService.查询全网排行();
+//            pkEntities = daoService.queryEntities(PkEntity.class,sortFilter);
         }
 
 

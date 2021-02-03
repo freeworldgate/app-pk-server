@@ -1,5 +1,6 @@
 package com.union.app.api.登录和注册;
 
+import com.union.app.common.dao.KeyService;
 import com.union.app.common.微信.WeChatUtil;
 import com.union.app.common.dao.AppDaoService;
 import com.union.app.dao.spi.filter.CompareTag;
@@ -43,6 +44,9 @@ public class 用户登录加注册 {
     @Autowired
     PkService pkService;
 
+    @Autowired
+    KeyService keyService;
+
     @RequestMapping(path="/login",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
     public ApiResponse 登录(@RequestParam(value="code") String code, @RequestParam(value="encryptedData")String encryptedData, @RequestParam(value="iv")String iv, @RequestParam(value="appName")String appName, @RequestParam(value="pkId")String pkId) throws UnsupportedEncodingException, InvalidAlgorithmParameterException {
@@ -74,6 +78,7 @@ public class 用户登录加注册 {
                 userEntity.setNickName(userInfo.getNickName());
                 userEntity.setAvatarUrl(userInfo.getAvatarUrl());
                 appDaoService.updateEntity(userEntity);
+                keyService.刷新用户User缓存(userEntity.getUserId());
             }
 
 
