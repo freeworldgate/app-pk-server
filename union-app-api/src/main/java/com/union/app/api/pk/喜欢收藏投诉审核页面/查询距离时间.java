@@ -48,52 +48,38 @@ public class 查询距离时间 {
     @Autowired
     PkUserDynamicService pkUserDynamicService;
 
-    @RequestMapping(path="/queryLengthTime",method = RequestMethod.GET)
-    @Transactional(rollbackOn = Exception.class)
-    public AppResponse 查询投诉信息List(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId,@RequestParam("latitude") double latitude,@RequestParam("longitude") double longitude) throws AppException, IOException {
-        List<DataSet> dataSets = new ArrayList<>();
-        PkEntity pkEntity = locationService.querySinglePkEntity(pkId);
-        PostEntity postEntity = locationService.查询最新用户Post发布时间(pkId,userId);
-        if(ObjectUtils.isEmpty(postEntity)){
-            dataSets.add(new DataSet("leftTime",0));
-        }
-        else
-        {
-            long postLastUpdateTime = postEntity.getTime();
-            long leftTime = System.currentTimeMillis() - postLastUpdateTime;
-            int timePerid = AppConfigService.getConfigAsInteger(ConfigItem.发帖的时间间隔);
-            if(leftTime > timePerid * 1000)
-            {
-                dataSets.add(new DataSet("leftTime",0));
-            }
-            else
-            {
-                dataSets.add(new DataSet("leftTime",timePerid-leftTime/1000));
-            }
-
-
-        }
-        PkUserDynamicEntity entity = pkUserDynamicService.查询卡点用户动态表(pkId,userId);
-        dataSets.add(new DataSet("postTimes",ObjectUtils.isEmpty(entity)?0:entity.getPostTimes()));
-
-        //查询用户打卡次数:
-
-
-
-
+//    @RequestMapping(path="/queryLengthTime",method = RequestMethod.GET)
+//    @Transactional(rollbackOn = Exception.class)
+//    public AppResponse 查询投诉信息List(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId,@RequestParam("latitude") double latitude,@RequestParam("longitude") double longitude) throws AppException, IOException {
+//        List<DataSet> dataSets = new ArrayList<>();
+//        PkEntity pkEntity = locationService.querySinglePkEntity(pkId);
+//        PostEntity postEntity = locationService.查询最新用户Post发布时间(pkId,userId);
+//        if(ObjectUtils.isEmpty(postEntity)){
+//            dataSets.add(new DataSet("leftTime",0));
+//        }
+//        else
+//        {
+//            long postLastUpdateTime = postEntity.getTime();
+//            long leftTime = System.currentTimeMillis() - postLastUpdateTime;
+//            int timePerid = AppConfigService.getConfigAsInteger(ConfigItem.发帖的时间间隔);
+//            if(leftTime > timePerid * 1000)
+//            {
+//                dataSets.add(new DataSet("leftTime",0));
+//            }
+//            else
+//            {
+//                dataSets.add(new DataSet("leftTime",timePerid-leftTime/1000));
+//            }
 //
-//        int length = locationService.计算坐标间距离(latitude,longitude,pkEntity.getLatitude(),pkEntity.getLongitude());
-//        String lengthStr = locationService.距离转换成描述(length);
-
-
-
-//        dataSets.add(new DataSet("length",length));
-
-//        dataSets.add(new DataSet("lengthStr",lengthStr));
-        return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
-
-    }
-
+//
+//        }
+//        PkUserDynamicEntity entity = pkUserDynamicService.查询卡点用户动态表(pkId,userId);
+//        dataSets.add(new DataSet("postTimes",ObjectUtils.isEmpty(entity)?0:entity.getPostTimes()));
+//
+//        return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
+//
+//    }
+//
 
 
 

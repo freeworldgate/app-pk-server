@@ -1,10 +1,13 @@
 package com.union.app.api.卡点.打卡;
 
+import com.union.app.common.config.AppConfigService;
 import com.union.app.common.dao.AppDaoService;
 import com.union.app.common.dao.KeyService;
 import com.union.app.domain.pk.Post;
+import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
+import com.union.app.plateform.data.resultcode.DataSet;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.KeyType;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
@@ -66,7 +69,7 @@ public class 发布Post {
 
         Post post = postService.查询帖子(pkId,postId,userId);
 
-
+        post.setLeftTime(AppConfigService.getConfigAsInteger(ConfigItem.发帖的时间间隔));
         //返回帖子  首页第一个要显示
         return AppResponse.buildResponse(PageAction.执行处理器("success",post));
 

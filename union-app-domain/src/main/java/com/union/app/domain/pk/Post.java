@@ -48,5 +48,6 @@ public class Post {
 
     private boolean flag = false;
 
+    private int leftTime;
 
 }
