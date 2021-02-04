@@ -10,6 +10,7 @@ import com.union.app.dao.spi.filter.EntityFilterChain;
 import com.union.app.dao.spi.filter.OrderTag;
 import com.union.app.domain.pk.apply.KeyValuePair;
 import com.union.app.domain.pk.交友.PkGroup;
+import com.union.app.entity.pk.用户Key.PkUserDynamicEntity;
 import com.union.app.entity.pk.社交.GroupStatu;
 import com.union.app.entity.pk.社交.PkGroupEntity;
 import com.union.app.entity.pk.社交.PkGroupMemberEntity;
@@ -110,8 +111,11 @@ public class GroupService {
         {
             throw AppException.buildException(PageAction.执行处理器("groupPay",""));
         }
-        userDynamicEntity.setMygroups(userDynamicEntity.getMygroups()-1);
-        daoService.updateEntity(userDynamicEntity);
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("mygroups",userDynamicEntity.getMygroups()-1);
+        daoService.updateColumById(userDynamicEntity.getClass(),"userId",userDynamicEntity.getUserId(),map);
+
         pkGroupEntity = new PkGroupEntity();
         pkGroupEntity.setGroupId(IdGenerator.getGroupId());
         pkGroupEntity.setPkId(pkId);
@@ -273,9 +277,13 @@ public class GroupService {
             //每次更新间隔至少三天
             throw AppException.buildException(PageAction.信息反馈框("每次更新间隔至少四天","每次更新间隔至少四天"));
         }
-        pkGroupEntity.setUpdateGroupCode(groupCard);
-        pkGroupEntity.setLastUpdateTime(System.currentTimeMillis());
-        daoService.updateEntity(pkGroupEntity);
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("updateGroupCode",groupCard);
+        map.put("lastUpdateTime",System.currentTimeMillis());
+        daoService.updateColumById(pkGroupEntity.getClass(),"groupId",pkGroupEntity.getGroupId(),map);
+
+
 
 
     }
@@ -388,10 +396,14 @@ public class GroupService {
                 pkGroupMemberEntity.setTime(System.currentTimeMillis());
                 pkUserDynamicService.卡点用户解锁群组加一(pkGroupEntity.getPkId(),userId);
                 userDynamicService.用户解锁群组加一(userId);
-                pkGroupEntity.setMembers(pkGroupEntity.getMembers()+1);
-
                 daoService.insertEntity(pkGroupMemberEntity);
-                daoService.updateEntity(pkGroupEntity);
+
+
+
+                Map<String,Object> map = new HashMap<>();
+                map.put("members",pkGroupEntity.getMembers()+1);
+                daoService.updateColumById(pkGroupEntity.getClass(),"groupId",pkGroupEntity.getGroupId(),map);
+
                 lockService.releaseLock(groupId,LockType.群组锁);
         }
         return pkGroupMemberEntity;
@@ -452,17 +464,16 @@ public class GroupService {
 
     public void 审批(String groupId) {
         PkGroupEntity groupEntity = this.查询用户群组EntityById(groupId);
+        Map<String,Object> map = new HashMap<>();
         if(groupEntity.getGroupStatu() == GroupStatu.审核中)
         {
-            groupEntity.setGroupStatu(GroupStatu.已通过);
-
+            map.put("groupStatu",GroupStatu.已通过);
         }
         else
         {
-            groupEntity.setGroupStatu(GroupStatu.审核中);
-
+            map.put("groupStatu",GroupStatu.审核中);
         }
-        daoService.updateEntity(groupEntity);
+        daoService.updateColumById(groupEntity.getClass(),"groupId",groupEntity.getGroupId(),map);
     }
 
     public PkGroup 查询ByGroupId(String groupId) {
@@ -497,13 +508,10 @@ public class GroupService {
         PkGroupEntity groupEntity = this.查询用户群组EntityById(groupId);
         if(groupEntity.getGroupStatu() == GroupStatu.已通过 && !StringUtils.isBlank(groupEntity.getUpdateGroupCode()))
         {
-            groupEntity.setGroupCode(groupEntity.getUpdateGroupCode());
-            groupEntity.setUpdateGroupCode(null);
-            daoService.updateEntity(groupEntity);
+            Map<String,Object> map = new HashMap<>();
+            map.put("groupCode",groupEntity.getUpdateGroupCode());
+            map.put("updateGroupCode",null);
+            daoService.updateColumById(groupEntity.getClass(),"groupId",groupEntity.getGroupId(),map);
         }
-
-
-
-
     }
 }

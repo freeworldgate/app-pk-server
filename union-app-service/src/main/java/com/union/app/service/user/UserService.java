@@ -275,8 +275,10 @@ public class UserService {
     public void 创建榜次数加1(String userId) {
         synchronized (userId) {
             UserDynamicEntity result = queryUserKvEntity(userId);
-            result.setPkTimes(result.getPkTimes() + 1);
-            appDaoService.updateEntity(result);
+            Map<String,Object> map = new HashMap<>();
+            map.put("pkTimes",result.getPkTimes() + 1);
+            appDaoService.updateColumById(result.getClass(),"userId",result.getUserId(),map);
+
         }
 
     }
@@ -330,16 +332,18 @@ public class UserService {
         long left = endTime - System.currentTimeMillis();
         if(left>0){
             UserDynamicEntity userDynamicEntity =  userService.queryUserKvEntity(userId);
-            userDynamicEntity.setFindTimeLength(userDynamicEntity.getFindTimeLength() + left);
-            appDaoService.updateEntity(userDynamicEntity);
+            Map<String,Object> map = new HashMap<>();
+            map.put("findTimeLength",userDynamicEntity.getFindTimeLength() + left);
+            appDaoService.updateColumById(userDynamicEntity.getClass(),"userId",userDynamicEntity.getUserId(),map);
+
         }
 
     }
     public void 返还用户打捞时间1(String userId, long length) {
-            UserDynamicEntity userDynamicEntity = userService.queryUserKvEntity(userId);
-            userDynamicEntity.setFindTimeLength(userDynamicEntity.getFindTimeLength() + length*24*3600*1000);
-            appDaoService.updateEntity(userDynamicEntity);
-
+        UserDynamicEntity userDynamicEntity = userService.queryUserKvEntity(userId);
+        Map<String,Object> map = new HashMap<>();
+        map.put("findTimeLength",userDynamicEntity.getFindTimeLength() + length*24*3600*1000);
+        appDaoService.updateColumById(UserDynamicEntity.class,"userId",userId,map);
 
     }
 
@@ -374,9 +378,10 @@ public class UserService {
     }
 
     public void 上传UserCard(String userId, String userCard) {
-        UserCardEntity userCardEntity = userService.queryUserCardEntity(userId);
-        userCardEntity.setUserCard(userCard);
-        appDaoService.updateEntity(userCardEntity);
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("userCard",userCard);
+        appDaoService.updateColumById(UserCardEntity.class,"userId",userId,map);
 
     }
 
@@ -385,9 +390,6 @@ public class UserService {
     public UserCard 查询UserCard(String userId) {
         UserCard userCard = new UserCard();
         userCard.setUser(this.queryUser(userId));
-//        userCard.setMeLike(keyService.queryKey(userId, KeyType.Ta想认识的人));
-//        userCard.setLikeMe(keyService.queryKey(userId, KeyType.想认识的Ta人));
-
         UserCardEntity userCardEntity = userService.queryUserCardEntity(userId);
 
         if(ObjectUtils.isEmpty(userCardEntity)){
@@ -445,12 +447,13 @@ public class UserService {
         }
         else
         {
-            userCardApplyEntity.setUserId(targetId);
-            userCardApplyEntity.setText(text);
-            userCardApplyEntity.setTime(System.currentTimeMillis());
-            userCardApplyEntity.setCardLock(userCardApplyEntity.isCardLock());
-            userCardApplyEntity.setApplyerId(userId);
-            appDaoService.updateEntity(userCardApplyEntity);
+
+            Map<String,Object> map = new HashMap<>();
+            map.put("text",text);
+            map.put("time",System.currentTimeMillis());
+            appDaoService.updateColumById(userCardApplyEntity.getClass(),"id",userCardApplyEntity.getId(),map);
+
+
         }
 
     }
@@ -487,15 +490,25 @@ public class UserService {
     private void 我想认识的人加一(String userId) throws AppException {
 
             UserCardEntity userCardEntity = userService.queryUserCardEntity(userId);
-            userCardEntity.setMeLike(userCardEntity.getMeLike()+1);
-            appDaoService.updateEntity(userCardEntity);
+
+            Map<String,Object> map = new HashMap<>();
+            map.put("meLike",userCardEntity.getMeLike()+1);
+            appDaoService.updateColumById(userCardEntity.getClass(),"userId",userCardEntity.getUserId(),map);
+
+
+
+
+
 
     }
     private void 我想认识的人减一(String userId) throws AppException {
 
-            UserCardEntity userCardEntity = userService.queryUserCardEntity(userId);
-            userCardEntity.setMeLike(userCardEntity.getMeLike()-1);
-            appDaoService.updateEntity(userCardEntity);
+        UserCardEntity userCardEntity = userService.queryUserCardEntity(userId);
+        Map<String,Object> map = new HashMap<>();
+        map.put("meLike",userCardEntity.getMeLike()-1);
+        appDaoService.updateColumById(userCardEntity.getClass(),"userId",userCardEntity.getUserId(),map);
+
+
 
     }
     public UserCardEntity queryUserCardEntity(String userId) {
@@ -554,8 +567,6 @@ public class UserService {
         List<UserCardApplyEntity> applys = new ArrayList<>();
         EntityFilterChain filter = EntityFilterChain.newFilterChain(UserCardApplyEntity.class)
                 .compareFilter("userId",CompareTag.Equal,targetUserId)
-                .andFilter()
-                .compareFilter("cardLock",CompareTag.Equal,false)
                 .pageLimitFilter(page,20)
                 .orderByFilter("time", OrderTag.DESC);
 
@@ -617,10 +628,11 @@ public class UserService {
         新增一个可见UserCard成员(userId,applyId);
         UserCardEntity userCardEntity = this.queryUserCardEntity(userId);
 
-        userCardEntity.setUnLock(userCardEntity.getUnLock()+1);
         添加Member(userCardEntity,applyId);
-        appDaoService.updateEntity(userCardEntity);
 
+        Map<String,Object> map = new HashMap<>();
+        map.put("unLock",userCardEntity.getUnLock()+1);
+        appDaoService.updateColumById(userCardEntity.getClass(),"userId",userCardEntity.getUserId(),map);
 
 
     }

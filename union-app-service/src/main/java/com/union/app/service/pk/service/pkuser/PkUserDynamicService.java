@@ -5,6 +5,7 @@ import com.union.app.dao.spi.filter.CompareTag;
 import com.union.app.dao.spi.filter.EntityFilterChain;
 import com.union.app.dao.spi.filter.OrderTag;
 import com.union.app.domain.pk.排名.UserSort;
+import com.union.app.entity.pk.PkEntity;
 import com.union.app.entity.pk.用户Key.PkUserDynamicEntity;
 import com.union.app.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class PkUserDynamicService {
@@ -98,8 +101,11 @@ public class PkUserDynamicService {
         PkUserDynamicEntity pkUserEntity = 查询卡点用户动态表(pkId,userId);
         if(!ObjectUtils.isEmpty(pkUserEntity))
         {
-            pkUserEntity.setUnLockGroups(pkUserEntity.getUnLockGroups()+1);
-            daoService.updateEntity(pkUserEntity);
+
+            Map<String,Object> map = new HashMap<>();
+            map.put("unLockGroups",pkUserEntity.getUnLockGroups()+1);
+            daoService.updateColumById(pkUserEntity.getClass(),"dynamicId",pkUserEntity.getDynamicId(),map);
+
         }
         else
         {
@@ -115,8 +121,9 @@ public class PkUserDynamicService {
         PkUserDynamicEntity pkUserEntity = 查询卡点用户动态表(pkId,userId);
         if(!ObjectUtils.isEmpty(pkUserEntity))
         {
-            pkUserEntity.setPostTimes(pkUserEntity.getPostTimes()+1);
-            daoService.updateEntity(pkUserEntity);
+            Map<String,Object> map = new HashMap<>();
+            map.put("postTimes",pkUserEntity.getPostTimes()+1);
+            daoService.updateColumById(pkUserEntity.getClass(),"dynamicId",pkUserEntity.getDynamicId(),map);
         }
         else
         {
@@ -134,8 +141,9 @@ public class PkUserDynamicService {
 
         if(!ObjectUtils.isEmpty(pkUserEntity))
         {
-            pkUserEntity.setPostTimes(pkUserEntity.getPostTimes()-1<0?0:pkUserEntity.getPostTimes()-1);
-            daoService.updateEntity(pkUserEntity);
+            Map<String,Object> map = new HashMap<>();
+            map.put("postTimes",pkUserEntity.getPostTimes()-1<0?0:pkUserEntity.getPostTimes()-1);
+            daoService.updateColumById(PkUserDynamicEntity.class,"dynamicId",pkUserEntity.getDynamicId(),map);
         }
         else
         {
@@ -155,8 +163,9 @@ public class PkUserDynamicService {
 
         if(!ObjectUtils.isEmpty(pkUserEntity))
         {
-            pkUserEntity.setLastPublishPostTime(System.currentTimeMillis());
-            daoService.updateEntity(pkUserEntity);
+            Map<String,Object> map = new HashMap<>();
+            map.put("lastPublishPostTime",System.currentTimeMillis());
+            daoService.updateColumById(pkUserEntity.getClass(),"dynamicId",pkUserEntity.getDynamicId(),map);
         }
         else
         {

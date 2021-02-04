@@ -251,15 +251,15 @@ public class DynamicService {
 
     }
 
-    public void 已审核(String pkId, String postId) {
-
-//            redisSortSetService.addEle(CacheKeyName.榜主已审核列表(pkId),postId,System.currentTimeMillis() * -1D);
-//            redisSortSetService.remove(CacheKeyName.榜主审核中列表(pkId),postId);
-            pkService.更新图册状态列表(pkId,postId);
-
-            this.更新PK排名(pkId);
-
-    }
+//    public void 已审核(String pkId, String postId) {
+//
+////            redisSortSetService.addEle(CacheKeyName.榜主已审核列表(pkId),postId,System.currentTimeMillis() * -1D);
+////            redisSortSetService.remove(CacheKeyName.榜主审核中列表(pkId),postId);
+//            pkService.更新图册状态列表(pkId,postId);
+//
+//            this.更新PK排名(pkId);
+//
+//    }
 
     public void 驳回用户审核(String pkId, String postId) {
         pkService.删除审核中Post(pkId,postId);

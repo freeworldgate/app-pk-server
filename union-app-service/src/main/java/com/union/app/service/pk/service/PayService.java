@@ -388,8 +388,9 @@ public class PayService {
 
     public void 充值时间(int day, String userId) {
         UserDynamicEntity userDynamicEntity = userService.queryUserKvEntity(userId);
-        userDynamicEntity.setFindTimeLength(userDynamicEntity.getFindTimeLength() + day*24*3600*1000);
-        daoService.updateEntity(userDynamicEntity);
+        Map<String,Object> map = new HashMap<>();
+        map.put("findTimeLength",userDynamicEntity.getFindTimeLength() + day*24*3600*1000);
+        daoService.updateColumById(userDynamicEntity.getClass(),"userId",userDynamicEntity.getUserId(),map);
 
     }
 
@@ -402,8 +403,11 @@ public class PayService {
         }
         else
         {
-            userDynamicEntity.setPk(pk-1);
-            daoService.updateEntity(userDynamicEntity);
+
+            Map<String,Object> map = new HashMap<>();
+            map.put("pk",pk-1);
+            daoService.updateColumById(userDynamicEntity.getClass(),"userId",userDynamicEntity.getUserId(),map);
+
         }
 
 
@@ -413,9 +417,9 @@ public class PayService {
         UserDynamicEntity userDynamicEntity = userService.queryUserKvEntity(userId);
         int pk = userDynamicEntity.getPk();
 
-        userDynamicEntity.setPk(pk+pkTimes);
-        daoService.updateEntity(userDynamicEntity);
-
+        Map<String,Object> map = new HashMap<>();
+        map.put("pk",pk+pkTimes);
+        daoService.updateColumById(userDynamicEntity.getClass(),"userId",userDynamicEntity.getUserId(),map);
 
     }
 }

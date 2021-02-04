@@ -204,8 +204,10 @@ public class FindService {
 
         if(userDynamicEntity.getFindTimeLength() >= findLength * 24 * 3600*1000)
         {
-            userDynamicEntity.setFindTimeLength(userDynamicEntity.getFindTimeLength() - findLength * 24 * 3600*1000);
-            daoService.updateEntity(userDynamicEntity);
+            Map<String,Object> map = new HashMap<>();
+            map.put("findTimeLength",userDynamicEntity.getFindTimeLength() - findLength * 24 * 3600*1000);
+            daoService.updateColumById(userDynamicEntity.getClass(),"userId",userDynamicEntity.getUserId(),map);
+
             return;
         }
         else
@@ -287,6 +289,7 @@ public class FindService {
     public void 审批(int findId) {
         FindUserEntity findUserEntity = 查询用户捞人EntityById(findId);
         UserDynamicEntity userDynamicEntity = userDynamicService.queryUserDynamicEntity(findUserEntity.getUserId());
+        Map<String,Object> map = new HashMap<>();
         if(findUserEntity.getFindStatu() == FindStatu.审核中)
         {
             findUserEntity.setFindStatu(FindStatu.打捞中);
@@ -295,8 +298,7 @@ public class FindService {
             findUserEntity.setStartTime(startTime);
             findUserEntity.setEndTime(endTime);
             //审批通过，用户打捞次数加1
-
-            userDynamicEntity.setFindTimes(userDynamicEntity.getFindTimes()+1);
+            map.put("findTimes",userDynamicEntity.getFindTimes()+1);
 
         }
         else
@@ -305,10 +307,12 @@ public class FindService {
             findUserEntity.setStartTime(0);
             findUserEntity.setEndTime(0);
             //审批不通过，用户打捞次数减1
-            userDynamicEntity.setFindTimes(userDynamicEntity.getFindTimes()-1);
+            map.put("findTimes",userDynamicEntity.getFindTimes()-1);
         }
         daoService.updateEntity(findUserEntity);
-        daoService.updateEntity(userDynamicEntity);
+        daoService.updateColumById(userDynamicEntity.getClass(),"userId",userDynamicEntity.getUserId(),map);
+
+
 
     }
 

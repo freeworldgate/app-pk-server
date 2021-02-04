@@ -153,19 +153,27 @@ public class AppDaoService
     public void rollback(TransactionStatus transactionStatus){jpaTransactionUtil.rollback(transactionStatus);}
 
 
-    public <T> void updateColumById(Class<T> tClass, String idName,String idValue, String columName, int columValue) {
+    public <T> void updateColumById(Class<T> tClass, String idName,Object idValue, Map<String,Object> columValues) {
         StringBuffer stringBuffer = new StringBuffer();
         stringBuffer.append("update ");
         stringBuffer.append(tClass.getSimpleName());
-        stringBuffer.append(" p set p.");
-        stringBuffer.append(columName);
-        stringBuffer.append("=:columValue where p.");
-        stringBuffer.append(idName);
+        stringBuffer.append(" p set ");
+        for(Map.Entry<String,Object> entry:columValues.entrySet())
+        {
+            stringBuffer.append("p."+entry.getKey()+"=:"+entry.getKey()+"columValue,");
+        }
+        stringBuffer = new StringBuffer(stringBuffer.substring(0,stringBuffer.toString().length()-1));
+
+        stringBuffer.append(" where p." + idName);
         stringBuffer.append("=:idValue");
         Query query = entityManager.createQuery(stringBuffer.toString());
-        query.setParameter("columValue", columValue);
+        for(Map.Entry<String,Object> entry:columValues.entrySet())
+        {
+            query.setParameter(entry.getKey()+"columValue", entry.getValue());
+        }
+
         query.setParameter("idValue", idValue);
         query.executeUpdate();
-
     }
+
 }

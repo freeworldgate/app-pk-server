@@ -273,8 +273,8 @@ public class AppService {
 
     public void 批量查询Pk动态表和顶置(List<PkDetail> pkDetails) {
 
-        List<Object> pkIds = collectIds(pkDetails);
-        if(!CollectionUtils.isEmpty(pkIds)){pkDynamicService.批量查询动态表(pkIds,pkDetails);}
+//        List<Object> pkIds = collectIds(pkDetails);
+//        if(!CollectionUtils.isEmpty(pkIds)){pkDynamicService.批量查询动态表(pkIds,pkDetails);}
         postService.批量查询POST(pkDetails);
         locationService.批量查询Pk顶置内容图片(pkDetails);
 
@@ -543,24 +543,8 @@ public class AppService {
 
 
 
-    private FeeNumber 当前系统激活收取费用() {
-        int feeTag = AppConfigService.getConfigAsInteger(ConfigItem.当前系统收款金额);
-        return FeeNumber.valueOfNumber(feeTag);
-    }
 
 
-    public void 修改收款码(String cashierId, String feeCodeId, String imgUrl) throws IOException {
-            EntityFilterChain filter = EntityFilterChain.newFilterChain(PkCashierFeeCodeEntity.class)
-                    .compareFilter("cashierId",CompareTag.Equal,cashierId)
-                    .andFilter()
-                    .compareFilter("feeCodeId",CompareTag.Equal,feeCodeId);
-            PkCashierFeeCodeEntity pkCashierFeeCodeEntity = daoService.querySingleEntity(PkCashierFeeCodeEntity.class,filter);
-
-            pkCashierFeeCodeEntity.setFeeCodeUrl(imgUrl);
-            String mediaId = WeChatUtil.uploadImg2Wx(imgUrl);
-            pkCashierFeeCodeEntity.setFeeCodeMediaId(mediaId);
-            daoService.updateEntity(pkCashierFeeCodeEntity);
-    }
 
     public void 设置参数(String type,String value) {
         ConfigEntity configEntity = 查询参数(type);
@@ -768,34 +752,6 @@ public class AppService {
         return userService.queryUser(userId);
 
     }
-    public String 随机用户() {
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(PreUserEntity.class)
-                    .orderByRandomFilter();
-
-        PreUserEntity preUserEntity = daoService.querySingleEntity(PreUserEntity.class,filter);
-        return preUserEntity.getUserId();
-
-    }
-
-    public String 随机用户(int type) {
-        EntityFilterChain filter = null;
-        if(type==2)
-        {
-            filter = EntityFilterChain.newFilterChain(PreUserEntity.class)
-                    .compareFilter("userType",CompareTag.Equal,UserType.重点用户)
-                    .orderByRandomFilter();
-        }
-        else
-        {
-            filter = EntityFilterChain.newFilterChain(PreUserEntity.class)
-                    .compareFilter("userType",CompareTag.Equal,UserType.普通用户)
-                    .orderByRandomFilter();
-        }
-
-        PreUserEntity preUserEntity = daoService.querySingleEntity(PreUserEntity.class,filter);
-        return preUserEntity.getUserId();
-
-    }
 
     public void 验证Password(String password) throws AppException {
 
@@ -852,29 +808,8 @@ public class AppService {
              }
 
 
-    public String 生成二维码(String pkId, String postId)  {
-
-        try {
-            return WeChatUtil.生成二维码(pkId);
-        } catch (IOException e) {
-            return this.查询背景(9);
-        }
-
-    }
-
-    public boolean 是否收费(String userId) {
-        if(userService.是否是遗传用户(userId))
-        {
-            return AppConfigService.getConfigAsBoolean(ConfigItem.遗传用户是否收费);
-
-        }
-        else
-        {
-            return AppConfigService.getConfigAsBoolean(ConfigItem.普通用户是否收费);
-        }
 
 
-    }
 
     public JSONObject 获取支付信息(String userId,HttpServletRequest request) {
         JSONObject jsonObject = new JSONObject();

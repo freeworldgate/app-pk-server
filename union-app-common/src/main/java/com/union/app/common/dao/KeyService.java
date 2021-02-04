@@ -96,7 +96,6 @@ public class KeyService {
     public void 卡点打卡人数加一(String pkId)
     {
         值加一(pkId,KeyType.卡点人数);
-        通知同步图片和用户数量(pkId);
     }
 
 
@@ -229,21 +228,23 @@ public class KeyService {
         return postImages;
     }
 
-    public void pk图片总量递增(String pkId, int num) {
-        redisMapService.valueIncr(KeyType.PK图片总量.getName(),pkId,num);
+    public void pk图片总量递增(String pkId, int imgNum) {
+        if(imgNum == 0){return;}
+        redisMapService.valueIncr(KeyType.PK图片总量.getName(),pkId,imgNum);
         通知同步图片和用户数量(pkId);
     }
 
     public void pk图片总量递减(String pkId, int imgNum) {
+        if(imgNum == 0){return;}
         redisMapService.valueDecr(KeyType.PK图片总量.getName(),pkId,imgNum);
         通知同步图片和用户数量(pkId);
     }
 
     private void 通知同步图片和用户数量(String pkId) {
-        redisTemplate.opsForSet().add(KeyType.卡点待同步队列.getName(),pkId);
+        redisTemplate.opsForList().leftPush(KeyType.卡点待同步队列.getName(),pkId);
     }
     public String 获取待同步图片和用户数量的卡点() {
-        return redisTemplate.opsForSet().pop(KeyType.卡点待同步队列.getName());
+        return redisTemplate.opsForList().rightPop(KeyType.卡点待同步队列.getName());
     }
 
     public void 保存缩放偏移缓存(RangeEntity rangeEntity) {

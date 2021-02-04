@@ -73,13 +73,13 @@ public class 用户登录加注册 {
         }
         else
         {
-            String name = new String(userEntity.getNickName());
-            if(!org.apache.commons.lang.StringUtils.equals(name,userInfo.getNickName())){
-                userEntity.setNickName(userInfo.getNickName());
-                userEntity.setAvatarUrl(userInfo.getAvatarUrl());
-                appDaoService.updateEntity(userEntity);
-                keyService.刷新用户User缓存(userEntity.getUserId());
-            }
+//            String name = new String(userEntity.getNickName());
+//            if(!org.apache.commons.lang.StringUtils.equals(name,userInfo.getNickName())){
+//                userEntity.setNickName(userInfo.getNickName());
+//                userEntity.setAvatarUrl(userInfo.getAvatarUrl());
+//                appDaoService.updateEntity(userEntity);
+//                keyService.刷新用户User缓存(userEntity.getUserId());
+//            }
 
 
         }

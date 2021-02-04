@@ -224,32 +224,6 @@ public class PkService {
         return pkId;
     }
 
-    public PkEntity 创建预置PK(String topic, String watchWord,boolean isCharge,int type) throws UnsupportedEncodingException {
-        String pkId = IdGenerator.getPkId();
-        PkEntity pkEntity = new PkEntity();
-        pkEntity.setPkId(pkId);
-        pkEntity.setTime(System.currentTimeMillis());
-//        pkEntity.setPkType(PkType.内置相册);
-
-        String userId = appService.随机用户(type);
-        pkEntity.setUserId(userId);
-
-        daoService.insertEntity(pkEntity);
-
-        BuildInPkEntity buildInPkEntity = new BuildInPkEntity();
-        buildInPkEntity.setPkId(pkId);
-        buildInPkEntity.setIsInvite(type != 2 ?InviteType.邀请:InviteType.公开);
-        buildInPkEntity.setMessageType(isCharge?MessageType.收费:MessageType.不收费);
-        buildInPkEntity.setCreateTime(System.currentTimeMillis());
-        daoService.insertEntity(buildInPkEntity);
-
-
-
-
-
-
-        return pkEntity;
-    }
 
 
 
@@ -336,21 +310,14 @@ public class PkService {
 
     
     public void 更新群组时间(String pkId) {
-        EntityCacheService.lockPkEntity(pkId);
-        PkEntity pkEntity = this.querySinglePkEntity(pkId);
-        pkEntity.setUpdateTime(System.currentTimeMillis());
-        daoService.updateEntity(pkEntity);
-        EntityCacheService.unlockPkEntity(pkId);
-    }
 
-    public void 修改封面(String pkId, String imgUrl) {
-        EntityCacheService.lockPkEntity(pkId);
-        PkEntity pkEntity = this.querySinglePkEntity(pkId);
-        pkEntity.setBackUrl(imgUrl);
-        daoService.updateEntity(pkEntity);
-        EntityCacheService.unlockPkEntity(pkId);
+        Map<String,Object> map = new HashMap<>();
+        map.put("updateTime",System.currentTimeMillis());
+        daoService.updateColumById(PkEntity.class,"pkId",pkId,map);
 
     }
+
+
     public PkPostListEntity 查询图册排列(String pkId, String postId)
     {
         EntityFilterChain filter = EntityFilterChain.newFilterChain(PkPostListEntity.class)
@@ -360,18 +327,18 @@ public class PkService {
         PkPostListEntity entity = daoService.querySingleEntity(PkPostListEntity.class,filter);
         return entity;
     }
-    public void 更新图册状态列表(String pkId, String postId) {
-        PkPostListEntity pkPostListEntity = 查询图册排列(pkId,postId);
-        if(!ObjectUtils.isEmpty(pkPostListEntity))
-        {
-//            pkPostListEntity.setStatu(PostStatu.上线);
-            daoService.updateEntity(pkPostListEntity);
-        }
-
-        this.更新PK审核数量(pkId);
-
-
-    }
+//    public void 更新图册状态列表(String pkId, String postId) {
+//        PkPostListEntity pkPostListEntity = 查询图册排列(pkId,postId);
+//        if(!ObjectUtils.isEmpty(pkPostListEntity))
+//        {
+////            pkPostListEntity.setStatu(PostStatu.上线);
+//            daoService.updateEntity(pkPostListEntity);
+//        }
+//
+//        this.更新PK审核数量(pkId);
+//
+//
+//    }
 
     private void 更新PK审核数量(String pkId) {
         PkEntity pkEntity = this.querySinglePkEntity(pkId);
@@ -379,7 +346,7 @@ public class PkService {
         dynamicService.valueDecr(CacheKeyName.审核中数量,pkId);
 //        pkEntity.setApproved(pkEntity.getApproved() + 1);
 //        pkEntity.setApproving(pkEntity.getApproving() - 1);
-        daoService.updateEntity(pkEntity);
+//        daoService.updateEntity(pkEntity);
 
     }
 
@@ -490,17 +457,19 @@ public class PkService {
 
     public void 修改首页图册(String pkId, String postId) throws AppException {
 
-        EntityCacheService.lockPkEntity(pkId);
         PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
         if(!StringUtils.isBlank(pkEntity.getTopPostId()) && !TimeUtils.是否顶置已经过期(pkEntity.getTopPostSetTime(), AppConfigService.getConfigAsLong(ConfigItem.顶置最少时间)))
         {
             throw AppException.buildException(PageAction.信息反馈框("操作失败!","当前顶置未到期!"));
         }
+        Map<String,Object> map = new HashMap<>();
+        map.put("topPostId",postId);
+        map.put("topPostSetTime",System.currentTimeMillis());
+        daoService.updateColumById(PkEntity.class,"pkId",pkId,map);
 
-        pkEntity.setTopPostId(postId);
-        pkEntity.setTopPostSetTime(System.currentTimeMillis());
-        daoService.updateEntity(pkEntity);
-        EntityCacheService.unlockPkEntity(pkId);
+
+
+
     }
 
 

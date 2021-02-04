@@ -15,6 +15,7 @@ import com.union.app.domain.pk.PostImage;
 import com.union.app.domain.pk.文字背景.TextBack;
 import com.union.app.domain.user.User;
 import com.union.app.entity.pk.*;
+import com.union.app.entity.user.UserDynamicEntity;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.Level;
 import com.union.app.plateform.data.resultcode.PageAction;
@@ -89,62 +90,62 @@ public class PostService {
 
     @Autowired
     PkCacheService pkCacheService;
-    public String 预置帖子(String pkId,String title,List<String> images) throws IOException, AppException
-    {
-        PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
-        User creator = pkService.queryPkCreator(pkId);
-        PostEntity creatorPostEntity = this.查询用户帖(pkId,creator.getUserId());
-
-        String postId = IdGenerator.getPostId();
-        String wxCode = appService.生成二维码(pkId,postId);
-        PostEntity postEntity = new PostEntity();
-
-        postEntity.setPkId(pkId);
-//        postEntity.setPkType(pkEntity.getPkType());
-//        postEntity.setWxCode(wxCode);
-        postEntity.setPostId(postId);
-        postEntity.setUserId(ObjectUtils.isEmpty(creatorPostEntity)?creator.getUserId():appService.随机用户());
-        postEntity.setTopic(noActiveTitle(title)?"...":title);
-        postEntity.setImgNum(images.size());
-        postEntity.setTime(System.currentTimeMillis());
-//        postEntity.setLastModifyTime(TimeUtils.currentTime());
-        postEntity.setStatu(PostStatu.显示);
-//        postEntity.setRejectTimes(0);
+//    public String 预置帖子(String pkId,String title,List<String> images) throws IOException, AppException
+//    {
+//        PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
+//        User creator = pkService.queryPkCreator(pkId);
+//        PostEntity creatorPostEntity = this.查询用户帖(pkId,creator.getUserId());
+//
+//        String postId = IdGenerator.getPostId();
+//        String wxCode = appService.生成二维码(pkId,postId);
+//        PostEntity postEntity = new PostEntity();
+//
+//        postEntity.setPkId(pkId);
+////        postEntity.setPkType(pkEntity.getPkType());
+////        postEntity.setWxCode(wxCode);
+//        postEntity.setPostId(postId);
+//        postEntity.setUserId(ObjectUtils.isEmpty(creatorPostEntity)?creator.getUserId():appService.随机用户());
+//        postEntity.setTopic(noActiveTitle(title)?"...":title);
+//        postEntity.setImgNum(images.size());
+//        postEntity.setTime(System.currentTimeMillis());
+////        postEntity.setLastModifyTime(TimeUtils.currentTime());
+//        postEntity.setStatu(PostStatu.显示);
+////        postEntity.setRejectTimes(0);
+////
+////
+////        postEntity.setApproveStatu(ApproveStatu.未处理);
 //
 //
-//        postEntity.setApproveStatu(ApproveStatu.未处理);
-
-
-
-//        StringBuffer stringBuffer = new StringBuffer();
-//        for(String img:images){
-//            stringBuffer.append(getLegalImgUrl(img));
-//            stringBuffer.append(";");
 //
-//        }
-//        postEntity.setImgUrls(stringBuffer.toString());
-        List<PostImageEntity> postImageEntities = getLegalImgUrl(images,pkId,postId);
-        daoService.insertEntity(postEntity);
-        postImageEntities.forEach(image->{
-            daoService.insertEntity(image);
-        });
-
-
-
-        this.用户转发审批(postEntity);
-        dynamicService.设置帖子的审核用户(pkId,postEntity);
-//          审核通过
-//        this.上线帖子(pkId,postId);
-        dynamicService.已审核(pkId,postId);
-
-
-
-
-
-
-
-        return postId;
-    }
+////        StringBuffer stringBuffer = new StringBuffer();
+////        for(String img:images){
+////            stringBuffer.append(getLegalImgUrl(img));
+////            stringBuffer.append(";");
+////
+////        }
+////        postEntity.setImgUrls(stringBuffer.toString());
+//        List<PostImageEntity> postImageEntities = getLegalImgUrl(images,pkId,postId);
+//        daoService.insertEntity(postEntity);
+//        postImageEntities.forEach(image->{
+//            daoService.insertEntity(image);
+//        });
+//
+//
+//
+//        this.用户转发审批(postEntity);
+//        dynamicService.设置帖子的审核用户(pkId,postEntity);
+////          审核通过
+////        this.上线帖子(pkId,postId);
+//        dynamicService.已审核(pkId,postId);
+//
+//
+//
+//
+//
+//
+//
+//        return postId;
+//    }
 
     public String 打卡(String pkId,String userId,String title,List<String> images,String backId) throws IOException, AppException
     {
@@ -543,57 +544,20 @@ public class PostService {
 ////        dynamicService.榜帖恢复到审核中状态(pkId,postId);
 //    }
 
-    private void 替换图片(String pkId, String postId, String imgId, String imgUrl) {
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(PostImageEntity.class)
-                .compareFilter("pkId",CompareTag.Equal,pkId)
-                .andFilter()
-                .compareFilter("postId",CompareTag.Equal,postId)
-                .andFilter()
-                .compareFilter("imgId",CompareTag.Equal,imgId);
-        PostImageEntity postImageEntity = daoService.querySingleEntity(PostImageEntity.class,filter);
-        postImageEntity.setImgUrl(imgUrl);
-        daoService.updateEntity(postImageEntity);
-
-    }
-
-    public void 替换Topic(String pkId, String postId, String text, String userId) throws AppException, UnsupportedEncodingException {
-
-        PostEntity postEntity = 查询帖子ById(postId);
-        if(!org.apache.commons.lang.StringUtils.equals(userId,postEntity.getUserId())){
-            throw AppException.buildException(PageAction.消息级别提示框(Level.错误消息,"非法操作"));
-        }
-
-        postEntity.setTopic(text);
-
-        daoService.updateEntity(postEntity);
 
 
-    }
 
-    public void 设置自评(String pkId, PostEntity postEntity, String text) {
-//        postEntity.setSelfComment(text);
-//
-//        postEntity.setSelfCommentTime(System.currentTimeMillis());
-        daoService.updateEntity(postEntity);
 
-    }
 
-    public Post 查询需要审核的帖子(int type) throws UnsupportedEncodingException {
-        EntityFilterChain filter = null;
-
-        return null;
-
-    }
-
-    public void 用户转发审批(PostEntity postEntity) throws AppException {
-//        if(postEntity.getRejectTimes() > AppConfigService.getConfigAsInteger(ConfigItem.Post最大修改次数))
-//        {
-//            throw AppException.buildException(PageAction.信息反馈框("修改次数过多","图册修改次数过多..."));
-//        }
-//        postEntity.setShareTime(System.currentTimeMillis());
-//        postEntity.setApproveStatu(ApproveStatu.请求审核);
-        daoService.updateEntity(postEntity);
-    }
+//    public void 用户转发审批(PostEntity postEntity) throws AppException {
+////        if(postEntity.getRejectTimes() > AppConfigService.getConfigAsInteger(ConfigItem.Post最大修改次数))
+////        {
+////            throw AppException.buildException(PageAction.信息反馈框("修改次数过多","图册修改次数过多..."));
+////        }
+////        postEntity.setShareTime(System.currentTimeMillis());
+////        postEntity.setApproveStatu(ApproveStatu.请求审核);
+//        daoService.updateEntity(postEntity);
+//    }
 
     public Post 查询预置帖子(String postId) throws UnsupportedEncodingException {
         PostEntity postEntity = this.查询帖子ById(postId);
@@ -649,9 +613,11 @@ public class PostService {
         PkEntity pkEntity = locationService.querySinglePkEntity(postEntity.getPkId());
         if(org.apache.commons.lang.StringUtils.equalsIgnoreCase(pkEntity.getTopPostId(),postEntity.getPostId()))
         {
-            pkEntity.setTopPostId("");
-            pkEntity.setTopPostSetTime(0L);
-            daoService.updateEntity(pkEntity);
+            Map<String,Object> map = new HashMap<>();
+            map.put("topPostId","");
+            map.put("topPostSetTime",0L);
+            daoService.updateColumById(pkEntity.getClass(),"pkId",pkEntity.getPkId(),map);
+
         }
         keyService.pk图片总量递减(pkEntity.getPkId(),postEntity.getImgNum());
 
@@ -660,27 +626,14 @@ public class PostService {
 
 
     public void 隐藏打卡信息(String postId) {
-        //删除缓存数据：PKEntity   PostEntity  PostImageEntity 三个缓存
 
-        EntityFilterChain cfilter = EntityFilterChain.newFilterChain(PostEntity.class)
-                .compareFilter("postId",CompareTag.Equal,postId);
-        PostEntity postEntity = daoService.querySingleEntity(PostEntity.class,cfilter);
-        if(!ObjectUtils.isEmpty(postEntity))
-        {
-            postEntity.setStatu(PostStatu.隐藏);
-            daoService.updateEntity(postEntity);
-        }
-//
-//
-//
-//        //如果用户删除的卡册是顶置卡册，要把顶置清除掉
-//        PkEntity pkEntity = locationService.querySinglePkEntity(postEntity.getPkId());
-//        if(org.apache.commons.lang.StringUtils.equalsIgnoreCase(pkEntity.getTopPostId(),postEntity.getPostId()))
-//        {
-//            pkEntity.setTopPostId("");
-//            pkEntity.setTopPostSetTime(0L);
-//            daoService.updateEntity(pkEntity);
-//        }
+
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("statu",PostStatu.隐藏);
+        daoService.updateColumById(PostEntity.class,"postId",postId,map);
+
+
 
     }
 
@@ -688,25 +641,10 @@ public class PostService {
     public void 移除隐藏打卡信息(String postId) {
         //删除缓存数据：PKEntity   PostEntity  PostImageEntity 三个缓存
 
-        EntityFilterChain cfilter = EntityFilterChain.newFilterChain(PostEntity.class)
-                .compareFilter("postId",CompareTag.Equal,postId);
-        PostEntity postEntity = daoService.querySingleEntity(PostEntity.class,cfilter);
-        if(!ObjectUtils.isEmpty(postEntity))
-        {
-            postEntity.setStatu(PostStatu.显示);
-            daoService.updateEntity(postEntity);
-        }
-//
-//
-//
-//        //如果用户删除的卡册是顶置卡册，要把顶置清除掉
-//        PkEntity pkEntity = locationService.querySinglePkEntity(postEntity.getPkId());
-//        if(org.apache.commons.lang.StringUtils.equalsIgnoreCase(pkEntity.getTopPostId(),postEntity.getPostId()))
-//        {
-//            pkEntity.setTopPostId("");
-//            pkEntity.setTopPostSetTime(0L);
-//            daoService.updateEntity(pkEntity);
-//        }
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("statu",PostStatu.显示);
+        daoService.updateColumById(PostEntity.class,"postId",postId,map);
 
     }
 

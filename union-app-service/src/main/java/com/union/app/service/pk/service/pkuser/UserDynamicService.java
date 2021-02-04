@@ -5,6 +5,7 @@ import com.union.app.common.dao.KeyService;
 import com.union.app.dao.spi.filter.CompareTag;
 import com.union.app.dao.spi.filter.EntityFilterChain;
 import com.union.app.domain.pk.PkDynamic.UserDynamic;
+import com.union.app.entity.pk.名片.UserCardEntity;
 import com.union.app.entity.user.UserDynamicEntity;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.storgae.KeyType;
@@ -13,6 +14,9 @@ import com.union.app.service.pk.service.LockService;
 import com.union.app.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class UserDynamicService {
@@ -73,14 +77,18 @@ public class UserDynamicService {
 
     public void 用户总打榜次数减一(String userId) {
         UserDynamicEntity userDynamicEntity = queryUserDynamicEntity(userId);
-        userDynamicEntity.setPostTimes(userDynamicEntity.getPostTimes()<1?0:userDynamicEntity.getPostTimes()-1);
-        daoService.updateEntity(userDynamicEntity);
+        Map<String,Object> map = new HashMap<>();
+        map.put("postTimes",userDynamicEntity.getPostTimes()<1?0:userDynamicEntity.getPostTimes()-1);
+        daoService.updateColumById(userDynamicEntity.getClass(),"userId",userDynamicEntity.getUserId(),map);
+
     }
 
     public void 用户总打榜次数加一(String userId) {
         UserDynamicEntity userDynamicEntity = queryUserDynamicEntity(userId);
-        userDynamicEntity.setPostTimes(userDynamicEntity.getPostTimes()+1);
-        daoService.updateEntity(userDynamicEntity);
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("postTimes",userDynamicEntity.getPostTimes()+1);
+        daoService.updateColumById(userDynamicEntity.getClass(),"userId",userDynamicEntity.getUserId(),map);
 
     }
 
@@ -104,8 +112,10 @@ public class UserDynamicService {
 
     public void 用户解锁群组加一(String userId) {
         UserDynamicEntity userDynamicEntity = queryUserDynamicEntity(userId);
-        userDynamicEntity.setUnLockTimes(userDynamicEntity.getUnLockTimes()+1);
-        daoService.updateEntity(userDynamicEntity);
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("unLockTimes",userDynamicEntity.getUnLockTimes()+1);
+        daoService.updateColumById(userDynamicEntity.getClass(),"userId",userDynamicEntity.getUserId(),map);
 
 
     }
@@ -113,35 +123,48 @@ public class UserDynamicService {
 
     public void 邀请次数加一(String userId) {
         UserDynamicEntity userDynamicEntity = queryUserDynamicEntity(userId);
-        userDynamicEntity.setCollectTimes(userDynamicEntity.getCollectTimes()+1);
-        daoService.updateEntity(userDynamicEntity);
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("collectTimes",userDynamicEntity.getCollectTimes()+1);
+        daoService.updateColumById(userDynamicEntity.getClass(),"userId",userDynamicEntity.getUserId(),map);
+
     }
 
     public void 邀请次数减一(String userId) {
         UserDynamicEntity userDynamicEntity = queryUserDynamicEntity(userId);
-        userDynamicEntity.setCollectTimes(userDynamicEntity.getCollectTimes()-1);
-        daoService.updateEntity(userDynamicEntity);
+        Map<String,Object> map = new HashMap<>();
+        map.put("collectTimes",userDynamicEntity.getCollectTimes()-1);
+        daoService.updateColumById(userDynamicEntity.getClass(),"userId",userDynamicEntity.getUserId(),map);
     }
 
     public void 用户卡点加一(String userId) {
         UserDynamicEntity userDynamicEntity = queryUserDynamicEntity(userId);
-        userDynamicEntity.setPkTimes(userDynamicEntity.getPkTimes()+1);
-        daoService.updateEntity(userDynamicEntity);
+        Map<String,Object> map = new HashMap<>();
+        map.put("pkTimes",userDynamicEntity.getPkTimes()+1);
+        daoService.updateColumById(userDynamicEntity.getClass(),"userId",userDynamicEntity.getUserId(),map);
+
+
 
     }
 
 
     public void 用户关注数量加一(String userId) {
         UserDynamicEntity userDynamicEntity = queryUserDynamicEntity(userId);
-        userDynamicEntity.setFollow(userDynamicEntity.getFollow()+1);
-        daoService.updateEntity(userDynamicEntity);
 
+        Map<String,Object> map = new HashMap<>();
+        map.put("follow",userDynamicEntity.getFollow()+1);
+        daoService.updateColumById(userDynamicEntity.getClass(),"userId",userDynamicEntity.getUserId(),map);
 
     }
     public void 用户关注数量减一(String userId) {
         UserDynamicEntity userDynamicEntity = queryUserDynamicEntity(userId);
-        userDynamicEntity.setFollow(userDynamicEntity.getFollow()-1);
-        daoService.updateEntity(userDynamicEntity);
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("follow",userDynamicEntity.getFollow()-1);
+        daoService.updateColumById(userDynamicEntity.getClass(),"userId",userDynamicEntity.getUserId(),map);
+
+
+
     }
 
 
@@ -171,17 +194,24 @@ public class UserDynamicService {
     }
 
     public void 修改背景(String userId, String url) {
-        UserDynamicEntity userDynamicEntity = queryUserDynamicEntity(userId);
-        userDynamicEntity.setUserBack(url);
-        daoService.updateEntity(userDynamicEntity);
 
+        Map<String,Object> map = new HashMap<>();
+        map.put("userBack",url);
+        daoService.updateColumById(UserDynamicEntity.class,"userId",userId,map);
 
     }
 
     public void 添加用户已打捞时间(String userId, long startTime) {
         long time = System.currentTimeMillis() - startTime;
         UserDynamicEntity userDynamicEntity = queryUserDynamicEntity(userId);
-        userDynamicEntity.setFindLength(userDynamicEntity.getFindLength()+time);
-        daoService.updateEntity(userDynamicEntity);
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("findLength",userDynamicEntity.getFindLength()+time);
+        daoService.updateColumById(UserDynamicEntity.class,"userId",userId,map);
+
+
+
+
+
     }
 }

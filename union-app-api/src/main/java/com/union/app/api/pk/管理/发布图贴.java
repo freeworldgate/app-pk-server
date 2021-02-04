@@ -57,25 +57,25 @@ public class 发布图贴 {
 
     public static Map<String,PkDetail> pkDetailMap = new HashMap<>();
 
-
-    @RequestMapping(path="/preCreatePost",method = RequestMethod.GET)
-    @Transactional(rollbackOn = Exception.class)
-    public AppResponse 预置Post(@RequestParam("pkId") String pkId,@RequestParam("title") String title,@RequestParam("password") String password,@RequestParam("imgUrls") List<String> images) throws AppException, IOException {
-
-        appService.验证Password(password);
-
-        String postId = postService.预置帖子(pkId,title,images);
-
-        Post post = postService.查询预置帖子(postId);
-
-
-
-
-        //返回帖子  首页第一个要显示
-        return AppResponse.buildResponse(PageAction.执行处理器("success",post));
-
-
-    }
+//
+//    @RequestMapping(path="/preCreatePost",method = RequestMethod.GET)
+//    @Transactional(rollbackOn = Exception.class)
+//    public AppResponse 预置Post(@RequestParam("pkId") String pkId,@RequestParam("title") String title,@RequestParam("password") String password,@RequestParam("imgUrls") List<String> images) throws AppException, IOException {
+//
+//        appService.验证Password(password);
+//
+//        String postId = postService.预置帖子(pkId,title,images);
+//
+//        Post post = postService.查询预置帖子(postId);
+//
+//
+//
+//
+//        //返回帖子  首页第一个要显示
+//        return AppResponse.buildResponse(PageAction.执行处理器("success",post));
+//
+//
+//    }
 
 
 

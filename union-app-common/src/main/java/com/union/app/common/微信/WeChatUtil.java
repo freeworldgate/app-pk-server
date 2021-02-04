@@ -153,27 +153,6 @@ public class WeChatUtil
 
 
 
-//        JSONObject jsonObject = new JSONObject();
-//        jsonObject.put("path","pages/pk/prepk/prepk?pkId=" + pkId + "&postId=" + postId);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//        ResponseEntity<byte[]> responseEntity = restTemplate.postForEntity(requestUrl,jsonObject,byte[].class);
-//        if (responseEntity.getStatusCode() == HttpStatus.OK) {
-//
-//            String url = OssStorage.uploadFileBytes(pkId,postId,responseEntity.getBody());
-//
-//            return url;
-//        } else {
-//            return null;
-//        }
 
 
     }
@@ -193,16 +172,7 @@ public class WeChatUtil
         }
     }
 
-//
-//    public static void main(String[] args) throws IOException
-//    {
-//
-//        String mediaId = uploadImg2Wx("https://oss.211shopper.com/00590952-ebe1-4cfc-9d06-467de044714f/wx-1577269541719.jpg");
-//
-//
-//        System.out.println(mediaId);
-//
-//    }
+
 
 
 

@@ -57,6 +57,7 @@ public class PkDetail implements Serializable{
 
     private PkDynamic pkDynamic;
 
+    private long totalUsers;
 
 
 }

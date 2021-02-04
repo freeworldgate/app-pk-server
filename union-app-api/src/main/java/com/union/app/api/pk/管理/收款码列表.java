@@ -98,16 +98,5 @@ public class 收款码列表 {
 //    }
 
 
-    @RequestMapping(path="/replaceFeeCode",method = RequestMethod.GET)
-    @Transactional(rollbackOn = Exception.class)
-    public AppResponse replaceFeeCode(@RequestParam("password") String password,@RequestParam("cashierId") String cashierId,@RequestParam("feeCodeId") String feeCodeId,@RequestParam("imgUrl") String imgUrl) throws AppException, IOException {
-        appService.验证Password(password);
-
-        appService.修改收款码(cashierId,feeCodeId,imgUrl);
-
-        return AppResponse.buildResponse(PageAction.执行处理器("success",""));
-
-    }
-
 
 }

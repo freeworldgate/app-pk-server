@@ -39,10 +39,7 @@ import org.springframework.util.ObjectUtils;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class LocationService {
@@ -296,6 +293,7 @@ public class LocationService {
         pkDetail.setTopPostId(pk.getTopPostId());
         pkDetail.setMarker(this.查询Marker(pk));
         pkDetail.setCircle(this.查询Circle(pk,locationType));
+        pkDetail.setTotalUsers(pk.getTotalUsers());
 
 
         return pkDetail;
@@ -706,9 +704,13 @@ public class LocationService {
         EntityFilterChain cfilter = EntityFilterChain.newFilterChain(PkImageEntity.class)
                 .compareFilter("imgId",CompareTag.Equal,imageId);
         PkImageEntity pkImageEntity = daoService.querySingleEntity(PkImageEntity.class,cfilter);
-        PkEntity pkEntity = this.querySinglePkEntity(pkId);
-        pkEntity.setBackUrl(pkImageEntity.getImgUrl());
-        daoService.updateEntity(pkEntity);
+
+
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("backUrl",pkImageEntity.getImgUrl());
+        daoService.updateColumById(PkEntity.class,"pkId",pkId,map);
+
 
     }
 
@@ -717,18 +719,20 @@ public class LocationService {
         {
             throw AppException.buildException(PageAction.信息反馈框("用户无权限...","非法用户"));
         }
-        EntityFilterChain cfilter = EntityFilterChain.newFilterChain(PkImageEntity.class)
-                .compareFilter("imgId",CompareTag.Equal,imageId);
-        PkImageEntity pkImageEntity = daoService.querySingleEntity(PkImageEntity.class,cfilter);
-        pkImageEntity.setImgStatu(ImgStatu.审核通过);
-        daoService.updateEntity(pkImageEntity);
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("imgStatu",ImgStatu.审核通过);
+        daoService.updateColumById(PkImageEntity.class,"imgId",imageId,map);
+
 
     }
 
     public void 修改签名(String pkId, String sign) {
-        PkEntity pkEntity = this.querySinglePkEntity(pkId);
-        pkEntity.setSign(sign);
-        daoService.updateEntity(pkEntity);
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("sign",sign);
+        daoService.updateColumById(PkEntity.class,"pkId",pkId,map);
+
     }
 
     public void 批量查询Pk顶置内容图片(List<PkDetail> pkDetails) {

@@ -91,7 +91,7 @@ public class 查询单个PK {
         dataSets.add(new DataSet("inviteStatu",appService.查询收藏状态(pkId,userId)));
         dataSets.add(new DataSet("posts",posts));
         if(CollectionUtils.isEmpty(posts)){dataSets.add(new DataSet("emptyData",appService.查询背景(4)));}
-        dataSets.add(new DataSet("page",0));
+        dataSets.add(new DataSet("page",1));
         if(userService.isUserExist(userId))
         {
             PkUserDynamicEntity pkUserDynamicEntity = pkUserDynamicService.查询卡点用户动态表(pkId,userId);
