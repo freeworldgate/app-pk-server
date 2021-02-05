@@ -24,6 +24,7 @@ public enum  KeyType {
     卡点偏移缩放("PK_RANGE_SCALE_OFFSET"),
 
     配置图片类型缓存("PK_TYPE_IMAGE_CACHE"),
+    温馨提示("TYPE_TEXT_TIPS"),
 
     文字背景更新时间("TEXT_BACK_UPDATE_TIME"),
 

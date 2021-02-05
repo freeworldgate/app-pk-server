@@ -78,7 +78,7 @@ public class 查詢用戶社交群 {
         List<DataSet> dataSets = new ArrayList<>();
         dataSets.add(new DataSet("userGroup",pkGroup));
         dataSets.add(new DataSet("backUrl",appService.查询背景(7)));
-
+        dataSets.add(new DataSet("tips",appService.查询温馨提示(2)));
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
 
     }

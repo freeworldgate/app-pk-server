@@ -179,8 +179,26 @@ public class AppService {
 
     }
 
+    public List<PkDetail> 查询卡点排名(int page) {
 
+        List<PkDetail> pkDetails = new ArrayList<>();
+        List<PkEntity>  invites = queryPkSorts(page);
+        for(PkEntity pkEntity:invites)
+        {
+            PkDetail pkDetail = locationService.querySinglePkWidthList(pkEntity);
+            pkDetails.add(pkDetail);
+        }
+        批量查询Pk动态表和顶置(pkDetails);
+        return pkDetails;
+    }
 
+    private List<PkEntity> queryPkSorts(int page) {
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(PkEntity.class)
+                .pageLimitFilter(page,10)
+                .orderByFilter("totalUsers",OrderTag.DESC);
+        List<PkEntity> pkEntities = daoService.queryEntities(PkEntity.class,filter);
+        return pkEntities;
+    }
 
 
     private List<PkEntity> queryUserInvitePks(String userId, int page) {
@@ -939,38 +957,6 @@ public class AppService {
 
     }
 
-    public void 设置标签(String pkId, List<String> tips) {
-
-        EntityFilterChain filter =  EntityFilterChain.newFilterChain(PkTipEntity.class)
-                .compareFilter("pkId",CompareTag.Equal,pkId);
-        List<PkTipEntity> entities = daoService.queryEntities(PkTipEntity.class,filter);
-        if(!CollectionUtils.isEmpty(entities))
-        {
-            entities.forEach(entity->{
-                daoService.deleteEntity(entity);
-            });
-        }
-
-
-        for(String tipId:tips)
-        {
-            EntityFilterChain filter1 =  EntityFilterChain.newFilterChain(PkTipEntity.class)
-                    .compareFilter("pkId",CompareTag.Equal,pkId)
-                    .andFilter()
-                    .compareFilter("tipId",CompareTag.Equal,tipId);
-            PkTipEntity activeTipEntity = daoService.querySingleEntity(PkTipEntity.class,filter1);
-            if(ObjectUtils.isEmpty(activeTipEntity))
-            {
-                activeTipEntity = new PkTipEntity();
-                activeTipEntity.setPkId(pkId);
-                activeTipEntity.setTipId(clearTip(tipId));
-                activeTipEntity.setTime(System.currentTimeMillis());
-                daoService.insertEntity(activeTipEntity);
-            }
-
-        }
-
-    }
     private String clearTip(String tip) {
         String reg1 = "\\[";
         String reg2 = "]";
@@ -1116,4 +1102,32 @@ public class AppService {
         keyService.清除缩放缓存(range);
 
     }
+
+    public List<PkTipEntity> 查询温馨提示(int type) {
+        return keyService.查询温馨提示(type);
+    }
+
+    public void 删除温馨提示(int id) {
+        EntityFilterChain cfilter = EntityFilterChain.newFilterChain(PkTipEntity.class)
+                .compareFilter("id",CompareTag.Equal,id);
+         PkTipEntity pkTipEntity = daoService.querySingleEntity(PkTipEntity.class,cfilter);
+         if(!ObjectUtils.isEmpty(pkTipEntity))
+         {
+             daoService.deleteEntity(pkTipEntity);
+             keyService.清除温馨提示缓存(pkTipEntity.getType());
+         }
+
+    }
+
+    public PkTipEntity 新增温馨提示(String tip, int type) {
+
+        PkTipEntity pkTipEntity = new PkTipEntity();
+        pkTipEntity.setTip(tip);
+        pkTipEntity.setType(type);
+        daoService.insertEntity(pkTipEntity);
+        keyService.清除温馨提示缓存(pkTipEntity.getType());
+        return pkTipEntity;
+    }
+
+
 }

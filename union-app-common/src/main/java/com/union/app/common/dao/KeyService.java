@@ -10,6 +10,7 @@ import com.union.app.domain.pk.Post;
 import com.union.app.domain.pk.PostImage;
 import com.union.app.entity.pk.BackImgEntity;
 import com.union.app.entity.pk.PkEntity;
+import com.union.app.entity.pk.PkTipEntity;
 import com.union.app.entity.pk.PostImageEntity;
 import com.union.app.entity.pk.kadian.label.RangeEntity;
 import com.union.app.entity.user.UserEntity;
@@ -336,5 +337,33 @@ public class KeyService {
 
     public void setBackUpdateFlag(long updateTime) {
         redisTemplate.opsForValue().set(KeyType.文字背景更新时间.getName(),String.valueOf(updateTime));
+    }
+
+    public List<PkTipEntity> 查询温馨提示(int type) {
+
+        List<PkTipEntity> tips = new ArrayList<>();
+        String tipStr = redisMapService.getStringValue(KeyType.温馨提示.getName(),String.valueOf(type));
+
+        if(StringUtils.isBlank(tipStr))
+        {
+            EntityFilterChain cfilter = EntityFilterChain.newFilterChain(PkTipEntity.class)
+                    .compareFilter("type",CompareTag.Equal,type);
+            tips = daoService.queryEntities(PkTipEntity.class,cfilter);
+
+            if(!CollectionUtils.isEmpty(tips))
+            {
+                redisMapService.setStringValue(KeyType.温馨提示.getName(),String.valueOf(type),JSON.toJSONString(tips));
+            }
+
+        }
+        else
+        {
+            tips = JSON.parseArray(tipStr,PkTipEntity.class);
+        }
+        return tips;
+    }
+
+    public void 清除温馨提示缓存(int type){
+        redisMapService.removeMapKey(KeyType.温馨提示.getName(),String.valueOf(type));
     }
 }

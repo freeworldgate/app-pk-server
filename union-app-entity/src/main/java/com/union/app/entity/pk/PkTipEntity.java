@@ -12,7 +12,7 @@ import javax.persistence.*;
 @EqualsAndHashCode
 @ToString
 @Entity
-@Table(name="T_Pk_Tip")
+@Table(name="T_Tips")
 public class PkTipEntity {
 
 
@@ -20,11 +20,11 @@ public class PkTipEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)//mysql数据库主键策略
     private int id;
 
-    private String pkId;
+    private int type;
 
-    private String tipId;
+    private String tip;
 
-    private long time;
+
 
 
 

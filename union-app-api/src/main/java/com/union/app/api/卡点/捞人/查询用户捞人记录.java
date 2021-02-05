@@ -75,7 +75,7 @@ public class 查询用户捞人记录 {
         dataSets.add(new DataSet("leftTime",leftTime));
         dataSets.add(new DataSet("speedTime",speedTime));
         dataSets.add(new DataSet("findTimes",userDynamicEntity.getFindTimes()));
-
+        dataSets.add(new DataSet("tips",appService.查询温馨提示(1)));
         dataSets.add(new DataSet("backUrl", appService.查询背景(3)));
 
 

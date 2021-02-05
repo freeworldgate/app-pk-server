@@ -275,7 +275,7 @@ public class LocationService {
         return pkDetail;
     }
 
-    public PkDetail querySinglePkWidthList(PkEntity pk) throws IOException {
+    public PkDetail querySinglePkWidthList(PkEntity pk) {
         if(ObjectUtils.isEmpty(pk)){return null;}
         PkDetail pkDetail = new PkDetail();
         pkDetail.setPkId(pk.getPkId());
@@ -432,16 +432,13 @@ public class LocationService {
         if(!org.apache.commons.collections4.CollectionUtils.isEmpty(pkEntities))
         {
             pkEntities.forEach(pk->{
-                try {
+
                     PkDetail pkDetail = this.querySinglePkWidthList(pk);
                     int length = this.计算坐标间距离(latitude,longitude,pk.getLatitude(),pk.getLongitude());
                     pkDetail.setUserLength(length);
                     pkDetail.setUserLengthStr(this.距离转换成描述(length));
                     pkDetail.setLatitude(pkDetail.getLatitude() -  appService.查询指定范围缩放偏移(pk.getTypeRange()).getOffset() );
                     pks.add(pkDetail);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
 
 
             });
@@ -742,5 +739,14 @@ public class LocationService {
                 pkDetail.setTopPost(keyService.查询顶置图片集合(pkDetail.getPkId()));
             }
         });
+    }
+
+
+    public void 设置卡点范围(String pkId, int radius) {
+        Map<String,Object> map = new HashMap<>();
+        map.put("typeRange",radius);
+        daoService.updateColumById(PkEntity.class,"pkId",pkId,map);
+
+
     }
 }
