@@ -45,8 +45,8 @@ public class 上传内置公开群二维码 {
 
     @RequestMapping(value = "/uploadInnerPublicGroupCode", method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse 上传群内置公开二维码(@RequestParam("password") String password,@RequestParam("pkId") String pkId,@RequestParam("passwd") String passwd,@RequestParam("url") String url) throws IOException, AppException {
-        appService.验证Password(password);
+    public AppResponse 上传群内置公开二维码(@RequestParam("pkId") String pkId,@RequestParam("passwd") String passwd,@RequestParam("url") String url) throws IOException, AppException {
+        appService.验证Password();
         String mediaId = WeChatUtil.uploadImg2Wx(url);
         dynamicService.设置PK群组二维码MediaId(pkId,mediaId);
         dynamicService.设置PK群组二维码Url(pkId,url);
@@ -58,8 +58,8 @@ public class 上传内置公开群二维码 {
 
     @RequestMapping(value = "/uploadInnerPublicUserImg", method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse uploadInnerPublicUserImg(@RequestParam("password") String password,@RequestParam("pkId") String pkId,@RequestParam("url") String url) throws IOException, AppException {
-        appService.验证Password(password);
+    public AppResponse uploadInnerPublicUserImg(@RequestParam("pkId") String pkId,@RequestParam("url") String url) throws IOException, AppException {
+        appService.验证Password();
         User user = pkService.queryPkCreator(pkId);
         userService.修改用户头像(user.getUserId(),url);
         user = userService.queryUser(user.getUserId());

@@ -52,8 +52,8 @@ public class 收款码列表 {
 
 
     @RequestMapping(path="/allFeeCodes",method = RequestMethod.GET)
-    public AppResponse allFeeCodes(@RequestParam("password") String password,@RequestParam("cashierId") String cashierId) throws AppException, IOException {
-        appService.验证Password(password);
+    public AppResponse allFeeCodes(@RequestParam("cashierId") String cashierId) throws AppException, IOException {
+        appService.验证Password();
 
 
 
@@ -67,8 +67,8 @@ public class 收款码列表 {
 
     @RequestMapping(path="/uploadFeeCode",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse 上传群组(@RequestParam("password") String password,@RequestParam("cashierId") String cashierId,@RequestParam("feeNumber") int feeNumber,@RequestParam("imgUrl") String imgUrl) throws AppException, IOException {
-        appService.验证Password(password);
+    public AppResponse 上传群组(@RequestParam("cashierId") String cashierId,@RequestParam("feeNumber") int feeNumber,@RequestParam("imgUrl") String imgUrl) throws AppException, IOException {
+        appService.验证Password();
 
         appService.上传收款码(cashierId,feeNumber,imgUrl);
 

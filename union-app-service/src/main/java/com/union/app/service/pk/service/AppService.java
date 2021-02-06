@@ -771,13 +771,13 @@ public class AppService {
 
     }
 
-    public void 验证Password(String password) throws AppException {
+    public void 验证Password() throws AppException {
 
-        if(!StringUtils.equalsIgnoreCase(password,"fenghaoapp1"))
-        {
-            throw AppException.buildException(PageAction.信息反馈框("登录错误","登录错误"));
-
-        }
+//        if(!StringUtils.equalsIgnoreCase(password,"fenghaoapp1"))
+//        {
+//            throw AppException.buildException(PageAction.信息反馈框("登录错误","登录错误"));
+//
+//        }
 
 
 

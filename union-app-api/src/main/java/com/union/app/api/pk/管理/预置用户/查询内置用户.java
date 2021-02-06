@@ -61,7 +61,7 @@ public class 查询内置用户 {
 
 
     @RequestMapping(path="/queryPreUsers",method = RequestMethod.GET)
-    public AppResponse 查询内置PK(@RequestParam("password") String password) throws AppException, IOException {
+    public AppResponse 查询内置PK() throws AppException, IOException {
 
         List<User> users = appService.查询内置用户(1);
 

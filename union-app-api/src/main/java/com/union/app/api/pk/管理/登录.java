@@ -24,12 +24,12 @@ public class 登录 {
 
     @RequestMapping(path="/loginManager",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse 查询投诉信息(@RequestParam("password") String password) throws AppException, IOException {
+    public AppResponse 查询投诉信息() throws AppException, IOException {
 
 
-        appService.验证Password(password);
+        appService.验证Password();
 
-        return AppResponse.buildResponse(PageAction.执行处理器("success",password));
+        return AppResponse.buildResponse(PageAction.执行处理器("success",""));
 
     }
 

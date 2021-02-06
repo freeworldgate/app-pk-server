@@ -750,4 +750,21 @@ public class UserService {
 
 
     }
+
+    public void 更换头像(String userId, String imgUrl) {
+        Map<String,Object> map = new HashMap<>();
+        map.put("avatarUrl",imgUrl);
+        appDaoService.updateColumById(UserEntity.class,"userId",userId,map);
+        keyService.刷新用户User缓存(userId);
+
+
+
+    }
+
+    public void 更换昵称(String userId, String userName) {
+        Map<String,Object> map = new HashMap<>();
+        map.put("nickName",userName);
+        appDaoService.updateColumById(UserEntity.class,"userId",userId,map);
+        keyService.刷新用户User缓存(userId);
+    }
 }

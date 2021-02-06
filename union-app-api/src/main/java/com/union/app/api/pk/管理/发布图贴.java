@@ -82,7 +82,7 @@ public class 发布图贴 {
     @RequestMapping(path="/preSetComment",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
     public AppResponse 预置Comment(@RequestParam("postId") String postId,  @RequestParam("password") String password,@RequestParam("text") String text,@RequestParam("imgUrl") String imgUrl) throws AppException, IOException {
-        appService.验证Password(password);
+        appService.验证Password();
 
 
         Date currentDay = new Date();

@@ -458,9 +458,16 @@ public class PkService {
     public void 修改首页图册(String pkId, String postId) throws AppException {
 
         PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
-        if(!StringUtils.isBlank(pkEntity.getTopPostId()) && !TimeUtils.是否顶置已经过期(pkEntity.getTopPostSetTime(), AppConfigService.getConfigAsLong(ConfigItem.顶置最少时间)))
+        long lastTopMinute = AppConfigService.getConfigAsLong(ConfigItem.顶置最少时间);
+        if(!StringUtils.isBlank(pkEntity.getTopPostId()) && !TimeUtils.是否顶置已经过期(pkEntity.getTopPostSetTime(), lastTopMinute))
         {
-            throw AppException.buildException(PageAction.信息反馈框("操作失败!","当前顶置未到期!"));
+
+            long time = System.currentTimeMillis() - pkEntity.getTopPostSetTime();
+            long minTime = lastTopMinute*60*1000;
+            long left =  (minTime - time)/(1000*60)<1?1L:(minTime - time)/(1000*60);
+
+
+            throw AppException.buildException(PageAction.信息反馈框("操作失败!","当前顶置未到期,剩余"+ left +"分钟!"));
         }
         Map<String,Object> map = new HashMap<>();
         map.put("topPostId",postId);

@@ -18,10 +18,10 @@ public class TimeUtils {
     }
 
 
-    public static boolean 是否顶置已经过期(long topPostSetTime,long hour) {
+    public static boolean 是否顶置已经过期(long topPostSetTime,long minute) {
 
         long time = System.currentTimeMillis() - topPostSetTime;
-        long minTime = hour*3600*1000;
+        long minTime = minute*60*1000;
         //顶置时间最少一小时
         return minTime < time;
 

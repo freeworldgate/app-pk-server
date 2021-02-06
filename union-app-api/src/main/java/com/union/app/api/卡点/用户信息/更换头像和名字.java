@@ -1,15 +1,17 @@
-package com.union.app.api.pk.管理;
+package com.union.app.api.卡点.用户信息;
 
-import com.union.app.common.dao.AppDaoService;
-import com.union.app.domain.pk.PkDetail;
-import com.union.app.entity.pk.BackImgEntity;
+import com.union.app.domain.pk.user.UserCardApply;
+import com.union.app.domain.pk.名片.UserCard;
+import com.union.app.domain.user.User;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
+import com.union.app.plateform.data.resultcode.DataSet;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.service.pk.click.ClickService;
 import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.service.*;
+import com.union.app.service.pk.service.捞人.FindService;
 import com.union.app.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,18 +21,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping(path="/pk")
-public class 上传内置背景图片 {
+public class 更换头像和名字 {
 
-    @Autowired
-    AppService appService;
-
-    @Autowired
-    AppDaoService daoService;
 
     @Autowired
     PkService pkService;
@@ -47,48 +44,39 @@ public class 上传内置背景图片 {
     @Autowired
     UserService userService;
 
+
     @Autowired
     DynamicService dynamicService;
 
     @Autowired
     ApproveService approveService;
 
-    public static Map<String,PkDetail> pkDetailMap = new HashMap<>();
+    @Autowired
+    AppService appService;
 
+    @Autowired
+    LocationService locationService;
 
+    @Autowired
+    FindService findService;
 
-
-    @RequestMapping(path="/uploadBackImg",method = RequestMethod.GET)
+    @RequestMapping(path="/setUserImg",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse 查询内置PK(@RequestParam("type") int type,@RequestParam("imgUrl") String imgUrl) throws AppException, IOException {
-        appService.验证Password();
+    public AppResponse queryUserFind(@RequestParam("userId") String userId,@RequestParam("imgUrl") String imgUrl) {
 
-        BackImgEntity pk = appService.设置内置背景图片(type,imgUrl);
-
-
-        return AppResponse.buildResponse(PageAction.执行处理器("success",pk));
-
-
+        userService.更换头像(userId,imgUrl);
+        User user = userService.queryUser(userId);
+        return AppResponse.buildResponse(PageAction.前端数据更新("creator",user));
 
     }
 
-
-
-    @RequestMapping(path="/removeImg",method = RequestMethod.GET)
+    @RequestMapping(path="/setUserName",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse removeImg(@RequestParam("userId") String userId,@RequestParam("id") String id) throws AppException, IOException {
-        appService.验证Password();
+    public AppResponse setUserName(@RequestParam("userId") String userId,@RequestParam("userName") String userName) {
 
-        appService.删除内置背景图片(id);
-
-
-        return AppResponse.buildResponse(PageAction.执行处理器("success",""));
-
-
+        userService.更换昵称(userId,userName);
+        User user = userService.queryUser(userId);
+        return AppResponse.buildResponse(PageAction.前端数据更新("creator",user));
 
     }
-
-
-
-
 }

@@ -2,6 +2,13 @@ package com.union.app.service.pk.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.union.app.common.dao.AppDaoService;
+import com.union.app.dao.spi.filter.CompareTag;
+import com.union.app.dao.spi.filter.EntityFilterChain;
+import com.union.app.dao.spi.filter.OrderTag;
+import com.union.app.domain.pk.支付.Pay;
+import com.union.app.entity.pk.PkTipEntity;
+import com.union.app.entity.pk.支付.PayEntity;
+import com.union.app.entity.pk.支付.PayType;
 import com.union.app.entity.user.UserDynamicEntity;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.PageAction;
@@ -12,6 +19,8 @@ import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +38,10 @@ public class PayService {
 
     @Autowired
     AppDaoService daoService;
+
+    @Autowired
+    AppService appService;
+
 
     public Object all支付方案(String userId,HttpServletRequest request) {
         return getPayInfo(userId,request);
@@ -421,5 +434,34 @@ public class PayService {
         map.put("pk",pk+pkTimes);
         daoService.updateColumById(userDynamicEntity.getClass(),"userId",userDynamicEntity.getUserId(),map);
 
+    }
+
+    public Pay 查询充值选项(int type) throws AppException {
+        Pay pay = new Pay();
+        PayType payType = PayType.valueType(type);
+        if(ObjectUtils.isEmpty(payType)){throw  AppException.buildException(PageAction.信息反馈框("内部错误","内部错误"));}
+        List<PayEntity>  pays = 查询充值选项Entity(payType);
+        if(CollectionUtils.isEmpty(pays)){throw  AppException.buildException(PageAction.信息反馈框("内部错误","内部错误"));}
+
+        pay.setPayType(payType.getStatu());
+        pay.setTitle(payType.getStatuStr());
+        pay.setTips(appService.查询温馨提示(payType.getStatu()));
+        pay.setPayItems(pays);
+        pay.setSelectPay(pays.get(0));
+        return pay;
+    }
+
+    private List<PayEntity> 查询充值选项Entity(PayType payType) {
+        EntityFilterChain cfilter = EntityFilterChain.newFilterChain(PayEntity.class)
+                .compareFilter("payType", CompareTag.Equal,payType.getStatu())
+                .orderByFilter("pay", OrderTag.DESC);
+        List<PayEntity> payEntities = daoService.queryEntities(PayEntity.class,cfilter);
+        payEntities.forEach(payEntity -> {
+
+            payEntity.setImg(appService.查询背景(10));
+            payEntity.setSelectImg(appService.查询背景(10));
+
+        });
+        return payEntities;
     }
 }

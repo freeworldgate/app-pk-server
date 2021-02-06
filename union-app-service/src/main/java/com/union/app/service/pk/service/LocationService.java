@@ -385,18 +385,18 @@ public class LocationService {
     public List<PkDetail> 查询附近卡点(String queryerId,double latitude, double longitude) {
         List<PkDetail> pks = new ArrayList<>();
 
-        EntityFilterChain aroundFilter = EntityFilterChain.newFilterChain(PkEntity.class)
-                .compareFilter("latitude",CompareTag.Small,latitude + 0.06D)
-                .andFilter()
-                .compareFilter("latitude",CompareTag.Bigger,latitude - 0.06D)
-                .andFilter()
-                .compareFilter("longitude",CompareTag.Small,longitude + 0.06D)
-                .andFilter()
-                .compareFilter("longitude",CompareTag.Bigger,longitude - 0.06D)
-                .andFilter()
-                .compareFilter("totalImgs",CompareTag.Bigger,0L)
-                .orderByFilter("totalUsers",OrderTag.DESC)
-                .pageLimitFilter(1,10);
+//        EntityFilterChain aroundFilter = EntityFilterChain.newFilterChain(PkEntity.class)
+//                .compareFilter("latitude",CompareTag.Small,latitude + 0.06D)
+//                .andFilter()
+//                .compareFilter("latitude",CompareTag.Bigger,latitude - 0.06D)
+//                .andFilter()
+//                .compareFilter("longitude",CompareTag.Small,longitude + 0.06D)
+//                .andFilter()
+//                .compareFilter("longitude",CompareTag.Bigger,longitude - 0.06D)
+//                .andFilter()
+//                .compareFilter("totalImgs",CompareTag.Bigger,0L)
+//                .orderByFilter("totalUsers",OrderTag.DESC)
+//                .pageLimitFilter(1,10);
 
         EntityFilterChain cityAroundFilter = EntityFilterChain.newFilterChain(PkEntity.class)
                 .compareFilter("latitude",CompareTag.Small,latitude + 0.2D)
@@ -413,11 +413,12 @@ public class LocationService {
 
 
 
-        List<PkEntity> pkEntities = daoService.queryEntities(PkEntity.class,aroundFilter);
-        if(CollectionUtils.isEmpty(pkEntities))
-        {
-            pkEntities = daoService.queryEntities(PkEntity.class,cityAroundFilter);
-        }
+//        List<PkEntity> pkEntities = daoService.queryEntities(PkEntity.class,aroundFilter);
+//        if(CollectionUtils.isEmpty(pkEntities))
+//        {
+//            pkEntities = daoService.queryEntities(PkEntity.class,cityAroundFilter);
+//        }
+        List<PkEntity> pkEntities = daoService.queryEntities(PkEntity.class,cityAroundFilter);
         if(CollectionUtils.isEmpty(pkEntities))
         {
             pkEntities = keyService.查询全网排行();

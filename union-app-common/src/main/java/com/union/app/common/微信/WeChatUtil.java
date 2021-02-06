@@ -34,6 +34,12 @@ public class WeChatUtil
     public static final String appSecret="e37b5d03733d2f437ce94ff39460cf7d";
 
 
+//    管理端
+
+    public static final String managerAppId="wx824b5474eeb86787";
+    public static final String managerAppSecret="9276267c14fffcea699f1aa90d37de26";
+
+
 
     public static WeChatUser login(String code){
 
@@ -53,6 +59,27 @@ public class WeChatUtil
         return weChatUser;
 
     }
+
+
+    public static WeChatUser manageLogin(String code){
+
+        String WX_URL = "https://api.weixin.qq.com/sns/jscode2session?appid=APPID&secret=SECRET&js_code=JSCODE&grant_type=authorization_code";
+
+        String requestUrl = WX_URL.replace("APPID", managerAppId).
+                replace("SECRET", managerAppSecret).replace("JSCODE", code).
+                replace("authorization_code", "authorization_code");
+        // 发起GET请求获取凭证
+        RestTemplate restTemplate = new RestTemplate();
+        WeChatUser weChatUser = new WeChatUser();
+        String msg = restTemplate.getForObject(requestUrl,String.class);
+        JSONObject json = JSON.parseObject(msg);
+        weChatUser.setSession_key(json.getString("session_key"));
+        weChatUser.setOpenid(json.getString("openid"));
+
+        return weChatUser;
+
+    }
+
 
 
     public static UserInfo getUserInfo(String encryptedData, String session_key, String iv) throws UnsupportedEncodingException, InvalidAlgorithmParameterException {

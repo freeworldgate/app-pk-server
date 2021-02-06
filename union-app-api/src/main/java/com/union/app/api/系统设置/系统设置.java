@@ -47,12 +47,12 @@ public class 系统设置 {
      */
     @RequestMapping(value = "/systemSetting", method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse systemSetting(@RequestParam("type") String type,@RequestParam("password") String password,@RequestParam("value") String value) throws IOException, AppException {
+    public AppResponse systemSetting(@RequestParam("type") String type,@RequestParam("value") String value) throws IOException, AppException {
 
 
         //密码校验
 
-            appService.验证Password(password);
+            appService.验证Password();
             appService.设置参数(type,value);
 
 

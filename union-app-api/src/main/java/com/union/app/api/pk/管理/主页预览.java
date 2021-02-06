@@ -52,10 +52,10 @@ public class 主页预览 {
 
 
     @RequestMapping(path="/queryPreHomePage",method = RequestMethod.GET)
-    public AppResponse 查询单个PK(@RequestParam("password") String password,@RequestParam("type") int type) throws AppException, IOException {
+    public AppResponse 查询单个PK(@RequestParam("type") int type) throws AppException, IOException {
 
 
-        appService.验证Password(password);
+        appService.验证Password();
 
         List<PkDetail> pks = appService.查询预设相册(1,type);
 
@@ -71,9 +71,9 @@ public class 主页预览 {
     }
 
     @RequestMapping(path="/morePreHomePage",method = RequestMethod.GET)
-    public AppResponse 查询单个PK(@RequestParam("password") String password,@RequestParam("page") int page,@RequestParam("type") int type) throws AppException, IOException {
+    public AppResponse 查询单个PK(@RequestParam("page") int page,@RequestParam("type") int type) throws AppException, IOException {
         List<PkDetail> pkDetails = new ArrayList<>();
-        appService.验证Password(password);
+        appService.验证Password();
 
 
         List<PkDetail> pks = appService.查询预设相册(page + 1,type);

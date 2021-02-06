@@ -7,7 +7,9 @@ public enum  UserType {
     普通用户(0),
 
 
-    重点用户(1);
+    重点用户(1),
+
+    管理用户(2);
 
     private int type;
 
