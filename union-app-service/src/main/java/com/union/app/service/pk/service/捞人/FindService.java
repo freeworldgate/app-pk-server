@@ -174,13 +174,8 @@ public class FindService {
 //    }
 
     public void 开始捞人(CreateUserFind createUserFind) throws AppException {
-//            FindUserEntity findUserEntity = this.查询用户捞人Entity(createUserFind.getPkId(),createUserFind.getUserId());
-//            if(ObjectUtils.isEmpty(findUserEntity)||findUserEntity.getFindStatu() != FindStatu.新创建)
-//            {
-//                throw AppException.buildException(PageAction.信息反馈框("无法保存","当前状态不支持该操作"));
-//            }
-            PkEntity pkEntity = locationService.querySinglePkEntity(createUserFind.getPkId());
 
+            PkEntity pkEntity = locationService.querySinglePkEntity(createUserFind.getPkId());
             FindUserEntity findUserEntity = new FindUserEntity();
             findUserEntity.setPkId(pkEntity.getPkId());
             findUserEntity.setPkName(pkEntity.getName());
@@ -200,6 +195,8 @@ public class FindService {
     }
 
     public void 校验时间(int findLength, String userId) throws AppException {
+
+
         UserDynamicEntity userDynamicEntity = userService.queryUserKvEntity(userId);
 
         if(userDynamicEntity.getFindTimeLength() >= findLength * 24 * 3600*1000)
@@ -228,7 +225,15 @@ public class FindService {
 
 
     }
+    public FindUserEntity 放弃捞人(int findId) {
+        FindUserEntity findUserEntity = this.查询用户捞人EntityById(findId);
 
+        if(!ObjectUtils.isEmpty(findUserEntity) && userService.是否是内置用户(findUserEntity.getUserId()))
+        {
+            daoService.deleteEntity(findUserEntity);
+        }
+        return  findUserEntity;
+    }
     public void 放弃捞人(String pkId, String userId) {
         FindUserEntity findUserEntity = this.查询用户捞人Entity(pkId,userId);
 
@@ -419,6 +424,15 @@ public class FindService {
     }
 
 
+    public void 清除UserFind(int findId) throws AppException {
+        FindUserEntity findUserEntity = this.查询用户捞人EntityById(findId);
+        if(!ObjectUtils.isEmpty(findUserEntity) && userService.是否是内置用户(findUserEntity.getUserId()))
+        {
+            daoService.deleteEntity(findUserEntity);
+        }
+
+
+    }
 
     public void 清除UserFind(String pkId, String userId) throws AppException {
         FindUserEntity findUserEntity = this.查询用户捞人Entity(pkId,userId);

@@ -2,6 +2,7 @@ package com.union.app.api.卡点.捞人;
 
 import com.union.app.domain.pk.捞人.CreateUserFind;
 import com.union.app.domain.pk.捞人.FindUser;
+import com.union.app.entity.pk.kadian.捞人.FindUserEntity;
 import com.union.app.entity.user.UserDynamicEntity;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
@@ -58,28 +59,20 @@ public class 创建或修改捞人记录 {
     @Autowired
     FindService findService;
 
-//    @RequestMapping(path="/saveUserPkFind",method = RequestMethod.POST)
-//    @Transactional(rollbackOn = Exception.class)
-//    public AppResponse saveUserPkFind(@RequestBody CreateUserFind createUserFind) throws IOException, AppException {
-//
-//        //校验
-//
-//
-//        findService.保存捞人信息(createUserFind);
-//
-//
-//
-//        FindUser findUser = findService.查询用户捞人记录(createUserFind.getPkId(),createUserFind.getUserId());
-//
-//        return AppResponse.buildResponse(PageAction.前端数据更新("findUser",findUser));
-//
-//    }
+
+
 
 
 
     @RequestMapping(path="/startUserPkFind",method = RequestMethod.POST)
     @Transactional(rollbackOn = Exception.class)
     public AppResponse startUserPkFind(@RequestBody CreateUserFind createUserFind) throws AppException, IOException {
+
+
+
+
+
+
 
         //校验
         findService.校验时间(createUserFind.getFindLength(),createUserFind.getUserId());
@@ -121,6 +114,11 @@ public class 创建或修改捞人记录 {
         return AppResponse.buildResponse(PageAction.执行处理器("success",leftTime));
 
     }
+
+
+
+
+
     @RequestMapping(path="/clearUserFind",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
     public AppResponse clearUserFind(@RequestParam("userId") String userId,@RequestParam("pkId") String pkId) throws AppException, IOException {

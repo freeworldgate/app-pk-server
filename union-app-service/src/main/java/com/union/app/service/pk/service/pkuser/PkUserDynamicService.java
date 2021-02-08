@@ -62,6 +62,7 @@ public class PkUserDynamicService {
         pkUserEntity.setPkId(pkId);
         pkUserEntity.setUserId(userId);
         pkUserEntity.setPostTimes(0);
+        pkUserEntity.setTotalPostTimes(0);
         pkUserEntity.setUnLockGroups(0);
         return pkUserEntity;
     }
@@ -123,6 +124,7 @@ public class PkUserDynamicService {
         {
             Map<String,Object> map = new HashMap<>();
             map.put("postTimes",pkUserEntity.getPostTimes()+1);
+            map.put("totalPostTimes",pkUserEntity.getTotalPostTimes()+1);
             daoService.updateColumById(pkUserEntity.getClass(),"dynamicId",pkUserEntity.getDynamicId(),map);
         }
         else
@@ -183,7 +185,7 @@ public class PkUserDynamicService {
 
         if(!ObjectUtils.isEmpty(pkUserEntity))
         {
-            return pkUserEntity.getPostTimes();
+            return pkUserEntity.getTotalPostTimes();
         }
         else
         {

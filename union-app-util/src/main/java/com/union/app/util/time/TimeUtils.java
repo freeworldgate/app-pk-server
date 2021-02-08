@@ -77,4 +77,9 @@ public class TimeUtils {
             return "9月3日23:00";
         }
     }
+
+    public static String 订单失效时间() {
+
+        return "2018-06-08T10:34:56+08:00";
+    }
 }

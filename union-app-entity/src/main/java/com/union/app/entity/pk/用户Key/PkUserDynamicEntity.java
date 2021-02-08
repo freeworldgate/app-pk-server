@@ -27,6 +27,9 @@ public class PkUserDynamicEntity
 
     private int postTimes;
 
+    //总的次数，仅递增
+    private int totalPostTimes;
+
     //卡点已解锁群组数量  递加
     private int unLockGroups;
 

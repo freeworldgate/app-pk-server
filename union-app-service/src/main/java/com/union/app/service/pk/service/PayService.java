@@ -6,27 +6,36 @@ import com.union.app.dao.spi.filter.CompareTag;
 import com.union.app.dao.spi.filter.EntityFilterChain;
 import com.union.app.dao.spi.filter.OrderTag;
 import com.union.app.domain.pk.支付.Pay;
+import com.union.app.domain.pk.支付.PayOrder;
 import com.union.app.entity.pk.PkTipEntity;
 import com.union.app.entity.pk.支付.PayEntity;
+import com.union.app.entity.pk.支付.PayOrderEntity;
 import com.union.app.entity.pk.支付.PayType;
 import com.union.app.entity.user.UserDynamicEntity;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.PageAction;
+import com.union.app.service.pk.service.pkuser.UserDynamicService;
 import com.union.app.service.user.UserService;
+import com.union.app.util.time.TimeUtils;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang.StringUtils;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.InetAddress;
 import java.net.URL;
 import java.util.*;
 
@@ -42,41 +51,52 @@ public class PayService {
     @Autowired
     AppService appService;
 
+    @Autowired
+    UserDynamicService userDynamicService;
+
+    @Autowired
+    RestTemplate restTemplate;
+
 
     public Object all支付方案(String userId,HttpServletRequest request) {
-        return getPayInfo(userId,request);
+        return null;
     }
 
     public Object single支付方案(String userId,HttpServletRequest request) {
-        return getPayInfo(userId,request);
+        return null;
     }
 
 
-    public JSONObject getPayInfo(String userId,HttpServletRequest request){
+    public PayOrderEntity getPayInfo(String userId,PayOrderEntity payOrderEntity) throws Exception {
 
 
-        JSONObject json = new JSONObject();
-        try{
+            JSONObject json = new JSONObject();
+
             //生成的随机字符串
             String nonce_str = Util.getRandomStringByLength(32);
             //商品名称
-            String body = new String(WXConst.title.getBytes("ISO-8859-1"),"UTF-8");
-            //获取本机的ip地址
-            String spbill_create_ip = Util.getIpAddr(request);
-            String orderNo = WXConst.orderNo;
-            String money = "1";//支付金额，单位：分，这边需要转成字符串类型，否则后面的签名会失败
+            String description = PayType.valueType(payOrderEntity.getType()).getStatuStr();
 
-            Map<String, String> packageParams = new HashMap<String, String>();
+            //获取本机的ip地址
+            String spbill_create_ip = InetAddress.getLocalHost().getHostAddress();
+            String orderNo = payOrderEntity.getOrderId();
+            String money = String.valueOf(payOrderEntity.getPayValue());//支付金额，单位：分，这边需要转成字符串类型，否则后面的签名会失败
+
+            Map<String, Object> packageParams = new HashMap<String, Object>();
             packageParams.put("appid", WXConst.appId);
             packageParams.put("mch_id", WXConst.mch_id);
-            packageParams.put("nonce_str", nonce_str);
-            packageParams.put("body", body);
+            packageParams.put("description", description);
             packageParams.put("out_trade_no", orderNo);//商户订单号
-            packageParams.put("total_fee", money);
-            packageParams.put("spbill_create_ip", spbill_create_ip);
+            packageParams.put("time_expire", TimeUtils.订单失效时间());//商户订单号
             packageParams.put("notify_url", WXConst.notify_url);
-            packageParams.put("trade_type", WXConst.TRADETYPE);
-            packageParams.put("openid", userId);
+            JSONObject amount = new JSONObject();
+            amount.put("total",money);
+            amount.put("currency","CNY");
+            packageParams.put("amount", amount);
+            JSONObject payer = new JSONObject();
+            amount.put("openid",payOrderEntity.getUserId());
+            packageParams.put("payer", payer);
+
 
 
             // 除去数组中的空值和签名参数
@@ -90,7 +110,7 @@ public class PayService {
 
             //拼接统一下单接口使用的xml数据，要将上一步生成的签名一起拼接进去
             String xml = "<xml version='1.0' encoding='gbk'>" + "<appid>" + WXConst.appId + "</appid>"
-                    + "<body><![CDATA[" + body + "]]></body>"
+                    + "<body><![CDATA[" + description + "]]></body>"
                     + "<mch_id>" + WXConst.mch_id + "</mch_id>"
                     + "<nonce_str>" + nonce_str + "</nonce_str>"
                     + "<notify_url>" + WXConst.notify_url + "</notify_url>"
@@ -103,57 +123,66 @@ public class PayService {
                     + "</xml>";
 
 
-            System.out.println("调试模式_统一下单接口 请求XML数据：" + xml);
+//            System.out.println("调试模式_统一下单接口 请求XML数据：" + xml);
 
 
             //调用统一下单接口，并接受返回的结果
             String result = this.httpRequest(WXConst.pay_url, "POST", xml);
 
-
-            System.out.println("调试模式_统一下单接口 返回XML数据：" + result);
-
-
-            // 将解析结果存储在HashMap中
-            Map map = this.doXMLParse(result);
-
-
-            String return_code = (String) map.get("return_code");//返回状态码
-
-
-            //返回给移动端需要的参数
-            Map<String, Object> response = new HashMap<String, Object>();
-            if(return_code == "SUCCESS" || return_code.equals(return_code)){
-                // 业务结果
-                String prepay_id = (String) map.get("prepay_id");//返回的预付单信息
-                response.put("nonceStr", nonce_str);
-                response.put("package", "prepay_id=" + prepay_id);
+            ResponseEntity<String> responseEntity = restTemplate.postForEntity(WXConst.pay_url,xml,String.class);
+            if(responseEntity.getStatusCodeValue() == HttpURLConnection.HTTP_OK){
+                String resStr = responseEntity.getBody();
+                JSONObject jsonObject = JSONObject.parseObject(resStr);
+                String prepay_id = (String) jsonObject.get("prepay_id");
                 Long timeStamp = System.currentTimeMillis() / 1000;
-                response.put("timeStamp", timeStamp + "");//这边要将返回的时间戳转化成字符串，不然小程序端调用wx.requestPayment方法会报签名错误
-
-
                 String stringSignTemp = "appId=" + WXConst.appId + "&nonceStr=" + nonce_str + "&package=prepay_id=" + prepay_id+ "&signType=" + WXConst.SIGNTYPE + "&timeStamp=" + timeStamp;
                 //再次签名，这个签名用于小程序端调用wx.requesetPayment方法
                 String paySign = this.sign(stringSignTemp, WXConst.key, "utf-8").toUpperCase();
 
+                payOrderEntity.setNonceStr(nonce_str);
+                payOrderEntity.setPackageStr("prepay_id=" + prepay_id);
+                payOrderEntity.setTimeStamp(String.valueOf(timeStamp));
+                payOrderEntity.setPaySign(paySign);
+                payOrderEntity.setSignType(WXConst.SIGNTYPE);
+                payOrderEntity.setAppId(WXConst.appId);
+                daoService.insertEntity(payOrderEntity);
+                return payOrderEntity;
 
-                response.put("paySign", paySign);
-
-
-                //更新订单信息
-                //业务逻辑代码
             }
 
 
-            response.put("appid", WXConst.appId);
-            json.put("errMsg", "OK");
-            json.put("data", response);
+//            System.out.println("调试模式_统一下单接口 返回XML数据：" + result);
 
-        }catch(Exception e){
-            e.printStackTrace();
-            json.put("errMsg", "Failed");
 
-        }
-        return json;
+            // 将解析结果存储在HashMap中
+//            Map map = this.doXMLParse(result);
+
+
+//            String return_code = (String) map.get("return_code");//返回状态码
+
+
+            //返回给移动端需要的参数
+
+//            if(return_code == "SUCCESS" || return_code.equals(return_code)){
+//                String prepay_id = (String) map.get("prepay_id");//返回的预付单信息
+//                Long timeStamp = System.currentTimeMillis() / 1000;
+//                String stringSignTemp = "appId=" + WXConst.appId + "&nonceStr=" + nonce_str + "&package=prepay_id=" + prepay_id+ "&signType=" + WXConst.SIGNTYPE + "&timeStamp=" + timeStamp;
+//                //再次签名，这个签名用于小程序端调用wx.requesetPayment方法
+//                String paySign = this.sign(stringSignTemp, WXConst.key, "utf-8").toUpperCase();
+//
+//                payOrderEntity.setNonceStr(nonce_str);
+//                payOrderEntity.setPackageStr("prepay_id=" + prepay_id);
+//                payOrderEntity.setTimeStamp(String.valueOf(timeStamp));
+//                payOrderEntity.setPaySign(paySign);
+//                payOrderEntity.setSignType("MD5");
+//                payOrderEntity.setAppId(WXConst.appId);
+//
+//                daoService.insertEntity(payOrderEntity);
+//
+//                return payOrderEntity;
+//            }
+            throw AppException.buildException(PageAction.信息反馈框("内部错误","内部错误"));
+
     }
 
 
@@ -208,13 +237,13 @@ public class PayService {
      * @param sArray 签名参数组
      * @return 去掉空值与签名参数后的新签名参数组
      */
-    public Map<String, String> paraFilter(Map<String, String> sArray) {
-        Map<String, String> result = new HashMap<String, String>();
+    public Map<String, Object> paraFilter(Map<String, Object> sArray) {
+        Map<String, Object> result = new HashMap<String, Object>();
         if (sArray == null || sArray.size() <= 0) {
             return result;
         }
         for (String key : sArray.keySet()) {
-            String value = sArray.get(key);
+            String value = sArray.get(key).toString();
             if (value == null || value.equals("") || key.equalsIgnoreCase("sign")
                     || key.equalsIgnoreCase("sign_type")) {
                 continue;
@@ -228,13 +257,13 @@ public class PayService {
      * @param params 需要排序并参与字符拼接的参数组
      * @return 拼接后字符串
      */
-    public String createLinkString(Map<String, String> params) {
+    public String createLinkString(Map<String, Object> params) {
         List<String> keys = new ArrayList<String>(params.keySet());
         Collections.sort(keys);
         String prestr = "";
         for (int i = 0; i < keys.size(); i++) {
             String key = keys.get(i);
-            String value = params.get(key);
+            String value = params.get(key).toString();
             if (i == keys.size() - 1) {// 拼接时，不包括最后一个&字符
                 prestr = prestr + key + "=" + value;
             } else {
@@ -454,7 +483,7 @@ public class PayService {
     private List<PayEntity> 查询充值选项Entity(PayType payType) {
         EntityFilterChain cfilter = EntityFilterChain.newFilterChain(PayEntity.class)
                 .compareFilter("payType", CompareTag.Equal,payType.getStatu())
-                .orderByFilter("pay", OrderTag.DESC);
+                .orderByFilter("pay", OrderTag.ASC);
         List<PayEntity> payEntities = daoService.queryEntities(PayEntity.class,cfilter);
         payEntities.forEach(payEntity -> {
 
@@ -464,4 +493,96 @@ public class PayService {
         });
         return payEntities;
     }
+
+    public PayOrderEntity 创建订单(String userId, int type, String payId) throws AppException {
+
+        PayType payType = PayType.valueType(type);
+        if(ObjectUtils.isEmpty(payType)){throw  AppException.buildException(PageAction.信息反馈框("内部错误","内部错误"));}
+        PayEntity payEntity = 查询充值选项EntityById(payType,payId);
+        if(ObjectUtils.isEmpty(payEntity)){throw  AppException.buildException(PageAction.信息反馈框("内部错误","内部错误"));}
+        String orderId = this.获取OrderId();
+
+        PayOrderEntity payOrderEntity = new PayOrderEntity();
+        payOrderEntity.setOrderId(orderId);
+        payOrderEntity.setUserId(userId);
+        payOrderEntity.setType(payEntity.getPayType());
+        payOrderEntity.setPayValue(payEntity.getPay());
+        payOrderEntity.setValue(payEntity.getValue());
+        payOrderEntity.setTime(System.currentTimeMillis());
+        payOrderEntity.setTitle(payType.getStatuStr());
+
+
+        return payOrderEntity;
+
+    }
+
+
+    private String 获取OrderId() {
+        return  UUID.randomUUID().toString();
+    }
+
+    private PayEntity 查询充值选项EntityById(PayType payType,String payId) {
+        EntityFilterChain cfilter = EntityFilterChain.newFilterChain(PayEntity.class)
+                .compareFilter("payType", CompareTag.Equal,payType.getStatu())
+                .andFilter()
+                .compareFilter("payId", CompareTag.Equal,payId);
+        PayEntity payEntity = daoService.querySingleEntity(PayEntity.class,cfilter);
+
+        return payEntity;
+    }
+
+    public boolean 订单是否成功(String orderId) {
+        String queryOrder = WXConst.query_url+orderId+"?mchid="+WXConst.mch_id;
+        ResponseEntity<String> responseEntity = restTemplate.getForEntity(queryOrder,String.class);
+        if(responseEntity.getStatusCodeValue() == HttpURLConnection.HTTP_OK )
+        {
+            String resStr = responseEntity.getBody();
+            JSONObject jsonObject = JSONObject.parseObject(resStr);
+            if(StringUtils.equalsIgnoreCase("SUCCESS",(String)jsonObject.get("trade_state")))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void 处理成功订单(String orderId) throws AppException {
+        PayOrderEntity payOrderEntity = 查询OrderEntity(orderId);
+        if(ObjectUtils.isEmpty(payOrderEntity)){throw  AppException.buildException(PageAction.信息反馈框("订单不存在","订单不存在"));}
+        UserDynamicEntity userDynamicEntity = userDynamicService.queryUserDynamicEntity(payOrderEntity.getUserId());
+        PayType payType = PayType.valueType(payOrderEntity.getType());
+
+
+        Map<String,Object> map = new HashMap<>();
+        if(payType == PayType.卡点)
+        {
+            map.put("pk",userDynamicEntity.getPk() + payOrderEntity.getValue());
+        }
+        else if(payType == PayType.时间)
+        {
+            map.put("findTimeLength",userDynamicEntity.getFindTimeLength() + payOrderEntity.getValue() * 24 * 3600 * 1000);
+        }
+        else if(payType == PayType.群组)
+        {
+            map.put("mygroups",userDynamicEntity.getMygroups() + payOrderEntity.getValue());
+        }
+        else
+        {
+            if(ObjectUtils.isEmpty(payOrderEntity)){throw  AppException.buildException(PageAction.信息反馈框("订单不存在","订单不存在"));}
+        }
+        daoService.updateColumById(UserDynamicEntity.class,"userId",userDynamicEntity.getUserId(),map);
+    }
+
+
+
+    public PayOrderEntity 查询OrderEntity(String orderId)
+    {
+        EntityFilterChain cfilter = EntityFilterChain.newFilterChain(PayOrderEntity.class)
+                .compareFilter("orderId", CompareTag.Equal,orderId);
+        PayOrderEntity payOrderEntity = daoService.querySingleEntity(PayOrderEntity.class,cfilter);
+        return payOrderEntity;
+
+    }
+
+
 }

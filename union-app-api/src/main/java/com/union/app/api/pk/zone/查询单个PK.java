@@ -118,6 +118,7 @@ public class 查询单个PK {
 
             }
             dataSets.add(new DataSet("postTimes",ObjectUtils.isEmpty(pkUserDynamicEntity)?0:pkUserDynamicEntity.getPostTimes()));
+            dataSets.add(new DataSet("totalPostTimes",ObjectUtils.isEmpty(pkUserDynamicEntity)?0:pkUserDynamicEntity.getTotalPostTimes()));
             //查询用户打卡次数:
         }
 

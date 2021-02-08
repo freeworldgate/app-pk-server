@@ -450,7 +450,9 @@ public class UserService {
 
             Map<String,Object> map = new HashMap<>();
             map.put("text",text);
-            map.put("time",System.currentTimeMillis());
+            if(!userCardApplyEntity.isCardLock()){
+                map.put("time",System.currentTimeMillis());
+            }
             appDaoService.updateColumById(userCardApplyEntity.getClass(),"id",userCardApplyEntity.getId(),map);
 
 
@@ -766,5 +768,35 @@ public class UserService {
         map.put("nickName",userName);
         appDaoService.updateColumById(UserEntity.class,"userId",userId,map);
         keyService.刷新用户User缓存(userId);
+    }
+
+
+    public String 随机选择内置用户() {
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(UserEntity.class)
+                .compareFilter("userType",CompareTag.Equal,UserType.重点用户)
+                .orderByRandomFilter();
+        UserEntity userEntity = appDaoService.querySingleEntity(UserEntity.class,filter);
+        return userEntity.getUserId();
+    }
+
+    public void 内置用户新增打捞时间(String userId) {
+        Map<String,Object> map = new HashMap<>();
+        map.put("findTimeLength",Long.valueOf(365 * 24 *3600 *1000L));
+        appDaoService.updateColumById(UserDynamicEntity.class,"userId",userId,map);
+
+    }
+
+    public boolean 管理员用户(String userId) {
+        UserEntity userEntity = this.queryUserEntity(userId);
+        if(ObjectUtils.isEmpty(userEntity)){return false;}
+        if(userEntity.getUserType() == UserType.管理用户){return true;}
+        return false;
+    }
+
+    public boolean 是否是内置用户(String userId) {
+        UserEntity userEntity = this.queryUserEntity(userId);
+        if(ObjectUtils.isEmpty(userEntity)){return false;}
+        if(userEntity.getUserType() == UserType.重点用户){return true;}
+        return false;
     }
 }

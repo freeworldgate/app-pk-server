@@ -23,35 +23,11 @@ import java.io.IOException;
 public class 解锁禁止 {
 
 
-    @Autowired
-    PkService pkService;
-
-    @Autowired
-    ClickService clickService;
-
-    @Autowired
-    RedisStringUtil redisStringUtil;
-
-    @Autowired
-    PostService postService;
 
     @Autowired
     UserService userService;
 
-    @Autowired
-    DynamicService dynamicService;
 
-    @Autowired
-    ApproveService approveService;
-
-    @Autowired
-    AppService appService;
-
-    @Autowired
-    LocationService locationService;
-
-    @Autowired
-    FindService findService;
 
     @RequestMapping(path="/changeLock",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)

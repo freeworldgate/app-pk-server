@@ -77,6 +77,7 @@ public class 上传用户名片和解锁 {
 
         UserCard userCard = userService.查询UserCard(targetId);
         UserCardApply userApply = userService.查询用户名片留言(targetId,userId);
+        userApply.setText(text);
         List<DataSet> dataSets = new ArrayList<>();
         dataSets.add(new DataSet("userApply",userApply));
         dataSets.add(new DataSet("userCard",userCard));
