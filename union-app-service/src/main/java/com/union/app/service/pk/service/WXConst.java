@@ -7,9 +7,7 @@ public class WXConst {
     public static String appId = WeChatUtil.appId;
     //微信小程序appsecret
     public static String appSecret = WeChatUtil.appSecret;
-    //微信支付主体
-    public static String title = "激活主题";
-    public static String orderNo = "123";
+
     //微信商户号
     public static String mch_id="123";
     //微信支付的商户密钥

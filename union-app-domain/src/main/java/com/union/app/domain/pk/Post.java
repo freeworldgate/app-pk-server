@@ -46,6 +46,8 @@ public class Post {
 
     private String time;
 
+    private PostTime ptime;
+
     private boolean flag = false;
 
     private int leftTime;

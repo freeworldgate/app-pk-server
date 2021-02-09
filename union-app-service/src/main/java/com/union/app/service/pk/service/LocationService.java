@@ -30,6 +30,7 @@ import com.union.app.service.pk.service.pkuser.PkDynamicService;
 import com.union.app.service.pk.service.pkuser.UserDynamicService;
 import com.union.app.service.user.UserService;
 import com.union.app.util.idGenerator.IdGenerator;
+import com.union.app.util.time.NumberUtils;
 import com.union.app.util.time.TimeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -270,8 +271,8 @@ public class LocationService {
         }
         pkDetail.setMarker(this.查询Marker(pk));
         pkDetail.setCircle(this.查询Circle(pk,locationType));
-
-
+        pkDetail.setTotalUsers(NumberUtils.convert(pk.getTotalUsers()));
+        pkDetail.setTotalUserNumber(pk.getTotalUsers());
         return pkDetail;
     }
 
@@ -293,8 +294,8 @@ public class LocationService {
         pkDetail.setTopPostId(pk.getTopPostId());
         pkDetail.setMarker(this.查询Marker(pk));
         pkDetail.setCircle(this.查询Circle(pk,locationType));
-        pkDetail.setTotalUsers(pk.getTotalUsers());
-
+        pkDetail.setTotalUsers(NumberUtils.convert(pk.getTotalUsers()));
+        pkDetail.setTotalUserNumber(pk.getTotalUsers());
 
         return pkDetail;
     }
@@ -385,27 +386,27 @@ public class LocationService {
     public List<PkDetail> 查询附近卡点(String queryerId,double latitude, double longitude) {
         List<PkDetail> pks = new ArrayList<>();
 
-//        EntityFilterChain aroundFilter = EntityFilterChain.newFilterChain(PkEntity.class)
-//                .compareFilter("latitude",CompareTag.Small,latitude + 0.06D)
-//                .andFilter()
-//                .compareFilter("latitude",CompareTag.Bigger,latitude - 0.06D)
-//                .andFilter()
-//                .compareFilter("longitude",CompareTag.Small,longitude + 0.06D)
-//                .andFilter()
-//                .compareFilter("longitude",CompareTag.Bigger,longitude - 0.06D)
-//                .andFilter()
-//                .compareFilter("totalImgs",CompareTag.Bigger,0L)
-//                .orderByFilter("totalUsers",OrderTag.DESC)
-//                .pageLimitFilter(1,10);
+        EntityFilterChain aroundFilter = EntityFilterChain.newFilterChain(PkEntity.class)
+                .compareFilter("latitude",CompareTag.Small,latitude + 0.08D)
+                .andFilter()
+                .compareFilter("latitude",CompareTag.Bigger,latitude - 0.08D)
+                .andFilter()
+                .compareFilter("longitude",CompareTag.Small,longitude + 0.08D)
+                .andFilter()
+                .compareFilter("longitude",CompareTag.Bigger,longitude - 0.08D)
+                .andFilter()
+                .compareFilter("totalImgs",CompareTag.Bigger,0L)
+                .orderByFilter("to talUsers",OrderTag.DESC)
+                .pageLimitFilter(1,10);
 
         EntityFilterChain cityAroundFilter = EntityFilterChain.newFilterChain(PkEntity.class)
-                .compareFilter("latitude",CompareTag.Small,latitude + 0.2D)
+                .compareFilter("latitude",CompareTag.Small,latitude + 0.3D)
                 .andFilter()
-                .compareFilter("latitude",CompareTag.Bigger,latitude - 0.2D)
+                .compareFilter("latitude",CompareTag.Bigger,latitude - 0.3D)
                 .andFilter()
-                .compareFilter("longitude",CompareTag.Small,longitude + 0.2D)
+                .compareFilter("longitude",CompareTag.Small,longitude + 0.3D)
                 .andFilter()
-                .compareFilter("longitude",CompareTag.Bigger,longitude - 0.2D)
+                .compareFilter("longitude",CompareTag.Bigger,longitude - 0.3D)
                 .andFilter()
                 .compareFilter("totalImgs",CompareTag.Bigger,0L)
                 .orderByFilter("totalUsers",OrderTag.DESC)
@@ -413,12 +414,12 @@ public class LocationService {
 
 
 
-//        List<PkEntity> pkEntities = daoService.queryEntities(PkEntity.class,aroundFilter);
-//        if(CollectionUtils.isEmpty(pkEntities))
-//        {
-//            pkEntities = daoService.queryEntities(PkEntity.class,cityAroundFilter);
-//        }
-        List<PkEntity> pkEntities = daoService.queryEntities(PkEntity.class,cityAroundFilter);
+        List<PkEntity> pkEntities = daoService.queryEntities(PkEntity.class,aroundFilter);
+        if(CollectionUtils.isEmpty(pkEntities))
+        {
+            pkEntities = daoService.queryEntities(PkEntity.class,cityAroundFilter);
+        }
+//        pkEntities = daoService.queryEntities(PkEntity.class,cityAroundFilter);
         if(CollectionUtils.isEmpty(pkEntities))
         {
             pkEntities = keyService.查询全网排行();

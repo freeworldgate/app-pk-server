@@ -87,7 +87,7 @@ public class PayService {
             packageParams.put("mch_id", WXConst.mch_id);
             packageParams.put("description", description);
             packageParams.put("out_trade_no", orderNo);//商户订单号
-            packageParams.put("time_expire", TimeUtils.订单失效时间());//商户订单号
+//            packageParams.put("time_expire", TimeUtils.订单失效时间());//商户订单号
             packageParams.put("notify_url", WXConst.notify_url);
             JSONObject amount = new JSONObject();
             amount.put("total",money);

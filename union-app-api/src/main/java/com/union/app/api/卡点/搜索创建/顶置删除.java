@@ -68,7 +68,35 @@ public class 顶置删除 {
 
         if(locationService.isPkCreator(pkId,userId))
         {
-            pkService.修改首页图册(pkId,postId);
+
+//            Post post = postService.查询帖子(pkId,postId,userId);
+            pkService.顶置图册是否到期(pkId,postId);
+
+            return AppResponse.buildResponse(PageAction.执行处理器("success",""));
+        }
+        else
+        {
+            return AppResponse.buildResponse(PageAction.信息反馈框("非法操作","不具备权限"));
+        }
+
+    }
+
+    @RequestMapping(path="/setTopPostTime",method = RequestMethod.GET)
+    @Transactional(rollbackOn = Exception.class)
+    public AppResponse setTopPostTime(@RequestParam("userId") String userId,@RequestParam("pkId") String pkId,@RequestParam("postId") String postId,@RequestParam("value") int value) throws AppException, IOException {
+
+
+
+        if(locationService.isPkCreator(pkId,userId))
+        {
+
+            if(value<1 || value>24*60){
+                return AppResponse.buildResponse(PageAction.信息反馈框("顶置周期不能超过一天","顶置周期不能超过一天"));
+            }
+
+
+
+            pkService.修改首页图册(pkId,postId,value);
             Post post = postService.查询帖子(pkId,postId,userId);
 
             return AppResponse.buildResponse(PageAction.执行处理器("success",post));
@@ -79,6 +107,16 @@ public class 顶置删除 {
         }
 
     }
+
+
+
+
+
+
+
+
+
+
     @RequestMapping(path="/removePost",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
     public AppResponse 删除(@RequestParam("userId") String userId,@RequestParam("pkId") String pkId,@RequestParam("postId") String postId) throws AppException, IOException {

@@ -5,6 +5,7 @@ import com.union.app.common.OSS存储.OssStorage;
 import com.union.app.common.config.AppConfigService;
 import com.union.app.common.dao.AppDaoService;
 import com.union.app.common.dao.EntityCacheService;
+import com.union.app.common.dao.KeyService;
 import com.union.app.dao.spi.filter.CompareTag;
 import com.union.app.dao.spi.filter.EntityFilterChain;
 import com.union.app.dao.spi.filter.OrderTag;
@@ -36,6 +37,7 @@ import org.springframework.util.ObjectUtils;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.sql.Time;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -86,6 +88,8 @@ public class PkService {
     @Autowired
     PkCacheService pkCacheService;
 
+    @Autowired
+    KeyService keyService;
 
     public static Map<String,List<FeeTask>> taskCache = new ConcurrentHashMap<>();
 
@@ -94,10 +98,34 @@ public class PkService {
 
 
     public List<Post> queryPkPost(String pkId,int page) throws IOException {
-
-        List<Post> posts = 查询Post(pkId,page);
-
+        List<Post> posts = new ArrayList<>();
+        //统计每分钟请求次数
+        if(saveRequest(pkId,page)) {
+            posts.addAll(keyService.queryPosts(pkId, page));
+        }
+        if(CollectionUtils.isEmpty(posts)) {
+            posts.addAll(查询Post(pkId, page));
+        }
+        if(saveRequest(pkId,page)) {
+            saveRequestEntity(pkId,page,posts);
+        }
         return posts;
+    }
+
+    private void saveRequestEntity(String pkId, int page, List<Post> posts) {
+
+
+    }
+
+    private boolean saveRequest(String pkId, int page) {
+
+            //阈值
+
+
+        return true;
+
+
+
     }
 
     private List<Post> 查询Post( String pkId, int page) throws UnsupportedEncodingException {
@@ -453,25 +481,39 @@ public class PkService {
     }
 
 
-
-
-    public void 修改首页图册(String pkId, String postId) throws AppException {
+    public void 顶置图册是否到期(String pkId, String postId) throws AppException {
 
         PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
-        long lastTopMinute = AppConfigService.getConfigAsLong(ConfigItem.顶置最少时间);
-        if(!StringUtils.isBlank(pkEntity.getTopPostId()) && !TimeUtils.是否顶置已经过期(pkEntity.getTopPostSetTime(), lastTopMinute))
+
+        if(!StringUtils.isBlank(pkEntity.getTopPostId()) && !TimeUtils.是否顶置已经过期(pkEntity.getTopPostSetTime(), pkEntity.getTopPostTimeLength()))
         {
 
-            long time = System.currentTimeMillis() - pkEntity.getTopPostSetTime();
-            long minTime = lastTopMinute*60*1000;
-            long left =  (minTime - time)/(1000*60)<1?1L:(minTime - time)/(1000*60);
+            String leftTime = TimeUtils.顶置剩余时间(pkEntity.getTopPostSetTime(),pkEntity.getTopPostTimeLength());
+
+            throw AppException.buildException(PageAction.信息反馈框("操作失败!","当前顶置未到期,剩余"+ leftTime+"!"));
+        }
 
 
-            throw AppException.buildException(PageAction.信息反馈框("操作失败!","当前顶置未到期,剩余"+ left +"分钟!"));
+
+
+
+    }
+
+
+    public void 修改首页图册(String pkId, String postId,int value) throws AppException {
+
+        PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
+
+        if(!StringUtils.isBlank(pkEntity.getTopPostId()) && !TimeUtils.是否顶置已经过期(pkEntity.getTopPostSetTime(), pkEntity.getTopPostTimeLength()))
+        {
+            String leftTime = TimeUtils.顶置剩余时间(pkEntity.getTopPostSetTime(),pkEntity.getTopPostTimeLength());
+
+            throw AppException.buildException(PageAction.信息反馈框("操作失败!","当前顶置未到期,剩余"+ leftTime+"!"));
         }
         Map<String,Object> map = new HashMap<>();
         map.put("topPostId",postId);
         map.put("topPostSetTime",System.currentTimeMillis());
+        map.put("topPostTimeLength",value*1L);
         daoService.updateColumById(PkEntity.class,"pkId",pkId,map);
 
 

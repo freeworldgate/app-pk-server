@@ -299,6 +299,7 @@ public class PostService {
         post.setFontColor(postEntity.getFontColor());
         post.setBackUrl(postEntity.getBackUrl());
         post.setPostTimes(postEntity.getPostTimes());
+        post.setPtime(TimeUtils.convertPostTime(postEntity.getTime()));
         post.setPostImages(postEntity.getImgNum()<1?new ArrayList<>():getPostImages(postEntity.getPostId(),postEntity.getPkId()));
         return post;
     }

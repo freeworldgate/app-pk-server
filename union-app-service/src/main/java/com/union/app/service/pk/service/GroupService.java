@@ -10,6 +10,7 @@ import com.union.app.dao.spi.filter.EntityFilterChain;
 import com.union.app.dao.spi.filter.OrderTag;
 import com.union.app.domain.pk.apply.KeyValuePair;
 import com.union.app.domain.pk.交友.PkGroup;
+import com.union.app.domain.user.User;
 import com.union.app.entity.pk.用户Key.PkUserDynamicEntity;
 import com.union.app.entity.pk.社交.GroupStatu;
 import com.union.app.entity.pk.社交.PkGroupEntity;
@@ -32,10 +33,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class GroupService {
@@ -513,5 +511,31 @@ public class GroupService {
             map.put("updateGroupCode",null);
             daoService.updateColumById(groupEntity.getClass(),"groupId",groupEntity.getGroupId(),map);
         }
+    }
+
+    public List<User> 查询成员列表(String groupId, int page) {
+
+        List<User> members = new ArrayList<>();
+        PkGroupEntity groupEntity = this.查询用户群组EntityById(groupId);
+        User user = userService.queryUser(groupEntity.getUserId());
+        user.setFollowTime(TimeUtils.convertTime(groupEntity.getTime()));
+        members.add(user);
+        members.addAll(查询群组成员(groupId));
+        return members;
+    }
+
+    private Collection<? extends User> 查询群组成员(String groupId) {
+        List<User> members = new ArrayList<>();
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(PkGroupMemberEntity.class)
+                .compareFilter("groupId", CompareTag.Equal,groupId);
+        List<PkGroupMemberEntity> groupMemberEntities = daoService.queryEntities(PkGroupMemberEntity.class,filter);
+        groupMemberEntities.forEach(pkGroupMemberEntity -> {
+            User user = userService.queryUser(pkGroupMemberEntity.getUserId());
+            user.setFollowTime(TimeUtils.convertTime(pkGroupMemberEntity.getTime()));
+            members.add(user);
+        });
+        return members;
+
+
     }
 }

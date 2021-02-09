@@ -366,4 +366,9 @@ public class KeyService {
     public void 清除温馨提示缓存(int type){
         redisMapService.removeMapKey(KeyType.温馨提示.getName(),String.valueOf(type));
     }
+
+    public Collection<? extends Post> queryPosts(String pkId, int page) {
+
+        return new ArrayList<>();
+    }
 }

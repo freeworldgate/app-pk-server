@@ -71,23 +71,20 @@ public class 查询单个PK {
     @Transactional(rollbackOn = Exception.class)
     public AppResponse 查询单个PK(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId) throws AppException, IOException, InterruptedException {
 
+        //统计PK请求此次数。
+
+
+
+
         List<DataSet> dataSets = new ArrayList<>();
-
-
         //查询PK详情
         PkEntity pkEntity = locationService.querySinglePkEntity(pkId);
         PkDetail pkDetail = locationService.querySinglePk(pkEntity);
-
-
         List<Post> posts = pkService.queryPkPost(pkId,1);
         去除顶置POST(posts,pkEntity.getTopPostId());
         Post topPost = postService.查询顶置帖子(pkEntity);
         if(!ObjectUtils.isEmpty(topPost)){posts.add(0,topPost);}
-
-
         dataSets.add(new DataSet("pk",pkDetail));
-
-
         dataSets.add(new DataSet("inviteStatu",appService.查询收藏状态(pkId,userId)));
         dataSets.add(new DataSet("posts",posts));
         if(CollectionUtils.isEmpty(posts)){dataSets.add(new DataSet("emptyData",appService.查询背景(4)));}
@@ -95,7 +92,6 @@ public class 查询单个PK {
         if(userService.isUserExist(userId))
         {
             PkUserDynamicEntity pkUserDynamicEntity = pkUserDynamicService.查询卡点用户动态表(pkId,userId);
-
             if(ObjectUtils.isEmpty(pkUserDynamicEntity))
             {
                 dataSets.add(new DataSet("leftTime",0));
@@ -114,16 +110,11 @@ public class 查询单个PK {
 //                    dataSets.add(new DataSet("leftTime",0));
                     dataSets.add(new DataSet("leftTime",timePerid-leftTime/1000));
                 }
-
-
             }
             dataSets.add(new DataSet("postTimes",ObjectUtils.isEmpty(pkUserDynamicEntity)?0:pkUserDynamicEntity.getPostTimes()));
             dataSets.add(new DataSet("totalPostTimes",ObjectUtils.isEmpty(pkUserDynamicEntity)?0:pkUserDynamicEntity.getTotalPostTimes()));
             //查询用户打卡次数:
         }
-
-
-
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
 
     }
