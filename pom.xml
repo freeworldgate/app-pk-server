@@ -190,7 +190,7 @@
         <dependency>
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>
-            <version>LATEST</version>
+            <version>1.9.4</version>
         </dependency>
 
         <!--SpringBoot动态热更新，运行时可以热更新-->
