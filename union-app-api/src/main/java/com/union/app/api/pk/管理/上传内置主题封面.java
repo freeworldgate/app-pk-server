@@ -50,9 +50,6 @@ public class 上传内置主题封面 {
     @Autowired
     DynamicService dynamicService;
 
-    @Autowired
-    ApproveService approveService;
-
     public static Map<String,PkDetail> pkDetailMap = new HashMap<>();
 
 

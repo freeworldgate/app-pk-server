@@ -50,16 +50,13 @@ public class 查询排行榜 {
     DynamicService dynamicService;
 
     @Autowired
-    ApproveService approveService;
-
-    @Autowired
     LocationService locationService;
 
     @RequestMapping(path="/queryPkList",method = RequestMethod.GET)
-    public AppResponse queryPkList( @RequestParam("page") int page)  {
+    public AppResponse queryPkList( @RequestParam("page") int page,@RequestParam("type") int type)  {
 
 
-        List<PkDetail> pks = appService.查询卡点排名(page);;
+        List<PkDetail> pks = appService.查询卡点排名(page,type);;
 
         List<DataSet> dataSets = new ArrayList<>();
         dataSets.add(new DataSet("page",page));

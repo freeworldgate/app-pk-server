@@ -43,7 +43,7 @@ public class PkDynamicService {
     public void 卡点打卡人数更新(String pkId,String userId) {
         int time = 0;
         PkUserDynamicEntity pkUserDynamicEntity = pkUserDynamicService.查询卡点用户动态表(pkId,userId);
-        if(!ObjectUtils.isEmpty(pkUserDynamicEntity) && pkUserDynamicEntity.getPostTimes() == 1)
+        if(!ObjectUtils.isEmpty(pkUserDynamicEntity) && pkUserDynamicEntity.getTotalPostTimes() == 0)
         {
             //第一次打卡，所以人数加一
             keyService.卡点打卡人数加一(pkId);

@@ -49,9 +49,6 @@ public class 管理员创建或修改捞人记录 {
     DynamicService dynamicService;
 
     @Autowired
-    ApproveService approveService;
-
-    @Autowired
     AppService appService;
 
     @Autowired

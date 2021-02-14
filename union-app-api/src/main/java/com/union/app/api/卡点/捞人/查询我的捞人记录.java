@@ -46,9 +46,6 @@ public class 查询我的捞人记录 {
     DynamicService dynamicService;
 
     @Autowired
-    ApproveService approveService;
-
-    @Autowired
     AppService appService;
 
     @Autowired

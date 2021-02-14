@@ -52,9 +52,6 @@ public class 查询主页 {
     DynamicService dynamicService;
 
     @Autowired
-    ApproveService approveService;
-
-    @Autowired
     LocationService locationService;
 
     @RequestMapping(path="/queryHomePage",method = RequestMethod.GET)

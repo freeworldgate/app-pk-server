@@ -46,9 +46,6 @@ public class 审批Group {
     DynamicService dynamicService;
 
     @Autowired
-    ApproveService approveService;
-
-    @Autowired
     GroupService groupService;
 
 
@@ -57,6 +54,7 @@ public class 审批Group {
     public AppResponse 审批Group(@RequestParam("groupId") String groupId) throws AppException, IOException {
 
         groupService.审批(groupId);
+
         PkGroup pkGroup = groupService.查询ByGroupId(groupId);
 
         return AppResponse.buildResponse(PageAction.执行处理器("success",pkGroup));

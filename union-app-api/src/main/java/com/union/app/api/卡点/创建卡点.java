@@ -45,8 +45,6 @@ public class 创建卡点 {
     @Autowired
     DynamicService dynamicService;
 
-    @Autowired
-    ApproveService approveService;
 
     @Autowired
     LockService lockService;

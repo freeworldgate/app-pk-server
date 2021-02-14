@@ -3,7 +3,6 @@ package com.union.app.api.pk.管理.预置用户;
 import com.union.app.common.dao.AppDaoService;
 import com.union.app.domain.pk.PkDetail;
 import com.union.app.domain.user.User;
-import com.union.app.entity.pk.PreUserEntity;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.PageAction;
@@ -52,8 +51,6 @@ public class 查询内置用户 {
     @Autowired
     DynamicService dynamicService;
 
-    @Autowired
-    ApproveService approveService;
 
     public static Map<String,PkDetail> pkDetailMap = new HashMap<>();
 

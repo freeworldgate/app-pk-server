@@ -25,9 +25,7 @@ import com.union.app.entity.配置表.ConfigEntity;
 import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.DataSet;
-import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
-import com.union.app.service.data.PkDataService;
 import com.union.app.service.pk.dynamic.CacheKeyName;
 import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.common.redis.RedisSortSetService;
@@ -86,20 +84,10 @@ public class AppService {
     CacheStorage cacheStorage;
 
     @Autowired
-    PostCacheService postCacheService;
-
-    @Autowired
-    ApproveService approveService;
-
-    @Autowired
     RedisSortSetService redisSortSetService;
 
     @Autowired
     MediaService mediaService;
-
-    @Autowired
-    PkDataService pkDataService;
-
 
     @Autowired
     LocationService locationService;
@@ -112,53 +100,6 @@ public class AppService {
 
     @Autowired
     KeyService keyService;
-
-    public List<PkDetail> 查询预设相册(int page,int type) throws IOException {
-
-
-//        if(type == 0)
-//        {
-//            return pkDataService.仅邀请的遗传主页列表(page);
-//        }
-
-        if(type == 1)
-        {
-            return pkDataService.遗传主页列表(page);
-        }
-
-        if(type == 2)
-        {
-            return pkDataService.非遗传主页列表(page);
-        }
-
-
-
-        List<PkDetail> pkDetails = new ArrayList<>();
-
-        return pkDetails;
-    }
-
-
-    private List<PkEntity> queryPrePks(int page,int type) {
-
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(BuildInPkEntity.class)
-                .compareFilter("isInvite",CompareTag.Equal,type != 2 ? InviteType.邀请:InviteType.公开)
-                .pageLimitFilter(page,20)
-                .orderByFilter("createTime",OrderTag.DESC);
-
-        List<BuildInPkEntity> buildInPkEntities = daoService.queryEntities(BuildInPkEntity.class,filter);
-        List<Object> buildInPks = new ArrayList<>();
-        buildInPkEntities.forEach(pk->{buildInPks.add(pk.getPkId());});
-
-        if(CollectionUtils.isEmpty(buildInPks)){return new ArrayList<>();}
-
-        EntityFilterChain filter1 = EntityFilterChain.newFilterChain(PkEntity.class)
-                .inFilter("pkId",buildInPks);
-        List<PkEntity> pkEntities = daoService.queryEntities(PkEntity.class,filter1);
-
-        return pkEntities;
-    }
-
 
 
     public List<PkDetail> 查询用户邀请(String userId, int page,double latitude,double longitude) throws IOException {
@@ -179,10 +120,10 @@ public class AppService {
 
     }
 
-    public List<PkDetail> 查询卡点排名(int page) {
+    public List<PkDetail> 查询卡点排名(int page,int type) {
 
         List<PkDetail> pkDetails = new ArrayList<>();
-        List<PkEntity>  invites = queryPkSorts(page);
+        List<PkEntity>  invites = queryPkSorts(page,type);
         for(PkEntity pkEntity:invites)
         {
             PkDetail pkDetail = locationService.querySinglePkWidthList(pkEntity);
@@ -192,10 +133,34 @@ public class AppService {
         return pkDetails;
     }
 
-    private List<PkEntity> queryPkSorts(int page) {
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(PkEntity.class)
-                .pageLimitFilter(page,10)
-                .orderByFilter("totalUsers",OrderTag.DESC);
+    private List<PkEntity> queryPkSorts(int page,int type) {
+
+        EntityFilterChain filter = null;
+        if(type == 2){
+            filter = EntityFilterChain.newFilterChain(PkEntity.class)
+                    .compareFilter("rangeSet",CompareTag.Equal,Boolean.FALSE)
+                    .pageLimitFilter(page,10)
+                    .orderByFilter("totalUsers",OrderTag.DESC);
+        }
+        else if(type == 3){
+            filter = EntityFilterChain.newFilterChain(PkEntity.class)
+                    .pageLimitFilter(page,10)
+                    .orderByFilter("time",OrderTag.DESC);
+        }
+        else
+        {
+            filter = EntityFilterChain.newFilterChain(PkEntity.class)
+                    .compareFilter("rangeSet",CompareTag.Equal,Boolean.TRUE)
+                    .pageLimitFilter(page,10)
+                    .orderByFilter("totalUsers",OrderTag.DESC);
+        }
+
+
+
+
+
+
+
         List<PkEntity> pkEntities = daoService.queryEntities(PkEntity.class,filter);
         return pkEntities;
     }
@@ -352,198 +317,9 @@ public class AppService {
         return pkEntities;
     }
 
-
-
-
-
-
-
-    private List<PkCashierEntity> queryActivePkCashiers() {
-
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(PkCashierEntity.class)
-                .compareFilter("statu",CompareTag.Equal,CashierStatu.启用)
-                .orderByFilter("time",OrderTag.DESC);
-        List<PkCashierEntity> pkCashierEntities = daoService.queryEntities(PkCashierEntity.class,filter);
-        return pkCashierEntities;
-    }
-
-    private List<PkCashierEntity> queryPkCashiers() {
-
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(PkCashierEntity.class)
-                .orderByFilter("time",OrderTag.DESC);
-        List<PkCashierEntity> pkCashierEntities = daoService.queryEntities(PkCashierEntity.class,filter);
-
-        return pkCashierEntities;
-    }
-    public List<PkCashier> 查询收款列表() throws IOException {
-
-
-        List<PkCashier> pkCashiers = new ArrayList<>();
-
-        List<PkCashierEntity>  pkCashierEntities = queryPkCashiers();
-        for(PkCashierEntity pkCashierEntity:pkCashierEntities)
-        {
-            PkCashier pkCashier = new PkCashier();
-            pkCashier.setCashierId(pkCashierEntity.getCashierId());
-            pkCashier.setCashierName(pkCashierEntity.getRealName());
-            pkCashier.setStatu(new KeyNameValue(pkCashierEntity.getStatu().getStatu(),pkCashierEntity.getStatu().getStatuStr()));
-            pkCashier.setImg(pkCashierEntity.getImg());
-            pkCashier.setBackPng(pkCashierEntity.getBackPng());
-            pkCashier.setTime(TimeUtils.convertTime(pkCashierEntity.getTime()));
-            pkCashiers.add(pkCashier);
-
-        }
-
-        return pkCashiers;
-
-    }
-
-
     private  static volatile List<PkCashier> cashiers = new ArrayList<>();
     private  static volatile long cashiersUpdateTime;
 
-
-    public List<PkCashier> 查询有效收款列表() throws IOException {
-
-        if(CollectionUtils.isEmpty(cashiers) || cashiersUpdateTime <(System.currentTimeMillis()-AppConfigService.getConfigAsInteger(ConfigItem.缓存时间)*1000))
-        {
-            List<PkCashier> pkCashiers = new ArrayList<>();
-            List<PkCashierEntity>  pkCashierEntities = queryActivePkCashiers();
-            for(PkCashierEntity pkCashierEntity:pkCashierEntities)
-            {
-                PkCashier pkCashier = new PkCashier();
-                pkCashier.setCashierId(pkCashierEntity.getCashierId());
-                pkCashier.setCashierName(pkCashierEntity.getRealName());
-                pkCashier.setStatu(new KeyNameValue(pkCashierEntity.getStatu().getStatu(),pkCashierEntity.getStatu().getStatuStr()));
-                pkCashier.setImg(pkCashierEntity.getImg());
-                pkCashier.setBackPng(pkCashierEntity.getBackPng());
-                pkCashier.setTime(TimeUtils.convertTime(pkCashierEntity.getTime()));
-                pkCashiers.add(pkCashier);
-
-            }
-            cashiers = pkCashiers;
-            cashiersUpdateTime = System.currentTimeMillis();
-        }
-        return cashiers;
-
-
-
-
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public synchronized void 新建收款用户(String name) {
-
-        PkCashierEntity pkCashierEntity = new PkCashierEntity();
-        pkCashierEntity.setCashierId(com.union.app.util.idGenerator.IdGenerator.收款用户ID());
-        pkCashierEntity.setRealName(name);
-        pkCashierEntity.setStatu(CashierStatu.停用);
-        pkCashierEntity.setTime(System.currentTimeMillis());
-        daoService.insertEntity(pkCashierEntity);
-
-
-    }
-    private List<PkCashierGroupEntity> queryPkCashierGroups(String cashierId,int page) {
-
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(PkCashierGroupEntity.class)
-                .compareFilter("cashierId",CompareTag.Equal,cashierId)
-                .pageLimitFilter(page,20);
-        List<PkCashierGroupEntity> pkCashierGroupEntities = daoService.queryEntities(PkCashierGroupEntity.class,filter);
-        return pkCashierGroupEntities;
-    }
-
-//    public List<CashierGroup> 查询用户群组(String cashierId, int page) {
-//        List<CashierGroup> pkCashiers = new ArrayList<>();
-//        List<PkCashierGroupEntity>  pkCashierGroupEntities = queryPkCashierGroups(cashierId,page);
-//        for(PkCashierGroupEntity pkCashierGroupEntity:pkCashierGroupEntities)
-//        {
-//            CashierGroup cashierGroup = new CashierGroup();
-//            cashierGroup.setGroupId(pkCashierGroupEntity.getGroupId());
-//            cashierGroup.setGroupUrl(pkCashierGroupEntity.getGroupUrl());
-//            cashierGroup.setTime("已上传:" + TimeUtils.距离上传的小时数(pkCashierGroupEntity.getCreateTime())  + "小时");
-//            cashierGroup.setMembers(dynamicService.查询群组分配的人数(pkCashierGroupEntity.getGroupId()));
-//            cashierGroup.setStatu(new KeyNameValue(pkCashierGroupEntity.getStatu().getStatu(),pkCashierGroupEntity.getStatu().getStatuStr()));
-//            pkCashiers.add(cashierGroup);
-//        }
-//
-//        return pkCashiers;
-//
-//    }
-
-
-    public List<CashierFeeCode> 查询用户收款码(String cashierId) {
-
-        List<CashierFeeCode> cashierFeeCodes = new ArrayList<>();
-
-        for(FeeNumber feeNumber:FeeNumber.values())
-        {
-            CashierFeeCode cashierFeeCode = new CashierFeeCode();
-
-
-            cashierFeeCode.setFeeNumber(new KeyNameValue(feeNumber.getTag(),String.valueOf(feeNumber.getFee())));
-
-            PkCashierFeeCodeEntity pkCashierFeeCodeEntity = queryPkCashierFeeCode(cashierId,feeNumber);
-            if(!ObjectUtils.isEmpty(pkCashierFeeCodeEntity))
-            {
-                cashierFeeCode.setCashierId(pkCashierFeeCodeEntity.getCashierId());
-                cashierFeeCode.setFeeCodeId(pkCashierFeeCodeEntity.getFeeCodeId());
-                cashierFeeCode.setFeeCodeUrl(pkCashierFeeCodeEntity.getFeeCodeUrl());
-                cashierFeeCode.setConfirmTime(pkCashierFeeCodeEntity.getConfirmTimes());
-//                cashierFeeCode.setSelectTime(dynamicService.查询收款码分配的人数(pkCashierFeeCodeEntity.getFeeCodeId()));
-            }
-
-            cashierFeeCodes.add(cashierFeeCode);
-
-
-
-        }
-
-        return cashierFeeCodes;
-
-
-
-    }
-
-
-    private PkCashierFeeCodeEntity queryPkCashierFeeCode(String cashierId,FeeNumber feeNumber) {
-
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(PkCashierFeeCodeEntity.class)
-                .compareFilter("cashierId",CompareTag.Equal,cashierId)
-                .andFilter()
-                .compareFilter("feeNumber",CompareTag.Equal,feeNumber);
-        PkCashierFeeCodeEntity pkCashierFeeCodeEntity = daoService.querySingleEntity(PkCashierFeeCodeEntity.class,filter);
-        return pkCashierFeeCodeEntity;
-
-    }
-
-    public void 上传收款码(String cashierId, int feeNumber, String imgUrl) throws IOException {
-
-        FeeNumber feeNumber1 = FeeNumber.valueOfNumber(feeNumber);
-        PkCashierFeeCodeEntity pkCashierFeeCodeEntity = new PkCashierFeeCodeEntity();
-        pkCashierFeeCodeEntity.setFeeCodeId(com.union.app.util.idGenerator.IdGenerator.收款码ID());
-        pkCashierFeeCodeEntity.setCashierId(cashierId);
-        pkCashierFeeCodeEntity.setFeeCodeUrl(imgUrl);
-        pkCashierFeeCodeEntity.setFeeNumber(feeNumber1);
-        pkCashierFeeCodeEntity.setConfirmTimes(0);
-        String mediaId = WeChatUtil.uploadImg2Wx(imgUrl);
-        pkCashierFeeCodeEntity.setFeeCodeMediaId(mediaId);
-        pkCashierFeeCodeEntity.setLastUpdateTime(System.currentTimeMillis());
-        pkCashierFeeCodeEntity.setCreateTime(System.currentTimeMillis());
-
-        daoService.insertEntity(pkCashierFeeCodeEntity);
-
-    }
 
 
 
@@ -623,19 +399,6 @@ public class AppService {
 
 
 
-
-    public void 移除主页预览(String pkId) {
-
-        EntityFilterChain filter2 = EntityFilterChain.newFilterChain(HomePagePk.class)
-                .compareFilter("pkId",CompareTag.Equal,pkId);
-        HomePagePk pk = daoService.querySingleEntity(HomePagePk.class,filter2);
-
-        if(!ObjectUtils.isEmpty(pk))
-        {
-            daoService.deleteEntity(pk);
-        }
-
-    }
 
     public List<BackImgEntity> 查询内置背景图片(int page,int type) {
 
@@ -923,27 +686,6 @@ public class AppService {
 
     }
 
-    public PkUnlockEntity 查询用户解锁(String pkId, String userId) {
-
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(PkUnlockEntity.class)
-                .compareFilter("userId",CompareTag.Equal,userId)
-                .andFilter()
-                .compareFilter("pkId",CompareTag.Equal,pkId);
-
-        PkUnlockEntity unlockEntity = daoService.querySingleEntity(PkUnlockEntity.class,filter);
-        return unlockEntity;
-    }
-
-    public void 添加解锁Pk(String pkId, String userId) {
-
-        PkUnlockEntity unlockEntity = new PkUnlockEntity();
-        unlockEntity.setPkId(pkId);
-        unlockEntity.setUserId(userId);
-        unlockEntity.setCreateTime(System.currentTimeMillis());
-
-        daoService.insertEntity(unlockEntity);
-
-    }
 
 
     public boolean 查询收藏状态(String pkId, String userId) {
@@ -1130,4 +872,31 @@ public class AppService {
     }
 
 
+    public void 设置PkTag(String pkId, String tag) {
+        Map<String,Object> map = new HashMap<>();
+        map.put("type",tag);
+        daoService.updateColumById(PkEntity.class,"pkId",pkId,map);
+    }
+
+    public void 设置标志位(String pkId, int type) {
+        PkEntity pkEntity = locationService.querySinglePkEntity(pkId);
+        Map<String,Object> map = new HashMap<>();
+
+        if(type == 1)
+        {
+            map.put("citySet",!pkEntity.isCitySet());
+        }
+        else if(type == 2)
+        {
+            map.put("countrySet",!pkEntity.isCountrySet());
+            keyService.刷新全网排行榜();
+        }
+        else if(type == 3)
+        {
+            map.put("findSet",!pkEntity.isFindSet());
+        }
+        else
+        {}
+        daoService.updateColumById(PkEntity.class,"pkId",pkId,map);
+    }
 }

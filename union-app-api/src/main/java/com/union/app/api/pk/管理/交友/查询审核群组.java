@@ -49,9 +49,6 @@ public class 查询审核群组 {
     DynamicService dynamicService;
 
     @Autowired
-    ApproveService approveService;
-
-    @Autowired
     GroupService groupService;
 
 

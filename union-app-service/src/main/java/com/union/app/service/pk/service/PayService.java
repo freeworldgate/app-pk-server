@@ -1,6 +1,7 @@
 package com.union.app.service.pk.service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.union.app.common.config.AppConfigService;
 import com.union.app.common.dao.AppDaoService;
 import com.union.app.dao.spi.filter.CompareTag;
 import com.union.app.dao.spi.filter.EntityFilterChain;
@@ -12,6 +13,7 @@ import com.union.app.entity.pk.支付.PayEntity;
 import com.union.app.entity.pk.支付.PayOrderEntity;
 import com.union.app.entity.pk.支付.PayType;
 import com.union.app.entity.user.UserDynamicEntity;
+import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.service.pk.service.pkuser.UserDynamicService;
@@ -437,6 +439,7 @@ public class PayService {
     }
 
     public void 用户创建卡点(String userId) throws AppException {
+        if(AppConfigService.getConfigAsBoolean(ConfigItem.卡点创建收费)){}
         UserDynamicEntity userDynamicEntity = userService.queryUserKvEntity(userId);
         int pk = userDynamicEntity.getPk();
         if(pk < 1)

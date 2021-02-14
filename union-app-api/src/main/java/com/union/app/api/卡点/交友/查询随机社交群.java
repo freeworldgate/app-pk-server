@@ -51,9 +51,6 @@ public class 查询随机社交群 {
     DynamicService dynamicService;
 
     @Autowired
-    ApproveService approveService;
-
-    @Autowired
     AppService appService;
 
     @Autowired

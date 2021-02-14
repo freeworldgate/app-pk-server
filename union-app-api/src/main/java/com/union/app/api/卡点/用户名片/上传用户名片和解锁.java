@@ -48,9 +48,6 @@ public class 上传用户名片和解锁 {
     DynamicService dynamicService;
 
     @Autowired
-    ApproveService approveService;
-
-    @Autowired
     AppService appService;
 
     @Autowired

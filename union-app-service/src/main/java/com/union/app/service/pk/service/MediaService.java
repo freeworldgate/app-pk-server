@@ -54,12 +54,6 @@ public class MediaService {
     CacheStorage cacheStorage;
 
     @Autowired
-    PostCacheService postCacheService;
-
-    @Autowired
-    ApproveService approveService;
-
-    @Autowired
     RedisSortSetService redisSortSetService;
 
     //所有媒体文件   提前六个小时更新

@@ -48,9 +48,6 @@ public class 申请UserCard列表 {
     DynamicService dynamicService;
 
     @Autowired
-    ApproveService approveService;
-
-    @Autowired
     AppService appService;
 
     @Autowired

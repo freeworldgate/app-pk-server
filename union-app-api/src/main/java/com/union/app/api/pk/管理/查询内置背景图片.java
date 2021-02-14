@@ -50,9 +50,6 @@ public class 查询内置背景图片 {
     @Autowired
     DynamicService dynamicService;
 
-    @Autowired
-    ApproveService approveService;
-
     public static Map<String,PkDetail> pkDetailMap = new HashMap<>();
 
 

@@ -2,6 +2,7 @@ package com.union.app.service.pk.service;
 
 import com.union.app.common.OSS存储.CacheStorage;
 import com.union.app.common.OSS存储.OssStorage;
+import com.union.app.common.config.AppConfigService;
 import com.union.app.common.dao.AppDaoService;
 import com.union.app.common.dao.KeyService;
 import com.union.app.common.redis.RedisSortSetService;
@@ -21,10 +22,10 @@ import com.union.app.entity.pk.PkImageEntity;
 import com.union.app.entity.pk.PostEntity;
 import com.union.app.entity.pk.PostStatu;
 import com.union.app.entity.pk.kadian.UserFollowEntity;
+import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
-import com.union.app.service.data.PkDataService;
 import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.service.pkuser.PkDynamicService;
 import com.union.app.service.pk.service.pkuser.UserDynamicService;
@@ -79,19 +80,10 @@ public class LocationService {
     CacheStorage cacheStorage;
 
     @Autowired
-    PostCacheService postCacheService;
-
-    @Autowired
-    ApproveService approveService;
-
-    @Autowired
     RedisSortSetService redisSortSetService;
 
     @Autowired
     MediaService mediaService;
-
-    @Autowired
-    PkDataService pkDataService;
 
     @Autowired
     UserDynamicService userDynamicService;
@@ -185,6 +177,15 @@ public class LocationService {
         pkEntity.setTotalImgs(0);
         pkEntity.setTotalUsers(0);
         pkEntity.setTime(System.currentTimeMillis());
+        pkEntity.setRangeSet(Boolean.FALSE);
+
+        pkEntity.setCitySet(Boolean.FALSE);
+        pkEntity.setCountrySet(Boolean.FALSE);
+
+        pkEntity.setFindSet(AppConfigService.getConfigAsBoolean(ConfigItem.打捞开关));
+
+
+
         daoService.insertEntity(pkEntity);
         pkDynamicService.创建DynamicEntity(pkId);
         userDynamicService.用户卡点加一(createLocation.getUserId());
@@ -245,6 +246,7 @@ public class LocationService {
         String pkId = pk.getPkId();
         PkDetail pkDetail = new PkDetail();
         pkDetail.setPkId(pk.getPkId());
+        pkDetail.setCity(pk.getCity());
         pkDetail.setCodeUrl(pk.getCodeUrl());
         pkDetail.setSign(pk.getSign());
         pkDetail.setLatitude(pk.getLatitude());
@@ -273,6 +275,9 @@ public class LocationService {
         pkDetail.setCircle(this.查询Circle(pk,locationType));
         pkDetail.setTotalUsers(NumberUtils.convert(pk.getTotalUsers()));
         pkDetail.setTotalUserNumber(pk.getTotalUsers());
+        pkDetail.setCitySet(pk.isCitySet());
+        pkDetail.setCountrySet(pk.isCountrySet());
+        pkDetail.setFindSet(pk.isFindSet());
         return pkDetail;
     }
 
@@ -280,6 +285,7 @@ public class LocationService {
         if(ObjectUtils.isEmpty(pk)){return null;}
         PkDetail pkDetail = new PkDetail();
         pkDetail.setPkId(pk.getPkId());
+        pkDetail.setCity(pk.getCity());
         pkDetail.setCodeUrl(pk.getCodeUrl());
         pkDetail.setSign(pk.getSign());
         pkDetail.setLatitude(pk.getLatitude());
@@ -296,7 +302,10 @@ public class LocationService {
         pkDetail.setCircle(this.查询Circle(pk,locationType));
         pkDetail.setTotalUsers(NumberUtils.convert(pk.getTotalUsers()));
         pkDetail.setTotalUserNumber(pk.getTotalUsers());
-
+        pkDetail.setSet(pk.isRangeSet());
+        pkDetail.setCountrySet(pk.isCountrySet());
+        pkDetail.setCitySet(pk.isCitySet());
+        pkDetail.setFindSet(pk.isFindSet());
         return pkDetail;
     }
 
@@ -396,7 +405,9 @@ public class LocationService {
                 .compareFilter("longitude",CompareTag.Bigger,longitude - 0.08D)
                 .andFilter()
                 .compareFilter("totalImgs",CompareTag.Bigger,0L)
-                .orderByFilter("to talUsers",OrderTag.DESC)
+                .andFilter()
+                .compareFilter("citySet",CompareTag.Equal,Boolean.TRUE)
+                .orderByFilter("totalUsers",OrderTag.DESC)
                 .pageLimitFilter(1,10);
 
         EntityFilterChain cityAroundFilter = EntityFilterChain.newFilterChain(PkEntity.class)
@@ -409,27 +420,23 @@ public class LocationService {
                 .compareFilter("longitude",CompareTag.Bigger,longitude - 0.3D)
                 .andFilter()
                 .compareFilter("totalImgs",CompareTag.Bigger,0L)
+                .andFilter()
+                .compareFilter("citySet",CompareTag.Equal,Boolean.TRUE)
                 .orderByFilter("totalUsers",OrderTag.DESC)
                 .pageLimitFilter(1,10);
 
 
 
-        List<PkEntity> pkEntities = daoService.queryEntities(PkEntity.class,aroundFilter);
-        if(CollectionUtils.isEmpty(pkEntities))
+//        List<PkEntity> pkEntities = daoService.queryEntities(PkEntity.class,aroundFilter);
+//        if(CollectionUtils.isEmpty(pkEntities))
+//        {
+//            pkEntities = daoService.queryEntities(PkEntity.class,cityAroundFilter);
+//        }
+        List<PkEntity> pkEntities = daoService.queryEntities(PkEntity.class,cityAroundFilter);
+        if(pkEntities.size() < 5)
         {
-            pkEntities = daoService.queryEntities(PkEntity.class,cityAroundFilter);
+            pkEntities.addAll(keyService.查询全网排行());
         }
-//        pkEntities = daoService.queryEntities(PkEntity.class,cityAroundFilter);
-        if(CollectionUtils.isEmpty(pkEntities))
-        {
-            pkEntities = keyService.查询全网排行();
-//            pkEntities = daoService.queryEntities(PkEntity.class,sortFilter);
-        }
-
-
-
-
-
 
         if(!org.apache.commons.collections4.CollectionUtils.isEmpty(pkEntities))
         {
@@ -747,6 +754,7 @@ public class LocationService {
     public void 设置卡点范围(String pkId, int radius) {
         Map<String,Object> map = new HashMap<>();
         map.put("typeRange",radius);
+        map.put("rangeSet",Boolean.TRUE);
         daoService.updateColumById(PkEntity.class,"pkId",pkId,map);
 
 

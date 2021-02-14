@@ -47,8 +47,6 @@ public class 用户相册 {
     @Autowired
     DynamicService dynamicService;
 
-    @Autowired
-    ApproveService approveService;
 
 
     @RequestMapping(path="/userPks",method = RequestMethod.GET)

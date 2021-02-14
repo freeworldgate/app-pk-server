@@ -50,10 +50,6 @@ public class 添加邀请 {
     @Autowired
     DynamicService dynamicService;
 
-    @Autowired
-    ApproveService approveService;
-
-
     @RequestMapping(path="/addUserInvite",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
     public AppResponse 添加邀请信息(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId) throws AppException, IOException {

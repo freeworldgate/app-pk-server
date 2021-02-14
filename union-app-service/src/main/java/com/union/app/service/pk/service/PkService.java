@@ -79,11 +79,6 @@ public class PkService {
     @Autowired
     CacheStorage cacheStorage;
 
-    @Autowired
-    PostCacheService postCacheService;
-
-    @Autowired
-    ApproveService approveService;
 
     @Autowired
     PkCacheService pkCacheService;
@@ -160,7 +155,7 @@ public class PkService {
                 .compareFilter("pkId",CompareTag.Equal,pkId)
                 .andFilter()
                 .compareFilter("statu",CompareTag.NotEqual,PostStatu.隐藏)
-                .pageLimitFilter(page,20)
+                .pageLimitFilter(page,10)
                 .orderByFilter("time",OrderTag.DESC);
 
         List<PostEntity> entities = daoService.queryEntities(PostEntity.class,filter);
@@ -267,51 +262,6 @@ public class PkService {
         return !StringUtils.isBlank(dynamicService.查询PK群组二维码MediaId(pkEntity.getPkId()));
     }
 
-    public boolean 是否更新今日公告(String pkId) throws UnsupportedEncodingException {
-//        return !StringUtils.isBlank(dynamicService.查询PK公告消息Id(pkId));
-        return !ObjectUtils.isEmpty(approveService.获取审核人员消息Entity(pkId));
-
-    }
-
-
-    public boolean isVipView(String userId,String pkId)
-    {
-
-        if(userService.是否是遗传用户(userId)){return true;}
-        if(!userService.isUserExist(userId))
-        {
-            return pkService.isCreatedByVip(pkId);
-        }
-        return false;
-
-
-    }
-
-
-
-
-
-
-
-    public void 修改PkCreator(String userId,String value) {
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(PkCodeEntity.class)
-                .compareFilter("code",CompareTag.Equal,value);
-        PkCodeEntity entity = daoService.querySingleEntity(PkCodeEntity.class,filter);
-        if(!ObjectUtils.isEmpty(entity))
-        {
-
-            PkEntity pkEntity = this.querySinglePkEntity( entity.getPkId());
-            PostEntity postEntity = postService.查询用户帖(pkEntity.getPkId(),pkEntity.getUserId());
-
-            if(!ObjectUtils.isEmpty(postEntity))
-            {
-                postEntity.setUserId(userId);
-                daoService.updateEntity(postEntity);
-            }
-            pkEntity.setUserId(userId);
-            daoService.updateEntity(pkEntity);
-            daoService.deleteEntity(entity);
-        }
 
 
 
@@ -320,23 +270,6 @@ public class PkService {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    }
-
-    
     public void 更新群组时间(String pkId) {
 
         Map<String,Object> map = new HashMap<>();
@@ -346,27 +279,6 @@ public class PkService {
     }
 
 
-    public PkPostListEntity 查询图册排列(String pkId, String postId)
-    {
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(PkPostListEntity.class)
-                .compareFilter("postId",CompareTag.Equal,postId)
-                .andFilter()
-                .compareFilter("pkId",CompareTag.Equal,pkId);
-        PkPostListEntity entity = daoService.querySingleEntity(PkPostListEntity.class,filter);
-        return entity;
-    }
-//    public void 更新图册状态列表(String pkId, String postId) {
-//        PkPostListEntity pkPostListEntity = 查询图册排列(pkId,postId);
-//        if(!ObjectUtils.isEmpty(pkPostListEntity))
-//        {
-////            pkPostListEntity.setStatu(PostStatu.上线);
-//            daoService.updateEntity(pkPostListEntity);
-//        }
-//
-//        this.更新PK审核数量(pkId);
-//
-//
-//    }
 
     private void 更新PK审核数量(String pkId) {
         PkEntity pkEntity = this.querySinglePkEntity(pkId);
@@ -375,18 +287,6 @@ public class PkService {
 //        pkEntity.setApproved(pkEntity.getApproved() + 1);
 //        pkEntity.setApproving(pkEntity.getApproving() - 1);
 //        daoService.updateEntity(pkEntity);
-
-    }
-
-    public void 删除审核中Post(String pkId, String postId) {
-
-        PkPostListEntity pkPostListEntity = 查询图册排列(pkId,postId);
-        if(!ObjectUtils.isEmpty(pkPostListEntity))
-        {
-            daoService.deleteEntity(pkPostListEntity);
-            this.减少一个审核中(pkId);
-        }
-
 
     }
 
@@ -406,65 +306,7 @@ public class PkService {
     }
 
 
-    public long 查询POST审核时间(String pkId, String postId) {
 
-        PkPostListEntity pkPostListEntity = 查询图册排列(pkId,postId);
-
-        return pkPostListEntity.getTime();
-    }
-
-    public String 获取一个审核中Post(String pkId) {
-
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(PkPostListEntity.class)
-                .compareFilter("pkId",CompareTag.Equal,pkId)
-//                .andFilter()
-//                .compareFilter("statu",CompareTag.Equal,PostStatu.审核中)
-                .orderByFilter("time",OrderTag.DESC);
-        PkPostListEntity entity = daoService.querySingleEntity(PkPostListEntity.class,filter);
-        return ObjectUtils.isEmpty(entity)?"":entity.getPostId();
-
-
-
-    }
-    public List<String> 查询审核中页(String pkId, int page) {
-
-        List<String> ids = new ArrayList<>();
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(PkPostListEntity.class)
-                .compareFilter("pkId",CompareTag.Equal,pkId)
-//                .andFilter()
-//                .compareFilter("statu",CompareTag.NotEqual,PostStatu.上线)
-                .pageLimitFilter(page+1,20)
-                .orderByFilter("time",OrderTag.DESC);
-
-        List<PkPostListEntity> entities = daoService.queryEntities(PkPostListEntity.class,filter);
-        entities.forEach(t->{
-            ids.add(t.getPostId());
-        });
-        return ids;
-
-    }
-    public List<String> 查询已审核页(String pkId, int page) {
-
-        List<String> ids = new ArrayList<>();
-        EntityFilterChain filter = EntityFilterChain.newFilterChain(PkPostListEntity.class)
-                .compareFilter("pkId",CompareTag.Equal,pkId)
-                .pageLimitFilter(page+1,20)
-                .orderByFilter("time",OrderTag.DESC);
-
-        List<PkPostListEntity> entities = daoService.queryEntities(PkPostListEntity.class,filter);
-        entities.forEach(t->{
-            ids.add(t.getPostId());
-        });
-        return ids;
-
-    }
-
-    public boolean 是否审核中(String pkId, String postId) {
-        PkPostListEntity pkPostListEntity = this.查询图册排列(pkId,postId);
-//        if(!ObjectUtils.isEmpty(pkPostListEntity) && pkPostListEntity.getStatu() == PostStatu.审核中 ){return true;}else{return false;}
-        return true;
-
-    }
 
     public boolean isCreatedByVip(String pkId) {
         if(StringUtils.isBlank(pkId)){return false;}

@@ -52,8 +52,6 @@ public class 查询常用标签 {
     @Autowired
     DynamicService dynamicService;
 
-    @Autowired
-    ApproveService approveService;
 
     public static Map<String,PkDetail> pkDetailMap = new HashMap<>();
 

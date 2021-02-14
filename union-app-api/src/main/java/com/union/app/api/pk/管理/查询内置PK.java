@@ -49,9 +49,6 @@ public class 查询内置PK {
     @Autowired
     DynamicService dynamicService;
 
-    @Autowired
-    ApproveService approveService;
-
     public static Map<String,PkDetail> pkDetailMap = new HashMap<>();
 
 

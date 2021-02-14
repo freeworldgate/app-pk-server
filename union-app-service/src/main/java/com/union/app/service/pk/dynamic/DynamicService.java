@@ -3,21 +3,14 @@ package com.union.app.service.pk.dynamic;
 import com.alibaba.fastjson.JSON;
 import com.union.app.common.config.AppConfigService;
 import com.union.app.common.dao.AppDaoService;
-import com.union.app.domain.pk.OperType;
 import com.union.app.domain.pk.PkDynamic.*;
 import com.union.app.domain.pk.Post;
-import com.union.app.domain.pk.apply.KeyNameValue;
-import com.union.app.domain.工具.RandomUtil;
 import com.union.app.entity.pk.PkEntity;
-import com.union.app.entity.pk.PkPostListEntity;
 import com.union.app.entity.pk.PostEntity;
-import com.union.app.entity.pk.PostStatu;
-import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.constant.常量值;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.common.redis.RedisMapService;
 import com.union.app.common.redis.RedisSortSetService;
-import com.union.app.service.pk.service.ApproveService;
 import com.union.app.service.pk.service.PkService;
 import com.union.app.service.pk.service.PostService;
 import com.union.app.service.user.UserService;
@@ -51,9 +44,6 @@ public class DynamicService {
 
     @Autowired
     AppDaoService daoService;
-
-    @Autowired
-    ApproveService approveService;
 
     @Resource
     private RedisTemplate<String, String> redisTemplate;
@@ -216,55 +206,6 @@ public class DynamicService {
     }
 
 
-    /**
-     *
-     * 有效期5分钟
-     *
-     * @param pkId
-     * @param postEntity
-     */
-    public void 设置帖子的审核用户(String pkId, PostEntity postEntity) {
-       // pkService.querySinglePkEntity()
-        PkPostListEntity pkPostListEntity = pkService.查询图册排列(pkId,postEntity.getPostId());
-        if(ObjectUtils.isEmpty(pkPostListEntity))
-        {
-            pkPostListEntity = new PkPostListEntity();
-            pkPostListEntity.setPkId(pkId);
-            pkPostListEntity.setPostId(postEntity.getPostId());
-            pkPostListEntity.setUserId(postEntity.getUserId());
-//            pkPostListEntity.setStatu(PostStatu.审核中);
-            pkPostListEntity.setTime(System.currentTimeMillis());
-
-            daoService.insertEntity(pkPostListEntity);
-            pkService.添加一个审核中(pkId);
-
-        }
-
-
-
-
-
-
-
-
-//        redisSortSetService.addEle(CacheKeyName.榜主审核中列表(pkId),postId,System.currentTimeMillis() * -1D);
-
-    }
-
-//    public void 已审核(String pkId, String postId) {
-//
-////            redisSortSetService.addEle(CacheKeyName.榜主已审核列表(pkId),postId,System.currentTimeMillis() * -1D);
-////            redisSortSetService.remove(CacheKeyName.榜主审核中列表(pkId),postId);
-//            pkService.更新图册状态列表(pkId,postId);
-//
-//            this.更新PK排名(pkId);
-//
-//    }
-
-    public void 驳回用户审核(String pkId, String postId) {
-        pkService.删除审核中Post(pkId,postId);
-//        redisSortSetService.remove(CacheKeyName.榜主审核中列表(pkId),postId);
-    }
 
 
 
@@ -478,59 +419,6 @@ public class DynamicService {
 //
 //    }
 
-
-
-    public List<Post> 查询已审核指定范围的Post(String userId,String pkId,int page,int type) throws UnsupportedEncodingException {
-
-
-        List<Post> posts = new ArrayList<>();
-        List<String> postIds = new ArrayList<>();
-        if(type == 0)
-        {
-
-            postIds.addAll(pkService.查询已审核页(pkId,page));
-        }
-        else if(type == 1)
-        {
-
-            postIds.addAll(pkService.查询审核中页(pkId,page));
-        }
-        else
-        {
-
-        }
-
-
-        for(String postId:postIds)
-        {
-            Post post = postService.查询帖子(pkId,postId,"");
-            if(!ObjectUtils.isEmpty(post)) {
-                posts.add(post);
-            }
-        }
-        PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
-        for (Post post : posts) {
-//            post.setApproveComment(approveService.获取留言信息(pkId, post.getPostId()));
-        }
-        return posts;
-
-
-    }
-    public Post 查询审核中指定范围的Post(String pkId) throws UnsupportedEncodingException {
-
-
-        String postId = pkService.获取一个审核中Post(pkId);//redisSortSetService.popEle(CacheKeyName.榜主审核中列表(pkId));
-        if(StringUtils.isBlank(postId)){return null;}
-        Post post = postService.查询帖子(pkId,postId,"");
-        if(!ObjectUtils.isEmpty(post)) {
-//            post.setApproveComment(approveService.获取留言信息(pkId, postId));
-        }
-
-
-
-        return post;
-
-    }
 
 
     public void 设置PK群组二维码MediaId(String pkId, String mediaId) {

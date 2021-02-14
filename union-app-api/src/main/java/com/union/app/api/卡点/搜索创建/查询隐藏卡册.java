@@ -47,9 +47,6 @@ public class 查询隐藏卡册 {
     DynamicService dynamicService;
 
     @Autowired
-    ApproveService approveService;
-
-    @Autowired
     AppService appService;
 
     @Autowired

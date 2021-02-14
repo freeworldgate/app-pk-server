@@ -4,7 +4,6 @@ import com.union.app.common.dao.AppDaoService;
 import com.union.app.common.dao.KeyService;
 import com.union.app.domain.pk.PkDetail;
 import com.union.app.domain.user.User;
-import com.union.app.entity.pk.PreUserEntity;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.PageAction;
@@ -51,9 +50,6 @@ public class 创建预置用户 {
 
     @Autowired
     DynamicService dynamicService;
-
-    @Autowired
-    ApproveService approveService;
 
     @Autowired
     KeyService keyService;

@@ -50,9 +50,6 @@ public class 查询单个预置PK {
     DynamicService dynamicService;
 
     @Autowired
-    ApproveService approveService;
-
-    @Autowired
     AppService appService;
 
 //

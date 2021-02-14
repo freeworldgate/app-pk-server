@@ -49,9 +49,6 @@ public class 查询卡点社交群列表 {
     DynamicService dynamicService;
 
     @Autowired
-    ApproveService approveService;
-
-    @Autowired
     AppService appService;
 
     @Autowired

@@ -73,9 +73,6 @@ public class FindService {
     CacheStorage cacheStorage;
 
     @Autowired
-    PostCacheService postCacheService;
-
-    @Autowired
     LocationService locationService;
 
     @Autowired

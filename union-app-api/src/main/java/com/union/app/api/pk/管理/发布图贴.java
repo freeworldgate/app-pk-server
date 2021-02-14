@@ -52,9 +52,6 @@ public class 发布图贴 {
     @Autowired
     DynamicService dynamicService;
 
-    @Autowired
-    ApproveService approveService;
-
     public static Map<String,PkDetail> pkDetailMap = new HashMap<>();
 
 //

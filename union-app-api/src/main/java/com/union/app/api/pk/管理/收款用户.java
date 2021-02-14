@@ -46,10 +46,6 @@ public class 收款用户 {
     @Autowired
     DynamicService dynamicService;
 
-    @Autowired
-    ApproveService approveService;
-
-
 
 
 

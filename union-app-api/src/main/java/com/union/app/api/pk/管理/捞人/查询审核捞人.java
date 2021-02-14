@@ -50,9 +50,6 @@ public class 查询审核捞人 {
     DynamicService dynamicService;
 
     @Autowired
-    ApproveService approveService;
-
-    @Autowired
     FindService findService;
 
 

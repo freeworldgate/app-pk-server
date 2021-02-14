@@ -20,6 +20,8 @@ public class PkDetail implements Serializable{
 
     private String pkId;
 
+    private String city;
+
 //    private PkLocationEntity location;
 
     private User user;
@@ -60,5 +62,9 @@ public class PkDetail implements Serializable{
     private String totalUsers;
     private long totalUserNumber;
 
+    private boolean set;
+    private boolean citySet;
+    private boolean countrySet;
+    private boolean findSet;
 
 }

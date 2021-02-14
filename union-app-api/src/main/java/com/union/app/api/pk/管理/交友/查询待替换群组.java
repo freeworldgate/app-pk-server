@@ -47,9 +47,6 @@ public class 查询待替换群组 {
     DynamicService dynamicService;
 
     @Autowired
-    ApproveService approveService;
-
-    @Autowired
     GroupService groupService;
 
 

@@ -1,6 +1,5 @@
 package com.union.app.api.pk.管理.范围与缩放;
 
-import com.union.app.domain.pk.捞人.FindUser;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.PageAction;
@@ -8,7 +7,6 @@ import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.service.pk.click.ClickService;
 import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.service.AppService;
-import com.union.app.service.pk.service.ApproveService;
 import com.union.app.service.pk.service.PkService;
 import com.union.app.service.pk.service.PostService;
 import com.union.app.service.pk.service.捞人.FindService;
@@ -46,9 +44,6 @@ public class 设置缩放和范围 {
 
     @Autowired
     DynamicService dynamicService;
-
-    @Autowired
-    ApproveService approveService;
 
     @Autowired
     FindService findService;

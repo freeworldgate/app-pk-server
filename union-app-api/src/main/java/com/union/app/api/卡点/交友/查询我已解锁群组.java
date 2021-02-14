@@ -46,9 +46,6 @@ public class 查询我已解锁群组 {
     DynamicService dynamicService;
 
     @Autowired
-    ApproveService approveService;
-
-    @Autowired
     AppService appService;
 
     @Autowired

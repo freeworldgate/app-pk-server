@@ -1,15 +1,15 @@
-package com.union.app.api.pk.zone;
+package com.union.app.api.pk.管理.标签;
 
-import com.union.app.common.OSS存储.OssStorage;
-import com.union.app.domain.pk.PkDetail;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.service.pk.click.ClickService;
+import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.service.AppService;
 import com.union.app.service.pk.service.PkService;
 import com.union.app.service.pk.service.PostService;
+import com.union.app.service.pk.service.捞人.FindService;
 import com.union.app.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,8 +22,10 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping(path="/pk")
-public class 修改PK创建者 {
+public class 设置标签 {
 
+    @Autowired
+    AppService appService;
 
     @Autowired
     PkService pkService;
@@ -35,28 +37,31 @@ public class 修改PK创建者 {
     RedisStringUtil redisStringUtil;
 
     @Autowired
+    PostService postService;
+
+    @Autowired
     UserService userService;
 
     @Autowired
-    OssStorage ossStorage;
+    DynamicService dynamicService;
 
     @Autowired
-    PostService postService;
+    FindService findService;
 
 
-
-    @Autowired
-    AppService appService;
-
-
-
-    @RequestMapping(path="/setPkCode",method = RequestMethod.GET)
+    @RequestMapping(path="/setPkTag",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse setPkCode(@RequestParam("userId") String userId,@RequestParam("value") String value) throws AppException, IOException {
+    public AppResponse setPkTag(@RequestParam("userId") String userId,@RequestParam("pkId") String pkId,@RequestParam("tag") String tag) throws AppException, IOException {
+        if(userService.管理员用户(userId))
+        {
+            appService.设置PkTag(pkId, tag);
+            return AppResponse.buildResponse(PageAction.执行处理器("success",""));
+        }
+        else
+        {
+            return AppResponse.buildResponse(PageAction.信息反馈框("滚","滚"));
+        }
 
-        pkService.修改PkCreator(userId,value);
-
-        return AppResponse.buildResponse(PageAction.前端数据更新("hello",""));
     }
 
 }

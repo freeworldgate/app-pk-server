@@ -1,8 +1,5 @@
 package com.union.app.domain.pk.支付;
 
-import com.union.app.domain.pk.PkDetail;
-import com.union.app.domain.pk.apply.KeyValuePair;
-import com.union.app.domain.user.User;
 import com.union.app.entity.pk.PkTipEntity;
 import com.union.app.entity.pk.支付.PayEntity;
 import lombok.Getter;

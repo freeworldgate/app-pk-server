@@ -53,9 +53,6 @@ public class 切换激活员 {
     DynamicService dynamicService;
 
     @Autowired
-    ApproveService approveService;
-
-    @Autowired
     AppService appService;
 
     @RequestMapping(path="/selectCashier",method = RequestMethod.GET)

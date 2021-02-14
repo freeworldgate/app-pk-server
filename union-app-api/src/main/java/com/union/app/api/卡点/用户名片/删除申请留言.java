@@ -42,8 +42,6 @@ public class 删除申请留言 {
     @Autowired
     DynamicService dynamicService;
 
-    @Autowired
-    ApproveService approveService;
 
     @Autowired
     AppService appService;

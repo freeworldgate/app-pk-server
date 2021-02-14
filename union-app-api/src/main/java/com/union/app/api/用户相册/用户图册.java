@@ -47,9 +47,6 @@ public class 用户图册 {
     @Autowired
     DynamicService dynamicService;
 
-    @Autowired
-    ApproveService approveService;
-
 
 //    @RequestMapping(path="/userPosts",method = RequestMethod.GET)
 //    public AppResponse 用户图册(@RequestParam("userId") String userId) throws AppException, IOException {

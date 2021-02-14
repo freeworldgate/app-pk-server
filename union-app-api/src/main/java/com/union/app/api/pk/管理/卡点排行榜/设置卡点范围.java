@@ -47,9 +47,6 @@ public class 设置卡点范围 {
     DynamicService dynamicService;
 
     @Autowired
-    ApproveService approveService;
-
-    @Autowired
     FindService findService;
 
     @Autowired

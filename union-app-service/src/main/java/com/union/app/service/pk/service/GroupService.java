@@ -11,16 +11,13 @@ import com.union.app.dao.spi.filter.OrderTag;
 import com.union.app.domain.pk.apply.KeyValuePair;
 import com.union.app.domain.pk.交友.PkGroup;
 import com.union.app.domain.user.User;
-import com.union.app.entity.pk.用户Key.PkUserDynamicEntity;
 import com.union.app.entity.pk.社交.GroupStatu;
 import com.union.app.entity.pk.社交.PkGroupEntity;
 import com.union.app.entity.pk.社交.PkGroupMemberEntity;
 import com.union.app.entity.user.UserDynamicEntity;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.PageAction;
-import com.union.app.plateform.storgae.KeyType;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
-import com.union.app.service.data.PkDataService;
 import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.service.pkuser.PkUserDynamicService;
 import com.union.app.service.pk.service.pkuser.UserDynamicService;
@@ -72,19 +69,10 @@ public class GroupService {
     CacheStorage cacheStorage;
 
     @Autowired
-    PostCacheService postCacheService;
-
-    @Autowired
-    ApproveService approveService;
-
-    @Autowired
     RedisSortSetService redisSortSetService;
 
     @Autowired
     MediaService mediaService;
-
-    @Autowired
-    PkDataService pkDataService;
 
     @Autowired
     LocationService locationService;

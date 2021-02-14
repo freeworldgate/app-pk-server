@@ -34,9 +34,6 @@ public class 查询PK认证 {
     DynamicService dynamicService;
 
     @Autowired
-    ApproveService approveService;
-
-    @Autowired
     AppService appService;
 
 //    @RequestMapping(path="/queryPkApprove",method = RequestMethod.GET)

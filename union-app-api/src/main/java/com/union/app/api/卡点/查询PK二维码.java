@@ -43,9 +43,6 @@ public class 查询PK二维码 {
     DynamicService dynamicService;
 
     @Autowired
-    ApproveService approveService;
-
-    @Autowired
     LocationService locationService;
 
     @RequestMapping(path="/queryPkCode",method = RequestMethod.GET)

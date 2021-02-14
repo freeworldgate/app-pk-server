@@ -50,9 +50,6 @@ public class 卡点打卡记录 {
     DynamicService dynamicService;
 
     @Autowired
-    ApproveService approveService;
-
-    @Autowired
     AppService appService;
 
     @Autowired

@@ -51,8 +51,6 @@ public class 标签管理 {
     @Autowired
     DynamicService dynamicService;
 
-    @Autowired
-    ApproveService approveService;
 
     public static Map<String,PkDetail> pkDetailMap = new HashMap<>();
 

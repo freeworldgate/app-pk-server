@@ -1,13 +1,9 @@
 package com.union.app.domain.pk.cashier;
 
 import com.union.app.domain.pk.apply.KeyNameValue;
-import com.union.app.entity.pk.CashierStatu;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 
 @Getter
 @Setter

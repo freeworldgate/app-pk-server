@@ -2,9 +2,6 @@ package com.union.app.api.pk.管理;
 
 import com.union.app.common.dao.AppDaoService;
 import com.union.app.domain.pk.PkDetail;
-import com.union.app.entity.pk.InviteType;
-import com.union.app.entity.pk.PkEntity;
-import com.union.app.entity.pk.PkType;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.PageAction;
@@ -53,8 +50,6 @@ public class 设置内置PK参数 {
     @Autowired
     DynamicService dynamicService;
 
-    @Autowired
-    ApproveService approveService;
 
     public static Map<String,PkDetail> pkDetailMap = new HashMap<>();
 

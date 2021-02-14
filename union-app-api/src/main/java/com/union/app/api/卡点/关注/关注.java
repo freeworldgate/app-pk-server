@@ -45,8 +45,6 @@ public class 关注 {
     @Autowired
     DynamicService dynamicService;
 
-    @Autowired
-    ApproveService approveService;
 
     @Autowired
     AppService appService;

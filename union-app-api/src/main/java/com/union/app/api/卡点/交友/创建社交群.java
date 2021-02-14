@@ -47,8 +47,6 @@ public class 创建社交群 {
     @Autowired
     DynamicService dynamicService;
 
-    @Autowired
-    ApproveService approveService;
 
     @Autowired
     AppService appService;

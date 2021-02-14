@@ -100,7 +100,7 @@ public class TimeUtils {
     }
 
     private static String getDate(long time) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM.dd");
         String date = simpleDateFormat.format(new Date(time));
         String currentDate = simpleDateFormat.format(new Date(System.currentTimeMillis()));
         String lastDate = simpleDateFormat.format(new Date(System.currentTimeMillis()-24*3600*1000));

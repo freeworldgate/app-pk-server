@@ -1,12 +1,6 @@
 package com.union.app.api.邀请;
 
-import com.union.app.common.config.AppConfigService;
 import com.union.app.domain.pk.*;
-import com.union.app.domain.user.User;
-import com.union.app.domain.工具.RandomUtil;
-import com.union.app.entity.pk.PkLocationEntity;
-import com.union.app.entity.pk.PkType;
-import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.DataSet;
@@ -18,7 +12,6 @@ import com.union.app.service.pk.service.*;
 import com.union.app.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -53,9 +46,6 @@ public class 查询邀请 {
 
     @Autowired
     DynamicService dynamicService;
-
-    @Autowired
-    ApproveService approveService;
 
 
     @RequestMapping(path="/queryInvites",method = RequestMethod.GET)

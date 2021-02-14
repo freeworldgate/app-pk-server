@@ -45,8 +45,6 @@ public class 测试 {
     @Autowired
     DynamicService dynamicService;
 
-    @Autowired
-    ApproveService approveService;
 
     @Autowired
     AppService appService;

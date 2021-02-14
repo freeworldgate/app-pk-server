@@ -49,9 +49,6 @@ public class 审批 {
     DynamicService dynamicService;
 
     @Autowired
-    ApproveService approveService;
-
-    @Autowired
     FindService findService;
 
 

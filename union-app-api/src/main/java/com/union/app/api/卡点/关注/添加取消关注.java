@@ -40,8 +40,6 @@ public class 添加取消关注 {
     @Autowired
     DynamicService dynamicService;
 
-    @Autowired
-    ApproveService approveService;
 
     @Autowired
     AppService appService;

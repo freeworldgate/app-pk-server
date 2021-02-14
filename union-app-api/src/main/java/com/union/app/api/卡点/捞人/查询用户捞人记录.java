@@ -48,9 +48,6 @@ public class 查询用户捞人记录 {
     DynamicService dynamicService;
 
     @Autowired
-    ApproveService approveService;
-
-    @Autowired
     AppService appService;
 
     @Autowired

@@ -71,7 +71,12 @@ public class RedisMapService implements IRedisService {
         return value;
     }
     public void valueDecr(String key,String mapKey,long value){
-         redisTemplate.opsForHash().increment(key,mapKey,-value);
+
+        long res = redisTemplate.opsForHash().increment(key,mapKey,-value);
+        if(res < 0){
+            redisTemplate.opsForHash().put(key,mapKey,0L);
+        }
+
     }
 
     public <T> List<T> values(String key,Class<T> tClass){

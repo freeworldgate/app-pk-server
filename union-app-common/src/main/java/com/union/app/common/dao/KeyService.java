@@ -198,7 +198,7 @@ public class KeyService {
     private List<PostImage> 查询PostImgsByPk(String pkId) {
         List<PostImage> postImages = new ArrayList<>();
         String postImgs = redisMapService.getStringValue(KeyType.顶置图片.getName(),pkId);
-        if(StringUtils.isBlank(postImgs))
+        if(StringUtils.isBlank(postImgs)|| StringUtils.equalsIgnoreCase("null",postImgs))
         {
             if(redisMapService.getlongValue(KeyType.PK图片总量.getName(),pkId)<1){return postImages;}
             EntityFilterChain filter = EntityFilterChain.newFilterChain(PostImageEntity.class)
@@ -310,17 +310,9 @@ public class KeyService {
     public List<PkEntity> 查询全网排行() {
         List<PkEntity> pkEntities = new ArrayList<>();
         String pks = redisTemplate.opsForValue().get(KeyType.PK热度排行.getName());
-        if(StringUtils.isBlank(pks))
+        if(StringUtils.isBlank(pks)|| StringUtils.equalsIgnoreCase("null",pks.replace("\"","")))
         {
-            EntityFilterChain sortFilter = EntityFilterChain.newFilterChain(PkEntity.class)
-                    .compareFilter("totalImgs",CompareTag.Bigger,0L)
-                    .orderByFilter("totalUsers",OrderTag.DESC)
-                    .pageLimitFilter(1,10);
-            pkEntities = daoService.queryEntities(PkEntity.class,sortFilter);
-            if(!CollectionUtils.isEmpty(pkEntities))
-            {
-                redisTemplate.opsForValue().set(KeyType.PK热度排行.getName(),JSON.toJSONString(pks),1, TimeUnit.HOURS);
-            }
+            pkEntities = 查询全网排行Entities();
         }
         else
         {
@@ -328,6 +320,38 @@ public class KeyService {
             pkEntities.addAll(images);
         }
         return pkEntities;
+    }
+    public synchronized List<PkEntity> 查询全网排行Entities()
+    {
+        List<PkEntity> pkEntities = new ArrayList<>();
+        String pks = redisTemplate.opsForValue().get(KeyType.PK热度排行.getName());
+        if(StringUtils.isBlank(pks)|| StringUtils.equalsIgnoreCase("null",pks.replace("\"","")))
+        {
+            EntityFilterChain sortFilter = EntityFilterChain.newFilterChain(PkEntity.class)
+                    .compareFilter("totalImgs",CompareTag.Bigger,0L)
+                    .andFilter()
+                    .compareFilter("countrySet",CompareTag.Equal,Boolean.TRUE)
+                    .orderByFilter("totalUsers",OrderTag.DESC)
+                    .pageLimitFilter(1,10);
+            pkEntities = daoService.queryEntities(PkEntity.class,sortFilter);
+            if(!CollectionUtils.isEmpty(pkEntities))
+            {
+                redisTemplate.opsForValue().set(KeyType.PK热度排行.getName(),JSON.toJSONString(pkEntities),1, TimeUnit.HOURS);
+            }
+
+        }
+        else
+        {
+            pkEntities = JSON.parseArray(pks,PkEntity.class);
+        }
+
+        return pkEntities;
+    }
+
+
+    public void 刷新全网排行榜()
+    {
+        redisTemplate.delete(KeyType.PK热度排行.getName());
     }
 
     public long getBackUpdate() {
@@ -344,7 +368,7 @@ public class KeyService {
         List<PkTipEntity> tips = new ArrayList<>();
         String tipStr = redisMapService.getStringValue(KeyType.温馨提示.getName(),String.valueOf(type));
 
-        if(StringUtils.isBlank(tipStr))
+        if(StringUtils.isBlank(tipStr) || StringUtils.equalsIgnoreCase("null",tipStr))
         {
             EntityFilterChain cfilter = EntityFilterChain.newFilterChain(PkTipEntity.class)
                     .compareFilter("type",CompareTag.Equal,type);

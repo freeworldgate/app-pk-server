@@ -49,9 +49,6 @@ public class 创建者审核社交群 {
     DynamicService dynamicService;
 
     @Autowired
-    ApproveService approveService;
-
-    @Autowired
     AppService appService;
 
 

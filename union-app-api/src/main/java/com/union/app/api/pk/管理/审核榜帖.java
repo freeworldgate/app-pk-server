@@ -51,8 +51,6 @@ public class 审核榜帖 {
     @Autowired
     DynamicService dynamicService;
 
-    @Autowired
-    ApproveService approveService;
 
     public static Map<String,PkDetail> pkDetailMap = new HashMap<>();
 //

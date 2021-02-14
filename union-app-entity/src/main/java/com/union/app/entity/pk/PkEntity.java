@@ -54,4 +54,12 @@ public class PkEntity {
     private long totalUsers;
 
     private long totalImgs;
+
+
+    private boolean rangeSet;
+    private boolean citySet;
+    private boolean countrySet;
+    private boolean findSet;
+
+
 }

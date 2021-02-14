@@ -47,8 +47,6 @@ public class 用户已激活主题 {
     @Autowired
     DynamicService dynamicService;
 
-    @Autowired
-    ApproveService approveService;
 
 
 }

@@ -68,9 +68,6 @@ public class PostService {
     AppService appService;
 
     @Autowired
-    ApproveService approveService;
-
-    @Autowired
     LocationService locationService;
 
     @Autowired
