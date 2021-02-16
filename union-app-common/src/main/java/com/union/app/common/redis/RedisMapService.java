@@ -2,6 +2,8 @@ package com.union.app.common.redis;
 
 
 import com.alibaba.fastjson.JSON;
+import com.union.app.common.config.AppConfigService;
+import com.union.app.plateform.constant.ConfigItem;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -39,7 +41,7 @@ public class RedisMapService implements IRedisService {
     }
     public void setStringValue(String key,String mapKey,String value){
         redisTemplate.opsForHash().put(key,mapKey,value);
-        redisTemplate.expire(key,100, TimeUnit.MINUTES);
+        redisTemplate.expire(key, AppConfigService.getConfigAsInteger(ConfigItem.RedisMapKey缓存时间), TimeUnit.SECONDS);
     }
 
     public long getlongValue(String key,String mapKey){

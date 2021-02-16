@@ -260,7 +260,7 @@ public class KeyService {
         if(!StringUtils.isBlank(rangeStr))
         {
             return JSON.parseObject(rangeStr,RangeEntity.class);
-//            return null;
+//             return null;
         }
         return null;
 
@@ -336,7 +336,7 @@ public class KeyService {
             pkEntities = daoService.queryEntities(PkEntity.class,sortFilter);
             if(!CollectionUtils.isEmpty(pkEntities))
             {
-                redisTemplate.opsForValue().set(KeyType.PK热度排行.getName(),JSON.toJSONString(pkEntities),1, TimeUnit.HOURS);
+                redisTemplate.opsForValue().set(KeyType.PK热度排行.getName(),JSON.toJSONString(pkEntities),AppConfigService.getConfigAsInteger(ConfigItem.热度排行榜缓存时间), TimeUnit.SECONDS);
             }
 
         }

@@ -43,11 +43,9 @@ public class FindUserEntity {
 
     private String approverId;
 
-
-
     private long createTime;
 
-
+    private String reason;
 
 
 }

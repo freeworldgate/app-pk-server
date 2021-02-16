@@ -62,5 +62,15 @@ public class 审批 {
         return AppResponse.buildResponse(PageAction.执行处理器("success",findUser));
 
     }
+    @RequestMapping(path="/rejectFindUser",method = RequestMethod.GET)
+    @Transactional(rollbackOn = Exception.class)
+    public AppResponse rejectFindUser(@RequestParam("findId") int findId) throws AppException, IOException {
+
+        findService.拒绝(findId);
+        FindUser findUser = findService.查询ByFindId(findId);
+
+        return AppResponse.buildResponse(PageAction.执行处理器("success",findUser));
+
+    }
 
 }

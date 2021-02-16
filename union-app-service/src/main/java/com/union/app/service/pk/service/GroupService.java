@@ -2,6 +2,7 @@ package com.union.app.service.pk.service;
 
 import com.union.app.common.OSS存储.CacheStorage;
 import com.union.app.common.OSS存储.OssStorage;
+import com.union.app.common.config.AppConfigService;
 import com.union.app.common.dao.AppDaoService;
 import com.union.app.common.dao.KeyService;
 import com.union.app.common.redis.RedisSortSetService;
@@ -15,6 +16,7 @@ import com.union.app.entity.pk.社交.GroupStatu;
 import com.union.app.entity.pk.社交.PkGroupEntity;
 import com.union.app.entity.pk.社交.PkGroupMemberEntity;
 import com.union.app.entity.user.UserDynamicEntity;
+import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
@@ -285,7 +287,7 @@ public class GroupService {
     private List<PkGroupEntity> 查询我的群组Entities(String userId,int page) {
         EntityFilterChain filter = EntityFilterChain.newFilterChain(PkGroupEntity.class)
                 .compareFilter("userId", CompareTag.Equal,userId)
-                .pageLimitFilter(page,10)
+                .pageLimitFilter(page, AppConfigService.getConfigAsInteger(ConfigItem.单个PK页面的帖子数))
                 .orderByFilter("lastUpdateTime", OrderTag.DESC);
         List<PkGroupEntity> pkGroupEntities = daoService.queryEntities(PkGroupEntity.class,filter);
         return pkGroupEntities;
@@ -333,7 +335,7 @@ public class GroupService {
     private List<PkGroupMemberEntity> 查询所在群组PkGroupMemberEntity(String userId, int page) {
         EntityFilterChain filter = EntityFilterChain.newFilterChain(PkGroupMemberEntity.class)
                 .compareFilter("userId", CompareTag.Equal,userId)
-                .pageLimitFilter(page,10)
+                .pageLimitFilter(page,AppConfigService.getConfigAsInteger(ConfigItem.单个PK页面的帖子数))
                 .orderByFilter("time", OrderTag.DESC);
         List<PkGroupMemberEntity> pkGroupMemberEntities = daoService.queryEntities(PkGroupMemberEntity.class,filter);
         return pkGroupMemberEntities;

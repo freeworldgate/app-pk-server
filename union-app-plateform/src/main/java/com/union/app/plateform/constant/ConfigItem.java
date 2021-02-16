@@ -55,7 +55,8 @@ public enum ConfigItem {
     邀请和可解锁主题倍数关系("inviteAndRelease", "INVITE_AND_RELAESE", "邀请和可解锁主题倍数关系", "3"),
     普通用户主题是否显示分享按钮和群组按钮("isShowshareButton", "IS_SHOW_SHARE_BUTTON","普通用户主题是否显示分享按钮", "false"),
     单个PK的页面缓存数量("pkCachePost", "PK_CACHE_POST", "单个PK的页面缓存数量", "10"),
-    缓存时间("postCacheTime", "POST_CACHE_TIME", "缓存时间(时间秒)", "60"),
+    RedisMapKey缓存时间("redisMapKeyCacheTime", "REDIS_MAP_KEY_CACHE_TIME", "缓存时间(时间秒)", "60"),
+    热度排行榜缓存时间("hotSortCacheTime", "HOT_SORT_CACHE_TIME", "热度排行榜缓存时间(时间秒)", "60"),
     PK缓存数量("pkCacheNumbers", "PK_CACHE_NUMBERS", "PK缓存数量", "100"),
     首页图片选择榜主图册("imgSelectPkCreator", "IS_PK_CREATOR_IMG", "首页图片选择榜主图册", "true"),
     信息展示页面用户数量("InfoShowUserNum", "USER_NUM_INFO_SHOW","信息展示页面用户数量" , "5"),
@@ -65,9 +66,9 @@ public enum ConfigItem {
     卡点默认缩放等级("defaultScale", "DEFAULT_SCALE", "默认缩放等级", "16"),
     顶置最少时间("topPostMinLength", "MIN_LENGTH_TOP_POST", "顶置最少时间", "1"),
     创建卡点范围("maxPkLength", "MAX_PK_LENGTH_CREATE", "创建卡点范围(公里)","20" ),
-    PK同步时间间隔("maxPkSyncTime", "MAX_PK_SYNC_TIME_LENGTH", "PK同步人数时间间隔(单位秒)","100" ),
     打捞开关("findSwitch","FIND_SWITCH", "打捞开关","false" ),
-    卡点创建收费("pkNeedPay", "PK_NEED_PAY", "卡点收费开关", "false");
+    卡点创建收费("pkNeedPay", "PK_NEED_PAY", "卡点收费开关", "false"),
+    卡点打捞卡数量("pkFindNum", "PK_FIND_NUM", "卡点打捞卡数量","5" );
 
 
 

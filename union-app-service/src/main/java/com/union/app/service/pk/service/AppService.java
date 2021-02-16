@@ -144,6 +144,37 @@ public class AppService {
         }
         else if(type == 3){
             filter = EntityFilterChain.newFilterChain(PkEntity.class)
+                    .compareFilter("findSet",CompareTag.Equal,Boolean.TRUE)
+                    .pageLimitFilter(page,10)
+                    .orderByFilter("totalUsers",OrderTag.DESC);
+        }
+        else if(type == 4){
+            filter = EntityFilterChain.newFilterChain(PkEntity.class)
+                    .compareFilter("findSet",CompareTag.Equal,Boolean.FALSE)
+                    .pageLimitFilter(page,10)
+                    .orderByFilter("totalUsers",OrderTag.DESC);
+        }
+        else if(type == 5){
+            filter = EntityFilterChain.newFilterChain(PkEntity.class)
+                    .compareFilter("rangeSet",CompareTag.Equal,Boolean.TRUE)
+                    .pageLimitFilter(page,10)
+                    .orderByFilter("time",OrderTag.DESC);
+        }
+        else if(type == 6){
+            filter = EntityFilterChain.newFilterChain(PkEntity.class)
+                    .compareFilter("rangeSet",CompareTag.Equal,Boolean.FALSE)
+                    .pageLimitFilter(page,10)
+                    .orderByFilter("time",OrderTag.DESC);
+        }
+        else if(type == 7){
+            filter = EntityFilterChain.newFilterChain(PkEntity.class)
+                    .compareFilter("findSet",CompareTag.Equal,Boolean.TRUE)
+                    .pageLimitFilter(page,10)
+                    .orderByFilter("time",OrderTag.DESC);
+        }
+        else if(type == 8){
+            filter = EntityFilterChain.newFilterChain(PkEntity.class)
+                    .compareFilter("findSet",CompareTag.Equal,Boolean.FALSE)
                     .pageLimitFilter(page,10)
                     .orderByFilter("time",OrderTag.DESC);
         }
@@ -371,6 +402,7 @@ public class AppService {
 
     public List<DataSet> 查询当前设置页面() {
         List<DataSet> dataSets = new ArrayList<>();
+
         for(ConfigItem configItem:ConfigItem.values())
         {
             ConfigEntity configEntity = 查询参数(configItem.getTag());
@@ -381,15 +413,6 @@ public class AppService {
         return dataSets;
     }
 
-
-    public PkButton 显示按钮(PkButtonType pkButtonType) {
-//        if(pkButtonType == PkButtonType.榜帖){return new PkButton(PkButtonType.榜帖.getIcon(),PkButtonType.榜帖.getName(),PkButtonType.榜帖.getLinkMethod());}
-//        if(pkButtonType == PkButtonType.审核){return new PkButton(PkButtonType.审核.getIcon(),PkButtonType.审核.getName(),PkButtonType.审核.getLinkMethod());}
-//        if(pkButtonType == PkButtonType.群组){return new PkButton(PkButtonType.群组.getIcon(),PkButtonType.群组.getName(),PkButtonType.群组.getLinkMethod());}
-//        if(pkButtonType == PkButtonType.审核中){return new PkButton(PkButtonType.审核中.getIcon(),PkButtonType.审核中.getName(),PkButtonType.审核中.getLinkMethod());}
-        return new PkButton(pkButtonType.getIcon(),pkButtonType.getName(),pkButtonType.getLinkMethod(),pkButtonType.getStyle(),pkButtonType.getType());
-
-    }
 
 
 

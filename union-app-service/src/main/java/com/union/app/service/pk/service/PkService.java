@@ -155,7 +155,7 @@ public class PkService {
                 .compareFilter("pkId",CompareTag.Equal,pkId)
                 .andFilter()
                 .compareFilter("statu",CompareTag.NotEqual,PostStatu.隐藏)
-                .pageLimitFilter(page,10)
+                .pageLimitFilter(page,AppConfigService.getConfigAsInteger(ConfigItem.单个PK页面的帖子数))
                 .orderByFilter("time",OrderTag.DESC);
 
         List<PostEntity> entities = daoService.queryEntities(PostEntity.class,filter);

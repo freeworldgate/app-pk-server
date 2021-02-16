@@ -12,7 +12,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @ToString
-public class FindUser implements Serializable{
+public class FindUser implements Serializable {
 
     private int findId;
 
@@ -44,4 +44,6 @@ public class FindUser implements Serializable{
 
     private String startTime;
     private String endTime;
+
+    private String reason;
 }
