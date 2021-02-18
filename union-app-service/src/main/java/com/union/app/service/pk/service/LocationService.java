@@ -22,7 +22,6 @@ import com.union.app.entity.pk.PkImageEntity;
 import com.union.app.entity.pk.PostEntity;
 import com.union.app.entity.pk.PostStatu;
 import com.union.app.entity.pk.kadian.UserFollowEntity;
-import com.union.app.entity.pk.城市.CityEntity;
 import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.PageAction;
@@ -161,7 +160,7 @@ public class LocationService {
         pkEntity.setUserId(createLocation.getUserId());
         pkEntity.setLatitude(createLocation.getLatitude());
         pkEntity.setLongitude(createLocation.getLongitude());
-        pkEntity.setCityCode(locationService.查询城市码(createLocation.getCity()));
+        pkEntity.setCityCode(appService.查询城市码(createLocation.getCity()));
 
 
         pkEntity.setType(createLocation.getType());
@@ -176,10 +175,9 @@ public class LocationService {
         pkEntity.setTotalUsers(0);
         pkEntity.setTime(System.currentTimeMillis());
         pkEntity.setRangeSet(Boolean.FALSE);
-
         pkEntity.setCitySet(Boolean.FALSE);
         pkEntity.setCountrySet(Boolean.FALSE);
-
+        pkEntity.setPkLock(Boolean.FALSE);
         pkEntity.setFindSet(AppConfigService.getConfigAsBoolean(ConfigItem.打捞开关));
 
 
@@ -190,7 +188,8 @@ public class LocationService {
 
 
 
-
+        keyService.城市PK数量加一(pkEntity.getCityCode());
+        keyService.通知同步城市卡点数量(pkEntity.getCityCode());
 
         return pkId;
     }
@@ -246,7 +245,7 @@ public class LocationService {
         String pkId = pk.getPkId();
         PkDetail pkDetail = new PkDetail();
         pkDetail.setPkId(pk.getPkId());
-        pkDetail.setCity(this.getCity(pk.getCityCode()));
+        pkDetail.setCity(appService.getCity(pk.getCityCode()));
         pkDetail.setCodeUrl(pk.getCodeUrl());
         pkDetail.setSign(pk.getSign());
         pkDetail.setLatitude(pk.getLatitude());
@@ -286,7 +285,7 @@ public class LocationService {
         if(ObjectUtils.isEmpty(pk)){return null;}
         PkDetail pkDetail = new PkDetail();
         pkDetail.setPkId(pk.getPkId());
-        pkDetail.setCity(this.getCity(pk.getCityCode()));
+        pkDetail.setCity(appService.getCity(pk.getCityCode()));
         pkDetail.setCodeUrl(pk.getCodeUrl());
         pkDetail.setSign(pk.getSign());
         pkDetail.setLatitude(pk.getLatitude());
@@ -308,6 +307,7 @@ public class LocationService {
         pkDetail.setCitySet(pk.isCitySet());
         pkDetail.setFindSet(pk.isFindSet());
         pkDetail.setRangeLock(pk.isRangeLock());
+        pkDetail.setLock(pk.isPkLock());
         return pkDetail;
     }
 
@@ -796,29 +796,19 @@ public class LocationService {
     }
 
 
-    private String getCity(int cityCode) {
-        CityEntity cityEntity = keyService.查询城市名称(cityCode);
-        return ObjectUtils.isEmpty(cityEntity)?"":cityEntity.getCityName();
-
+    public void 卡点状态检查(String pkId) throws AppException {
+        PkEntity pkEntity = locationService.querySinglePkEntity(pkId);
+        if(pkEntity.isPkLock()){throw AppException.buildException(PageAction.信息反馈框("卡点已锁定","卡点已锁定!"));}
     }
-    private int 查询城市码(String city) {
-        //获取城市码;
-        EntityFilterChain cfilter = EntityFilterChain.newFilterChain(CityEntity.class)
-                .compareFilter("cityName",CompareTag.Equal,city.trim());
-        CityEntity cityEntity = daoService.querySingleEntity(CityEntity.class,cfilter);
-        if(ObjectUtils.isEmpty(cityEntity))
+
+    public void 卡点隐藏打卡信息检查(String pkId) throws AppException {
+        long hiddenNum = keyService.查询隐藏打卡信息(pkId);
+        if(hiddenNum >= AppConfigService.getConfigAsInteger(ConfigItem.隐藏打卡最大数量))
         {
-            cityEntity = new CityEntity();
-            cityEntity.setCityCode(IdGenerator.getCityCode());
-            cityEntity.setCityName(city.trim());
-            daoService.insertEntity(cityEntity);
+            throw AppException.buildException(PageAction.信息反馈框("卡点已锁定","隐藏打卡已超过最大值!"));
         }
-        return cityEntity.getCityCode();
+
     }
-
-
-
-
 
 
 }

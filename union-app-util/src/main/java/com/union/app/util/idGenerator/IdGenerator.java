@@ -2,7 +2,9 @@ package com.union.app.util.idGenerator;
 
 import org.apache.commons.lang.RandomStringUtils;
 
+import java.security.SecureRandom;
 import java.util.Random;
+import java.util.RandomAccess;
 import java.util.UUID;
 
 public class IdGenerator {
@@ -80,7 +82,7 @@ public class IdGenerator {
     public static String getGroupId() {return UUID.randomUUID().toString(); }
 
     public static int getCityCode() {
-        return new Random(1000000).nextInt();
+        return new SecureRandom().nextInt(1000000);
 
 
     }

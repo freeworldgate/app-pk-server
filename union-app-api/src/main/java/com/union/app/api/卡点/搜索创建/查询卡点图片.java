@@ -2,7 +2,6 @@ package com.union.app.api.卡点.搜索创建;
 
 import com.union.app.domain.pk.PkImage;
 import com.union.app.domain.user.User;
-import com.union.app.entity.pk.PkEntity;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.DataSet;
@@ -133,6 +132,8 @@ public class 查询卡点图片 {
     @RequestMapping(path="/setPkBack",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
     public AppResponse setPkBack(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId,@RequestParam("imageId") String imageId) throws AppException, IOException, InterruptedException {
+        locationService.卡点状态检查(pkId);
+
         //创建者
         locationService.设置卡点背景图片(pkId,userId,imageId);
         return AppResponse.buildResponse(PageAction.执行处理器("success",""));

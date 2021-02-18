@@ -23,7 +23,8 @@ public enum ConfigItem {
     卡点创建收费("pkNeedPay", "PK_NEED_PAY", "卡点收费开关", "false"),
     卡点打捞卡数量("pkFindNum", "PK_FIND_NUM", "卡点打捞卡数量","5" ),
     修改Pk打卡范围时间间隔("updatePkRangeTimeLength", "UPDATE_PK_RANGE_TIMELENGTH", "修改Pk打卡范围时间间隔", "24"),
-    顶置打卡周期开关("topPostSwitch", "TOP_POST_SWITCH", "顶置打卡周期开关", "false");
+    顶置打卡周期开关("topPostSwitch", "TOP_POST_SWITCH", "顶置打卡周期开关", "false"),
+    隐藏打卡最大数量("maxHiddenPostNum", "MAX_HIDDEN_POST_NUM", "隐藏打卡最大数量","10" );
 
 
 

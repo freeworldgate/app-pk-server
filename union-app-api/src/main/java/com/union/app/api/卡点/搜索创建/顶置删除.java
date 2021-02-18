@@ -1,10 +1,9 @@
 package com.union.app.api.卡点.搜索创建;
 
 import com.union.app.common.OSS存储.OssStorage;
-import com.union.app.common.config.AppConfigService;
+import com.union.app.common.dao.KeyService;
 import com.union.app.domain.pk.Post;
 import com.union.app.entity.pk.*;
-import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.PageAction;
@@ -45,7 +44,7 @@ public class 顶置删除 {
     UserService userService;
 
     @Autowired
-    OssStorage ossStorage;
+    KeyService keyService;
 
     @Autowired
     PostService postService;
@@ -65,6 +64,8 @@ public class 顶置删除 {
     @RequestMapping(path="/topPost",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
     public AppResponse 顶置(@RequestParam("userId") String userId,@RequestParam("pkId") String pkId,@RequestParam("postId") String postId) throws AppException, IOException {
+
+        locationService.卡点状态检查(pkId);
 
 
 
@@ -146,6 +147,11 @@ public class 顶置删除 {
     @Transactional(rollbackOn = Exception.class)
     public AppResponse 隐藏(@RequestParam("userId") String userId,@RequestParam("pkId") String pkId,@RequestParam("postId") String postId) throws AppException, IOException {
 
+        locationService.卡点状态检查(pkId);
+
+        locationService.卡点隐藏打卡信息检查(pkId);
+
+
         PostEntity postEntity = postService.查询帖子ById(postId);
 
 
@@ -154,7 +160,7 @@ public class 顶置删除 {
         {
             postService.隐藏打卡信息(postId);
 //            locationService.打卡次数减一(pkId,userId);
-
+            keyService.隐藏数量加1(postEntity.getPkId());
             return AppResponse.buildResponse(PageAction.执行处理器("success",""));
         }
         else
@@ -167,15 +173,17 @@ public class 顶置删除 {
     @Transactional(rollbackOn = Exception.class)
     public AppResponse removeFromHiddenPosts(@RequestParam("userId") String userId,@RequestParam("postId") String postId) throws AppException, IOException {
 
+
         PostEntity postEntity = postService.查询帖子ById(postId);
 
+        locationService.卡点状态检查(postEntity.getPkId());
 
 
         if(locationService.isPkCreator(postEntity.getPkId(),userId))
         {
             postService.移除隐藏打卡信息(postId);
 //            locationService.打卡次数加一(postEntity.getPkId(),userId);
-
+            keyService.隐藏数量减1(postEntity.getPkId());
             return AppResponse.buildResponse(PageAction.执行处理器("success",""));
         }
         else

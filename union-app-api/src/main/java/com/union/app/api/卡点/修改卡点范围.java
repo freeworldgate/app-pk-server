@@ -59,8 +59,9 @@ public class 修改卡点范围 {
     @Transactional(rollbackOn = Exception.class)
     public AppResponse setPkRange(@RequestParam("radius") int radius,@RequestParam("pkId") String pkId,@RequestParam("userId") String userId) throws AppException {
 
-        locationService.updatePkRange(pkId);
+        locationService.卡点状态检查(pkId);
 
+        locationService.updatePkRange(pkId);
 
         if(locationService.isPkCreator(pkId,userId))
         {

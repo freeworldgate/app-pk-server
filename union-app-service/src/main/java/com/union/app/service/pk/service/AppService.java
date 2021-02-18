@@ -5,19 +5,18 @@ import com.union.app.common.OSS存储.CacheStorage;
 import com.union.app.common.OSS存储.OssStorage;
 import com.union.app.common.config.AppConfigService;
 import com.union.app.common.dao.KeyService;
-import com.union.app.common.微信.WeChatUtil;
 import com.union.app.common.dao.AppDaoService;
 import com.union.app.dao.spi.filter.CompareTag;
 import com.union.app.dao.spi.filter.EntityFilterChain;
 import com.union.app.dao.spi.filter.OrderTag;
 import com.union.app.domain.pk.*;
-import com.union.app.domain.pk.apply.KeyNameValue;
 import com.union.app.domain.pk.cashier.PkCashier;
 import com.union.app.domain.pk.捞人.ScaleRange;
 import com.union.app.domain.user.User;
 import com.union.app.entity.pk.*;
 import com.union.app.entity.pk.kadian.label.ActiveTipEntity;
 import com.union.app.entity.pk.kadian.label.RangeEntity;
+import com.union.app.entity.pk.city.CityEntity;
 import com.union.app.entity.user.UserEntity;
 import com.union.app.entity.user.support.UserType;
 import com.union.app.entity.配置表.ColumSwitch;
@@ -33,7 +32,7 @@ import com.union.app.common.redis.RedisSortSetService;
 import com.union.app.service.pk.service.pkuser.PkDynamicService;
 import com.union.app.service.pk.service.pkuser.UserDynamicService;
 import com.union.app.service.user.UserService;
-import com.union.app.util.time.TimeUtils;
+import com.union.app.util.idGenerator.IdGenerator;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,22 +75,10 @@ public class AppService {
     UserService userService;
 
     @Autowired
-    RedisStringUtil redisStringUtil;
-
-    @Autowired
-    OssStorage ossStorage;
-
-    @Autowired
-    CacheStorage cacheStorage;
-
-    @Autowired
-    RedisSortSetService redisSortSetService;
+    LockService lockService;
 
     @Autowired
     LocationService locationService;
-
-    @Autowired
-    PkDynamicService pkDynamicService;
 
     @Autowired
     UserDynamicService userDynamicService;
@@ -118,10 +105,10 @@ public class AppService {
 
     }
 
-    public List<PkDetail> 查询卡点排名(int page,int type) {
+    public List<PkDetail> 查询卡点排名(int page,int type,int cityCode) {
 
         List<PkDetail> pkDetails = new ArrayList<>();
-        List<PkEntity>  invites = queryPkSorts(page,type);
+        List<PkEntity>  invites = queryPkSorts(page,type,cityCode);
         for(PkEntity pkEntity:invites)
         {
             PkDetail pkDetail = locationService.querySinglePkWidthList(pkEntity);
@@ -131,69 +118,201 @@ public class AppService {
         return pkDetails;
     }
 
-    private List<PkEntity> queryPkSorts(int page,int type) {
+    private List<PkEntity> queryPkSorts(int page,int type,int cityCode) {
 
         EntityFilterChain filter = null;
         if(type == 1)
         {
-            filter = EntityFilterChain.newFilterChain(PkEntity.class)
-                    .compareFilter("rangeSet",CompareTag.Equal,Boolean.TRUE)
-                    .pageLimitFilter(page,10)
-                    .orderByFilter("totalUsers",OrderTag.DESC);
+            if(cityCode>0){
+                filter = EntityFilterChain.newFilterChain(PkEntity.class)
+                        .compareFilter("rangeSet",CompareTag.Equal,Boolean.TRUE)
+                        .andFilter()
+                        .compareFilter("cityCode",CompareTag.Equal,cityCode)
+                        .pageLimitFilter(page,10)
+                        .orderByFilter("totalUsers",OrderTag.DESC);
+            }else{
+                filter = EntityFilterChain.newFilterChain(PkEntity.class)
+                        .compareFilter("rangeSet",CompareTag.Equal,Boolean.TRUE)
+                        .pageLimitFilter(page,10)
+                        .orderByFilter("totalUsers",OrderTag.DESC);
+            }
+
         }
         else if(type == 2){
-            filter = EntityFilterChain.newFilterChain(PkEntity.class)
-                    .compareFilter("rangeSet",CompareTag.Equal,Boolean.FALSE)
-                    .pageLimitFilter(page,10)
-                    .orderByFilter("totalUsers",OrderTag.DESC);
+            if(cityCode>0){
+                filter = EntityFilterChain.newFilterChain(PkEntity.class)
+                        .compareFilter("rangeSet",CompareTag.Equal,Boolean.FALSE)
+                        .andFilter()
+                        .compareFilter("cityCode",CompareTag.Equal,cityCode)
+                        .pageLimitFilter(page,10)
+                        .orderByFilter("totalUsers",OrderTag.DESC);
+            }else{
+                filter = EntityFilterChain.newFilterChain(PkEntity.class)
+                        .compareFilter("rangeSet",CompareTag.Equal,Boolean.FALSE)
+                        .pageLimitFilter(page,10)
+                        .orderByFilter("totalUsers",OrderTag.DESC);
+            }
+
         }
         else if(type == 3){
-            filter = EntityFilterChain.newFilterChain(PkEntity.class)
-                    .compareFilter("findSet",CompareTag.Equal,Boolean.TRUE)
-                    .pageLimitFilter(page,10)
-                    .orderByFilter("totalUsers",OrderTag.DESC);
+            if(cityCode>0){
+                filter = EntityFilterChain.newFilterChain(PkEntity.class)
+                        .compareFilter("findSet",CompareTag.Equal,Boolean.TRUE)
+                        .andFilter()
+                        .compareFilter("cityCode",CompareTag.Equal,cityCode)
+                        .pageLimitFilter(page,10)
+                        .orderByFilter("totalUsers",OrderTag.DESC);
+            }else{
+                filter = EntityFilterChain.newFilterChain(PkEntity.class)
+                        .compareFilter("findSet",CompareTag.Equal,Boolean.TRUE)
+                        .pageLimitFilter(page,10)
+                        .orderByFilter("totalUsers",OrderTag.DESC);
+            }
+
         }
         else if(type == 4){
-            filter = EntityFilterChain.newFilterChain(PkEntity.class)
-                    .compareFilter("findSet",CompareTag.Equal,Boolean.FALSE)
-                    .pageLimitFilter(page,10)
-                    .orderByFilter("totalUsers",OrderTag.DESC);
+            if(cityCode>0){
+                filter = EntityFilterChain.newFilterChain(PkEntity.class)
+                        .compareFilter("findSet",CompareTag.Equal,Boolean.FALSE)
+                        .andFilter()
+                        .compareFilter("cityCode",CompareTag.Equal,cityCode)
+                        .pageLimitFilter(page,10)
+                        .orderByFilter("totalUsers",OrderTag.DESC);
+            }else{
+                filter = EntityFilterChain.newFilterChain(PkEntity.class)
+                        .compareFilter("findSet",CompareTag.Equal,Boolean.FALSE)
+                        .pageLimitFilter(page,10)
+                        .orderByFilter("totalUsers",OrderTag.DESC);
+            }
+
         }
         else if(type == 5){
-            filter = EntityFilterChain.newFilterChain(PkEntity.class)
-                    .compareFilter("rangeSet",CompareTag.Equal,Boolean.TRUE)
-                    .pageLimitFilter(page,10)
-                    .orderByFilter("time",OrderTag.DESC);
+            if(cityCode>0){
+                filter = EntityFilterChain.newFilterChain(PkEntity.class)
+                        .compareFilter("rangeSet",CompareTag.Equal,Boolean.TRUE)
+                        .andFilter()
+                        .compareFilter("cityCode",CompareTag.Equal,cityCode)
+                        .pageLimitFilter(page,10)
+                        .orderByFilter("time",OrderTag.DESC);
+            }else{
+                filter = EntityFilterChain.newFilterChain(PkEntity.class)
+                        .compareFilter("rangeSet",CompareTag.Equal,Boolean.TRUE)
+                        .pageLimitFilter(page,10)
+                        .orderByFilter("time",OrderTag.DESC);
+            }
+
         }
         else if(type == 6){
-            filter = EntityFilterChain.newFilterChain(PkEntity.class)
-                    .compareFilter("rangeSet",CompareTag.Equal,Boolean.FALSE)
-                    .pageLimitFilter(page,10)
-                    .orderByFilter("time",OrderTag.DESC);
+            if(cityCode>0){
+                filter = EntityFilterChain.newFilterChain(PkEntity.class)
+                        .compareFilter("rangeSet",CompareTag.Equal,Boolean.FALSE)
+                        .andFilter()
+                        .compareFilter("cityCode",CompareTag.Equal,cityCode)
+                        .pageLimitFilter(page,10)
+                        .orderByFilter("time",OrderTag.DESC);
+            }else{
+                filter = EntityFilterChain.newFilterChain(PkEntity.class)
+                        .compareFilter("rangeSet",CompareTag.Equal,Boolean.FALSE)
+                        .pageLimitFilter(page,10)
+                        .orderByFilter("time",OrderTag.DESC);
+            }
+
         }
         else if(type == 7){
-            filter = EntityFilterChain.newFilterChain(PkEntity.class)
-                    .compareFilter("findSet",CompareTag.Equal,Boolean.TRUE)
-                    .pageLimitFilter(page,10)
-                    .orderByFilter("time",OrderTag.DESC);
+            if(cityCode>0){
+                filter = EntityFilterChain.newFilterChain(PkEntity.class)
+                        .compareFilter("findSet",CompareTag.Equal,Boolean.TRUE)
+                        .andFilter()
+                        .compareFilter("cityCode",CompareTag.Equal,cityCode)
+                        .pageLimitFilter(page,10)
+                        .orderByFilter("time",OrderTag.DESC);
+            }else{
+                filter = EntityFilterChain.newFilterChain(PkEntity.class)
+                        .compareFilter("findSet",CompareTag.Equal,Boolean.TRUE)
+                        .pageLimitFilter(page,10)
+                        .orderByFilter("time",OrderTag.DESC);
+            }
+
         }
         else if(type == 8){
-            filter = EntityFilterChain.newFilterChain(PkEntity.class)
-                    .compareFilter("findSet",CompareTag.Equal,Boolean.FALSE)
-                    .pageLimitFilter(page,10)
-                    .orderByFilter("time",OrderTag.DESC);
+            if(cityCode>0){
+                filter = EntityFilterChain.newFilterChain(PkEntity.class)
+                        .compareFilter("findSet",CompareTag.Equal,Boolean.FALSE)
+                        .andFilter()
+                        .compareFilter("cityCode",CompareTag.Equal,cityCode)
+                        .pageLimitFilter(page,10)
+                        .orderByFilter("time",OrderTag.DESC);
+            }else{
+                filter = EntityFilterChain.newFilterChain(PkEntity.class)
+                        .compareFilter("findSet",CompareTag.Equal,Boolean.FALSE)
+                        .pageLimitFilter(page,10)
+                        .orderByFilter("time",OrderTag.DESC);
+            }
+
         }
         else if(type == 9){
-            filter = EntityFilterChain.newFilterChain(PkEntity.class)
-                    .compareFilter("countrySet",CompareTag.Equal,Boolean.TRUE)
-                    .pageLimitFilter(page,10)
-                    .orderByFilter("totalUsers",OrderTag.DESC);
+            if(cityCode>0){
+                filter = EntityFilterChain.newFilterChain(PkEntity.class)
+                        .compareFilter("countrySet",CompareTag.Equal,Boolean.TRUE)
+                        .andFilter()
+                        .compareFilter("cityCode",CompareTag.Equal,cityCode)
+                        .pageLimitFilter(page,10)
+                        .orderByFilter("totalUsers",OrderTag.DESC);
+            }else{
+                filter = EntityFilterChain.newFilterChain(PkEntity.class)
+                        .compareFilter("countrySet",CompareTag.Equal,Boolean.TRUE)
+                        .pageLimitFilter(page,10)
+                        .orderByFilter("totalUsers",OrderTag.DESC);
+            }
+
         }
         else if(type == 10){
-            filter = EntityFilterChain.newFilterChain(PkEntity.class)
-                    .compareFilter("citySet",CompareTag.Equal,Boolean.TRUE)
-                    .pageLimitFilter(page,10)
-                    .orderByFilter("totalUsers",OrderTag.DESC);
+            if(cityCode>0){
+                filter = EntityFilterChain.newFilterChain(PkEntity.class)
+                        .compareFilter("citySet",CompareTag.Equal,Boolean.TRUE)
+                        .andFilter()
+                        .compareFilter("cityCode",CompareTag.Equal,cityCode)
+                        .pageLimitFilter(page,10)
+                        .orderByFilter("totalUsers",OrderTag.DESC);
+            }else{
+                filter = EntityFilterChain.newFilterChain(PkEntity.class)
+                        .compareFilter("citySet",CompareTag.Equal,Boolean.TRUE)
+                        .pageLimitFilter(page,10)
+                        .orderByFilter("totalUsers",OrderTag.DESC);
+            }
+
+        }
+        else if(type == 11){
+            if(cityCode>0){
+                filter = EntityFilterChain.newFilterChain(PkEntity.class)
+                        .compareFilter("pkLock",CompareTag.Equal,Boolean.TRUE)
+                        .andFilter()
+                        .compareFilter("cityCode",CompareTag.Equal,cityCode)
+                        .pageLimitFilter(page,10)
+                        .orderByFilter("totalUsers",OrderTag.DESC);
+            }else{
+                filter = EntityFilterChain.newFilterChain(PkEntity.class)
+                        .compareFilter("pkLock",CompareTag.Equal,Boolean.TRUE)
+                        .pageLimitFilter(page,10)
+                        .orderByFilter("totalUsers",OrderTag.DESC);
+            }
+
+        }
+        else if(type == 12){
+            if(cityCode>0){
+                filter = EntityFilterChain.newFilterChain(PkEntity.class)
+                        .compareFilter("pkLock",CompareTag.Equal,Boolean.FALSE)
+                        .andFilter()
+                        .compareFilter("cityCode",CompareTag.Equal,cityCode)
+                        .pageLimitFilter(page,10)
+                        .orderByFilter("totalUsers",OrderTag.DESC);
+            }else{
+                filter = EntityFilterChain.newFilterChain(PkEntity.class)
+                        .compareFilter("pkLock",CompareTag.Equal,Boolean.FALSE)
+                        .pageLimitFilter(page,10)
+                        .orderByFilter("totalUsers",OrderTag.DESC);
+            }
+
         }
         else
         {
@@ -938,10 +1057,53 @@ public class AppService {
         {
             map.put("findSet",!pkEntity.isFindSet());
         }
+        else if(type == 4)
+        {
+            map.put("pkLock",!pkEntity.isPkLock());
+        }
         else
         {}
         if(!map.isEmpty()){
             daoService.updateColumById(PkEntity.class,"pkId",pkId,map);
         }
     }
+
+    public List<CityEntity> 查询所有城市() {
+        EntityFilterChain cfilter = EntityFilterChain.newFilterChain(CityEntity.class)
+                .orderByFilter("pks",OrderTag.DESC);
+        List<CityEntity> cityEntities = daoService.queryEntities(CityEntity.class,cfilter);
+        return cityEntities;
+    }
+
+    public String getCity(int cityCode) {
+        CityEntity cityEntity = keyService.查询城市名称(cityCode);
+        return ObjectUtils.isEmpty(cityEntity)?"":cityEntity.getCityName();
+
+
+    }
+    public int 查询城市码(String city) throws AppException {
+        //获取城市码;
+        if(lockService.getLock(city.trim(), LockType.城市锁)){
+            EntityFilterChain cfilter = EntityFilterChain.newFilterChain(CityEntity.class)
+                    .compareFilter("cityName",CompareTag.Equal,city.trim());
+            CityEntity cityEntity = daoService.querySingleEntity(CityEntity.class,cfilter);
+            if(ObjectUtils.isEmpty(cityEntity))
+            {
+                cityEntity = new CityEntity();
+                cityEntity.setCityCode(IdGenerator.getCityCode());
+                cityEntity.setCityName(city.trim());
+                cityEntity.setPks(0);
+                daoService.insertEntity(cityEntity);
+            }
+            lockService.releaseLock(city.trim(),LockType.城市锁);
+            return cityEntity.getCityCode();
+        }
+        else
+        {
+            throw AppException.buildException(PageAction.信息反馈框("内部错误","内部错误，请稍后再试!"));
+        }
+
+
+    }
+
 }

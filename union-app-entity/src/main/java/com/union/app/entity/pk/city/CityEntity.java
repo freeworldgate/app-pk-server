@@ -1,4 +1,4 @@
-package com.union.app.entity.pk.城市;
+package com.union.app.entity.pk.city;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -19,6 +19,8 @@ public class CityEntity {
     private int cityCode;
 
     private String cityName;
+
+    private long pks;
 
 
 

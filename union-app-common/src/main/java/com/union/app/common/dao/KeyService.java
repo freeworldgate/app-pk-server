@@ -13,7 +13,7 @@ import com.union.app.entity.pk.PkEntity;
 import com.union.app.entity.pk.PkTipEntity;
 import com.union.app.entity.pk.PostImageEntity;
 import com.union.app.entity.pk.kadian.label.RangeEntity;
-import com.union.app.entity.pk.城市.CityEntity;
+import com.union.app.entity.pk.city.CityEntity;
 import com.union.app.entity.user.UserEntity;
 import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.storgae.KeyType;
@@ -250,12 +250,19 @@ public class KeyService {
     }
 
     public void 通知同步图片和用户数量(String pkId) {
-        redisTemplate.opsForList().leftPush(KeyType.卡点待同步队列.getName(),pkId);
+        redisTemplate.opsForSet().add(KeyType.卡点待同步队列.getName(),pkId);
     }
 
-    public String 获取待同步图片和用户数量的卡点() {
-        return redisTemplate.opsForList().rightPop(KeyType.卡点待同步队列.getName());
-    }
+
+    public String 获取待同步图片和用户数量的卡点() { return redisTemplate.opsForSet().pop(KeyType.卡点待同步队列.getName()); }
+
+
+
+    public void 通知同步城市卡点数量(int cityCode) { redisTemplate.opsForSet().add(KeyType.城市卡点数量同步队列.getName(),String.valueOf(cityCode)); }
+
+    public String 获取待同步卡点数量的城市() { return redisTemplate.opsForSet().pop(KeyType.城市卡点数量同步队列.getName()); }
+
+
 
     public void 保存缩放偏移缓存(RangeEntity rangeEntity) {
 
@@ -424,5 +431,22 @@ public class KeyService {
             cityEntity = JSON.parseObject(cityStr,CityEntity.class);
         }
         return cityEntity;
+    }
+
+    public long 查询隐藏打卡信息(String pkId) {
+
+        return redisMapService.getlongValue(KeyType.卡点已隐藏打卡数量.getName(),pkId);
+
+    }
+    public void 隐藏数量加1(String pkId) {
+        redisMapService.valueIncr(KeyType.卡点已隐藏打卡数量.getName(),pkId);
+    }
+
+    public void 隐藏数量减1(String pkId) {
+        redisMapService.valueDecr(KeyType.卡点已隐藏打卡数量.getName(),pkId);
+    }
+
+    public void 城市PK数量加一(int cityCode) {
+        redisMapService.valueIncr(KeyType.城市卡点数量.getName(),String.valueOf(cityCode));
     }
 }

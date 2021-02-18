@@ -34,7 +34,10 @@ public enum  KeyType {
 
     卡点待同步队列("PK_DATA_SYNC_SET"),
 
-    PK热度排行("PK_HOT_SORT_ALL_LOCATE");
+    PK热度排行("PK_HOT_SORT_ALL_LOCATE"),
+    卡点已隐藏打卡数量("PK_HIDDEN_POST_NUM"),
+    城市卡点数量("CITY_PK_NUM"),
+    城市卡点数量同步队列("CITY_PK_NUM_SYNC");
 
 
 

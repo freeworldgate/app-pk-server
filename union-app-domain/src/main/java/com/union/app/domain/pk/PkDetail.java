@@ -68,5 +68,6 @@ public class PkDetail implements Serializable{
     private boolean countrySet;
     private boolean findSet;
     private boolean rangeLock;
+    private boolean lock;
 
 }

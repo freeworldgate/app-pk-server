@@ -4,7 +4,8 @@ public enum LockType {
 
     群组锁("userGroup"),
     用户粉丝数量("userFans"),
-    创建卡点锁("BuildPk");
+    创建卡点锁("BuildPk"),
+    城市锁("CityLock");
 
 
     private String name;

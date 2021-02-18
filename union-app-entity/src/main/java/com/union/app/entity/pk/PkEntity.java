@@ -64,6 +64,7 @@ public class PkEntity {
     private boolean citySet;
     private boolean countrySet;
     private boolean findSet;
+    private boolean pkLock;
 
 
 }

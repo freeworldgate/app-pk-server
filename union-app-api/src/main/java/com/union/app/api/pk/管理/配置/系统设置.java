@@ -1,4 +1,4 @@
-package com.union.app.api.系统设置;
+package com.union.app.api.pk.管理.配置;
 
 import com.union.app.plateform.data.resultcode.*;
 import com.union.app.service.pk.dynamic.DynamicService;

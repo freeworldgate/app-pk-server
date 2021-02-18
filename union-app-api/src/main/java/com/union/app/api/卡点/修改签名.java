@@ -50,7 +50,7 @@ public class 修改签名 {
     @RequestMapping(path="/changeSign",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
     public AppResponse buildPk(@RequestParam("userId") String userId,@RequestParam("pkId") String pkId,@RequestParam("sign") String sign) throws AppException, IOException, InterruptedException {
-
+        locationService.卡点状态检查(pkId);
         if(!locationService.isPkCreator(pkId,userId) )
         {
             throw AppException.buildException(PageAction.信息反馈框("非法操作","非法操作!"));
