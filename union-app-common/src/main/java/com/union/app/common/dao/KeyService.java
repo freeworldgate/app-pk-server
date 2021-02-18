@@ -13,6 +13,7 @@ import com.union.app.entity.pk.PkEntity;
 import com.union.app.entity.pk.PkTipEntity;
 import com.union.app.entity.pk.PostImageEntity;
 import com.union.app.entity.pk.kadian.label.RangeEntity;
+import com.union.app.entity.pk.城市.CityEntity;
 import com.union.app.entity.user.UserEntity;
 import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.storgae.KeyType;
@@ -28,7 +29,6 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -252,6 +252,7 @@ public class KeyService {
     public void 通知同步图片和用户数量(String pkId) {
         redisTemplate.opsForList().leftPush(KeyType.卡点待同步队列.getName(),pkId);
     }
+
     public String 获取待同步图片和用户数量的卡点() {
         return redisTemplate.opsForList().rightPop(KeyType.卡点待同步队列.getName());
     }
@@ -402,5 +403,26 @@ public class KeyService {
     public Collection<? extends Post> queryPosts(String pkId, int page) {
 
         return new ArrayList<>();
+    }
+
+
+    public CityEntity 查询城市名称(int cityCode) {
+        CityEntity cityEntity = null;
+        String cityStr = redisMapService.getStringValue(KeyType.城市码.getName(),String.valueOf(cityCode));
+        if(StringUtils.isBlank(cityStr) || StringUtils.equalsIgnoreCase("null",cityStr))
+        {
+            EntityFilterChain cfilter = EntityFilterChain.newFilterChain(CityEntity.class)
+                    .compareFilter("cityCode",CompareTag.Equal,cityCode);
+            cityEntity = daoService.querySingleEntity(CityEntity.class,cfilter);
+            if(!ObjectUtils.isEmpty(cityEntity))
+            {
+                redisMapService.setStringValue(KeyType.城市码.getName(),String.valueOf(cityCode),JSON.toJSONString(cityEntity));
+            }
+        }
+        else
+        {
+            cityEntity = JSON.parseObject(cityStr,CityEntity.class);
+        }
+        return cityEntity;
     }
 }

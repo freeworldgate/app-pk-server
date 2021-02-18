@@ -33,7 +33,7 @@ public class PkEntity {
 
     String address;
 
-    String city;
+    int cityCode;
 
     String type;
     //范围

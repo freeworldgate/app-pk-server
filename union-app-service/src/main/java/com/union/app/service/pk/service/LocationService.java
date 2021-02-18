@@ -22,6 +22,7 @@ import com.union.app.entity.pk.PkImageEntity;
 import com.union.app.entity.pk.PostEntity;
 import com.union.app.entity.pk.PostStatu;
 import com.union.app.entity.pk.kadian.UserFollowEntity;
+import com.union.app.entity.pk.城市.CityEntity;
 import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.PageAction;
@@ -160,7 +161,7 @@ public class LocationService {
         pkEntity.setUserId(createLocation.getUserId());
         pkEntity.setLatitude(createLocation.getLatitude());
         pkEntity.setLongitude(createLocation.getLongitude());
-        pkEntity.setCity(createLocation.getCity());
+        pkEntity.setCityCode(locationService.查询城市码(createLocation.getCity()));
 
 
         pkEntity.setType(createLocation.getType());
@@ -188,9 +189,11 @@ public class LocationService {
         userDynamicService.用户卡点加一(createLocation.getUserId());
 
 
+
+
+
         return pkId;
     }
-
 
 
 
@@ -243,7 +246,7 @@ public class LocationService {
         String pkId = pk.getPkId();
         PkDetail pkDetail = new PkDetail();
         pkDetail.setPkId(pk.getPkId());
-        pkDetail.setCity(pk.getCity());
+        pkDetail.setCity(this.getCity(pk.getCityCode()));
         pkDetail.setCodeUrl(pk.getCodeUrl());
         pkDetail.setSign(pk.getSign());
         pkDetail.setLatitude(pk.getLatitude());
@@ -283,7 +286,7 @@ public class LocationService {
         if(ObjectUtils.isEmpty(pk)){return null;}
         PkDetail pkDetail = new PkDetail();
         pkDetail.setPkId(pk.getPkId());
-        pkDetail.setCity(pk.getCity());
+        pkDetail.setCity(this.getCity(pk.getCityCode()));
         pkDetail.setCodeUrl(pk.getCodeUrl());
         pkDetail.setSign(pk.getSign());
         pkDetail.setLatitude(pk.getLatitude());
@@ -307,6 +310,7 @@ public class LocationService {
         pkDetail.setRangeLock(pk.isRangeLock());
         return pkDetail;
     }
+
 
 
     private Circle 查询Circle(PkEntity pk, LocationType locationType) {
@@ -790,4 +794,31 @@ public class LocationService {
         daoService.updateColumById(PkEntity.class,"pkId",pkId,map);
         return !pkEntity.isRangeLock();
     }
+
+
+    private String getCity(int cityCode) {
+        CityEntity cityEntity = keyService.查询城市名称(cityCode);
+        return ObjectUtils.isEmpty(cityEntity)?"":cityEntity.getCityName();
+
+    }
+    private int 查询城市码(String city) {
+        //获取城市码;
+        EntityFilterChain cfilter = EntityFilterChain.newFilterChain(CityEntity.class)
+                .compareFilter("cityName",CompareTag.Equal,city.trim());
+        CityEntity cityEntity = daoService.querySingleEntity(CityEntity.class,cfilter);
+        if(ObjectUtils.isEmpty(cityEntity))
+        {
+            cityEntity = new CityEntity();
+            cityEntity.setCityCode(IdGenerator.getCityCode());
+            cityEntity.setCityName(city.trim());
+            daoService.insertEntity(cityEntity);
+        }
+        return cityEntity.getCityCode();
+    }
+
+
+
+
+
+
 }

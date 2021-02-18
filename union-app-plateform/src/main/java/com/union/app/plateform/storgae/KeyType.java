@@ -28,6 +28,8 @@ public enum  KeyType {
 
     温馨提示("TYPE_TEXT_TIPS"),
 
+    城市码("CITY_CODE_NAME"),
+
     文字背景更新时间("TEXT_BACK_UPDATE_TIME"),
 
     卡点待同步队列("PK_DATA_SYNC_SET"),

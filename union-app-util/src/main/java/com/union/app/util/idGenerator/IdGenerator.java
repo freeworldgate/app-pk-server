@@ -79,5 +79,10 @@ public class IdGenerator {
 
     public static String getGroupId() {return UUID.randomUUID().toString(); }
 
+    public static int getCityCode() {
+        return new Random(1000000).nextInt();
+
+
+    }
 }
 
