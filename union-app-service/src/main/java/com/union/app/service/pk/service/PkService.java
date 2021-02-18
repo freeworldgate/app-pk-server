@@ -325,9 +325,11 @@ public class PkService {
 
     public void 顶置图册是否到期(String pkId, String postId) throws AppException {
 
+
+
         PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
 
-        if(!StringUtils.isBlank(pkEntity.getTopPostId()) && !TimeUtils.是否顶置已经过期(pkEntity.getTopPostSetTime(), pkEntity.getTopPostTimeLength()))
+        if(!StringUtils.isBlank(pkEntity.getTopPostId()) && !是否顶置已经过期(pkEntity.getTopPostSetTime(), pkEntity.getTopPostTimeLength()))
         {
 
             String leftTime = TimeUtils.顶置剩余时间(pkEntity.getTopPostSetTime(),pkEntity.getTopPostTimeLength());
@@ -335,18 +337,19 @@ public class PkService {
             throw AppException.buildException(PageAction.信息反馈框("操作失败!","当前顶置未到期,剩余"+ leftTime+"!"));
         }
 
-
-
-
-
     }
-
+    public static boolean 是否顶置已经过期(long topPostSetTime,long minute) {
+        if(!AppConfigService.getConfigAsBoolean(ConfigItem.顶置打卡周期开关)) {
+            return true;
+        }
+        return System.currentTimeMillis() > (topPostSetTime+minute*60*1000)?true:false;
+    }
 
     public void 修改首页图册(String pkId, String postId,int value) throws AppException {
 
         PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
 
-        if(!StringUtils.isBlank(pkEntity.getTopPostId()) && !TimeUtils.是否顶置已经过期(pkEntity.getTopPostSetTime(), pkEntity.getTopPostTimeLength()))
+        if(!StringUtils.isBlank(pkEntity.getTopPostId()) && !是否顶置已经过期(pkEntity.getTopPostSetTime(), pkEntity.getTopPostTimeLength()))
         {
             String leftTime = TimeUtils.顶置剩余时间(pkEntity.getTopPostSetTime(),pkEntity.getTopPostTimeLength());
 

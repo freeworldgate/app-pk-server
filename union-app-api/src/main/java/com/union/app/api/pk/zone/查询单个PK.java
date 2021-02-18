@@ -17,6 +17,7 @@ package com.union.app.api.pk.zone;
         import com.union.app.service.pk.service.pkuser.PkDynamicService;
         import com.union.app.service.pk.service.pkuser.PkUserDynamicService;
         import com.union.app.service.user.UserService;
+        import com.union.app.util.time.TimeUtils;
         import org.springframework.beans.factory.annotation.Autowired;
         import org.springframework.util.CollectionUtils;
         import org.springframework.util.ObjectUtils;
@@ -76,6 +77,12 @@ public class 查询单个PK {
         List<DataSet> dataSets = new ArrayList<>();
         //查询PK详情
         PkEntity pkEntity = locationService.querySinglePkEntity(pkId);
+        if(pkEntity.getTopPostSetTime()>0){
+            long timeLength = System.currentTimeMillis() - pkEntity.getTopPostSetTime();
+
+            dataSets.add(new DataSet("topTime",TimeUtils.已顶置时间(timeLength)));
+
+        }
         PkDetail pkDetail = locationService.querySinglePk(pkEntity);
         List<Post> posts = pkService.queryPkPost(pkId,1);
         去除顶置POST(posts,pkEntity.getTopPostId());
@@ -135,8 +142,13 @@ public class 查询单个PK {
     @RequestMapping(path="/nextPage",method = RequestMethod.GET)
     public AppResponse 查询单个PK(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId,@RequestParam("page") int page) throws AppException, IOException {
 
+
+        PkEntity pkEntity = locationService.querySinglePkEntity(pkId);
+
+
         //页数不断递增，但是只有一百页。
         List<Post> posts = pkService.queryPkPost(pkId,page+1);
+        去除顶置POST(posts,pkEntity.getTopPostId());
         if(CollectionUtils.isEmpty(posts))
         {
             return AppResponse.buildResponse(PageAction.前端数据更新("nomore",Boolean.TRUE));

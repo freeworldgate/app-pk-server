@@ -58,16 +58,17 @@ public class 设置卡点范围 {
     @RequestMapping(path="/setPkRange",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
     public AppResponse setPkRange(@RequestParam("radius") int radius,@RequestParam("pkId") String pkId) {
-
-
-
         locationService.设置卡点范围(pkId,radius);
-
-
         return AppResponse.buildResponse(PageAction.信息反馈框("卡点范围已更新","卡点范围已更新"));
 
     }
+    @RequestMapping(path="/lockRange",method = RequestMethod.GET)
+    @Transactional(rollbackOn = Exception.class)
+    public AppResponse lockRange(@RequestParam("pkId") String pkId) {
+        boolean lock = locationService.锁定或者解锁Range(pkId);
+        return AppResponse.buildResponse(PageAction.执行处理器("success",lock));
 
+    }
 
 
 

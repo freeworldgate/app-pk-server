@@ -2,7 +2,6 @@ package com.union.app.service.quartz;
 
 import com.union.app.common.dao.AppDaoService;
 import com.union.app.service.pk.dynamic.DynamicService;
-import com.union.app.service.pk.service.MediaService;
 import com.union.app.service.pk.service.PkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -20,9 +19,6 @@ public class 更新微信缓存媒体文件 {
 
     @Autowired
     AppDaoService daoService;
-
-    @Autowired
-    MediaService mediaService;
 
 
     @Autowired

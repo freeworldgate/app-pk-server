@@ -50,6 +50,7 @@ public class PkDetail implements Serializable{
 
     private Post topPost;
 
+    private long topPostTimeLength;
     //距离
     private int userLength = 0;
     private String userLengthStr = "0m";
@@ -66,5 +67,6 @@ public class PkDetail implements Serializable{
     private boolean citySet;
     private boolean countrySet;
     private boolean findSet;
+    private boolean rangeLock;
 
 }

@@ -9,7 +9,7 @@ public class NumberUtils {
 
     public static String convert(long num)
     {
-        if(num > 100000000)
+        if(num > 99999999)
         {
             double rangeLength = num/100000000.0D;
             BigDecimal bg = new BigDecimal(rangeLength);
@@ -20,9 +20,9 @@ public class NumberUtils {
             }
             return valueStr +"亿";
         }
-        else if(num > 1000)
+        else if(num > 9999)
         {
-            double rangeLength = num/1000.0D;
+            double rangeLength = num/10000.0D;
             BigDecimal bg = new BigDecimal(rangeLength);
             double d3 = bg.setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue();
             String valueStr = String.valueOf(d3);

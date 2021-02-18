@@ -39,6 +39,10 @@ public class PkEntity {
     //范围
     int typeRange;
 
+    long typeRangeSetTime;
+
+    boolean rangeLock;
+
     //创建时间
     long time;
 

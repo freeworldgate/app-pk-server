@@ -110,10 +110,7 @@ public class TimeUtils {
     }
 
 
-    public static boolean 是否顶置已经过期(long topPostSetTime,long minute) {
 
-        return System.currentTimeMillis() > (topPostSetTime+minute*60*1000)?true:false;
-    }
 
 
     public static String 已打捞时间(long startTime) {
@@ -140,7 +137,10 @@ public class TimeUtils {
         long hour = findTimeLength%(3600*24*1000) / (3600*1000);
 //        long min = findTimeLength%(3600*24*1000)%(3600*1000)/(60*1000);
         if(day == 0){return hour+"小时";}
-        else{return day+"天"+hour+"小时";}
+        else{
+            if(hour==0){return day+"天";}else{return day+"天"+hour+"小时";}
+
+        }
 
     }
     public static String 已打捞总时间(long findTimeLength) {
@@ -149,9 +149,59 @@ public class TimeUtils {
 //        long min = findTimeLength%(3600*24*1000)%(3600*1000)/(60*1000);
         if(day == 0){return hour+"小时";}
         else{return day+"天"+hour+"小时";}
+    }
+    public static String 已顶置时间(long topTimeLength) {
+
+        long timeLength = topTimeLength/(1000*60);
+        if(timeLength == 0){return "1分钟";}
+        else
+        {
+            return timeLength+"分钟";
+        }
+
+
+//        long day = topTimeLength/(3600*24*1000);
+//        long hour = topTimeLength%(3600*24*1000) / (3600*1000);
+//        long min = topTimeLength%(3600*24*1000)%(3600*1000)/(60*1000);
+//        long sec = topTimeLength%(3600*24*1000)%(3600*1000)%(60*1000)/1000;
+//        StringBuffer stringBuffer = new StringBuffer();
+//        if(day != 0)
+//        {
+//            stringBuffer.append(day);
+//            stringBuffer.append("天");
+//        }
+//
+//        if(hour != 0)
+//        {
+//            stringBuffer.append(hour);
+//            stringBuffer.append("小时");
+//        }
+//
+//        if(min != 0)
+//        {
+//            stringBuffer.append(min);
+//            stringBuffer.append("分");
+//        }
+//        if(sec != 0)
+//        {
+//            stringBuffer.append(sec);
+//            stringBuffer.append("秒");
+//        }
+//
+//        return stringBuffer.toString();
+
+
+
+
+
+
+
+
+
+
+
 
     }
-
     public static String 全局时间(long startTime) {
         if(startTime == 0){return null;}
 

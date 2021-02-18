@@ -347,6 +347,11 @@ public class FindService {
 
     public List<FindUser> 查询卡点捞人列表(String pkId) {
         List<FindUser> findUsers = new ArrayList<>();
+        PkEntity pkEntity = locationService.querySinglePkEntity(pkId);
+        if(!pkEntity.isFindSet())
+        {
+            return findUsers;
+        }
         List<FindUserEntity> findUserEntities = this.查询打捞中Entity(pkId);
         List<Object> userIds = 获取UserIds(findUserEntities);
         Map<String,UserDynamicEntity> userDynamicEntities = userService.批量查询用户Dynamic(userIds);

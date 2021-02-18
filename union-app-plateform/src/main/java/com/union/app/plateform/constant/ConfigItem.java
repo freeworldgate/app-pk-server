@@ -5,70 +5,25 @@ import org.apache.commons.lang.StringUtils;
 public enum ConfigItem {
 
     单个群最大人数("groupMaxMembers","SINGLE_GROUP_MAX_MEMBERS","单个群最大人数","200"),
-    当前系统收款金额("feeNumber","CURRENT_FEECODE_POLICY","当前系统收款金额","4"),
-    群组最长上传时间间隔("groupMaxAliveTime","GROUP_MAX_TIME_UPDATE","群组最长上传时间间隔",String.valueOf(6 * 24)),
     媒体图片最大过期时间("mediaMaxOutTime","MEDIA_MAX_OUT_TIME","微信图片最大过期时间,默认是3天",String.valueOf(3 * 24)),
-    系统当前是否客服模式("isWechatMsgService","SYSTEM_MSG_MODE","系统当前是否客服模式,图片是拉取还是下载","true"),
-    系统展示的模式("mode","SYSTEM_SHOW_MODE","审查模式/运营模式/开放模式","1"),
-//    审核榜帖最大等待时间("approveWaitingTime","APPROVE_WAITING_TIME","审核榜帖最大等待时间单位分钟","120"),
-    榜帖可发起投诉的等待时间("canComplainWaitingTime","CAN_COMPLAIN_WAITING_TIME","图册可发起投诉的等待时间","60"),
-//    对所有用户展示审核系统("showApproveSys", "SHOW_APPROVE_SYS", "对所有用户展示审核系统","true"),
-    用户最大建榜数量("maxPksUserCreate", "MAX_PKS_USER_CREATE", "用户最大建榜数量","3"),
-
-
-//    用户最多未激活榜单数量("maxNoActivePks", "MAX_NO_ACTIVE_PKS","用户最多未激活榜单数量" , "2"),
-    PK最大修改次数("maxPkModifyTime", "MAX_PK_MODIFY_TIMES", "PK最大修改次数","3" ),
-    Post最大修改次数("maxRejectTimes", "MAX_POST_MODIFY_TIMES", "Post最大修改次数","5" ),
-    遗传相册("buttonPolicy1", "VIP_ALBUM", "遗传相册","false" ),
-    内置相册("buttonPolicy2", "INNER_ALBUM_PUBLIC", "内置相册","false" ),
-    普通相册("buttonPolicy3", "INNER_ALBUM_INVITE", "普通相册","false" ),
-    VIP用户("buttonPolicy4", "VIP_USER", "VIP用户","false" ),
-    普通用户("buttonPolicy5", "COMMON_USER", "普通用户","false" ),
-    激活码使用次数("activeCodeTimes","ACTIVE_CODE_TIMES" , "激活码使用次数", "5"),
-//    非遗传用户默认榜单数量("defaultPostTimes", "DEFAULT_POST_TIMES", "非遗传用户默认榜单数量","5" ),
     单个PK页面的帖子数("singlePkPagePosts", "SINGLE_PK_PAGE_POSTS", "单个PK页面的帖子数","50" ),
-
-
-
-    PKEntity缓存数量("pkentityCacheSize", "PKENTITY_CACHE_SIZE", "PKEntity缓存数量", "1000"),
-    POSTIMAGEEntity缓存数量("postImageentityCacheSize", "POSTIMAGEENTITY_CACHE_SIZE", "POSTIMAGEEntity缓存数量", "1000"),
-    USEREntity缓存数量("userentityCacheSize", "USERENTITY_CACHE_SIZE", "USEREntity缓存数量", "1000"),
-    APPROVEMESSAGEEntity缓存数量("approveMessageentityCacheSize", "APPROVEMESSAGEENTITY_CACHE_SIZE", "APPROVEMESSAGE缓存数量", "1000"),
-    APPROVECOMMENTEntity缓存数量("approveCommententityCacheSize", "APPROVECOMMENTENTITY_CACHE_SIZE", "APPROVEMESSAGE缓存数量", "1000"),
-    刷新主题个数("pageTopics", "REFRESH_PAGE_TOPICS", "刷新主题个数", "5"),
-    普通用户发帖后解锁更多主题("allUserRealease", "USER_MODE_REALEASE","普通用户发帖后解锁更多主题" , "true"),
-    留言方式("commentStyle", "COMMENT_STYLE", "留言方式", "0"),
-    PK有效投诉最大数量("activeComplains", "MAX_ACTIVE_COMPLAIN", "PK有效投诉最大数量", "3"),
-    主题和榜帖数量绑定("commonUserCreatePk", "COMMON_USER_CRAETE_PK", "主题和榜帖数量绑定", "true"),
-    是否允许客服会话("messageSession", "MESSAGE_SESSION", "是否允许客服会话", "false"),
 
     RAM秘钥ID("accessKeyID", "accessKeyID", "RAM秘钥ID", "accessKeyID"),
     RAM秘钥("accessKeySecret", "accessKeySecret", "RAM秘钥", "accessKeySecret"),
     OSS基础地址("ossBaseUrl", "ossBaseUrl", "OSS基础地址", "ossBaseUrl"),
     Bucket名字("bucketName", "bucketName", "Bucket名字", "211shop"),
-    遗传用户是否收费("vipchargePolicy", "VIP_CHARGE_POLICY", "遗传用户是否收费", "false"),
-    遗传用户单个主题费用("vipsinglePkPrice", "VIP_SINGLE_PK_PRICE", "遗传用户单个主题费用", "10"),
-    遗传用户12个主题打包费用("vip12PkPrice", "VIP_12_PK_PRICE", "遗传用户12个主题打包费用", "49.9"),
-    普通用户是否收费("chargePolicy", "CHARGE_POLICY", "普通用户是否收费", "false"),
-    普通用户单个主题费用("singlePkPrice", "SINGLE_PK_PRICE", "遗传用户单个主题费用", "10"),
-    普通用户12个主题打包费用("n12PkPrice", "12_PK_PRICE", "遗传用户12个主题打包费用", "49.9"),
-    邀请和可解锁主题倍数关系("inviteAndRelease", "INVITE_AND_RELAESE", "邀请和可解锁主题倍数关系", "3"),
-    普通用户主题是否显示分享按钮和群组按钮("isShowshareButton", "IS_SHOW_SHARE_BUTTON","普通用户主题是否显示分享按钮", "false"),
-    单个PK的页面缓存数量("pkCachePost", "PK_CACHE_POST", "单个PK的页面缓存数量", "10"),
+
     RedisMapKey缓存时间("redisMapKeyCacheTime", "REDIS_MAP_KEY_CACHE_TIME", "缓存时间(时间秒)", "60"),
     热度排行榜缓存时间("hotSortCacheTime", "HOT_SORT_CACHE_TIME", "热度排行榜缓存时间(时间秒)", "60"),
     PK缓存数量("pkCacheNumbers", "PK_CACHE_NUMBERS", "PK缓存数量", "100"),
-    首页图片选择榜主图册("imgSelectPkCreator", "IS_PK_CREATOR_IMG", "首页图片选择榜主图册", "true"),
-    信息展示页面用户数量("InfoShowUserNum", "USER_NUM_INFO_SHOW","信息展示页面用户数量" , "5"),
-    主题可选择标签数量("maxTips", "MAX_TIPS", "主题可选择标签数量", "5"),
     发帖的时间间隔("time_period", "POST_TIME_PERIED", "发帖的时间间隔", "3600"),
-    卡点默认打卡范围("defaultPkRange", "DEFAULT_PK_RANGE", "卡点默认打卡范围", "200"),
-    卡点默认缩放等级("defaultScale", "DEFAULT_SCALE", "默认缩放等级", "16"),
     顶置最少时间("topPostMinLength", "MIN_LENGTH_TOP_POST", "顶置最少时间", "1"),
     创建卡点范围("maxPkLength", "MAX_PK_LENGTH_CREATE", "创建卡点范围(公里)","20" ),
     打捞开关("findSwitch","FIND_SWITCH", "打捞开关","false" ),
     卡点创建收费("pkNeedPay", "PK_NEED_PAY", "卡点收费开关", "false"),
-    卡点打捞卡数量("pkFindNum", "PK_FIND_NUM", "卡点打捞卡数量","5" );
+    卡点打捞卡数量("pkFindNum", "PK_FIND_NUM", "卡点打捞卡数量","5" ),
+    修改Pk打卡范围时间间隔("updatePkRangeTimeLength", "UPDATE_PK_RANGE_TIMELENGTH", "修改Pk打卡范围时间间隔", "24"),
+    顶置打卡周期开关("topPostSwitch", "TOP_POST_SWITCH", "顶置打卡周期开关", "false");
 
 
 

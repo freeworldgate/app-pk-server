@@ -62,6 +62,14 @@ public class KeyService {
         return value;
     }
 
+    public void setMapKey(String key, KeyType keyType,long value)
+    {
+        redisMapService.setLongValue(keyType.getName(),key,value);
+
+    }
+
+
+
     private void 值加一(String key,KeyType keyType)
     {
         redisMapService.valueIncr(keyType.getName(),key);
@@ -241,7 +249,7 @@ public class KeyService {
         通知同步图片和用户数量(pkId);
     }
 
-    private void 通知同步图片和用户数量(String pkId) {
+    public void 通知同步图片和用户数量(String pkId) {
         redisTemplate.opsForList().leftPush(KeyType.卡点待同步队列.getName(),pkId);
     }
     public String 获取待同步图片和用户数量的卡点() {

@@ -83,9 +83,6 @@ public class LocationService {
     RedisSortSetService redisSortSetService;
 
     @Autowired
-    MediaService mediaService;
-
-    @Autowired
     UserDynamicService userDynamicService;
 
     @Autowired
@@ -278,6 +275,7 @@ public class LocationService {
         pkDetail.setCitySet(pk.isCitySet());
         pkDetail.setCountrySet(pk.isCountrySet());
         pkDetail.setFindSet(pk.isFindSet());
+        pkDetail.setTopPostTimeLength(pk.getTopPostTimeLength());
         return pkDetail;
     }
 
@@ -306,6 +304,7 @@ public class LocationService {
         pkDetail.setCountrySet(pk.isCountrySet());
         pkDetail.setCitySet(pk.isCitySet());
         pkDetail.setFindSet(pk.isFindSet());
+        pkDetail.setRangeLock(pk.isRangeLock());
         return pkDetail;
     }
 
@@ -756,7 +755,39 @@ public class LocationService {
         map.put("typeRange",radius);
         map.put("rangeSet",Boolean.TRUE);
         daoService.updateColumById(PkEntity.class,"pkId",pkId,map);
+    }
+    public void 设置用户卡点范围(String pkId, int radius) {
+        PkEntity pkEntity = locationService.querySinglePkEntity(pkId);
+        if(pkEntity.getTypeRange() == radius){return;}
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("typeRange",radius);
+        map.put("rangeSet",Boolean.TRUE);
+        map.put("typeRangeSetTime",System.currentTimeMillis());
+        daoService.updateColumById(PkEntity.class,"pkId",pkId,map);
+    }
+
+    public void updatePkRange(String pkId) throws AppException {
+        PkEntity pkEntity = locationService.querySinglePkEntity(pkId);
+        if(pkEntity.isRangeLock()){
+            throw AppException.buildException(PageAction.信息反馈框("","卡点范围已锁定!"));
+        }
+        long lastTime = System.currentTimeMillis()-pkEntity.getTypeRangeSetTime();
+
+        if(lastTime < AppConfigService.getConfigAsLong(ConfigItem.修改Pk打卡范围时间间隔) * (3600 * 1000))
+        {
+            throw AppException.buildException(PageAction.信息反馈框("",AppConfigService.getConfigAsLong(ConfigItem.修改Pk打卡范围时间间隔)+"小时内仅能修改一次打卡范围!"));
+
+        }
 
 
+    }
+
+    public boolean 锁定或者解锁Range(String pkId) {
+        PkEntity pkEntity = locationService.querySinglePkEntity(pkId);
+        Map<String,Object> map = new HashMap<>();
+        map.put("rangeLock",!pkEntity.isRangeLock());
+        daoService.updateColumById(PkEntity.class,"pkId",pkId,map);
+        return !pkEntity.isRangeLock();
     }
 }

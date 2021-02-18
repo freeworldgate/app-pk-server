@@ -439,7 +439,9 @@ public class PayService {
     }
 
     public void 用户创建卡点(String userId) throws AppException {
-        if(AppConfigService.getConfigAsBoolean(ConfigItem.卡点创建收费)){}
+        if(!AppConfigService.getConfigAsBoolean(ConfigItem.卡点创建收费)){
+            return;
+        }
         UserDynamicEntity userDynamicEntity = userService.queryUserKvEntity(userId);
         int pk = userDynamicEntity.getPk();
         if(pk < 1)

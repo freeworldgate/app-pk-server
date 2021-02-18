@@ -74,9 +74,6 @@ public class GroupService {
     RedisSortSetService redisSortSetService;
 
     @Autowired
-    MediaService mediaService;
-
-    @Autowired
     LocationService locationService;
 
     @Autowired

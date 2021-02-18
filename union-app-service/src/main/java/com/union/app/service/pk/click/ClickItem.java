@@ -74,7 +74,7 @@ public enum ClickItem {
                 }
             }
             if(ObjectUtils.isEmpty(clickItem)){
-                throw AppException.buildException(PageAction.消息级别提示框(Level.错误消息,"操作异常"));
+                throw AppException.buildException(PageAction.信息反馈框("","操作异常"));
             }
             else {
                 return clickItem;

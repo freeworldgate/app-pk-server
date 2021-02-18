@@ -58,7 +58,13 @@ public class 查询卡点捞人列表 {
 
     @RequestMapping(path="/queryPkFinds",method = RequestMethod.GET)
     public AppResponse queryPkImages(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId) throws AppException, IOException, InterruptedException {
+
+
         List<FindUser> findUsers = findService.查询卡点捞人列表(pkId);
+
+
+
+
 
         FindUserEntity findUserEntity = findService.查询用户捞人Entity(pkId,userId);
         long current = System.currentTimeMillis();

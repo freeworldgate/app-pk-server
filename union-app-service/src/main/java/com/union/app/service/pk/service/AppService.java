@@ -25,6 +25,7 @@ import com.union.app.entity.配置表.ConfigEntity;
 import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.DataSet;
+import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.service.pk.dynamic.CacheKeyName;
 import com.union.app.service.pk.dynamic.DynamicService;
@@ -87,9 +88,6 @@ public class AppService {
     RedisSortSetService redisSortSetService;
 
     @Autowired
-    MediaService mediaService;
-
-    @Autowired
     LocationService locationService;
 
     @Autowired
@@ -136,7 +134,14 @@ public class AppService {
     private List<PkEntity> queryPkSorts(int page,int type) {
 
         EntityFilterChain filter = null;
-        if(type == 2){
+        if(type == 1)
+        {
+            filter = EntityFilterChain.newFilterChain(PkEntity.class)
+                    .compareFilter("rangeSet",CompareTag.Equal,Boolean.TRUE)
+                    .pageLimitFilter(page,10)
+                    .orderByFilter("totalUsers",OrderTag.DESC);
+        }
+        else if(type == 2){
             filter = EntityFilterChain.newFilterChain(PkEntity.class)
                     .compareFilter("rangeSet",CompareTag.Equal,Boolean.FALSE)
                     .pageLimitFilter(page,10)
@@ -178,20 +183,22 @@ public class AppService {
                     .pageLimitFilter(page,10)
                     .orderByFilter("time",OrderTag.DESC);
         }
-        else
-        {
+        else if(type == 9){
             filter = EntityFilterChain.newFilterChain(PkEntity.class)
-                    .compareFilter("rangeSet",CompareTag.Equal,Boolean.TRUE)
+                    .compareFilter("countrySet",CompareTag.Equal,Boolean.TRUE)
                     .pageLimitFilter(page,10)
                     .orderByFilter("totalUsers",OrderTag.DESC);
         }
-
-
-
-
-
-
-
+        else if(type == 10){
+            filter = EntityFilterChain.newFilterChain(PkEntity.class)
+                    .compareFilter("citySet",CompareTag.Equal,Boolean.TRUE)
+                    .pageLimitFilter(page,10)
+                    .orderByFilter("totalUsers",OrderTag.DESC);
+        }
+        else
+        {
+            filter = EntityFilterChain.newFilterChain(PkEntity.class);
+        }
         List<PkEntity> pkEntities = daoService.queryEntities(PkEntity.class,filter);
         return pkEntities;
     }
@@ -488,8 +495,8 @@ public class AppService {
 
     }
     private volatile boolean userType = true;
-    public User 新增内置用户(String name, String imgUrl) throws UnsupportedEncodingException {
-
+    public User 新增内置用户(String name, String imgUrl)
+    {
         String userId = com.union.app.util.idGenerator.IdGenerator.生成用户ID();
         UserEntity userEntity = new UserEntity();
         userEntity.setOpenId(userId);
@@ -497,11 +504,11 @@ public class AppService {
         userEntity.setAvatarUrl(imgUrl);
         userEntity.setNickName(name);
         userEntity.setUserType(UserType.重点用户);
+        userService.管理员用户("");
 
         userDynamicService.创建Dynamic表(userEntity.getUserId());
-        userService.创建UserCardEntity(userEntity.getUserId());
+        userService.创建内置UserCardEntity(userEntity.getUserId());
         daoService.insertEntity(userEntity);
-
         return userService.queryUser(userId);
 
     }
@@ -901,18 +908,31 @@ public class AppService {
         daoService.updateColumById(PkEntity.class,"pkId",pkId,map);
     }
 
-    public void 设置标志位(String pkId, int type) {
+    public void 设置标志位(String pkId, int type) throws AppException {
         PkEntity pkEntity = locationService.querySinglePkEntity(pkId);
         Map<String,Object> map = new HashMap<>();
 
         if(type == 1)
         {
-            map.put("citySet",!pkEntity.isCitySet());
+            if(pkEntity.isFindSet() && pkEntity.isRangeLock()) {
+                map.put("citySet", !pkEntity.isCitySet());
+            }
+            else
+            {
+                throw AppException.buildException(PageAction.信息反馈框("","热门卡点必须开启打捞和范围锁定"));
+            }
         }
         else if(type == 2)
         {
-            map.put("countrySet",!pkEntity.isCountrySet());
-            keyService.刷新全网排行榜();
+            if(pkEntity.isFindSet() && pkEntity.isRangeLock()) {
+                map.put("countrySet",!pkEntity.isCountrySet());
+                keyService.刷新全网排行榜();
+            }
+            else
+            {
+                throw AppException.buildException(PageAction.信息反馈框("","热门卡点必须开启打捞和范围锁定"));
+            }
+
         }
         else if(type == 3)
         {
@@ -920,6 +940,8 @@ public class AppService {
         }
         else
         {}
-        daoService.updateColumById(PkEntity.class,"pkId",pkId,map);
+        if(!map.isEmpty()){
+            daoService.updateColumById(PkEntity.class,"pkId",pkId,map);
+        }
     }
 }

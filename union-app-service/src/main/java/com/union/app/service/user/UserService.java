@@ -16,6 +16,7 @@ import com.union.app.domain.pk.客服消息.WxImage;
 import com.union.app.domain.pk.客服消息.WxSendMessage;
 import com.union.app.domain.pk.客服消息.WxText;
 import com.union.app.domain.user.User;
+import com.union.app.domain.工具.RandomUtil;
 import com.union.app.entity.pk.kadian.UserCardApplyEntity;
 import com.union.app.entity.pk.名片.UserCardEntity;
 import com.union.app.entity.pk.名片.UserCardMemberEntity;
@@ -296,36 +297,6 @@ public class UserService {
 
     }
 
-
-
-    public boolean 是否可以创建主题(String userId) {
-        //普通用户且不要求主题和榜帖数量绑定时返回可以创建
-        if(!AppConfigService.getConfigAsBoolean(ConfigItem.主题和榜帖数量绑定) && !this.是否是遗传用户(userId))
-        {
-
-            return true;
-
-
-        }
-        else
-        {
-
-            UserDynamicEntity result = queryUserKvEntity(userId);
-            if(result.getPostTimes() > result.getPkTimes())
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-
-
-        }
-
-
-
-    }
 
 
     public void 返还用户打捞时间(String userId, long endTime) {
@@ -703,7 +674,20 @@ public class UserService {
         appDaoService.insertEntity(userCardEntity);
 
     }
+    public void 创建内置UserCardEntity(String userId) {
+        UserCardEntity userCardEntity = new UserCardEntity();
+        userCardEntity.setUserId(userId);
+        userCardEntity.setUnLock(0);
+        userCardEntity.setMeLike(new Random(30).nextInt());
+        userCardEntity.setLikeMe(new Random(30).nextInt());
+        userCardEntity.setMember1(null);
+        userCardEntity.setMember2(null);
+        userCardEntity.setMember3(null);
+        userCardEntity.setUserCard(null);
+        userCardEntity.setTime(0);
+        appDaoService.insertEntity(userCardEntity);
 
+    }
     private void 禁止用户查看UserCard(String userId, String applyId) {
 
         删除一个可见UserCard成员(userId,applyId);
@@ -799,4 +783,6 @@ public class UserService {
         if(userEntity.getUserType() == UserType.重点用户){return true;}
         return false;
     }
+
+
 }

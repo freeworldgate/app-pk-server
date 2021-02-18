@@ -1,8 +1,10 @@
 package com.union.app.api.卡点.搜索创建;
 
 import com.union.app.common.OSS存储.OssStorage;
+import com.union.app.common.config.AppConfigService;
 import com.union.app.domain.pk.Post;
 import com.union.app.entity.pk.*;
+import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.PageAction;
@@ -69,8 +71,7 @@ public class 顶置删除 {
         if(locationService.isPkCreator(pkId,userId))
         {
 
-//            Post post = postService.查询帖子(pkId,postId,userId);
-            pkService.顶置图册是否到期(pkId,postId);
+                pkService.顶置图册是否到期(pkId, postId);
 
             return AppResponse.buildResponse(PageAction.执行处理器("success",""));
         }
