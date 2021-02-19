@@ -67,7 +67,7 @@ public class OSSSave {
         } catch (UnknownHostException e) {
             ip = UUID.randomUUID().toString();
         }
-        String dir = "dir" + new Random(200).nextInt();
+        String dir = "dir" + new Random().nextInt(200);
         String path = ip+type+dir;
         return path.replaceAll("-","");
     }

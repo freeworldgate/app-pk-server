@@ -440,14 +440,16 @@ public class PayService {
     }
 
     public void 用户创建卡点(CreateLocation createLocation) throws AppException {
+        if(!AppConfigService.getConfigAsBoolean(ConfigItem.卡点创建收费)){
+            return;
+        }
+
 
         if(appService.是否是免费城市(createLocation.getCity()))
         {
             return;
         }
-        if(!AppConfigService.getConfigAsBoolean(ConfigItem.卡点创建收费)){
-            return;
-        }
+
         UserDynamicEntity userDynamicEntity = userService.queryUserKvEntity(createLocation.getUserId());
         int pk = userDynamicEntity.getPk();
         if(pk < 1)

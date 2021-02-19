@@ -678,8 +678,8 @@ public class UserService {
         UserCardEntity userCardEntity = new UserCardEntity();
         userCardEntity.setUserId(userId);
         userCardEntity.setUnLock(0);
-        userCardEntity.setMeLike(new Random(30).nextInt());
-        userCardEntity.setLikeMe(new Random(30).nextInt());
+        userCardEntity.setMeLike(new Random().nextInt(30));
+        userCardEntity.setLikeMe(new Random().nextInt(30));
         userCardEntity.setMember1(null);
         userCardEntity.setMember2(null);
         userCardEntity.setMember3(null);
