@@ -66,7 +66,7 @@ public class 创建卡点 {
             PkEntity pkEntity = locationService.querySinglePkEntityWithoutCache(pkId);
             if(ObjectUtils.isEmpty(pkEntity))
             {
-                payService.用户创建卡点(createLocation.getUserId());
+                payService.用户创建卡点(createLocation);
                 locationService.创建卡点(createLocation);
                 PkDetail pkDetail = locationService.搜索卡点(pkId);
                 List<DataSet> dataSets = new ArrayList<>();

@@ -1,6 +1,7 @@
 package com.union.app.api.pk.管理.卡点排行榜;
 
 import com.union.app.common.dao.KeyService;
+import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.KeyType;
@@ -58,9 +59,9 @@ public class 设置卡点打卡人数 {
 
     @RequestMapping(path="/setUserNumbers",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse setPkRange(@RequestParam("pkId") String pkId,@RequestParam("value") int value) {
+    public AppResponse setPkRange(@RequestParam("pkId") String pkId,@RequestParam("value") int value,@RequestParam("userId") String userId) throws AppException {
 
-
+        appService.checkManager(userId);
         keyService.setMapKey(pkId, KeyType.卡点人数,value);
         keyService.通知同步图片和用户数量(pkId);
 

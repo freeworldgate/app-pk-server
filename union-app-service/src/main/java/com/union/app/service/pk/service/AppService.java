@@ -105,10 +105,10 @@ public class AppService {
 
     }
 
-    public List<PkDetail> 查询卡点排名(int page,int type,int cityCode) {
+    public List<PkDetail> 查询卡点排名(int page,int type,int cityCode,String userId) {
 
         List<PkDetail> pkDetails = new ArrayList<>();
-        List<PkEntity>  invites = queryPkSorts(page,type,cityCode);
+        List<PkEntity>  invites = queryPkSorts(page,type,cityCode,userId);
         for(PkEntity pkEntity:invites)
         {
             PkDetail pkDetail = locationService.querySinglePkWidthList(pkEntity);
@@ -118,7 +118,7 @@ public class AppService {
         return pkDetails;
     }
 
-    private List<PkEntity> queryPkSorts(int page,int type,int cityCode) {
+    private List<PkEntity> queryPkSorts(int page,int type,int cityCode,String userId) {
 
         EntityFilterChain filter = null;
         if(type == 1)
@@ -312,6 +312,11 @@ public class AppService {
                         .pageLimitFilter(page,10)
                         .orderByFilter("totalUsers",OrderTag.DESC);
             }
+
+        }else if(type == 13){
+
+            List<PkEntity>  invites = queryUserInvitePks(userId,page);
+            return invites;
 
         }
         else
@@ -683,20 +688,19 @@ public class AppService {
 
     }
 
-    public void 验证Password() throws AppException {
-
-//        if(!StringUtils.equalsIgnoreCase(password,"fenghaoapp1"))
-//        {
-//            throw AppException.buildException(PageAction.信息反馈框("登录错误","登录错误"));
-//
-//        }
-
-
-
-
+    public void 验证Password(String password) throws AppException {
+        if(!StringUtils.equalsIgnoreCase(password,"123456"))
+        {
+            throw AppException.buildException(PageAction.信息反馈框("登录错误","登录错误"));
+        }
     }
 
-
+    public void checkManager(String userId) throws AppException {
+        if(!userService.管理员用户(userId))
+        {
+            throw AppException.buildException(PageAction.信息反馈框("滚","滚"));
+        }
+    }
 
 
     public static String getPolicy()
@@ -1060,6 +1064,9 @@ public class AppService {
         else if(type == 4)
         {
             map.put("pkLock",!pkEntity.isPkLock());
+            map.put("topPostId",null);
+            map.put("topPostSetTime",0L);
+            map.put("topPostTimeLength",0L);
         }
         else
         {}
@@ -1093,6 +1100,7 @@ public class AppService {
                 cityEntity.setCityCode(IdGenerator.getCityCode());
                 cityEntity.setCityName(city.trim());
                 cityEntity.setPks(0);
+                cityEntity.setNeedPay(true);
                 daoService.insertEntity(cityEntity);
             }
             lockService.releaseLock(city.trim(),LockType.城市锁);
@@ -1106,4 +1114,23 @@ public class AppService {
 
     }
 
+    public boolean 是否是免费城市(String city) {
+        EntityFilterChain cfilter = EntityFilterChain.newFilterChain(CityEntity.class)
+                .compareFilter("cityName",CompareTag.Equal,city.trim());
+        CityEntity cityEntity = daoService.querySingleEntity(CityEntity.class,cfilter);
+        if(!ObjectUtils.isEmpty(cityEntity) && !cityEntity.isNeedPay())
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean 修改收费状态(int cityCode) {
+        EntityFilterChain cfilter = EntityFilterChain.newFilterChain(CityEntity.class)
+                .compareFilter("cityCode",CompareTag.Equal,cityCode);
+        CityEntity cityEntity = daoService.querySingleEntity(CityEntity.class,cfilter);
+        cityEntity.setNeedPay(!cityEntity.isNeedPay());
+        daoService.updateEntity(cityEntity);
+        return cityEntity.isNeedPay();
+    }
 }

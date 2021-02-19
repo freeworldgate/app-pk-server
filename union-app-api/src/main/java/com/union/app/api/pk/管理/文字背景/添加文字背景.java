@@ -59,8 +59,8 @@ public class 添加文字背景 {
 
     @RequestMapping(path="/addTextBack",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse addTextBack(@RequestParam("backColor") String backColor,@RequestParam("fontColor") String fontColor,@RequestParam("imgUrl") String imgUrl) throws AppException, IOException {
-
+    public AppResponse addTextBack(@RequestParam("backColor") String backColor,@RequestParam("fontColor") String fontColor,@RequestParam("imgUrl") String imgUrl,@RequestParam("userId") String userId) throws AppException, IOException {
+        appService.checkManager(userId);
         if("ffffffff".equalsIgnoreCase(backColor)){
             throw AppException.buildException(PageAction.信息反馈框("不支持白色","不支持白色"));
         }
@@ -78,8 +78,8 @@ public class 添加文字背景 {
 
     @RequestMapping(path="/removeBack",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse addTextBack(@RequestParam("backId") String backId) throws AppException, IOException {
-
+    public AppResponse addTextBack(@RequestParam("backId") String backId,@RequestParam("userId") String userId) throws AppException, IOException {
+        appService.checkManager(userId);
         textService.删除背景(backId);
 
         return AppResponse.buildResponse(PageAction.执行处理器("success",""));

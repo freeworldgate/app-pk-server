@@ -97,55 +97,6 @@ public class 用户登录加注册 {
 
 
 
-    @RequestMapping(path="/managerLogin",method = RequestMethod.GET)
-    @Transactional(rollbackOn = Exception.class)
-    public ApiResponse 管理员登录(@RequestParam(value="code") String code, @RequestParam(value="encryptedData")String encryptedData, @RequestParam(value="iv")String iv, @RequestParam(value="appName")String appName) throws UnsupportedEncodingException, InvalidAlgorithmParameterException {
-        System.out.println("---------------login----------------");
-        WeChatUser weChatUser = WeChatUtil.manageLogin(code);
-        String openId = weChatUser.getOpenid();
-        UserInfo userInfo = WeChatUtil.getUserInfo(encryptedData,weChatUser.getSession_key(),iv);
-
-        UserEntity userEntity = userService.queryUserEntity(openId);
-        if(ObjectUtils.isEmpty(userEntity))
-        {
-            userEntity = new UserEntity();
-            userEntity.setOpenId(openId);
-            userEntity.setSessionId(weChatUser.getSession_key());
-            userEntity.setAppName(appName);
-            userEntity.setUserId(openId);
-
-            userEntity.setUserType(UserType.管理用户);
-            convert(userInfo,userEntity);
-            userDynamicService.创建Dynamic表(userEntity.getUserId());
-            userService.创建UserCardEntity(userEntity.getUserId());
-            appDaoService.insertEntity(userEntity);
-
-        }
-        else
-        {
-//            String name = new String(userEntity.getNickName());
-//            if(!org.apache.commons.lang.StringUtils.equals(name,userInfo.getNickName())){
-//                userEntity.setNickName(userInfo.getNickName());
-//                userEntity.setAvatarUrl(userInfo.getAvatarUrl());
-//                appDaoService.updateEntity(userEntity);
-//                keyService.刷新用户User缓存(userEntity.getUserId());
-//            }
-
-
-        }
-
-        UserBasicInfo userBasicInfo = new UserBasicInfo();
-        userBasicInfo.setUserType(userEntity.getUserType().getType());
-        userBasicInfo.setFromUser(userEntity.getFromUser());
-        userBasicInfo.setUserId(userEntity.getOpenId());
-        userBasicInfo.setImgUrl(userEntity.getAvatarUrl());
-        userBasicInfo.setUserName(new String(userEntity.getNickName()));
-
-
-        return ApiResponse.buildSuccessResponse(userBasicInfo);
-    }
-
-
 
     @RequestMapping(path="/changeUser",method = RequestMethod.GET)
     public AppResponse changeUser() {

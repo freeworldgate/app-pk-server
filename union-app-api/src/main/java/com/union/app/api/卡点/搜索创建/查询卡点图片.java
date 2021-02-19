@@ -132,7 +132,13 @@ public class 查询卡点图片 {
     @RequestMapping(path="/setPkBack",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
     public AppResponse setPkBack(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId,@RequestParam("imageId") String imageId) throws AppException, IOException, InterruptedException {
+
         locationService.卡点状态检查(pkId);
+        if(!locationService.isPkCreator(pkId,userId) )
+        {
+            throw AppException.buildException(PageAction.信息反馈框("用户无权限...","非法用户"));
+        }
+
 
         //创建者
         locationService.设置卡点背景图片(pkId,userId,imageId);
@@ -142,6 +148,7 @@ public class 查询卡点图片 {
     @RequestMapping(path="/agreePkImage",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
     public AppResponse agreePkImage(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId,@RequestParam("imageId") String imageId) throws AppException, IOException, InterruptedException {
+        locationService.卡点状态检查(pkId);
         //创建者
         locationService.审核通过卡点图片(pkId,userId,imageId);
         return AppResponse.buildResponse(PageAction.执行处理器("success",""));

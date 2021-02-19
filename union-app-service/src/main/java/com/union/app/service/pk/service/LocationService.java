@@ -697,19 +697,19 @@ public class LocationService {
         EntityFilterChain cfilter = EntityFilterChain.newFilterChain(PkImageEntity.class)
                 .compareFilter("imgId",CompareTag.Equal,imageId);
         PkImageEntity pkImageEntity = daoService.querySingleEntity(PkImageEntity.class,cfilter);
-        if(StringUtils.equalsIgnoreCase(userId,pkImageEntity.getUserId())){
+
+        if(StringUtils.equalsIgnoreCase(userId,pkImageEntity.getUserId()) || userService.管理员用户(userId)){
             daoService.deleteEntity(pkImageEntity);
-        }else if(this.isPkCreator(pkId,userId) ){
+        }
+        else if(this.isPkCreator(pkId,userId) )
+        {
             pkImageEntity.setImgStatu(ImgStatu.审核中);
             daoService.updateEntity(pkImageEntity);
         }else{}
     }
 
     public void 设置卡点背景图片(String pkId, String userId, String imageId) throws AppException {
-        if(!this.isPkCreator(pkId,userId) )
-        {
-            throw AppException.buildException(PageAction.信息反馈框("用户无权限...","非法用户"));
-        }
+
         EntityFilterChain cfilter = EntityFilterChain.newFilterChain(PkImageEntity.class)
                 .compareFilter("imgId",CompareTag.Equal,imageId);
         PkImageEntity pkImageEntity = daoService.querySingleEntity(PkImageEntity.class,cfilter);

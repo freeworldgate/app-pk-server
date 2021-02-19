@@ -51,8 +51,8 @@ public class 设置缩放和范围 {
 
     @RequestMapping(path="/setScaleRange",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse 查询排名信息(@RequestParam("range") int range,@RequestParam("scale") int scale,@RequestParam("offset") double offset) throws AppException, IOException {
-
+    public AppResponse 查询排名信息(@RequestParam("range") int range,@RequestParam("scale") int scale,@RequestParam("offset") double offset,@RequestParam("userId") String userId) throws AppException, IOException {
+        appService.checkManager(userId);
         appService.设置缩放(range,scale,offset);
 
         return AppResponse.buildResponse(PageAction.前端数据更新("key",""));

@@ -54,9 +54,8 @@ public class 查询背景 {
 
 
     @RequestMapping(path="/queryBacks",method = RequestMethod.GET)
-    public AppResponse 查询排名信息() throws AppException, IOException {
-
-//        appService.验证Password(password);
+    public AppResponse 查询排名信息(@RequestParam("userId") String userId) throws AppException, IOException {
+        appService.checkManager(userId);
         List<DataSet> dataSets = new ArrayList<>();
         List<TextBack> textBacks = textService.查询TextBacks(1);
         dataSets.add(new DataSet("backs",textBacks));
@@ -66,8 +65,8 @@ public class 查询背景 {
     }
 
     @RequestMapping(path="/nextBacks",method = RequestMethod.GET)
-    public AppResponse 查询排名信息(@RequestParam("page") int page) throws AppException, IOException {
-
+    public AppResponse 查询排名信息(@RequestParam("page") int page,@RequestParam("userId") String userId) throws AppException, IOException {
+        appService.checkManager(userId);
         //页数不断递增，但是只有一百页。
         List<TextBack> textBacks = textService.查询TextBacks(page+1);
         if(CollectionUtils.isEmpty(textBacks))

@@ -231,27 +231,7 @@ public class PostService {
         return image;
     }
 
-//    public Post 查询帖子(String postId,String queryerId) throws UnsupportedEncodingException {
-//
-//        Post post = new Post();
-//
-//        PostEntity postEntity = getPostEntityById(postId);
-//
-//        if((!StringUtils.isEmpty(queryerId)) && (!org.apache.commons.lang.StringUtils.equals(postEntity.getUserId(),queryerId))){
-//
-//            post.setQueryerCollect(isUserCollectPost(postId,queryerId));
-//
-//        }
-//
-//        post.setPkId(postEntity.getPkId());
-//        post.setPostId(postEntity.getPostId());
-//        post.setCreator(userService.queryUser(postEntity.getUserId()));
-//        post.setTopic(new String(postEntity.getTopic(),"UTF-8"));
-//        post.setDynamic(getPostDynamic(postEntity.getPostId(),postEntity.getPkId()));
-//        post.setPostImages(getPostImages(postEntity.getPostId(),postEntity.getPkId()));
-//        post.setStatu(new KeyNameValue(postEntity.getStatu().getStatu(),postEntity.getStatu().getStatuStr()));
-//        return post;
-//    }
+
 
     public Post 查询顶置帖子(PkEntity pkEntity) {
 
@@ -279,7 +259,6 @@ public class PostService {
         PostEntity postEntity = this.查询帖子ById(postId);
         if(ObjectUtils.isEmpty(postEntity)){return null;}
         Post post = translate(postEntity);
-//        post.setBackUrl(appService.查询背景(4));
         return post;
     }
 

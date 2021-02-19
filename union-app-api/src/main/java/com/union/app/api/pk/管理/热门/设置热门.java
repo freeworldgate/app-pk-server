@@ -52,7 +52,7 @@ public class 设置热门 {
     @RequestMapping(path="/setHot",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
     public AppResponse 设置标志位(@RequestParam("userId") String userId,@RequestParam("pkId") String pkId,@RequestParam("type") int type) throws AppException, IOException {
-
+        appService.checkManager(userId);
         appService.设置标志位(pkId,type);
 
         return AppResponse.buildResponse(PageAction.执行处理器("success",""));

@@ -58,9 +58,9 @@ public class 标签管理 {
 
 
     @RequestMapping(path="/queryTips",method = RequestMethod.GET)
-    public AppResponse 查询内置PK() throws AppException, IOException {
-        appService.验证Password();
+    public AppResponse 查询内置PK(@RequestParam("userId") String userId) throws AppException, IOException {
 
+        appService.checkManager(userId);
         List<ActiveTip> tips = appService.查询所有标签信息();
 
 
@@ -72,9 +72,8 @@ public class 标签管理 {
     }
     @RequestMapping(path="/addTip",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse 查询内置PK(@RequestParam("tip") String tip) throws AppException, IOException {
-        appService.验证Password();
-
+    public AppResponse 查询内置PK(@RequestParam("tip") String tip,@RequestParam("userId") String userId) throws AppException, IOException {
+        appService.checkManager(userId);
         appService.添加Tip(tip);
 
 
@@ -88,9 +87,8 @@ public class 标签管理 {
 
     @RequestMapping(path="/removeTip",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse removeImg(@RequestParam("id") String id) throws AppException, IOException {
-        appService.验证Password();
-
+    public AppResponse removeImg(@RequestParam("id") String id,@RequestParam("userId") String userId) throws AppException, IOException {
+        appService.checkManager(userId);
         appService.删除Tip(id);
 
 

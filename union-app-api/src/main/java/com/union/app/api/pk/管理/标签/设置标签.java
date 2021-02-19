@@ -52,15 +52,10 @@ public class 设置标签 {
     @RequestMapping(path="/setPkTag",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
     public AppResponse setPkTag(@RequestParam("userId") String userId,@RequestParam("pkId") String pkId,@RequestParam("tag") String tag) throws AppException, IOException {
-        if(userService.管理员用户(userId))
-        {
-            appService.设置PkTag(pkId, tag);
-            return AppResponse.buildResponse(PageAction.执行处理器("success",""));
-        }
-        else
-        {
-            return AppResponse.buildResponse(PageAction.信息反馈框("滚","滚"));
-        }
+        appService.checkManager(userId);
+        appService.设置PkTag(pkId, tag);
+        return AppResponse.buildResponse(PageAction.执行处理器("success",""));
+
 
     }
 

@@ -6,6 +6,7 @@ import com.union.app.common.dao.AppDaoService;
 import com.union.app.dao.spi.filter.CompareTag;
 import com.union.app.dao.spi.filter.EntityFilterChain;
 import com.union.app.dao.spi.filter.OrderTag;
+import com.union.app.domain.pk.daka.CreateLocation;
 import com.union.app.domain.pk.支付.Pay;
 import com.union.app.domain.pk.支付.PayOrder;
 import com.union.app.entity.pk.PkTipEntity;
@@ -438,11 +439,16 @@ public class PayService {
 
     }
 
-    public void 用户创建卡点(String userId) throws AppException {
+    public void 用户创建卡点(CreateLocation createLocation) throws AppException {
+
+        if(appService.是否是免费城市(createLocation.getCity()))
+        {
+            return;
+        }
         if(!AppConfigService.getConfigAsBoolean(ConfigItem.卡点创建收费)){
             return;
         }
-        UserDynamicEntity userDynamicEntity = userService.queryUserKvEntity(userId);
+        UserDynamicEntity userDynamicEntity = userService.queryUserKvEntity(createLocation.getUserId());
         int pk = userDynamicEntity.getPk();
         if(pk < 1)
         {

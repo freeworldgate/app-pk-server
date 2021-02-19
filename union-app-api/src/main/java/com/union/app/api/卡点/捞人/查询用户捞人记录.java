@@ -2,6 +2,7 @@ package com.union.app.api.卡点.捞人;
 
 import com.union.app.domain.pk.PkDetail;
 import com.union.app.domain.pk.捞人.FindUser;
+import com.union.app.entity.pk.PkEntity;
 import com.union.app.entity.user.UserDynamicEntity;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.DataSet;
@@ -58,14 +59,22 @@ public class 查询用户捞人记录 {
 
     @RequestMapping(path="/queryUserFind",method = RequestMethod.GET)
     public AppResponse queryUserFind(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId) throws IOException {
+        List<DataSet> dataSets = new ArrayList<>();
 
+        PkEntity pkEntity = locationService.querySinglePkEntity(pkId);
+        if(!pkEntity.isFindSet())
+        {
+            return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
+        }
+
+        
         FindUser findUser = findService.查询用户捞人记录(pkId,userId);
         PkDetail pk = locationService.querySinglePk(pkId);
         UserDynamicEntity userDynamicEntity = userService.queryUserKvEntity(userId);
         String leftTime = TimeUtils.剩余可打捞时间(userDynamicEntity.getFindTimeLength());
         String speedTime = TimeUtils.已打捞总时间(userDynamicEntity.getFindLength());
 
-        List<DataSet> dataSets = new ArrayList<>();
+
 
         dataSets.add(new DataSet("findUser",findUser));
         dataSets.add(new DataSet("pk",pk));

@@ -143,6 +143,9 @@ public class 顶置删除 {
         }
 
     }
+
+
+
     @RequestMapping(path="/hiddenPost",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
     public AppResponse 隐藏(@RequestParam("userId") String userId,@RequestParam("pkId") String pkId,@RequestParam("postId") String postId) throws AppException, IOException {
@@ -169,6 +172,9 @@ public class 顶置删除 {
         }
 
     }
+
+
+
     @RequestMapping(path="/removeFromHiddenPosts",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
     public AppResponse removeFromHiddenPosts(@RequestParam("userId") String userId,@RequestParam("postId") String postId) throws AppException, IOException {

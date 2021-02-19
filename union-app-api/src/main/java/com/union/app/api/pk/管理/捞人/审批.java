@@ -54,8 +54,8 @@ public class 审批 {
 
     @RequestMapping(path="/passFindUser",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse 查询排名信息(@RequestParam("findId") int findId) throws AppException, IOException {
-
+    public AppResponse 查询排名信息(@RequestParam("findId") int findId,@RequestParam("userId") String userId) throws AppException, IOException {
+        appService.checkManager(userId);
         findService.审批(findId);
         FindUser findUser = findService.查询ByFindId(findId);
 
@@ -64,8 +64,8 @@ public class 审批 {
     }
     @RequestMapping(path="/rejectFindUser",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse rejectFindUser(@RequestParam("findId") int findId) throws AppException, IOException {
-
+    public AppResponse rejectFindUser(@RequestParam("findId") int findId,@RequestParam("userId") String userId) throws AppException, IOException {
+        appService.checkManager(userId);
         findService.拒绝(findId);
         FindUser findUser = findService.查询ByFindId(findId);
 

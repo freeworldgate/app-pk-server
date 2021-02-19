@@ -1,6 +1,7 @@
 package com.union.app.api.卡点.捞人;
 
 import com.union.app.domain.pk.捞人.FindUser;
+import com.union.app.entity.pk.PkEntity;
 import com.union.app.entity.pk.kadian.捞人.FindStatu;
 import com.union.app.entity.pk.kadian.捞人.FindUserEntity;
 import com.union.app.plateform.data.resultcode.AppException;
@@ -56,15 +57,20 @@ public class 查询卡点捞人列表 {
     @Autowired
     FindService findService;
 
+    @Autowired
+    LocationService locationService;
+
     @RequestMapping(path="/queryPkFinds",method = RequestMethod.GET)
     public AppResponse queryPkImages(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId) throws AppException, IOException, InterruptedException {
 
+        List<DataSet> dataSets = new ArrayList<>();
+        PkEntity pkEntity = locationService.querySinglePkEntity(pkId);
+        if(!pkEntity.isFindSet())
+        {
+            return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
+        }
 
         List<FindUser> findUsers = findService.查询卡点捞人列表(pkId);
-
-
-
-
 
         FindUserEntity findUserEntity = findService.查询用户捞人Entity(pkId,userId);
         long current = System.currentTimeMillis();
@@ -89,7 +95,7 @@ public class 查询卡点捞人列表 {
 
 
 
-        List<DataSet> dataSets = new ArrayList<>();
+
 
 
 

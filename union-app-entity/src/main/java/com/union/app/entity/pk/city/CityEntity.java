@@ -22,6 +22,8 @@ public class CityEntity {
 
     private long pks;
 
+    private boolean needPay;
+
 
 
 }

@@ -37,13 +37,12 @@ public class 系统设置 {
      */
     @RequestMapping(value = "/systemSetting", method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse systemSetting(@RequestParam("type") String type,@RequestParam("value") String value) throws IOException, AppException {
+    public AppResponse systemSetting(@RequestParam("type") String type,@RequestParam("value") String value,@RequestParam("userId") String userId) throws IOException, AppException {
 
-
+        appService.checkManager(userId);
         //密码校验
 
-            appService.验证Password();
-            appService.设置参数(type,value);
+        appService.设置参数(type,value);
 
 
 
@@ -60,9 +59,9 @@ public class 系统设置 {
     }
     @RequestMapping(value = "/querySystemSetting", method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse querySystemSetting() throws IOException {
+    public AppResponse querySystemSetting(@RequestParam("userId") String userId) throws IOException, AppException {
 
-
+        appService.checkManager(userId);
 
         List<DataSet> dataSets = appService.查询当前设置页面();
 

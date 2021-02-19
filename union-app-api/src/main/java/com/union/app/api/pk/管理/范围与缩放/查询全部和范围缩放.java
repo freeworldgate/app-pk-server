@@ -1,6 +1,7 @@
 package com.union.app.api.pk.管理.范围与缩放;
 
 import com.union.app.domain.pk.捞人.ScaleRange;
+import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.DataSet;
 import com.union.app.plateform.data.resultcode.PageAction;
@@ -15,6 +16,7 @@ import com.union.app.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
@@ -51,8 +53,8 @@ public class 查询全部和范围缩放 {
 
 
     @RequestMapping(path="/queryScaleRangs",method = RequestMethod.GET)
-    public AppResponse queryScaleRangs() throws IOException {
-
+    public AppResponse queryScaleRangs(@RequestParam("userId") String userId) throws AppException {
+        appService.checkManager(userId);
         List<DataSet> dataSets = new ArrayList<>();
         List<ScaleRange> scaleRanges = appService.查询全部ScaleRange();
 //        dataSets.add(new DataSet("scaleRanges",scaleRanges));

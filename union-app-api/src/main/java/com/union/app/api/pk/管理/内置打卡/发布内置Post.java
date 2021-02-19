@@ -57,17 +57,10 @@ public class 发布内置Post {
     @Transactional(rollbackOn = Exception.class)
     public AppResponse 发布内置Post(@RequestParam("pkId") String pkId,@RequestParam("title") String title,@RequestParam("userId") String userId,@RequestParam("backId") String backId,@RequestParam("imgUrls") List<String> images) throws AppException, IOException {
 
-        if(userService.管理员用户(userId))
-        {
-            userId = userService.随机选择内置用户();
-        }
-        else
-        {
-            throw AppException.buildException(PageAction.信息反馈框("滚","滚"));
 
-        }
+        appService.checkManager(userId);
 
-
+        userId = userService.随机选择内置用户();
         //添加时间限制
 
         String postId = postService.打卡(pkId,userId,title,images,backId);
@@ -82,91 +75,6 @@ public class 发布内置Post {
 
     }
 
-
-
-//
-//    @RequestMapping(path="/uploadPostImgs",method = RequestMethod.GET)
-//    @Transactional(rollbackOn = Exception.class)
-//    public AppResponse 续传封面(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId,@RequestParam("title") String title,@RequestParam("userId") String userId,@RequestParam("imgUrls") List<String> images) throws AppException, IOException {
-//
-//
-//
-//        postService.续传帖子(postId,title,userId,images);
-//
-//        Post post = postService.查询帖子(pkId,postId,userId);
-//
-//        return AppResponse.buildResponse(PageAction.执行处理器("success",post));
-//
-//    }
-//
-
-
-
-//    @RequestMapping(path="/deletePostImg",method = RequestMethod.GET)
-//    @Transactional(rollbackOn = Exception.class)
-//    public AppResponse 删除图片(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId,@RequestParam("imgId") String imgId,@RequestParam("userId") String userId) throws AppException, IOException {
-//        Date cureentDate = new Date();
-//
-//        postService.删除帖子指定图片(postId,imgId,userId);
-//
-//        Post post = postService.查询帖子(pkId,postId,userId,cureentDate);
-//
-//        return AppResponse.buildResponse(PageAction.执行处理器("success",post));
-//
-//    }
-
-//    @RequestMapping(path="/postStatu",method = RequestMethod.GET)
-//    @Transactional(rollbackOn = Exception.class)
-//    public AppResponse 查询榜帖状态(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId) throws AppException, IOException {
-//        Date cureentDate = new Date();
-//
-//        PostEntity postEntity = postService.查询帖子ById(postId);
-//        if(postEntity.getStatu() == PostStatu.显示)
-//        {
-//            return AppResponse.buildResponse(PageAction.信息反馈框("提示","图册已发布，不支持修改图册内容"));
-////            return AppResponse.buildResponse(PageAction.执行处理器("online",""));
-//        }
-//        return AppResponse.buildResponse(PageAction.执行处理器("offline",""));
-//
-//
-//
-//
-//
-//    }
-//
-//
-//    @RequestMapping(path="/replaceImg",method = RequestMethod.GET)
-//    @Transactional(rollbackOn = Exception.class)
-//    public AppResponse 替換图片(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId,@RequestParam("imgUrl") String imgUrl,@RequestParam("imgId") String imgId,@RequestParam("userId") String userId) throws AppException, IOException {
-//        Date currentDate = new Date();
-//
-//        postService.替换指定图片(pkId,postId,imgUrl,imgId,userId,currentDate);
-//
-//
-//        Post post = postService.查询帖子(pkId,postId,userId);
-//
-//        return AppResponse.buildResponse(PageAction.执行处理器("success",post));
-//
-//    }
-//
-//
-//
-//    @RequestMapping(path="/replaceText",method = RequestMethod.GET)
-//    @Transactional(rollbackOn = Exception.class)
-//    public AppResponse 删除图片(@RequestParam("pkId") String pkId,@RequestParam("postId") String postId,@RequestParam("text") String text,@RequestParam("userId") String userId) throws AppException, IOException {
-//        Date cureentDate = new Date();
-//
-//        postService.替换Topic(pkId,postId,text,userId);
-//
-//
-//
-//
-////        Post post = postService.查询帖子(pkId,postId,userId,cureentDate);
-//
-//        return AppResponse.buildResponse(PageAction.执行处理器("success",""));
-//
-//    }
-//
 
 
 

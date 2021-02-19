@@ -54,9 +54,8 @@ public class 查询审核捞人 {
 
 
     @RequestMapping(path="/queryApprovingFinds",method = RequestMethod.GET)
-    public AppResponse 查询排名信息() throws AppException, IOException {
-
-//        appService.验证Password(password);
+    public AppResponse 查询排名信息(@RequestParam("userId") String userId) throws AppException, IOException {
+        appService.checkManager(userId);
         List<DataSet> dataSets = new ArrayList<>();
         List<FindUser> findUsers = findService.查询审核捞人记录(1);
         dataSets.add(new DataSet("findUsers",findUsers));
@@ -66,8 +65,8 @@ public class 查询审核捞人 {
     }
 
     @RequestMapping(path="/nextApprovingFinds",method = RequestMethod.GET)
-    public AppResponse 查询排名信息(@RequestParam("page") int page) throws AppException, IOException {
-
+    public AppResponse 查询排名信息(@RequestParam("page") int page,@RequestParam("userId") String userId) throws AppException, IOException {
+        appService.checkManager(userId);
         //页数不断递增，但是只有一百页。
         List<FindUser> findUsers = findService.查询审核捞人记录(page+1);
         if(CollectionUtils.isEmpty(findUsers))

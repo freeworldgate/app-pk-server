@@ -54,9 +54,9 @@ public class 温馨提示 {
 
 
     @RequestMapping(path="/queryTipText",method = RequestMethod.GET)
-    public AppResponse queryTipText(@RequestParam("type") int type) throws AppException, IOException {
+    public AppResponse queryTipText(@RequestParam("type") int type,@RequestParam("userId") String userId) throws AppException, IOException {
 
-//        appService.验证Password(password);
+        appService.checkManager(userId);
         List<DataSet> dataSets = new ArrayList<>();
         List<PkTipEntity> tips = appService.查询温馨提示(type);
         dataSets.add(new DataSet("tips",tips));
@@ -67,10 +67,10 @@ public class 温馨提示 {
 
     @RequestMapping(path="/removeTextTip",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse removeTextTip(@RequestParam("id") int id) throws AppException, IOException {
+    public AppResponse removeTextTip(@RequestParam("id") int id,@RequestParam("userId") String userId) throws AppException, IOException {
 
-//        appService.验证Password(password);
 
+        appService.checkManager(userId);
         appService.删除温馨提示(id);
 
 
@@ -81,9 +81,8 @@ public class 温馨提示 {
 
     @RequestMapping(path="/addTextTip",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse addTextTip(@RequestParam("tip") String tip,@RequestParam("type") int type) throws AppException, IOException {
-
-//        appService.验证Password(password);
+    public AppResponse addTextTip(@RequestParam("tip") String tip,@RequestParam("type") int type,@RequestParam("userId") String userId) throws AppException, IOException {
+        appService.checkManager(userId);
         PkTipEntity pkTipEntity = appService.新增温馨提示(tip,type);
 
         return AppResponse.buildResponse(PageAction.执行处理器("success",pkTipEntity));

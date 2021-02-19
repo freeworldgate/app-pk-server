@@ -60,9 +60,8 @@ public class 创建预置用户 {
 
     @RequestMapping(path="/addPreUser",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse 创建预置用户(@RequestParam("name") String name,@RequestParam("imgUrl") String imgUrl) throws AppException, IOException {
-        appService.验证Password();
-
+    public AppResponse 创建预置用户(@RequestParam("name") String name,@RequestParam("imgUrl") String imgUrl,@RequestParam("userId") String userId) throws AppException, IOException {
+        appService.checkManager(userId);
         User user = appService.新增内置用户(name,imgUrl);
 
         return AppResponse.buildResponse(PageAction.执行处理器("success",user));
@@ -72,8 +71,8 @@ public class 创建预置用户 {
 
     @RequestMapping(path="/editUserName",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse 修改预置用户(@RequestParam("name") String name,@RequestParam("id") String id) throws AppException, IOException {
-
+    public AppResponse 修改预置用户(@RequestParam("name") String name,@RequestParam("id") String id,@RequestParam("userId") String userId) throws AppException, IOException {
+        appService.checkManager(userId);
         User user = appService.修改内置用户名称(id,name);
         keyService.刷新用户User缓存(user.getUserId());
         return AppResponse.buildResponse(PageAction.执行处理器("success",user));
@@ -81,8 +80,8 @@ public class 创建预置用户 {
     }
     @RequestMapping(path="/editUserImg",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse 修改预置用户头像(@RequestParam("imgUrl") String imgUrl,@RequestParam("id") String id) throws AppException, IOException {
-
+    public AppResponse 修改预置用户头像(@RequestParam("imgUrl") String imgUrl,@RequestParam("id") String id,@RequestParam("userId") String userId) throws AppException, IOException {
+        appService.checkManager(userId);
         User user = appService.修改内置用户头像(id,imgUrl);
 
         return AppResponse.buildResponse(PageAction.执行处理器("success",user));

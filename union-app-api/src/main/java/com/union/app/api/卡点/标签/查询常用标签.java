@@ -59,7 +59,7 @@ public class 查询常用标签 {
 
 
     @RequestMapping(path="/queryActiveTips",method = RequestMethod.GET)
-    public AppResponse 查询内置PK() throws AppException, IOException {
+    public AppResponse queryActiveTips() throws AppException, IOException {
 
 
         List<ActiveTip> tips = appService.查询所有标签信息();

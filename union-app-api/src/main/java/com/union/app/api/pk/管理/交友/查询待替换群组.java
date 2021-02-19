@@ -51,9 +51,8 @@ public class 查询待替换群组 {
 
 
     @RequestMapping(path="/queryUpdatingGroups",method = RequestMethod.GET)
-    public AppResponse 查询审核群组() throws AppException, IOException {
-
-//        appService.验证Password(password);
+    public AppResponse 查询审核群组(@RequestParam("userId") String userId) throws AppException, IOException {
+        appService.checkManager(userId);
         List<DataSet> dataSets = new ArrayList<>();
         List<PkGroup> findUsers = groupService.查询待替换的群组(1);
         dataSets.add(new DataSet("groups",findUsers));
@@ -63,8 +62,8 @@ public class 查询待替换群组 {
     }
 
     @RequestMapping(path="/nextUpdatingGroups",method = RequestMethod.GET)
-    public AppResponse 查询审核群组(@RequestParam("page") int page) throws AppException, IOException {
-
+    public AppResponse 查询审核群组(@RequestParam("page") int page,@RequestParam("userId") String userId) throws AppException, IOException {
+        appService.checkManager(userId);
         //页数不断递增，但是只有一百页。
         List<PkGroup> findUsers = groupService.查询待替换的群组(page+1);
         if(CollectionUtils.isEmpty(findUsers))

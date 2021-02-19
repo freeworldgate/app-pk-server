@@ -51,8 +51,8 @@ public class 审批Group {
 
     @RequestMapping(path="/passGroup",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse 审批Group(@RequestParam("groupId") String groupId) throws AppException, IOException {
-
+    public AppResponse 审批Group(@RequestParam("groupId") String groupId,@RequestParam("userId") String userId) throws AppException, IOException {
+        appService.checkManager(userId);
         groupService.审批(groupId);
 
         PkGroup pkGroup = groupService.查询ByGroupId(groupId);
@@ -62,8 +62,8 @@ public class 审批Group {
     }
     @RequestMapping(path="/passUpdatingGroup",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse 审批UpdatingGroup(@RequestParam("groupId") String groupId) throws AppException, IOException {
-
+    public AppResponse 审批UpdatingGroup(@RequestParam("groupId") String groupId,@RequestParam("userId") String userId) throws AppException, IOException {
+        appService.checkManager(userId);
         groupService.审批UpdatingGroup(groupId);
 //        PkGroup pkGroup = groupService.查询ByGroupId(groupId);
 
