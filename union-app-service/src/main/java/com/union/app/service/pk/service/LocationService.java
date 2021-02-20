@@ -410,7 +410,7 @@ public class LocationService {
                 .compareFilter("totalImgs",CompareTag.Bigger,0L)
                 .andFilter()
                 .compareFilter("citySet",CompareTag.Equal,Boolean.TRUE)
-                .orderByFilter("totalUsers",OrderTag.DESC)
+                .orderByRandomFilter()
                 .pageLimitFilter(1,10);
 
         EntityFilterChain cityAroundFilter = EntityFilterChain.newFilterChain(PkEntity.class)
@@ -425,7 +425,7 @@ public class LocationService {
                 .compareFilter("totalImgs",CompareTag.Bigger,0L)
                 .andFilter()
                 .compareFilter("citySet",CompareTag.Equal,Boolean.TRUE)
-                .orderByFilter("totalUsers",OrderTag.DESC)
+                .orderByRandomFilter()
                 .pageLimitFilter(1,10);
 
 
@@ -441,18 +441,29 @@ public class LocationService {
             pkEntities.addAll(keyService.查询全网排行());
         }
 
+
+
         if(!org.apache.commons.collections4.CollectionUtils.isEmpty(pkEntities))
         {
-            pkEntities.forEach(pk->{
+            //去重:
+            List<String> pkIds = new ArrayList<>();
+            List<PkEntity> rpkEntities = new ArrayList<>();
+            for(PkEntity pkEntity:pkEntities)
+            {
+                if(!pkIds.contains(pkEntity.getPkId()))
+                {
+                    rpkEntities.add(pkEntity);
+                    pkIds.add(pkEntity.getPkId());
+                }
+            }
 
+            rpkEntities.forEach(pk->{
                     PkDetail pkDetail = this.querySinglePkWidthList(pk);
                     int length = this.计算坐标间距离(latitude,longitude,pk.getLatitude(),pk.getLongitude());
                     pkDetail.setUserLength(length);
                     pkDetail.setUserLengthStr(this.距离转换成描述(length));
                     pkDetail.setLatitude(pkDetail.getLatitude() -  appService.查询指定范围缩放偏移(pk.getTypeRange()).getOffset() );
                     pks.add(pkDetail);
-
-
             });
         }
         appService.批量查询Pk动态表和顶置(pks);

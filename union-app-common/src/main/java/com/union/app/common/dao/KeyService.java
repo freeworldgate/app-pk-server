@@ -347,7 +347,7 @@ public class KeyService {
                     .compareFilter("totalImgs",CompareTag.Bigger,0L)
                     .andFilter()
                     .compareFilter("countrySet",CompareTag.Equal,Boolean.TRUE)
-                    .orderByFilter("totalUsers",OrderTag.DESC)
+                    .orderByRandomFilter()
                     .pageLimitFilter(1,10);
             pkEntities = daoService.queryEntities(PkEntity.class,sortFilter);
             if(!CollectionUtils.isEmpty(pkEntities))

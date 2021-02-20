@@ -64,7 +64,7 @@ public class 查询用户捞人记录 {
         PkEntity pkEntity = locationService.querySinglePkEntity(pkId);
         if(!pkEntity.isFindSet())
         {
-            return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
+            return AppResponse.buildResponse(PageAction.信息反馈框("打捞功能已关闭","服务异常，请稍后再试!"));
         }
 
         

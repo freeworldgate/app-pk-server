@@ -59,9 +59,15 @@ public class 同步Pk人数和图片总数到PkEntity表
                 long totalUser = keyService.queryKey(pkId,KeyType.卡点人数);
                 long totalImgs = keyService.queryKey(pkId,KeyType.PK图片总量);
                 Map<String,Object> map = new HashMap<>();
-                map.put("totalUsers",totalUser);
-                map.put("totalImgs",totalImgs);
-                appDao.updateColumById(PkEntity.class,"pkId",pkId,map);
+                if(totalUser > 0){
+                    map.put("totalUsers",totalUser);
+                }
+                if(totalImgs > 0){
+                    map.put("totalImgs",totalImgs);
+                }
+                if(!map.isEmpty()){
+                    appDao.updateColumById(PkEntity.class,"pkId",pkId,map);
+                }
 
         }
         System.out.println("结束定时线程:"+Thread.currentThread().getId());

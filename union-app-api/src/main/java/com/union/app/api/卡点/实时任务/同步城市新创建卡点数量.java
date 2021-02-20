@@ -45,8 +45,10 @@ public class 同步城市新创建卡点数量
         {
             long pks = keyService.queryKey(cityCode,KeyType.城市卡点数量);
             Map<String,Object> map = new HashMap<>();
-            map.put("pks",pks);
-            appDao.updateColumById(CityEntity.class,"cityCode",Integer.valueOf(cityCode),map);
+            if(pks > 0){
+                map.put("pks",pks);
+                appDao.updateColumById(CityEntity.class,"cityCode",Integer.valueOf(cityCode),map);
+            }
         }
         System.out.println("结束定时线程:"+Thread.currentThread().getId());
 

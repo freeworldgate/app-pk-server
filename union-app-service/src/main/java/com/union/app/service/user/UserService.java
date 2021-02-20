@@ -677,12 +677,13 @@ public class UserService {
     public void 创建内置UserCardEntity(String userId) {
         UserCardEntity userCardEntity = new UserCardEntity();
         userCardEntity.setUserId(userId);
-        userCardEntity.setUnLock(0);
+        userCardEntity.setUnLock(new Random().nextInt(30));
         userCardEntity.setMeLike(new Random().nextInt(30));
         userCardEntity.setLikeMe(new Random().nextInt(30));
-        userCardEntity.setMember1(null);
-        userCardEntity.setMember2(null);
-        userCardEntity.setMember3(null);
+        keyService.setMapKey(userId,KeyType.想认识我的人,userCardEntity.getLikeMe()*1L);
+        userCardEntity.setMember1(userService.随机选择内置用户());
+        userCardEntity.setMember2(userService.随机选择内置用户());
+        userCardEntity.setMember3(userService.随机选择内置用户());
         userCardEntity.setUserCard(null);
         userCardEntity.setTime(0);
         appDaoService.insertEntity(userCardEntity);
