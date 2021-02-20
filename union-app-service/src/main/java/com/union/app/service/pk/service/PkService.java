@@ -172,20 +172,6 @@ public class PkService {
 
 
 
-    public PkDetail querySinglePk(PkEntity pk) throws IOException {
-        if(ObjectUtils.isEmpty(pk)){return null;}
-        String pkId = pk.getPkId();
-        PkDetail pkDetail = new PkDetail();
-        pkDetail.setPkId(pk.getPkId());
-
-        pkDetail.setUser(userService.queryUser(pk.getUserId()));
-
-        pkDetail.setTime(TimeUtils.convertTime(pk.getTime()));
-        pkDetail.setBackUrl(pk.getBackUrl());
-        pkDetail.setTopPostId(pk.getTopPostId());
-        pkDetail.setTopPost(postService.查询顶置帖子(pk));
-        return pkDetail;
-    }
 
 
     public User queryPkCreator(String pkId){

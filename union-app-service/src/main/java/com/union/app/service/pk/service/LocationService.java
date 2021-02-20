@@ -260,6 +260,9 @@ public class LocationService {
         PkDynamic pkDynamic = pkDynamicService.queryPkDynamic(pkId);
         pkDetail.setPkDynamic(pkDynamic);
         pkDetail.setTopPostId(pk.getTopPostId());
+        pkDetail.setTopPostId(pk.getTopPostId());
+        pkDetail.setTopPostSetTime(pk.getTopPostSetTime());
+        pkDetail.setTopPostTimeLength(pk.getTopPostTimeLength());
         Post topPost = postService.查询顶置帖子(pk);
         if(!ObjectUtils.isEmpty(topPost))
         {
@@ -298,6 +301,8 @@ public class LocationService {
         pkDetail.setTime(TimeUtils.convertTime(pk.getTime()));
         pkDetail.setBackUrl(pk.getBackUrl());
         pkDetail.setTopPostId(pk.getTopPostId());
+        pkDetail.setTopPostSetTime(pk.getTopPostSetTime());
+        pkDetail.setTopPostTimeLength(pk.getTopPostTimeLength());
         pkDetail.setMarker(this.查询Marker(pk));
         pkDetail.setCircle(this.查询Circle(pk,locationType));
         pkDetail.setTotalUsers(NumberUtils.convert(pk.getTotalUsers()));
@@ -757,7 +762,7 @@ public class LocationService {
 
     public void 批量查询Pk顶置内容图片(List<PkDetail> pkDetails) {
         pkDetails.forEach(pkDetail -> {
-            if(StringUtils.isBlank(pkDetail.getTopPostId()))
+            if(StringUtils.isBlank(pkDetail.getTopPostId()) || ((System.currentTimeMillis() - pkDetail.getTopPostSetTime()) >= pkDetail.getTopPostTimeLength() * 60 * 1000))
             {
                 pkDetail.setTopPost(keyService.查询顶置图片集合(pkDetail.getPkId()));
             }

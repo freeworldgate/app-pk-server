@@ -85,9 +85,16 @@ public class 查询单个PK {
         }
         PkDetail pkDetail = locationService.querySinglePk(pkEntity);
         List<Post> posts = pkService.queryPkPost(pkId,1);
-        去除顶置POST(posts,pkEntity.getTopPostId());
-        Post topPost = postService.查询顶置帖子(pkEntity);
-        if(!ObjectUtils.isEmpty(topPost)){posts.add(0,topPost);}
+
+        if((System.currentTimeMillis() - pkEntity.getTopPostSetTime()) < pkEntity.getTopPostTimeLength() * 60 * 1000) {
+            去除顶置POST(posts, pkEntity.getTopPostId());
+            Post topPost = postService.查询顶置帖子(pkEntity);
+            if (!ObjectUtils.isEmpty(topPost)) {
+                posts.add(0, topPost);
+            }
+        }
+
+
         dataSets.add(new DataSet("pk",pkDetail));
         dataSets.add(new DataSet("inviteStatu",appService.查询收藏状态(pkId,userId)));
         dataSets.add(new DataSet("posts",posts));

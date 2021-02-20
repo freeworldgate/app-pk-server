@@ -60,9 +60,9 @@ public class 管理员创建或修改捞人记录 {
 
     @RequestMapping(path="/startManagerUserPkFind",method = RequestMethod.POST)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse startManagerUserPkFind(@RequestBody CreateUserFind createUserFind,@RequestParam("userId") String userId) throws AppException, IOException {
-        appService.checkManager(userId);
-        userId = userService.随机选择内置用户();
+    public AppResponse startManagerUserPkFind(@RequestBody CreateUserFind createUserFind) throws AppException, IOException {
+        appService.checkManager(createUserFind.getUserId());
+        String userId = userService.随机选择内置用户();
         createUserFind.setUserId(userId);
         FindUserEntity find = findService.查询用户捞人Entity(createUserFind.getPkId(),createUserFind.getUserId());
         if(!ObjectUtils.isEmpty(find)){
@@ -101,7 +101,7 @@ public class 管理员创建或修改捞人记录 {
     @Transactional(rollbackOn = Exception.class)
     public AppResponse giveUpMangerUserPkFind(@RequestParam("userId") String userId,@RequestParam("findId") int findId) throws AppException, IOException {
 
-
+        appService.checkManager(userId);
 
         findService.放弃捞人(findId);
 
@@ -116,7 +116,7 @@ public class 管理员创建或修改捞人记录 {
     @Transactional(rollbackOn = Exception.class)
     public AppResponse clearManagerUserFind(@RequestParam("userId") String userId,@RequestParam("findId") int findId,@RequestParam("pkId") String pkId) throws AppException, IOException {
 
-
+        appService.checkManager(userId);
         //校验
         findService.清除UserFind(findId);
 

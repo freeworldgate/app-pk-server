@@ -678,7 +678,7 @@ public class PostService {
     public void 批量查询POST(List<PkDetail> pkDetails) {
 
         pkDetails.forEach(pkDetail -> {
-            if(org.apache.commons.lang.StringUtils.isNotBlank(pkDetail.getTopPostId()))
+            if(org.apache.commons.lang.StringUtils.isNotBlank(pkDetail.getTopPostId()) && ((System.currentTimeMillis() - pkDetail.getTopPostSetTime()) < pkDetail.getTopPostTimeLength() * 60 * 1000))
             {
                 Collection<PostImage> postImages =  keyService.查询榜帖图片(pkDetail.getPkId(),pkDetail.getTopPostId());
                 List<PostImage> postImagesList = new ArrayList<>();
