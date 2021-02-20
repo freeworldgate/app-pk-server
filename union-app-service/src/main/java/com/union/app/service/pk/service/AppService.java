@@ -17,6 +17,7 @@ import com.union.app.entity.pk.*;
 import com.union.app.entity.pk.kadian.label.ActiveTipEntity;
 import com.union.app.entity.pk.kadian.label.RangeEntity;
 import com.union.app.entity.pk.city.CityEntity;
+import com.union.app.entity.pk.支付.PayEntity;
 import com.union.app.entity.user.UserEntity;
 import com.union.app.entity.user.support.UserType;
 import com.union.app.entity.配置表.ColumSwitch;
@@ -1133,4 +1134,6 @@ public class AppService {
         daoService.updateEntity(cityEntity);
         return cityEntity.isNeedPay();
     }
+
+
 }

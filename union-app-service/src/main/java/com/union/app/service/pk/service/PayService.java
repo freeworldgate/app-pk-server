@@ -19,6 +19,7 @@ import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.service.pk.service.pkuser.UserDynamicService;
 import com.union.app.service.user.UserService;
+import com.union.app.util.idGenerator.IdGenerator;
 import com.union.app.util.time.TimeUtils;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
@@ -596,6 +597,79 @@ public class PayService {
         return payOrderEntity;
 
     }
+    public Map<String, PayEntity> 查询所有收款方案() {
+        Map<String,PayEntity> payEntityMap = new HashMap<>();
+        EntityFilterChain cfilter = EntityFilterChain.newFilterChain(PayEntity.class);
+        List<PayEntity> payEntities = daoService.queryEntities(PayEntity.class,cfilter);
+        payEntities.forEach(payEntity -> {
+            payEntityMap.put(payEntity.getTag(),payEntity);
+        });
+        return payEntityMap;
+    }
+
+    public void 设置收费策略(String tag, int type,int value) throws AppException {
+        EntityFilterChain cfilter = EntityFilterChain.newFilterChain(PayEntity.class)
+                .compareFilter("tag",CompareTag.Equal,tag);
+        PayEntity payEntity = daoService.querySingleEntity(PayEntity.class,cfilter);
+        if(ObjectUtils.isEmpty(payEntity))
+        {
+            payEntity = new PayEntity();
+            payEntity.setTag(tag);
+            payEntity.setSelectImg(null);
+            payEntity.setImg(null);
+            payEntity.setPayId(IdGenerator.生成PayId());
+            if("pk1".equalsIgnoreCase(tag) ||"pk2".equalsIgnoreCase(tag)||"pk3".equalsIgnoreCase(tag) ){
+                payEntity.setPayType(PayType.卡点.getStatu());
+            }
+            if("time1".equalsIgnoreCase(tag) || "time2".equalsIgnoreCase(tag) || "time3".equalsIgnoreCase(tag)  ){
+                payEntity.setPayType(PayType.时间.getStatu());
+            }
+            if("group1".equalsIgnoreCase(tag) ||"group2".equalsIgnoreCase(tag)||"group3".equalsIgnoreCase(tag) ){
+                payEntity.setPayType(PayType.群组.getStatu());
+            }
+            if(type == 0) {
+                payEntity.setPay(value);payEntity.setValue(0);
+            }
+            if(type == 1) {
+                payEntity.setValue(value);payEntity.setPay(0);
+            }
+
+            if(payEntity.getPayType()>3 && payEntity.getPayType()<7){
+                daoService.insertEntity(payEntity);
+            }
+            else
+            {
+                throw AppException.buildException(PageAction.信息反馈框("","设置错误"));
+            }
 
 
+
+        }
+        else
+        {
+            if(type == 0)
+            {
+                payEntity.setPay(value);
+            }
+            else
+            {
+                payEntity.setValue(value);
+            }
+            daoService.updateEntity(payEntity);
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    }
 }

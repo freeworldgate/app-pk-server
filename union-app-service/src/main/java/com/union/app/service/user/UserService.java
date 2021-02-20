@@ -677,9 +677,9 @@ public class UserService {
     public void 创建内置UserCardEntity(String userId) {
         UserCardEntity userCardEntity = new UserCardEntity();
         userCardEntity.setUserId(userId);
-        userCardEntity.setUnLock(new Random().nextInt(30));
         userCardEntity.setMeLike(new Random().nextInt(30));
         userCardEntity.setLikeMe(new Random().nextInt(30));
+        userCardEntity.setUnLock(userCardEntity.getLikeMe()>3?new Random().nextInt(userCardEntity.getLikeMe()):0);
         keyService.setMapKey(userId,KeyType.想认识我的人,userCardEntity.getLikeMe()*1L);
         userCardEntity.setMember1(userService.随机选择内置用户());
         userCardEntity.setMember2(userService.随机选择内置用户());

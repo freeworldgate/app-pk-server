@@ -21,6 +21,8 @@ public class PayEntity {
 
     private int payType;
 
+    private String tag;
+
     private int value;
 
     private int pay;

@@ -86,5 +86,7 @@ public class IdGenerator {
 
 
     }
+
+    public static String 生成PayId() {return UUID.randomUUID().toString();}
 }
 
