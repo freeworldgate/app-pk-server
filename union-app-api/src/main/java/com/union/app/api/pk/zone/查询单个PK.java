@@ -93,6 +93,10 @@ public class 查询单个PK {
                 posts.add(0, topPost);
             }
         }
+        else
+        {
+            pkDetail.setTopPostId(null);
+        }
 
 
         dataSets.add(new DataSet("pk",pkDetail));

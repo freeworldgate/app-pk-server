@@ -414,6 +414,7 @@ public class KeyService {
 
 
     public CityEntity 查询城市名称(int cityCode) {
+        if(cityCode == 0){return null;}
         CityEntity cityEntity = null;
         String cityStr = redisMapService.getStringValue(KeyType.城市码.getName(),String.valueOf(cityCode));
         if(StringUtils.isBlank(cityStr) || StringUtils.equalsIgnoreCase("null",cityStr))

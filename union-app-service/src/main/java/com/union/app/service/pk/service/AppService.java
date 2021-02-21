@@ -1066,6 +1066,7 @@ public class AppService {
         {
             map.put("pkLock",!pkEntity.isPkLock());
             map.put("topPostId",null);
+            map.put("sign","Hello,打卡君...");
             map.put("topPostSetTime",0L);
             map.put("topPostTimeLength",0L);
         }

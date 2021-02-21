@@ -10,6 +10,7 @@ import com.union.app.util.idGenerator.IdGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.*;
 
@@ -72,6 +73,7 @@ public class TextService {
         textBack.setBackColor("fafafa");
         textBack.setFontColor("000000");
         textBack.setBackUrl("");
+        if(StringUtils.isEmpty(backId)){return textBack;}
 
         EntityFilterChain filter = EntityFilterChain.newFilterChain(TextBackEntity.class)
                 .compareFilter("backId",CompareTag.Equal,backId);

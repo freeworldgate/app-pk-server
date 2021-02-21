@@ -1,6 +1,8 @@
 package com.union.app.api.用户相册;
 
+import com.union.app.common.config.AppConfigService;
 import com.union.app.domain.pk.PkDetail;
+import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.DataSet;
@@ -59,6 +61,7 @@ public class 用户相册 {
 
         List<DataSet> dataSets = new ArrayList<>();
         dataSets.add(new DataSet("target",userService.queryUser(targetId)));
+        dataSets.add(new DataSet("rangeTime", AppConfigService.getConfigAsInteger(ConfigItem.修改Pk打卡范围时间间隔)));
         if(CollectionUtils.isEmpty(pks))
         {
             dataSets.add(new DataSet("pkEnd",true));}

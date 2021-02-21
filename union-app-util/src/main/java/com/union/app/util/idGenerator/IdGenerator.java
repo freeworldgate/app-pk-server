@@ -1,8 +1,11 @@
 package com.union.app.util.idGenerator;
 
+import com.union.app.util.time.TimeUtils;
 import org.apache.commons.lang.RandomStringUtils;
 
 import java.security.SecureRandom;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
 import java.util.RandomAccess;
 import java.util.UUID;
@@ -82,7 +85,10 @@ public class IdGenerator {
     public static String getGroupId() {return UUID.randomUUID().toString(); }
 
     public static int getCityCode() {
-        return new SecureRandom().nextInt(1000000);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddhhmm");
+        String value = simpleDateFormat.format(new Date(System.currentTimeMillis()));
+
+        return Integer.valueOf(value.substring(2,value.length()));
 
 
     }
