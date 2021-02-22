@@ -1,21 +1,12 @@
 package com.union.app.common.OSS存储;
 
 import com.alibaba.fastjson.JSON;
-import com.union.app.common.id.KeyGetter;
-import com.union.app.domain.pk.PostDynamic;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
-
-import java.util.Map;
 
 @Component
 public class CacheStorage {
-
-    public static PostDynamic get(String postId, Class<PostDynamic> postDynamicClass) {
-        return null;
-    }
 
 
     @Autowired
@@ -54,47 +45,5 @@ public class CacheStorage {
     }
 
 
-    public String genneratePostId(String pkId) {
 
-        String postId = redisStringUtil.pop(KeyGetter.异常的POSTID列表(pkId));
-
-        if(StringUtils.isEmpty(postId)){
-            long seq = redisStringUtil.hincrement(KeyGetter.记录PK最新POST序列MAP(),pkId,1L);
-            postId = KeyGetter.拼接POSTID(pkId, (int) seq);
-
-        }
-        return postId;
-    }
-
-
-
-
-    public void 记录已发布帖子最大序列值(String pkId,String postId) {
-        redisStringUtil.setMapKey("POST-CURRENR-SEQ",pkId,postId);
-    }
-
-    public int 查询已发布帖子最大序列值Seq(String pkId) {
-        String postSeq = redisStringUtil.getMapKey("POST-CURRENR-SEQ",pkId,String.class);
-        int currentPostIdSeq = StringUtils.isEmpty(postSeq)?0:Integer.valueOf(postSeq.split("-")[postSeq.split("-").length-1]);
-        return currentPostIdSeq;
-    }
-
-//    public PkDynamic getPkDynamic(String pkId) {
-//
-//        return null;
-//    }
-
-    public Map<String,String> getMap(String key) {
-        return redisStringUtil.getMap(key);
-    }
-
-
-    public void setTimeMapKey(String s, String s1, String l, long i) {
-        redisStringUtil.setTimeMapKey(s,s1,l,i);
-    }
-
-
-    public void deleteKey(String s) {
-        redisStringUtil.del(s);
-    }
 }
