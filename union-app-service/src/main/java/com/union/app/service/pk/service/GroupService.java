@@ -150,7 +150,7 @@ public class GroupService {
         {
             return new KeyValuePair(GroupStatu.已满.getStatu(),GroupStatu.已满.getStatuStr());
         }
-        if(pkGroupEntity.getLastUpdateTime() < System.currentTimeMillis() - 7*24*3600*1000)
+        if(pkGroupEntity.getLastUpdateTime() < System.currentTimeMillis() - 7*24*3600*1000L)
         {
             return new KeyValuePair(GroupStatu.已过期.getStatu(),GroupStatu.已过期.getStatuStr());
         }
@@ -164,11 +164,11 @@ public class GroupService {
         {
             return "群组已满";
         }
-        if((lastUpdateTime < System.currentTimeMillis() - 5*24*3600*1000)&&(lastUpdateTime > System.currentTimeMillis() - 7*24*3600*1000))
+        if((lastUpdateTime < System.currentTimeMillis() - 5*24*3600*1000L)&&(lastUpdateTime > System.currentTimeMillis() - 7*24*3600*1000L))
         {
             return "二维码即将过期，请更新";
         }
-        if(lastUpdateTime < System.currentTimeMillis() - 7*24*3600*1000)
+        if(lastUpdateTime < System.currentTimeMillis() - 7*24*3600*1000L)
         {
             return "二维码已过期，请更新";
         }
@@ -194,7 +194,7 @@ public class GroupService {
                 .andFilter()
                 .compareFilter("groupStatu",CompareTag.Equal,GroupStatu.已通过)
                 .andFilter()
-                .compareFilter("lastUpdateTime",CompareTag.Bigger,System.currentTimeMillis()-5*24*3600*1000)
+                .compareFilter("lastUpdateTime",CompareTag.Bigger,System.currentTimeMillis()-5*24*3600*1000L)
                 .pageLimitFilter(1,5)
                 .orderByFilter("time", OrderTag.ASC);
 
@@ -257,7 +257,7 @@ public class GroupService {
         {
             throw AppException.buildException(PageAction.信息反馈框("当前状态不支持更新二维码","当前状态不支持更新二维码"));
         }
-        if(pkGroupEntity.getLastUpdateTime() > System.currentTimeMillis() - 4 * 24 * 3600 * 1000 )
+        if(pkGroupEntity.getLastUpdateTime() > System.currentTimeMillis() - 4 * 24 * 3600 * 1000L )
         {
             //每次更新间隔至少三天
             throw AppException.buildException(PageAction.信息反馈框("每次更新间隔至少四天","每次更新间隔至少四天"));

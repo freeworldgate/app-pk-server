@@ -153,14 +153,14 @@ public class FindService {
     }
 
     public void 校验时间(int findLength, String userId) throws AppException {
-
+        if(findLength<1 || findLength > 10){ throw AppException.buildException(PageAction.信息反馈框("时间错误!","时间错误!"));}
 
         UserDynamicEntity userDynamicEntity = userService.queryUserKvEntity(userId);
 
-        if(userDynamicEntity.getFindTimeLength() >= findLength * 24 * 3600*1000)
+        if((userDynamicEntity.getFindTimeLength() - findLength * 24 * 3600*1000L) >=0)
         {
             Map<String,Object> map = new HashMap<>();
-            map.put("findTimeLength",userDynamicEntity.getFindTimeLength() - findLength * 24 * 3600*1000);
+            map.put("findTimeLength",userDynamicEntity.getFindTimeLength() - findLength * 24 * 3600*1000L);
             daoService.updateColumById(userDynamicEntity.getClass(),"userId",userDynamicEntity.getUserId(),map);
 
             return;
@@ -197,7 +197,8 @@ public class FindService {
 
         if(findUserEntity.getFindStatu() == FindStatu.打捞中)
         {
-            userService.返还用户打捞时间(userId,findUserEntity.getEndTime());
+            //不返还用户打捞时间
+//            userService.返还用户打捞时间(userId,findUserEntity.getEndTime());
             userDynamicService.添加用户已打捞时间(userId,findUserEntity.getStartTime());
         }
 
@@ -259,7 +260,7 @@ public class FindService {
         {
             findUserEntity.setFindStatu(FindStatu.打捞中);
             long startTime = System.currentTimeMillis();
-            long endTime = System.currentTimeMillis() + findUserEntity.getFindLength()*24*3600*1000;
+            long endTime = System.currentTimeMillis() + findUserEntity.getFindLength()*24*3600*1000L;
             findUserEntity.setStartTime(startTime);
             findUserEntity.setEndTime(endTime);
             //审批通过，用户打捞次数加1

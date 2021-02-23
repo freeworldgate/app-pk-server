@@ -1,7 +1,9 @@
 package com.union.app.api.卡点.搜索创建;
 
+import com.union.app.common.config.AppConfigService;
 import com.union.app.domain.pk.PkImage;
 import com.union.app.domain.user.User;
+import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.DataSet;
@@ -80,7 +82,7 @@ public class 查询卡点图片 {
         }
 
         List<DataSet> dataSets = new ArrayList<>();
-
+        dataSets.add(new DataSet("uploadRange", AppConfigService.getConfigAsInteger(ConfigItem.卡点背景有效操作范围)));
         dataSets.add(new DataSet("images",images));
         dataSets.add(new DataSet("page",1));
         dataSets.add(new DataSet("creator",creator));

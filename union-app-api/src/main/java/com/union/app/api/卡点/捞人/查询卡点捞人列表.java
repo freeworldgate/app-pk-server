@@ -109,7 +109,7 @@ public class 查询卡点捞人列表 {
             dataSets.add(new DataSet("backUrl",appService.查询背景(5)));
             dataSets.add(new DataSet("findUsers",findUsers));
         }
-
+        dataSets.add(new DataSet("appBack",appService.查询背景(11)));
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
 
 

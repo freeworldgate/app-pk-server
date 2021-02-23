@@ -65,9 +65,6 @@ public class 系统设置 {
 
         List<DataSet> dataSets = appService.查询当前设置页面();
 
-
-
-
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
 
     }

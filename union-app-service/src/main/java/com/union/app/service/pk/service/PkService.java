@@ -328,7 +328,7 @@ public class PkService {
         if(!AppConfigService.getConfigAsBoolean(ConfigItem.顶置打卡周期开关)) {
             return true;
         }
-        return System.currentTimeMillis() > (topPostSetTime+minute*60*1000)?true:false;
+        return System.currentTimeMillis() > (topPostSetTime+minute*60*1000L)?true:false;
     }
 
     public void 修改首页图册(String pkId, String postId,int value) throws AppException {

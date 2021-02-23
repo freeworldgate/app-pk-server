@@ -762,7 +762,7 @@ public class LocationService {
 
     public void 批量查询Pk顶置内容图片(List<PkDetail> pkDetails) {
         pkDetails.forEach(pkDetail -> {
-            if(StringUtils.isBlank(pkDetail.getTopPostId()) || ((System.currentTimeMillis() - pkDetail.getTopPostSetTime()) >= pkDetail.getTopPostTimeLength() * 60 * 1000))
+            if(StringUtils.isBlank(pkDetail.getTopPostId()) || ((System.currentTimeMillis() - pkDetail.getTopPostSetTime()) >= pkDetail.getTopPostTimeLength() * 60 * 1000L))
             {
                 pkDetail.setTopPost(keyService.查询顶置图片集合(pkDetail.getPkId()));
             }
@@ -794,7 +794,7 @@ public class LocationService {
         }
         long lastTime = System.currentTimeMillis()-pkEntity.getTypeRangeSetTime();
 
-        if(lastTime < AppConfigService.getConfigAsLong(ConfigItem.修改Pk打卡范围时间间隔) * (3600 * 1000))
+        if(lastTime < AppConfigService.getConfigAsLong(ConfigItem.修改Pk打卡范围时间间隔) * (3600 * 1000L))
         {
             throw AppException.buildException(PageAction.信息反馈框("",AppConfigService.getConfigAsLong(ConfigItem.修改Pk打卡范围时间间隔)+"小时内仅能修改一次打卡范围!"));
 

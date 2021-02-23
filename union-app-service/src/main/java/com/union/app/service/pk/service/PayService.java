@@ -435,7 +435,7 @@ public class PayService {
     public void 充值时间(int day, String userId) {
         UserDynamicEntity userDynamicEntity = userService.queryUserKvEntity(userId);
         Map<String,Object> map = new HashMap<>();
-        map.put("findTimeLength",userDynamicEntity.getFindTimeLength() + day*24*3600*1000);
+        map.put("findTimeLength",userDynamicEntity.getFindTimeLength() + day*24*3600*1000L);
         daoService.updateColumById(userDynamicEntity.getClass(),"userId",userDynamicEntity.getUserId(),map);
 
     }
@@ -574,7 +574,7 @@ public class PayService {
         }
         else if(payType == PayType.时间)
         {
-            map.put("findTimeLength",userDynamicEntity.getFindTimeLength() + payOrderEntity.getValue() * 24 * 3600 * 1000);
+            map.put("findTimeLength",userDynamicEntity.getFindTimeLength() + payOrderEntity.getValue() * 24 * 3600 * 1000L);
         }
         else if(payType == PayType.群组)
         {

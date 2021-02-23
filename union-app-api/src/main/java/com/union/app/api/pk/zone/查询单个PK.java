@@ -86,7 +86,7 @@ public class 查询单个PK {
         PkDetail pkDetail = locationService.querySinglePk(pkEntity);
         List<Post> posts = pkService.queryPkPost(pkId,1);
 
-        if((System.currentTimeMillis() - pkEntity.getTopPostSetTime()) < pkEntity.getTopPostTimeLength() * 60 * 1000) {
+        if((System.currentTimeMillis() - pkEntity.getTopPostSetTime()) < pkEntity.getTopPostTimeLength() * 60 * 1000L) {
             去除顶置POST(posts, pkEntity.getTopPostId());
             Post topPost = postService.查询顶置帖子(pkEntity);
             if (!ObjectUtils.isEmpty(topPost)) {
@@ -116,7 +116,7 @@ public class 查询单个PK {
                 long postLastUpdateTime = pkUserDynamicEntity.getLastPublishPostTime();
                 long leftTime = System.currentTimeMillis() - postLastUpdateTime;
                 int timePerid = AppConfigService.getConfigAsInteger(ConfigItem.发帖的时间间隔);
-                if(leftTime > timePerid * 1000)
+                if(leftTime > timePerid * 1000L)
                 {
                     dataSets.add(new DataSet("leftTime",0));
                 }

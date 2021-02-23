@@ -9,9 +9,9 @@ import java.util.Date;
 public class TimeUtils {
 
 
-    private static final long DAY_TIME = 24 * 3600 * 1000;
-    private static final long HOUR_TIME = 3600 * 1000;
-    private static final long MINUTE_TIME = 60 * 1000;
+    private static final long DAY_TIME = 24 * 3600 * 1000L;
+    private static final long HOUR_TIME = 3600 * 1000L;
+    private static final long MINUTE_TIME = 60 * 1000L;
 
     public static String convertTime(long time) {
 
@@ -59,7 +59,7 @@ public class TimeUtils {
     private static String getTime(long time) {
         if(time == 0){return null;}
         long time_expire = System.currentTimeMillis() - time;
-        if(time_expire < 24 * 3600*1000)
+        if(time_expire < 24 * 3600*1000L)
         {
             if(time_expire > HOUR_TIME)
             {
@@ -103,7 +103,7 @@ public class TimeUtils {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM.dd");
         String date = simpleDateFormat.format(new Date(time));
         String currentDate = simpleDateFormat.format(new Date(System.currentTimeMillis()));
-        String lastDate = simpleDateFormat.format(new Date(System.currentTimeMillis()-24*3600*1000));
+        String lastDate = simpleDateFormat.format(new Date(System.currentTimeMillis()-24*3600*1000L));
         if(StringUtils.equalsIgnoreCase(date,currentDate)){return "今天";}
         else if(StringUtils.equalsIgnoreCase(date,lastDate)){return "昨天";}
         else{return date;}
@@ -117,9 +117,9 @@ public class TimeUtils {
         if(startTime>0 && startTime < System.currentTimeMillis())
         {
             long findTimeLength = System.currentTimeMillis() - startTime;
-            long day = findTimeLength/(3600*24*1000);
-            long hour = findTimeLength%(3600*24*1000) / (3600*1000);
-            long min = findTimeLength%(3600*24*1000)%(3600*1000)/(60*1000);
+            long day = findTimeLength/(3600*24*1000L);
+            long hour = findTimeLength%(3600*24*1000L) / (3600*1000L);
+            long min = findTimeLength%(3600*24*1000L)%(3600*1000L)/(60*1000L);
             if(day == 0 && hour == 0)
             {
                 return (min+1) + "分钟";
@@ -133,8 +133,8 @@ public class TimeUtils {
     }
 
     public static String 剩余可打捞时间(long findTimeLength) {
-        long day = findTimeLength/(3600*24*1000);
-        long hour = findTimeLength%(3600*24*1000) / (3600*1000);
+        long day = findTimeLength/(3600*24*1000L);
+        long hour = findTimeLength%(3600*24*1000L) / (3600*1000L);
 //        long min = findTimeLength%(3600*24*1000)%(3600*1000)/(60*1000);
         if(day == 0){return hour+"小时";}
         else{
@@ -144,8 +144,8 @@ public class TimeUtils {
 
     }
     public static String 已打捞总时间(long findTimeLength) {
-        long day = findTimeLength/(3600*24*1000);
-        long hour = findTimeLength%(3600*24*1000) / (3600*1000);
+        long day = findTimeLength/(3600*24*1000L);
+        long hour = findTimeLength%(3600*24*1000L) / (3600*1000L);
 //        long min = findTimeLength%(3600*24*1000)%(3600*1000)/(60*1000);
         if(day == 0){return hour+"小时";}
         else{return day+"天"+hour+"小时";}
@@ -213,7 +213,7 @@ public class TimeUtils {
 
     public static String 顶置剩余时间(long topPostSetTime, long topPostTimeLength)
     {
-        long left = topPostTimeLength*60*1000 - (System.currentTimeMillis() - topPostSetTime);
+        long left = topPostTimeLength*60*1000L - (System.currentTimeMillis() - topPostSetTime);
         if(left > HOUR_TIME)
         {
             long hours = left/HOUR_TIME;

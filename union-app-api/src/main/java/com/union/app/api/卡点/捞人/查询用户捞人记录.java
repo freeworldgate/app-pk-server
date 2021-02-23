@@ -1,9 +1,11 @@
 package com.union.app.api.卡点.捞人;
 
+import com.union.app.common.config.AppConfigService;
 import com.union.app.domain.pk.PkDetail;
 import com.union.app.domain.pk.捞人.FindUser;
 import com.union.app.entity.pk.PkEntity;
 import com.union.app.entity.user.UserDynamicEntity;
+import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.DataSet;
 import com.union.app.plateform.data.resultcode.PageAction;
@@ -76,6 +78,10 @@ public class 查询用户捞人记录 {
 
 
 
+
+        dataSets.add(new DataSet("findRange", AppConfigService.getConfigAsInteger(ConfigItem.捞人有效操作范围)));
+        dataSets.add(new DataSet("pkLatitude",pkEntity.getLatitude()));
+        dataSets.add(new DataSet("pkLongitude",pkEntity.getLongitude()));
         dataSets.add(new DataSet("findUser",findUser));
         dataSets.add(new DataSet("pk",pk));
         dataSets.add(new DataSet("leftTime",leftTime));

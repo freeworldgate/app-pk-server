@@ -96,7 +96,7 @@ public class WeChatUtil
     public static String getAccess_token() {
 
         //一个小时更新一次
-        if(updateTime < System.currentTimeMillis() - 1 * 3600 * 1000)
+        if(updateTime < System.currentTimeMillis() - 1 * 3600 * 1000L)
         {
             String WX_URL = "https://api.weixin.qq.com/cgi-bin/token?appid=APPID&secret=SECRET&grant_type=client_credential";
             String requestUrl = WX_URL.replace("APPID", appId).

@@ -24,7 +24,9 @@ public enum ConfigItem {
     卡点打捞卡数量("pkFindNum", "PK_FIND_NUM", "卡点打捞卡数量","5" ),
     修改Pk打卡范围时间间隔("updatePkRangeTimeLength", "UPDATE_PK_RANGE_TIMELENGTH", "修改Pk打卡范围时间间隔", "24"),
     顶置打卡周期开关("topPostSwitch", "TOP_POST_SWITCH", "顶置打卡周期开关", "false"),
-    隐藏打卡最大数量("maxHiddenPostNum", "MAX_HIDDEN_POST_NUM", "隐藏打卡最大数量","10" );
+    隐藏打卡最大数量("maxHiddenPostNum", "MAX_HIDDEN_POST_NUM", "隐藏打卡最大数量","10" ),
+    捞人有效操作范围("findRange", "FIND_RANGE", "捞人操作范围(公里)", "20"),
+    卡点背景有效操作范围("pkBackRange", "PK_BACK_RANGE", "卡点背景操作范围", "10");
 
 
 

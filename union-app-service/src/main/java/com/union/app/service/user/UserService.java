@@ -313,7 +313,7 @@ public class UserService {
     public void 返还用户打捞时间1(String userId, long length) {
         UserDynamicEntity userDynamicEntity = userService.queryUserKvEntity(userId);
         Map<String,Object> map = new HashMap<>();
-        map.put("findTimeLength",userDynamicEntity.getFindTimeLength() + length*24*3600*1000);
+        map.put("findTimeLength",userDynamicEntity.getFindTimeLength() + length*24*3600*1000L);
         appDaoService.updateColumById(UserDynamicEntity.class,"userId",userId,map);
 
     }

@@ -97,7 +97,7 @@ public class 查询主页 {
         {
             dataSets.add(new DataSet("user",user));
         }
-
+        dataSets.add(new DataSet("appBack",appService.查询背景(11)));
 
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
 
