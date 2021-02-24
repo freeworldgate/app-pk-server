@@ -45,21 +45,12 @@ import java.util.concurrent.ConcurrentHashMap;
 public class PkService {
 
 
-    @Autowired
-    RedisSortSetService redisSortSetService;
-
-    @Autowired
-    RedisMapService redisMapService;
-
 
     @Autowired
     AppDaoService daoService;
 
     @Autowired
     PkService pkService;
-
-    @Autowired
-    AppService appService;
 
     @Autowired
     DynamicService dynamicService;
@@ -69,19 +60,6 @@ public class PkService {
 
     @Autowired
     UserService userService;
-
-    @Autowired
-    RedisStringUtil redisStringUtil;
-
-    @Autowired
-    OssStorage ossStorage;
-
-    @Autowired
-    CacheStorage cacheStorage;
-
-
-    @Autowired
-    PkCacheService pkCacheService;
 
     @Autowired
     KeyService keyService;

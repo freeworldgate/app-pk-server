@@ -128,6 +128,7 @@ public class 查询单个PK {
             }
             dataSets.add(new DataSet("postTimes",ObjectUtils.isEmpty(pkUserDynamicEntity)?0:pkUserDynamicEntity.getPostTimes()));
             dataSets.add(new DataSet("totalPostTimes",ObjectUtils.isEmpty(pkUserDynamicEntity)?0:pkUserDynamicEntity.getTotalPostTimes()));
+            dataSets.add(new DataSet("borderRadius",AppConfigService.getConfigAsInteger(ConfigItem.用户头像BorderRadius)));
             //查询用户打卡次数:
         }
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));

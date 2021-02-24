@@ -40,27 +40,9 @@ public class PostService {
     @Autowired
     AppDaoService daoService;
 
-    @Autowired
-    DynamicService dynamicService;
 
     @Autowired
     UserService userService;
-
-    @Autowired
-    RedisStringUtil redisStringUtil;
-
-    @Autowired
-    OssStorage ossStorage;
-
-    @Autowired
-    CacheStorage cacheStorage;
-
-
-    @Autowired
-    PkService pkService;
-
-    @Autowired
-    AppService appService;
 
     @Autowired
     LocationService locationService;
@@ -79,9 +61,6 @@ public class PostService {
 
     @Autowired
     TextService textService;
-
-    @Autowired
-    PkCacheService pkCacheService;
 
     public String 打卡(String pkId,String userId,String title,List<String> images,String backId) throws IOException, AppException
     {

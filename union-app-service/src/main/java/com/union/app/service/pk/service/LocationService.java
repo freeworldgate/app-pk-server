@@ -50,9 +50,6 @@ public class LocationService {
 
 
     @Autowired
-    PayService payService;
-
-    @Autowired
     AppDaoService daoService;
 
     @Autowired
@@ -62,25 +59,10 @@ public class LocationService {
     PkService pkService;
 
     @Autowired
-    DynamicService dynamicService;
-
-    @Autowired
     PostService postService;
 
     @Autowired
     UserService userService;
-
-    @Autowired
-    RedisStringUtil redisStringUtil;
-
-    @Autowired
-    OssStorage ossStorage;
-
-    @Autowired
-    CacheStorage cacheStorage;
-
-    @Autowired
-    RedisSortSetService redisSortSetService;
 
     @Autowired
     UserDynamicService userDynamicService;
@@ -724,17 +706,20 @@ public class LocationService {
         }else{}
     }
 
-    public void 设置卡点背景图片(String pkId, String userId, String imageId) throws AppException {
-
+    public void 设置卡点背景图片(String pkId, String userId, String imageId) throws AppException, IOException {
+        PkEntity pkEntity = locationService.querySinglePkEntity(pkId);
         EntityFilterChain cfilter = EntityFilterChain.newFilterChain(PkImageEntity.class)
                 .compareFilter("imgId",CompareTag.Equal,imageId);
         PkImageEntity pkImageEntity = daoService.querySingleEntity(PkImageEntity.class,cfilter);
-
-
-
-        Map<String,Object> map = new HashMap<>();
-        map.put("backUrl",pkImageEntity.getImgUrl());
-        daoService.updateColumById(PkEntity.class,"pkId",pkId,map);
+        if(!StringUtils.equals(pkEntity.getBackUrl(),pkImageEntity.getImgUrl()))
+        {
+            Map<String,Object> map = new HashMap<>();
+            map.put("backUrl",pkImageEntity.getImgUrl());
+            daoService.updateColumById(PkEntity.class,"pkId",pkId,map);
+            List<String> imgs = new ArrayList<>();
+            imgs.add(pkImageEntity.getImgUrl());
+            postService.打卡(pkId,userId,"选择此图作为背景...",imgs,"");
+        }
 
 
     }

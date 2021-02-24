@@ -26,7 +26,8 @@ public enum ConfigItem {
     顶置打卡周期开关("topPostSwitch", "TOP_POST_SWITCH", "顶置打卡周期开关", "false"),
     隐藏打卡最大数量("maxHiddenPostNum", "MAX_HIDDEN_POST_NUM", "隐藏打卡最大数量","10" ),
     捞人有效操作范围("findRange", "FIND_RANGE", "捞人操作范围(公里)", "20"),
-    卡点背景有效操作范围("pkBackRange", "PK_BACK_RANGE", "卡点背景操作范围", "10");
+    卡点背景有效操作范围("pkBackRange", "PK_BACK_RANGE", "卡点背景操作范围", "10"),
+    用户头像BorderRadius("borderRadius", "USER_BORDER_RADIUS", "用户头像BorderRadius", "10");
 
 
 

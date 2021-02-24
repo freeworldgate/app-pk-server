@@ -733,9 +733,6 @@ public class UserService {
             dynamicEntityMap.put(userDynamicEntity.getUserId(),userDynamicEntity);
         });
         return dynamicEntityMap;
-
-
-
     }
 
     public void 更换头像(String userId, String imgUrl) {
@@ -743,16 +740,32 @@ public class UserService {
         map.put("avatarUrl",imgUrl);
         appDaoService.updateColumById(UserEntity.class,"userId",userId,map);
         keyService.刷新用户User缓存(userId);
-
-
-
     }
 
-    public void 更换昵称(String userId, String userName) {
+    public void 更换昵称(String userId, String userName) throws AppException {
+
+//        checkUserName(userName);
+
         Map<String,Object> map = new HashMap<>();
         map.put("nickName",userName);
         appDaoService.updateColumById(UserEntity.class,"userId",userId,map);
         keyService.刷新用户User缓存(userId);
+    }
+
+    private void checkUserName(String userName) throws AppException {
+        String regex = "^[a-z0-9A-Z]+$";
+        if(userName.matches(regex))
+        {
+            if(userName.length() > 6){
+                throw AppException.buildException(PageAction.信息反馈框("","英文字符和数字不得超过6位"));
+            }
+        }
+        else
+        {
+            if(userName.length() > 3){
+                throw AppException.buildException(PageAction.信息反馈框("","中文字符不得超过3位"));
+            }
+        }
     }
 
 

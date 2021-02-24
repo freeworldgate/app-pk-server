@@ -60,11 +60,6 @@ public class AppService {
     @Autowired
     AppDaoService daoService;
 
-    @Autowired
-    AppService appService;
-
-    @Autowired
-    PkService pkService;
 
     @Autowired
     DynamicService dynamicService;

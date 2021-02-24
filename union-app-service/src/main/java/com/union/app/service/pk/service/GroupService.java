@@ -41,37 +41,11 @@ public class GroupService {
 
 
     @Autowired
-    PayService payService;
-
-    @Autowired
     AppDaoService daoService;
 
-    @Autowired
-    GroupService appService;
-
-    @Autowired
-    PkService pkService;
-
-    @Autowired
-    DynamicService dynamicService;
-
-    @Autowired
-    PostService postService;
 
     @Autowired
     UserService userService;
-
-    @Autowired
-    RedisStringUtil redisStringUtil;
-
-    @Autowired
-    OssStorage ossStorage;
-
-    @Autowired
-    CacheStorage cacheStorage;
-
-    @Autowired
-    RedisSortSetService redisSortSetService;
 
     @Autowired
     LocationService locationService;
@@ -85,8 +59,6 @@ public class GroupService {
     @Autowired
     LockService lockService;
 
-    @Autowired
-    KeyService keyService;
 
     public void 创建群组(String pkId, String userId, String url, String groupName, String groupDesc) throws AppException {
         PkGroupEntity pkGroupEntity = this.查询用户群组Entity(pkId,userId);

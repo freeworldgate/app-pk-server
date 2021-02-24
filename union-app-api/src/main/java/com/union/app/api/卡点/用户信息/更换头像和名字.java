@@ -30,32 +30,9 @@ public class 更换头像和名字 {
 
 
     @Autowired
-    PkService pkService;
-
-    @Autowired
-    ClickService clickService;
-
-    @Autowired
-    RedisStringUtil redisStringUtil;
-
-    @Autowired
-    PostService postService;
-
-    @Autowired
     UserService userService;
 
 
-    @Autowired
-    DynamicService dynamicService;
-
-    @Autowired
-    AppService appService;
-
-    @Autowired
-    LocationService locationService;
-
-    @Autowired
-    FindService findService;
 
     @RequestMapping(path="/setUserImg",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
@@ -69,7 +46,7 @@ public class 更换头像和名字 {
 
     @RequestMapping(path="/setUserName",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse setUserName(@RequestParam("userId") String userId,@RequestParam("userName") String userName) {
+    public AppResponse setUserName(@RequestParam("userId") String userId,@RequestParam("userName") String userName) throws AppException {
 
         userService.更换昵称(userId,userName);
         User user = userService.queryUser(userId);
