@@ -83,7 +83,7 @@ public class 创建预置用户 {
     public AppResponse 修改预置用户头像(@RequestParam("imgUrl") String imgUrl,@RequestParam("id") String id,@RequestParam("userId") String userId) throws AppException, IOException {
         appService.checkManager(userId);
         User user = appService.修改内置用户头像(id,imgUrl);
-
+        keyService.刷新用户User缓存(user.getUserId());
         return AppResponse.buildResponse(PageAction.执行处理器("success",user));
 
     }

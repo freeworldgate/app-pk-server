@@ -37,26 +37,388 @@
   <component name="ChangeListManager">
     <list default="true" id="45b681d3-496d-412f-8789-ffb456e1af05" name="Default" comment="Merge remote-tracking branch 'origin/master'&#10;&#10;# Conflicts:&#10;#&#9;union-app-api/src/main/java/com/union/app/api/pk/zone/收藏.java&#10;#&#9;union-app-api/src/main/java/com/union/app/api/pk/zone/查询单个PK.java&#10;#&#9;union-app-api/src/main/java/com/union/app/api/pk/审核/查询审核信息1.java&#10;#&#9;union-app-api/src/main/java/com/union/app/api/pk/审核/查询审核信息2.java&#10;#&#9;union-app-api/src/main/java/com/union/app/api/pk/审核/查询审核员审核中列表.java&#10;#&#9;union-app-api/src/main/java/com/union/app/api/pk/审核/查询审核员已审核列表.java&#10;#&#9;union-app-api/src/main/java/com/union/app/api/pk/审核/设置留言.java&#10;#&#9;union-app-api/target/classes/com/union/app/api/pk/zone/收藏.class&#10;#&#9;union-app-api/target/classes/com/union/app/api/pk/zone/查询单个PK.class&#10;#&#9;union-app-api/target/classes/com/union/app/api/登录和注册/用户登录加注册.class&#10;#&#9;union-app-common/target/classes/com/union/app/common/OSS存储/IdGenerator.class&#10;#&#9;union-app-common/target/classes/com/union/app/common/OSS存储/OssStorage.class&#10;#&#9;union-app-common/target/classes/com/union/app/common/api/registry/ApiURI.class&#10;#&#9;union-app-common/target/classes/com/union/app/common/api/registry/ServiceRegistry.class&#10;#&#9;union-app-common/target/classes/com/union/app/common/api/registry/helper/ServiceBeanHelper.class&#10;#&#9;union-app-common/target/classes/com/union/app/common/resultcode/ResultCodeService.class&#10;#&#9;union-app-common/target/classes/com/union/app/common/spring/interceptor/ControllerRequestLoggerInterceptor.class&#10;#&#9;union-app-common/target/classes/com/union/app/common/spring/listener/AppConfigServiceListener.class&#10;#&#9;union-app-common/target/classes/com/union/app/common/validate/AppValidatorService.class&#10;#&#9;union-app-common/target/classes/com/union/app/common/微信/AES.class&#10;#&#9;union-app-common/target/classes/com/union/app/common/微信/WeChatUtil.class&#10;#&#9;union-app-dao/src/main/java/com/union/app/dao/druid/DuridConfig.java&#10;#&#9;union-app-dao/target/classes/com/union/app/dao/druid/DuridConfig.class&#10;#&#9;union-app-dao/target/classes/com/union/app/dao/spi/AppDaoService.class&#10;#&#9;union-app-dao/target/classes/com/union/app/dao/spi/filter/NullFilter.class&#10;#&#9;union-app-domain/src/main/java/com/union/app/domain/pk/审核/ApproveUser.java&#10;#&#9;union-app-domain/target/classes/com/union/app/domain/pk/Post.class&#10;#&#9;union-app-domain/target/classes/com/union/app/domain/pk/UserCode.class&#10;#&#9;union-app-domain/target/classes/com/union/app/domain/房间/Room.class&#10;#&#9;union-app-domain/target/classes/com/union/app/domain/支付/City.class&#10;#&#9;union-app-domain/target/classes/com/union/app/domain/支付/Job.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/order/PkOrderEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/pk/EmptyPostEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/pk/OrderEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/pk/PostEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/pk/PostStatu.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/pk/UserCollectionEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/pk/share/ShareEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/pk/助力浏览评论分享/UserLikeEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/share/ShareFeeEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/应用信息表/ApplicationEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/标签/LabelEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/用户/InviteViewHistoryEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/用户/UserBalanceEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/用户/UserBalanceHistoryEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/用户/UserFollowEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/用户/UserInviteFromUserEntity.class&#10;#&#9;union-app-entity/target/classes/com/union/app/entity/用户/UserShareHistoryEntity.class&#10;#&#9;union-app-plateform/src/main/java/com/union/app/plateform/constant/常量值.java&#10;#&#9;union-app-plateform/target/classes/com/union/app/plateform/constant/常量值.class&#10;#&#9;union-app-plateform/target/classes/com/union/app/plateform/storgae/RedisConfig.class&#10;#&#9;union-app-plateform/target/classes/com/union/app/plateform/storgae/redis/RedisStringUtil.class&#10;#&#9;union-app-service/src/main/java/com/union/app/service/pk/complain/ComplainService.java&#10;#&#9;union-app-service/src/main/java/com/union/app/service/pk/dynamic/DynamicItem.java&#10;#&#9;union-app-service/src/main/java/com/union/app/service/pk/dynamic/DynamicService.java&#10;#&#9;union-app-service/src/main/java/com/union/app/service/pk/service/ApproveService.java&#10;#&#9;union-app-service/src/main/java/com/union/app/service/pk/service/PostService.java&#10;#&#9;union-app-service/src/main/java/com/union/app/service/pk/service/UserInfoService.java&#10;#&#9;union-app-service/src/main/java/com/union/app/service/quartz/TEST.java&#10;#&#9;union-app-service/target/classes/com/union/app/service/pk/click/ClickItem.class&#10;#&#9;union-app-service/target/classes/com/union/app/service/pk/click/ClickService.class&#10;#&#9;union-app-service/target/classes/com/union/app/service/pk/dynamic/DynamicItem.class&#10;#&#9;union-app-service/target/classes/com/union/app/service/pk/dynamic/DynamicService.class&#10;#&#9;union-app-service/target/classes/com/union/app/service/pk/service/PkService.class&#10;#&#9;union-app-service/target/classes/com/union/app/service/pk/service/PostService.class&#10;#&#9;union-app-service/target/classes/com/union/app/service/pk/service/UserInfoService.class&#10;#&#9;union-app-service/target/classes/com/union/app/service/quartz/TEST.class&#10;#&#9;union-app-start/src/main/resources/application.properties&#10;#&#9;union-app-util/target/classes/com/union/app/util/http/AppHttpUtil.class&#10;#&#9;union-app-util/target/classes/com/union/app/util/jar/JarLoader.class&#10;#&#9;union-app-util/target/classes/com/union/app/util/jar/JarUtil.class&#10;#&#9;union-app-util/target/classes/com/union/app/util/reflect/EntityAnalyser.class&#10;#&#9;union-app-util/target/classes/com/union/app/util/time/TimeUtils.class">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/OSS/OSSSave.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/OSS/OSSSave.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/zone/查询单个PK.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/zone/查询单个PK.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/卡点/用户信息/更换头像和名字.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/卡点/用户信息/更换头像和名字.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/zone/查询单个PK.class" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/zone/查询单个PK.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/卡点/用户信息/更换头像和名字.class" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/卡点/用户信息/更换头像和名字.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/管理/预置用户/创建预置用户.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/管理/预置用户/创建预置用户.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/管理/预置用户/查询内置用户.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/pk/管理/预置用户/查询内置用户.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/用户相册/指定用户图册.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/用户相册/指定用户图册.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/OSS/OSSSave.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/zone/查询单个PK.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/消息推送/接收消息.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/消息推送/链接验证.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/上传内置背景图片.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/交友/审批Group.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/交友/查询审核群组.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/交友/查询待替换群组.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/内置打卡/发布内置Post.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/卡点排行榜/查询排行榜.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/卡点排行榜/设置卡点打卡人数.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/卡点排行榜/设置卡点范围.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/城市/城市.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/捞人/审批.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/捞人/查询审核捞人.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/捞人/管理员创建或修改捞人记录.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/收款设置/收款设置.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/文字背景/查询背景.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/文字背景/添加文字背景.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/查询内置背景图片.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/标签/设置标签.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/标签管理.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/温馨提示/温馨提示.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/热门/设置热门.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/登录.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/签名和背景图/签名和背景图.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/管理员用户登录加注册.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/范围与缩放/查询全部和范围缩放.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/范围与缩放/设置缩放和范围.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/配置/系统设置.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/顶置隐藏删除/顶置删除隐藏.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/预置用户/创建预置用户.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/pk/管理/预置用户/查询内置用户.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/主页/查询主页.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/卡点/交友/创建社交群.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/卡点/交友/创建者审核社交群.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/卡点/交友/成员.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/卡点/交友/查詢用戶社交群.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/卡点/交友/查询卡点社交群列表.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/卡点/交友/查询我已解锁群组.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/卡点/交友/查询我的群组.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/卡点/交友/查询随机社交群.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/卡点/交友/解锁社交群.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/卡点/修改卡点范围.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/卡点/修改签名.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/卡点/充值/充值.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/卡点/关注/关注.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/卡点/关注/添加取消关注.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/卡点/关注/粉丝.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/卡点/创建卡点.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/卡点/实时任务/同步Pk人数和图片总数到PkEntity表.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/卡点/实时任务/同步城市新创建卡点数量.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/卡点/打卡/发布Post.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/卡点/打卡记录/卡点打卡记录.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/卡点/打卡记录/打卡记录.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/卡点/捞人/创建或修改捞人记录.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/卡点/捞人/查询Single捞人记录.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/卡点/捞人/查询卡点捞人列表.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/卡点/捞人/查询我的捞人记录.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/卡点/捞人/查询用户捞人记录.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/卡点/搜索创建/搜索卡点.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/卡点/搜索创建/查询卡点图片.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/卡点/搜索创建/查询待审核卡点图片.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/卡点/搜索创建/查询隐藏卡册.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/卡点/搜索创建/返回对象/SearchResult.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/卡点/搜索创建/顶置删除.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/卡点/文字背景/查询文字背景.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/卡点/查询PK二维码.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/卡点/标签/查询常用标签.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/卡点/测试/RestTemplateConfig.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/卡点/测试/RestUtil.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/卡点/测试/测试$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/卡点/测试/测试.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/卡点/用户信息/更换头像和名字.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/卡点/用户名片/上传用户名片和解锁.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/卡点/用户名片/删除申请留言.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/卡点/用户名片/查询用户名片.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/卡点/用户名片/申请UserCard列表.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/卡点/用户名片/解锁禁止.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/卡点/用户背景/更新用户背景.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/应用信息/应用信息.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/用户主题/用户已激活主题.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/用户相册/指定用户图册.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/用户相册/用户相册.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/登录和注册/UserBasicInfo.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/登录和注册/用户登录加注册.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/邀请/查询邀请.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-api/target/classes/com/union/app/api/邀请/添加邀请.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/OSS存储/CacheStorage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/OSS存储/IdGenerator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/OSS存储/OssStorage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/OSS存储/PostObjectSample.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/OSS存储/SceneType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/annotation/ApiService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/api/registry/ApiURI.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/api/registry/ServiceRegistry.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/api/registry/bean/ServiceBean.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/api/registry/bean/ServiceExceptionBean.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/api/registry/bean/ServiceParamBean.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/api/registry/bean/ServiceUrlBean.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/api/registry/helper/BasicServiceParamType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/api/registry/helper/ServiceBeanHelper.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/api/resolver/HttpClientResolver.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/api/resolver/JpaEntityManagerResolver.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/api/resolver/RedisClientResolver.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/api/resolver/ServiceResolver.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/api/runtime/ApiRuntimePro.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/config/AppConfigService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/dao/AppDaoService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/dao/EntityCacheService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/dao/KeyService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/dao/PkCacheService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/redis/IRedisService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/redis/RedisMapService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/redis/RedisSortSetService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/request/RequestHelper.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/resultcode/ResultCodeService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/spring/context/SpringContextUtil.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/spring/interceptor/ControllerConfigurerAdapter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/spring/interceptor/ControllerRequestLoggerInterceptor.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/spring/interceptor/SwitchInterceptor.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/spring/listener/AppConfigServiceListener.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/微信/AES.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/微信/FileUpload.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/微信/HttpPostUtil.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/微信/MdlUpload.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/微信/OssSignHeader.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/微信/Result.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/微信/WeChatUtil$PostEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/微信/WeChatUtil.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-common/target/classes/com/union/app/common/验证码/VCodeEnginer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-dao/target/classes/com/union/app/dao/druid/DruidStatFilter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-dao/target/classes/com/union/app/dao/druid/DruidStatViewServlet.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-dao/target/classes/com/union/app/dao/druid/DuridConfig.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-dao/target/classes/com/union/app/dao/jpa/JPAConfig.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-dao/target/classes/com/union/app/dao/jpa/JpaTransactionUtil.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-dao/target/classes/com/union/app/dao/spi/filter/AndFilter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-dao/target/classes/com/union/app/dao/spi/filter/BetweenFilter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-dao/target/classes/com/union/app/dao/spi/filter/CompareFilter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-dao/target/classes/com/union/app/dao/spi/filter/CompareTag.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-dao/target/classes/com/union/app/dao/spi/filter/EntityFilter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-dao/target/classes/com/union/app/dao/spi/filter/EntityFilterChain.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-dao/target/classes/com/union/app/dao/spi/filter/InFilter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-dao/target/classes/com/union/app/dao/spi/filter/LikeFilter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-dao/target/classes/com/union/app/dao/spi/filter/NullFilter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-dao/target/classes/com/union/app/dao/spi/filter/OrFilter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-dao/target/classes/com/union/app/dao/spi/filter/OrderByFilter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-dao/target/classes/com/union/app/dao/spi/filter/OrderByRandomFilter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-dao/target/classes/com/union/app/dao/spi/filter/OrderTag.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-dao/target/classes/com/union/app/dao/spi/filter/PageLimitFilter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/Oss上传/OssUrlInfo.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/ActiveTip.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/Callout.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/Circle.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/LocationType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/Marker.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/PayPolicy.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/PkCreator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/PkDetail.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/PkDynamic/AppDynamic.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/PkDynamic/FactualInfo.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/PkDynamic/FeeTask.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/PkDynamic/PkDynamic.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/PkDynamic/PostDynamic.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/PkDynamic/UserDynamic.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/PkDynamic/UserPkDynamic.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/PkDynamic/UserScore.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/PkImage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/PkLocation.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/Post.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/PostDetail.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/PostImage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/PostImages.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/PostTime.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/TipConstant.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/TipUrl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/UserCode.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/apply/ApplyOrder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/apply/ApproveCode.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/apply/KeyNameValue.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/apply/KeyValuePair.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/cashier/PkCashier.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/complain/Complain.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/daka/CreateLocation.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/daka/Location.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/help/HelpInfo.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/integral/UserIntegral.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/user/Image.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/user/UserCardApply.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/user/用户相册.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/wechat/AccessToken.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/zone/Zone.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/交友/PkGroup.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/名片/UserCard.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/审核/AppMessage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/审核/ApproveComment.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/审核/ApproveComplain.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/审核/ApproveDynamic.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/审核/ApproveMessage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/审核/ApproveUser.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/审核/PkComment.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/客服消息/WxImage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/客服消息/WxLink.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/客服消息/WxSendMessage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/客服消息/WxText.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/客服消息/recieveMessage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/捞人/CreateUserFind.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/捞人/FindUser.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/捞人/ScaleRange.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/排名/UserSort.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/支付/Pay.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/支付/PayOrder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/pk/文字背景/TextBack.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/user/City.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/user/FeeCodeDomain.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/user/Job.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/user/User.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/wechat/UserInfo.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/wechat/Watermark.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/wechat/WeChatUser.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/工具/RandomUtil.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/房间/Room.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/支付/City.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-domain/target/classes/com/union/app/domain/支付/Job.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/src/main/java/com/union/app/entity/user/support/UserType.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-entity/src/main/java/com/union/app/entity/user/support/UserType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/ImgStatu.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/OSS上传记录表/OssUploadTaskEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/BackImgEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/InvitePkEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/PkDynamicEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/PkEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/PkImageEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/PkStatu.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/PkTipEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/PkType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/PostDynamicEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/PostEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/PostImageEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/PostStatu.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/UserCollectionEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/city/CityEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/kadian/UserCardApplyEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/kadian/UserFollowEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/kadian/label/ActiveTipEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/kadian/label/OffSetEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/kadian/label/RangeEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/kadian/label/ScaleEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/kadian/捞人/FindStatu.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/kadian/捞人/FindUserEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/名片/UserCardEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/名片/UserCardMemberEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/支付/PayEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/支付/PayOrderEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/支付/PayType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/文字背景/TextBackEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/用户Key/PkUserDynamicEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/社交/GroupStatu.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/社交/PkGroupEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/pk/社交/PkGroupMemberEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/user/UserDynamicEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/user/UserEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/user/support/UserType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/外部错误码映射表/ResultCodeEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/应用信息表/ApplicationEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/配置表/ColumSwitch.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-entity/target/classes/com/union/app/entity/配置表/ConfigEntity.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/union-app-plateform/src/main/java/com/union/app/plateform/constant/ConfigItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-plateform/src/main/java/com/union/app/plateform/constant/ConfigItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-plateform/target/classes/com/union/app/plateform/constant/ConfigItem.class" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-plateform/target/classes/com/union/app/plateform/constant/ConfigItem.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-plateform/target/classes/com/union/app/plateform/common/CommonUtil.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-plateform/target/classes/com/union/app/plateform/constant/ConfigItem.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-plateform/target/classes/com/union/app/plateform/constant/常量值.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-plateform/target/classes/com/union/app/plateform/data/resultcode/ActionType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-plateform/target/classes/com/union/app/plateform/data/resultcode/AppException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-plateform/target/classes/com/union/app/plateform/data/resultcode/AppResponse.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-plateform/target/classes/com/union/app/plateform/data/resultcode/DataSet.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-plateform/target/classes/com/union/app/plateform/data/resultcode/Level.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-plateform/target/classes/com/union/app/plateform/data/resultcode/PageAction.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-plateform/target/classes/com/union/app/plateform/data/resultcode/ResultCode.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-plateform/target/classes/com/union/app/plateform/exception/ApiException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-plateform/target/classes/com/union/app/plateform/exception/AppException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-plateform/target/classes/com/union/app/plateform/exception/SqlException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-plateform/target/classes/com/union/app/plateform/exception/ValidateException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-plateform/target/classes/com/union/app/plateform/exception/handler/GlobalExceptionHandler.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-plateform/target/classes/com/union/app/plateform/log4j2/AppLoggerFactory.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-plateform/target/classes/com/union/app/plateform/meet/MeetTimeCalculator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-plateform/target/classes/com/union/app/plateform/response/ApiResponse.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-plateform/target/classes/com/union/app/plateform/storgae/KeyType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-plateform/target/classes/com/union/app/plateform/storgae/RedisConfig.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-plateform/target/classes/com/union/app/plateform/storgae/RedisUtil.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-plateform/target/classes/com/union/app/plateform/storgae/SubType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-plateform/target/classes/com/union/app/plateform/storgae/redis/RedisStringUtil.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-plateform/target/classes/com/union/app/plateform/validate/CommonValidator.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/service/AppService.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/service/AppService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/service/GroupService.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/service/GroupService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/service/LocationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/service/LocationService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/service/MessageService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/service/PkService.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/service/PkService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/service/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/service/PostService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/service/文字背景/TextService.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/pk/service/文字背景/TextService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/user/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/user/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/AppService.class" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/AppService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/GroupService.class" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/GroupService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/LocationService.class" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/LocationService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/MessageService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/PkService.class" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/PkService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/PostService.class" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/PostService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/user/UserService.class" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/user/UserService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/META-INF/union-app-service.kotlin_module" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/click/ClickHandler.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/click/ClickItem.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/click/ClickService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/click/handler/POST贡献榜页面.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/click/handler/Pk礼品等级详情界面.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/click/handler/Pk贡献榜页面.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/click/handler/榜帖详情界面.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/click/handler/用户主页界面.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/click/handler/用户打榜记录.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/click/handler/用户收藏单榜.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/click/handler/用户立榜记录.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/click/handler/选择城市页面.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/dynamic/CacheItem.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/dynamic/CacheKeyName.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/dynamic/CacheService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/dynamic/CacheType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/dynamic/DynamicItem.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/dynamic/DynamicKeyName.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/dynamic/DynamicLevel.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/dynamic/DynamicService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/dynamic/RedisService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/AppService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/GroupService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/LocationService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/LockService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/LockType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/PayService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/PkLevelEnum.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/PkService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/PostService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/Util.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/WXConst.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/cache/ICacheService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/cache/SingleCacheService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/cache/TimePolicy.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/pkuser/PkDynamicService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/pkuser/PkUserDynamicService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/pkuser/UserDynamicService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/storage/IStorage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/storage/immutable/DataBaseImmutableStorage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/storage/immutable/IStorage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/storage/immutable/MemoryImmutableStorage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/storage/immutable/OssImmutableStorage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/storage/immutable/RedisImmutableStorage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/storage/immutable/StorageId.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/storage/immutable/StorageType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/support/SingleCacheResolver.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/捞人/FindService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/pk/service/文字背景/TextService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/quartz/data/AppData.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/quartz/data/PkData.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/quartz/data/PkUserData.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/quartz/data/UserData.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/quartz/更新微信缓存媒体文件.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-service/target/classes/com/union/app/service/user/UserService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-start/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-start/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-start/target/classes/520oo.jks" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-start/target/classes/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-start/target/classes/com/union/app/AppApplication.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-start/target/classes/com/union/app/listener/AppDaoServiceListener.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-start/target/classes/img/b1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-start/target/classes/img/b2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-start/target/classes/img/b3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-start/target/classes/log4j2-spring.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-util/src/main/java/com/union/app/util/time/TimeUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/union-app-util/src/main/java/com/union/app/util/time/TimeUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-util/target/classes/com/union/app/util/env/EnvUtil.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-util/target/classes/com/union/app/util/file/FileUtil.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-util/target/classes/com/union/app/util/http/AppHttpUtil.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-util/target/classes/com/union/app/util/http/HttpClientConfig.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-util/target/classes/com/union/app/util/http/HttpResponse.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-util/target/classes/com/union/app/util/idGenerator/IdGenerator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-util/target/classes/com/union/app/util/jar/JarLoader.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-util/target/classes/com/union/app/util/jar/JarUtil.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-util/target/classes/com/union/app/util/reflect/ClassEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-util/target/classes/com/union/app/util/reflect/EntityAnalyser.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-util/target/classes/com/union/app/util/reflect/FieldEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-util/target/classes/com/union/app/util/reflect/MethodEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-util/target/classes/com/union/app/util/reflect/ParamterEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-util/target/classes/com/union/app/util/time/ImageUtils.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-util/target/classes/com/union/app/util/time/NumberUtils.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/union-app-util/target/classes/com/union/app/util/time/TimeUtils.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -862,49 +1224,49 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="499" y="158" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1536.824@0.0.1536.824" timestamp="1613975046453" />
-    <state width="1489" height="524" key="DebuggerActiveHint" timestamp="1614132802435">
+    <state width="1489" height="524" key="DebuggerActiveHint" timestamp="1614235032907">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1489" height="524" key="DebuggerActiveHint/0.0.1536.824@0.0.1536.824" timestamp="1614132802435" />
+    <state width="1489" height="524" key="DebuggerActiveHint/0.0.1536.824@0.0.1536.824" timestamp="1614235032907" />
     <state x="549" y="167" key="FileChooserDialogImpl" timestamp="1609204439175">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1609204439175" />
-    <state width="1493" height="343" key="GridCell.Tab.0.bottom" timestamp="1614149202077">
+    <state width="1493" height="68" key="GridCell.Tab.0.bottom" timestamp="1614244844182">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="343" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1614149202077" />
-    <state width="1493" height="343" key="GridCell.Tab.0.center" timestamp="1614149202077">
+    <state width="1493" height="68" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1614244844182" />
+    <state width="1493" height="68" key="GridCell.Tab.0.center" timestamp="1614244844182">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="343" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1614149202077" />
-    <state width="1493" height="343" key="GridCell.Tab.0.left" timestamp="1614149202077">
+    <state width="1493" height="68" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1614244844182" />
+    <state width="1493" height="68" key="GridCell.Tab.0.left" timestamp="1614244844182">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="343" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1614149202077" />
-    <state width="1493" height="343" key="GridCell.Tab.0.right" timestamp="1614149202077">
+    <state width="1493" height="68" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1614244844182" />
+    <state width="1493" height="68" key="GridCell.Tab.0.right" timestamp="1614244844182">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="343" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1614149202077" />
-    <state width="1493" height="343" key="GridCell.Tab.1.bottom" timestamp="1614149201899">
+    <state width="1493" height="68" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1614244844182" />
+    <state width="1493" height="68" key="GridCell.Tab.1.bottom" timestamp="1614244844182">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="343" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1614149201899" />
+    <state width="1493" height="68" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1614244844182" />
     <state width="1493" height="258" key="GridCell.Tab.1.bottom/0.0.1536.864@0.0.1536.864" timestamp="1609004441597" />
-    <state width="1493" height="343" key="GridCell.Tab.1.center" timestamp="1614149201899">
+    <state width="1493" height="68" key="GridCell.Tab.1.center" timestamp="1614244844182">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="343" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1614149201899" />
+    <state width="1493" height="68" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1614244844182" />
     <state width="1493" height="258" key="GridCell.Tab.1.center/0.0.1536.864@0.0.1536.864" timestamp="1609004441595" />
-    <state width="1493" height="343" key="GridCell.Tab.1.left" timestamp="1614149201899">
+    <state width="1493" height="68" key="GridCell.Tab.1.left" timestamp="1614244844182">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="343" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1614149201899" />
+    <state width="1493" height="68" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1614244844182" />
     <state width="1493" height="258" key="GridCell.Tab.1.left/0.0.1536.864@0.0.1536.864" timestamp="1609004441594" />
-    <state width="1493" height="343" key="GridCell.Tab.1.right" timestamp="1614149201899">
+    <state width="1493" height="68" key="GridCell.Tab.1.right" timestamp="1614244844182">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="343" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1614149201899" />
+    <state width="1493" height="68" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1614244844182" />
     <state width="1493" height="258" key="GridCell.Tab.1.right/0.0.1536.864@0.0.1536.864" timestamp="1609004441596" />
     <state x="299" y="67" key="Maven.ArtifactSearchDialog" timestamp="1611020996139">
       <screen x="0" y="0" width="1536" height="824" />
@@ -938,22 +1300,22 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="326" y="141" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2/0.0.1536.824@0.0.1536.824" timestamp="1612957000916" />
-    <state x="-1" y="9" width="1308" height="804" key="find.popup" timestamp="1614145941527">
+    <state x="-1" y="9" width="1308" height="804" key="find.popup" timestamp="1614243274863">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="-1" y="9" width="1308" height="804" key="find.popup/0.0.1536.824@0.0.1536.824" timestamp="1614145941527" />
+    <state x="-1" y="9" width="1308" height="804" key="find.popup/0.0.1536.824@0.0.1536.824" timestamp="1614243274863" />
     <state x="470" y="168" key="refactoring.ChangeSignatureDialog" timestamp="1612074302630">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="470" y="168" key="refactoring.ChangeSignatureDialog/0.0.1536.824@0.0.1536.824" timestamp="1612074302630" />
-    <state x="426" y="186" key="run.anything.popup" timestamp="1614130403648">
+    <state x="426" y="186" key="run.anything.popup" timestamp="1614244865811">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="426" y="186" key="run.anything.popup/0.0.1536.824@0.0.1536.824" timestamp="1614130403648" />
-    <state x="425" y="66" width="672" height="676" key="search.everywhere.popup" timestamp="1614076486318">
+    <state x="426" y="186" key="run.anything.popup/0.0.1536.824@0.0.1536.824" timestamp="1614244865811" />
+    <state x="425" y="66" width="672" height="676" key="search.everywhere.popup" timestamp="1614254954119">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="425" y="66" width="672" height="676" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1614076486318" />
+    <state x="425" y="66" width="672" height="676" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1614254954119" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -965,7 +1327,7 @@
         </line-breakpoint>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/union-app-service/src/main/java/com/union/app/service/user/UserService.java</url>
-          <line>423</line>
+          <line>428</line>
           <option name="timeStamp" value="3610" />
         </line-breakpoint>
         <line-breakpoint type="java-line">
@@ -992,11 +1354,6 @@
           <url>file://$PROJECT_DIR$/union-app-util/src/main/java/com/union/app/util/idGenerator/IdGenerator.java</url>
           <line>90</line>
           <option name="timeStamp" value="3674" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/卡点/打卡/发布Post.java</url>
-          <line>71</line>
-          <option name="timeStamp" value="3675" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/union-app-api/src/main/java/com/union/app/api/卡点/用户信息/更换头像和名字.java</url>

@@ -12,6 +12,7 @@ import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.service.*;
 import com.union.app.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -61,7 +62,10 @@ public class 查询内置用户 {
     public AppResponse 查询内置PK(@RequestParam("userId") String userId) throws AppException, IOException {
         appService.checkManager(userId);
         List<User> users = appService.查询内置用户(1);
-
+        User user = userService.queryUser(userService.获取系统消息用户());
+        if(!ObjectUtils.isEmpty(user)){
+            users.add(0,user);
+        }
 
         return AppResponse.buildResponse(PageAction.执行处理器("success",users));
 
@@ -70,7 +74,7 @@ public class 查询内置用户 {
     }
 
     @RequestMapping(path="/morePreUsers",method = RequestMethod.GET)
-    public AppResponse 查询内置PK(@RequestParam("password") String password,@RequestParam("page") int page,@RequestParam("userId") String userId) throws AppException, IOException {
+    public AppResponse 查询内置PK(@RequestParam("page") int page,@RequestParam("userId") String userId) throws AppException, IOException {
 
         appService.checkManager(userId);
         List<User> users = appService.查询内置用户(page+1);

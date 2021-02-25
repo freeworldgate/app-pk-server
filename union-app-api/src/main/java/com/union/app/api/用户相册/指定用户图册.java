@@ -5,6 +5,8 @@ import com.union.app.domain.pk.PkDynamic.UserDynamic;
 import com.union.app.domain.pk.Post;
 import com.union.app.domain.pk.名片.UserCard;
 import com.union.app.entity.pk.kadian.UserFollowEntity;
+import com.union.app.entity.user.UserEntity;
+import com.union.app.entity.user.support.UserType;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.DataSet;
@@ -68,7 +70,11 @@ public class 指定用户图册 {
     @RequestMapping(path="/userPublishPosts",method = RequestMethod.GET)
     public AppResponse 用户图册(@RequestParam("userId") String userId,@RequestParam("targetId") String targetId) throws AppException, IOException {
 
-
+        UserEntity userEntity = userService.queryUserEntity(userId);
+        if(userEntity.getUserType() == UserType.消息通知)
+        {
+            return AppResponse.buildResponse(PageAction.信息反馈框("消息通知不可見","消息通知内容不可见!"));
+        }
 
 
         List<Post> posts = appService.查询用户发布图册(targetId,1);

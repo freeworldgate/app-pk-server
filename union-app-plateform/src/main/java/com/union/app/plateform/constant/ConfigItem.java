@@ -27,13 +27,14 @@ public enum ConfigItem {
     隐藏打卡最大数量("maxHiddenPostNum", "MAX_HIDDEN_POST_NUM", "隐藏打卡最大数量","10" ),
     捞人有效操作范围("findRange", "FIND_RANGE", "捞人操作范围(公里)", "20"),
     卡点背景有效操作范围("pkBackRange", "PK_BACK_RANGE", "卡点背景操作范围", "10"),
-    用户头像BorderRadius("borderRadius", "USER_BORDER_RADIUS", "用户头像BorderRadius", "10");
-
-
-
-
-
-
+    用户头像BorderRadius("borderRadius", "USER_BORDER_RADIUS", "用户头像BorderRadius", "10"),
+    小图片圆角("postBorderRadius", "USER_BORDER_RADIUS0", "小图片圆角", "10"),
+    Post2或4张图圆角("post1BorderRadius", "USER_BORDER_RADIUS1", "2或4张图圆角", "10"),
+    Post1张图圆角("post2BorderRadius", "USER_BORDER_RADIUS2", "1张图圆角", "10"),
+    文字背景圆角("post3BorderRadius", "USER_BORDER_RADIUS3", "文字背景圆角", "10"),
+    PK创建者头像圆角("pkBorderRadius", "PK_CREATOR_BORDER_RADIUS","PK创建者头像圆角","1"),
+    操作按钮圆角("buttonBorderRadius", "BUTTON_BORDER_RADIUS", "操作按钮圆角", "1"),
+    修改PK背景图时间间隔("updatePkBackTimePeriod", "UPDATE_PK_BACK_TIME_PERIOD", "修改背景时间间隔", "3600");
 
 
 

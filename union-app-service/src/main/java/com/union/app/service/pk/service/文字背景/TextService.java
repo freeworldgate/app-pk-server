@@ -70,9 +70,9 @@ public class TextService {
     public TextBack 查询TextBackEntity(String backId) {
         TextBack textBack = new TextBack();
         textBack.setBackId("-1");
-        textBack.setBackColor("fafafa");
+        textBack.setBackColor("f8f8f8");
         textBack.setFontColor("000000");
-        textBack.setBackUrl("");
+        textBack.setBackUrl(null);
         if(StringUtils.isEmpty(backId)){return textBack;}
 
         EntityFilterChain filter = EntityFilterChain.newFilterChain(TextBackEntity.class)

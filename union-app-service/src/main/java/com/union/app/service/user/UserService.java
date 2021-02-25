@@ -99,17 +99,22 @@ public class UserService {
 //        UserKvEntity kv  = queryUserKvEntity(userId);
         if(!ObjectUtils.isEmpty(result))
         {
-            User user = new User();
-            user.setUserName(new String(result.getNickName()));
-            user.setUserId(result.getUserId());
-            user.setUserType(ObjectUtils.isEmpty(result.getUserType())?UserType.普通用户.getType():result.getUserType().getType());
-            user.setImgUrl(result.getAvatarUrl());
-
-            return user;
+            return queryUser(result);
         }
         return null;
     }
+    public User queryUser(UserEntity userEntity)
+    {
 
+            User user = new User();
+            user.setUserName(new String(userEntity.getNickName()));
+            user.setUserId(userEntity.getUserId());
+            user.setUserType(ObjectUtils.isEmpty(userEntity.getUserType())?UserType.普通用户.getType():userEntity.getUserType().getType());
+            user.setImgUrl(userEntity.getAvatarUrl());
+
+            return user;
+
+    }
 
     private boolean isUserVip(String userId){
 
@@ -798,5 +803,17 @@ public class UserService {
         return false;
     }
 
+    private static String msgUserId;
 
+    public String 获取系统消息用户() {
+        if(StringUtils.isBlank(msgUserId))
+        {
+            EntityFilterChain filter = EntityFilterChain.newFilterChain(UserEntity.class)
+                    .compareFilter("userType",CompareTag.Equal,UserType.消息通知);
+            UserEntity userEntity = appDaoService.querySingleEntity(UserEntity.class,filter);
+            msgUserId = ObjectUtils.isEmpty(userEntity)?"":userEntity.getUserId();
+        }
+        return msgUserId;
+
+    }
 }

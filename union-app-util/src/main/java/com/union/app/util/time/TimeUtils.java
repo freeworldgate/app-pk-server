@@ -152,51 +152,19 @@ public class TimeUtils {
     }
     public static String 已顶置时间(long topTimeLength) {
 
-        long timeLength = topTimeLength/(1000*60);
-        if(timeLength == 0){return "1分钟";}
+        long timeLength = topTimeLength/(1000);
+
+        if(timeLength < 60){
+            return timeLength+"秒";
+        }
+        else if(timeLength < 3600)
+        {
+            return timeLength/60+"分钟";
+        }
         else
         {
-            return timeLength+"分钟";
+            return timeLength/3600+"小时"+((timeLength%3600/60==0L)?"":timeLength%3600/60+"分钟");
         }
-
-
-//        long day = topTimeLength/(3600*24*1000);
-//        long hour = topTimeLength%(3600*24*1000) / (3600*1000);
-//        long min = topTimeLength%(3600*24*1000)%(3600*1000)/(60*1000);
-//        long sec = topTimeLength%(3600*24*1000)%(3600*1000)%(60*1000)/1000;
-//        StringBuffer stringBuffer = new StringBuffer();
-//        if(day != 0)
-//        {
-//            stringBuffer.append(day);
-//            stringBuffer.append("天");
-//        }
-//
-//        if(hour != 0)
-//        {
-//            stringBuffer.append(hour);
-//            stringBuffer.append("小时");
-//        }
-//
-//        if(min != 0)
-//        {
-//            stringBuffer.append(min);
-//            stringBuffer.append("分");
-//        }
-//        if(sec != 0)
-//        {
-//            stringBuffer.append(sec);
-//            stringBuffer.append("秒");
-//        }
-//
-//        return stringBuffer.toString();
-
-
-
-
-
-
-
-
 
 
 
@@ -225,6 +193,18 @@ public class TimeUtils {
             long minute = left/MINUTE_TIME;
             if(minute == 0){minute = 1;}
             return minute+"分钟";
+        }
+
+
+    }
+
+    public static String 计算时间(int time) {
+        if(time < 60){
+            return time+"秒";
+        }else if(time < 3600){return time/60+"分钟";}
+        else
+        {
+            return time/3600+"小时";
         }
 
 

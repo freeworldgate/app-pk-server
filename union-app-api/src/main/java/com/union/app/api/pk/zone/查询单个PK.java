@@ -128,9 +128,18 @@ public class 查询单个PK {
             }
             dataSets.add(new DataSet("postTimes",ObjectUtils.isEmpty(pkUserDynamicEntity)?0:pkUserDynamicEntity.getPostTimes()));
             dataSets.add(new DataSet("totalPostTimes",ObjectUtils.isEmpty(pkUserDynamicEntity)?0:pkUserDynamicEntity.getTotalPostTimes()));
-            dataSets.add(new DataSet("borderRadius",AppConfigService.getConfigAsInteger(ConfigItem.用户头像BorderRadius)));
+
             //查询用户打卡次数:
         }
+        dataSets.add(new DataSet("borderRadius",AppConfigService.getConfigAsInteger(ConfigItem.用户头像BorderRadius)));
+        dataSets.add(new DataSet("postBorderRadius",AppConfigService.getConfigAsInteger(ConfigItem.小图片圆角)));
+        dataSets.add(new DataSet("post1BorderRadius",AppConfigService.getConfigAsInteger(ConfigItem.Post2或4张图圆角)));
+        dataSets.add(new DataSet("post2BorderRadius",AppConfigService.getConfigAsInteger(ConfigItem.Post1张图圆角)));
+        dataSets.add(new DataSet("post3BorderRadius",AppConfigService.getConfigAsInteger(ConfigItem.文字背景圆角)));
+        dataSets.add(new DataSet("pkBorderRadius",AppConfigService.getConfigAsInteger(ConfigItem.PK创建者头像圆角)));
+        dataSets.add(new DataSet("buttonBorderRadius",AppConfigService.getConfigAsInteger(ConfigItem.操作按钮圆角)));
+
+        dataSets.add(new DataSet("pageTag",true));
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
 
     }

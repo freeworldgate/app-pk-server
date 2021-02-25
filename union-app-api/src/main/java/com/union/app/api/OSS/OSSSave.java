@@ -10,6 +10,7 @@ import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.response.ApiResponse;
 import com.union.app.service.pk.service.AppService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -63,12 +64,12 @@ public class OSSSave {
     private String 获取前缀(String type) {
         String ip;
         try {
-            ip = InetAddress.getLocalHost().getHostAddress();
+            ip = StringUtils.replace(InetAddress.getLocalHost().getHostAddress(),".","_");
         } catch (UnknownHostException e) {
             ip = UUID.randomUUID().toString();
         }
         String dir = "dir" + new Random().nextInt(200);
-        String path = ip+type+dir;
+        String path = ip+"/"+type+"/"+dir;
         return path.replaceAll("-","");
     }
 

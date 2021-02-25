@@ -356,7 +356,7 @@ public class LocationService {
 
 
     private String 长度转义(int typeRange) {
-        if(typeRange > 1000)
+        if(typeRange >= 1000)
         {
             double rangeLength = typeRange/1000.0D;
             BigDecimal bg = new BigDecimal(rangeLength);
@@ -708,17 +708,25 @@ public class LocationService {
 
     public void 设置卡点背景图片(String pkId, String userId, String imageId) throws AppException, IOException {
         PkEntity pkEntity = locationService.querySinglePkEntity(pkId);
+
         EntityFilterChain cfilter = EntityFilterChain.newFilterChain(PkImageEntity.class)
                 .compareFilter("imgId",CompareTag.Equal,imageId);
         PkImageEntity pkImageEntity = daoService.querySingleEntity(PkImageEntity.class,cfilter);
         if(!StringUtils.equals(pkEntity.getBackUrl(),pkImageEntity.getImgUrl()))
         {
+            if((System.currentTimeMillis() - pkEntity.getUpdateTime())/1000 < AppConfigService.getConfigAsInteger(ConfigItem.修改PK背景图时间间隔))
+            {
+                throw AppException.buildException(PageAction.信息反馈框("",TimeUtils.计算时间(AppConfigService.getConfigAsInteger(ConfigItem.修改PK背景图时间间隔))+"仅能修改一次卡点背景图片，请稍后再试!"));
+            }
+
             Map<String,Object> map = new HashMap<>();
             map.put("backUrl",pkImageEntity.getImgUrl());
+            map.put("updateTime",System.currentTimeMillis());
+
             daoService.updateColumById(PkEntity.class,"pkId",pkId,map);
             List<String> imgs = new ArrayList<>();
             imgs.add(pkImageEntity.getImgUrl());
-            postService.打卡(pkId,userId,"选择此图作为背景...",imgs,"");
+            postService.打卡(pkId,userService.获取系统消息用户(),"卡点更新背景图片...",imgs,"");
         }
 
 

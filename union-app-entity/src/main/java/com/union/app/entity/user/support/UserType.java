@@ -9,7 +9,9 @@ public enum  UserType {
 
     重点用户(1),
 
-    管理用户(2);
+    管理用户(2),
+
+    消息通知(3);
 
     private int type;
 

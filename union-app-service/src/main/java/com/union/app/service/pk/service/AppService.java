@@ -614,18 +614,24 @@ public class AppService {
         keyService.刷新图片缓存(backImgEntity.getType());
 
     }
-    private volatile boolean userType = true;
+
     public User 新增内置用户(String name, String imgUrl)
     {
+
         String userId = com.union.app.util.idGenerator.IdGenerator.生成用户ID();
         UserEntity userEntity = new UserEntity();
         userEntity.setOpenId(userId);
         userEntity.setUserId(userId);
         userEntity.setAvatarUrl(imgUrl);
         userEntity.setNickName(name);
-        userEntity.setUserType(UserType.重点用户);
-        userService.管理员用户("");
-
+        if(StringUtils.isBlank(userService.获取系统消息用户())) {
+            userEntity.setUserType(UserType.消息通知);
+        }
+        else
+        {
+            userEntity.setUserType(UserType.重点用户);
+        }
+//        userService.管理员用户("");
         userDynamicService.创建Dynamic表(userEntity.getUserId());
         userService.创建内置UserCardEntity(userEntity.getUserId());
         daoService.insertEntity(userEntity);
@@ -671,7 +677,7 @@ public class AppService {
         userEntity.setAppName("CHOSSEN");
         daoService.updateEntity(userEntity);
 
-        return userService.queryUser(userId);
+        return userService.queryUser(userEntity);
 
     }
 
@@ -680,7 +686,7 @@ public class AppService {
         UserEntity userEntity = userService.queryUserEntity(userId);
         userEntity.setAvatarUrl(imgUrl);
         daoService.updateEntity(userEntity);
-        return userService.queryUser(userId);
+        return userService.queryUser(userEntity);
 
     }
 
