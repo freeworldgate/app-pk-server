@@ -13,6 +13,7 @@ import com.union.app.dao.spi.filter.OrderTag;
 import com.union.app.domain.pk.*;
 import com.union.app.domain.pk.PkDynamic.PkDynamic;
 import com.union.app.domain.pk.apply.KeyValuePair;
+import com.union.app.domain.pk.comment.TimeSyncType;
 import com.union.app.domain.pk.daka.CreateLocation;
 import com.union.app.domain.user.User;
 import com.union.app.domain.工具.RandomUtil;
@@ -167,12 +168,8 @@ public class LocationService {
         daoService.insertEntity(pkEntity);
         pkDynamicService.创建DynamicEntity(pkId);
         userDynamicService.用户卡点加一(createLocation.getUserId());
-
-
-
         keyService.城市PK数量加一(pkEntity.getCityCode());
-        keyService.通知同步城市卡点数量(pkEntity.getCityCode());
-
+        keyService.通知同步队列(String.valueOf(pkEntity.getCityCode()), TimeSyncType.CITY.getScene());
         return pkId;
     }
 
@@ -244,6 +241,7 @@ public class LocationService {
         pkDetail.setTopPostId(pk.getTopPostId());
         pkDetail.setTopPostId(pk.getTopPostId());
         pkDetail.setTopPostSetTime(pk.getTopPostSetTime());
+        pkDetail.setTopPostTimeLengthStr(TimeUtils.顶置周期(pk.getTopPostTimeLength()));
         pkDetail.setTopPostTimeLength(pk.getTopPostTimeLength());
         Post topPost = postService.查询顶置帖子(pk);
         if(!ObjectUtils.isEmpty(topPost))
@@ -262,7 +260,6 @@ public class LocationService {
         pkDetail.setCitySet(pk.isCitySet());
         pkDetail.setCountrySet(pk.isCountrySet());
         pkDetail.setFindSet(pk.isFindSet());
-        pkDetail.setTopPostTimeLength(pk.getTopPostTimeLength());
         return pkDetail;
     }
 
@@ -284,6 +281,7 @@ public class LocationService {
         pkDetail.setBackUrl(pk.getBackUrl());
         pkDetail.setTopPostId(pk.getTopPostId());
         pkDetail.setTopPostSetTime(pk.getTopPostSetTime());
+        pkDetail.setTopPostTimeLengthStr(TimeUtils.顶置周期(pk.getTopPostTimeLength()));
         pkDetail.setTopPostTimeLength(pk.getTopPostTimeLength());
         pkDetail.setMarker(this.查询Marker(pk));
         pkDetail.setCircle(this.查询Circle(pk,locationType));
@@ -811,8 +809,9 @@ public class LocationService {
     }
 
     public void 卡点隐藏打卡信息检查(String pkId) throws AppException {
-        long hiddenNum = keyService.查询隐藏打卡信息(pkId);
-        if(hiddenNum >= AppConfigService.getConfigAsInteger(ConfigItem.隐藏打卡最大数量))
+
+        PkEntity pkEntity = this.querySinglePkEntity(pkId);
+        if(pkEntity.getHiddenPosts() >= AppConfigService.getConfigAsInteger(ConfigItem.隐藏打卡最大数量))
         {
             throw AppException.buildException(PageAction.信息反馈框("卡点已锁定","隐藏打卡已超过最大值!"));
         }
@@ -820,4 +819,17 @@ public class LocationService {
     }
 
 
+    public void 隐藏数量加1(String pkId) {
+        PkEntity pkEntity = this.querySinglePkEntity(pkId);
+        Map<String,Object> map = new HashMap<>();
+        map.put("hiddenPosts",pkEntity.getHiddenPosts()+1);
+        daoService.updateColumById(PkEntity.class,"pkId",pkId,map);
+    }
+
+    public void 隐藏数量减1(String pkId) {
+        PkEntity pkEntity = this.querySinglePkEntity(pkId);
+        Map<String,Object> map = new HashMap<>();
+        map.put("hiddenPosts",pkEntity.getHiddenPosts()>0?pkEntity.getHiddenPosts()-1:0);
+        daoService.updateColumById(PkEntity.class,"pkId",pkId,map);
+    }
 }

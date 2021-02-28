@@ -34,10 +34,25 @@ public class PostEntity {
     private int imgNum;
 
     private int postTimes;
+
     private long time;
 
 
     @Enumerated(EnumType.STRING)
     private PostStatu statu;
+
+
+    //投诉   点赞  评论
+    private long complains;
+    private long likes;
+    private long dislikes;
+    private long comments;
+
+
+
+
+
+
+
 
 }

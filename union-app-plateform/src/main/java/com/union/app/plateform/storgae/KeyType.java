@@ -37,7 +37,16 @@ public enum  KeyType {
     PK热度排行("PK_HOT_SORT_ALL_LOCATE"),
     卡点已隐藏打卡数量("PK_HIDDEN_POST_NUM"),
     城市卡点数量("CITY_PK_NUM"),
-    城市卡点数量同步队列("CITY_PK_NUM_SYNC");
+    打卡投诉数量("PK_POST_COMPLAIN"),
+    点赞数量("ID_GREATE_LIKE"),
+    踩数量("ID_GREATE_DISLIKE"),
+    打卡评论数量("PK_POST_COMMENT"),
+    POST投诉点赞评论同步队列("PK_POST_PARAM_SYNC"),
+
+    城市卡点数量同步队列("CITY_PK_NUM_SYNC"),
+
+    同步队列("SYNC_SET"),
+    评论回复数量("COMMENT_RESTORE_NUMS");
 
 
 

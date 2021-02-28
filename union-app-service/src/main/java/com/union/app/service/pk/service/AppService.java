@@ -331,6 +331,11 @@ public class AppService {
                 .pageLimitFilter(page,AppConfigService.getConfigAsInteger(ConfigItem.单个PK页面的帖子数))
                 .orderByFilter("createTime",OrderTag.DESC);
         List<InvitePkEntity> invites = daoService.queryEntities(InvitePkEntity.class,filter);
+        Map<String,Long> inviteTimes = new HashMap<>();
+        invites.forEach(invitePkEntity -> {
+            inviteTimes.put(invitePkEntity.getPkId(),invitePkEntity.getCreateTime());
+        });
+
 
         List<Object> pkIds = new ArrayList<>();
         for(InvitePkEntity invitePkEntity:invites)
@@ -346,6 +351,12 @@ public class AppService {
                 pkEntities.addAll(pks);
             }
         }
+        Collections.sort(pkEntities, new Comparator<PkEntity>() {
+            @Override
+            public int compare(PkEntity o1, PkEntity o2) {
+                return inviteTimes.get(o1.getPkId()) - inviteTimes.get(o2.getPkId())>0L?-1:1;
+            }
+        });
         return pkEntities;
     }
 

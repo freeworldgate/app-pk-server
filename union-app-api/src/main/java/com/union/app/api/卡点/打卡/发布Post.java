@@ -67,7 +67,7 @@ public class 发布Post {
         String postId = postService.打卡(pkId,userId,title,images,backId);
 
 
-        Post post = postService.查询帖子(pkId,postId,userId);
+        Post post = postService.查询帖子(postId);
 
         post.setLeftTime(AppConfigService.getConfigAsInteger(ConfigItem.发帖的时间间隔));
         //返回帖子  首页第一个要显示

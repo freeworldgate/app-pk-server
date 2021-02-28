@@ -38,7 +38,7 @@ public class 顶置删除隐藏 {
     AppDaoService daoService;
 
     @Autowired
-    KeyService keyService;
+    LocationService locationService;
 
     @Autowired
     PostService postService;
@@ -75,7 +75,7 @@ public class 顶置删除隐藏 {
             map.put("topPostTimeLength",value*1L);
             daoService.updateColumById(PkEntity.class,"pkId",pkId,map);
 
-            Post post = postService.查询帖子(pkId,postId,userId);
+            Post post = postService.查询帖子(postId);
 
             return AppResponse.buildResponse(PageAction.执行处理器("success",post));
 
@@ -105,7 +105,7 @@ public class 顶置删除隐藏 {
 
         appService.checkManager(userId);
         postService.隐藏打卡信息(postId);
-        keyService.隐藏数量加1(pkId);
+        locationService.隐藏数量加1(pkId);
         return AppResponse.buildResponse(PageAction.执行处理器("success",""));
 
     }

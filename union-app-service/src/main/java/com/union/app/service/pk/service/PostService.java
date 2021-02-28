@@ -1,21 +1,22 @@
 package com.union.app.service.pk.service;
 
-import com.union.app.common.OSS存储.CacheStorage;
-import com.union.app.common.OSS存储.OssStorage;
 import com.union.app.common.dao.AppDaoService;
 import com.union.app.common.dao.KeyService;
-import com.union.app.common.dao.PkCacheService;
 import com.union.app.dao.spi.filter.CompareTag;
 import com.union.app.dao.spi.filter.EntityFilterChain;
 import com.union.app.dao.spi.filter.OrderTag;
 import com.union.app.domain.pk.PkDetail;
 import com.union.app.domain.pk.Post;
 import com.union.app.domain.pk.PostImage;
+import com.union.app.domain.pk.comment.Comment;
+import com.union.app.domain.pk.comment.Restore;
+import com.union.app.domain.pk.comment.TimeSyncType;
 import com.union.app.domain.pk.文字背景.TextBack;
 import com.union.app.entity.pk.*;
+import com.union.app.entity.pk.post.*;
 import com.union.app.plateform.data.resultcode.AppException;
-import com.union.app.plateform.storgae.redis.RedisStringUtil;
-import com.union.app.service.pk.dynamic.DynamicService;
+import com.union.app.plateform.data.resultcode.PageAction;
+import com.union.app.plateform.storgae.KeyType;
 import com.union.app.service.pk.service.pkuser.PkDynamicService;
 import com.union.app.service.pk.service.pkuser.PkUserDynamicService;
 import com.union.app.service.pk.service.pkuser.UserDynamicService;
@@ -30,7 +31,6 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.*;
 
 @Service
@@ -72,13 +72,15 @@ public class PostService {
         postEntity.setPkName(pkEntity.getName());
         postEntity.setPostId(postId);
         postEntity.setUserId(userId);
-        postEntity.setTopic(noActiveTitle(title)?"...":title);
+        postEntity.setTopic(noActiveTitle(title)?"...":processText(title));
         TextBack textBack = textService.查询TextBackEntity(backId);
         postEntity.setBackColor(textBack.getBackColor());
         postEntity.setFontColor(textBack.getFontColor());
         postEntity.setBackUrl(textBack.getBackUrl());
-
-
+        postEntity.setLikes(0);
+        postEntity.setDislikes(0);
+        postEntity.setComplains(0);
+        postEntity.setComments(0);
         postEntity.setStatu(PostStatu.显示);
         postEntity.setPostTimes(pkUserDynamicService.计算打卡次数(pkId,userId)+1);
         postEntity.setTime(System.currentTimeMillis());
@@ -94,9 +96,30 @@ public class PostService {
         pkUserDynamicService.卡点用户打卡次数加一(pkId,userId);
         userDynamicService.用户总打榜次数加一(userId);
         pkDynamicService.卡点打卡人数更新(pkId,userId);
-
+        this.记录打卡条目(pkId,pkEntity.getName(),postId,title,CollectionUtils.isEmpty(postImageEntities)?null:postImageEntities.get(0).getImgUrl());
 
         return postId;
+    }
+
+    private void 记录打卡条目(String pkId,String pkName, String postId, String title, String imgUrl) {
+        PostColumEntity postColumEntity = new PostColumEntity();
+        postColumEntity.setPostId(postId);
+        postColumEntity.setPkId(pkId);
+        postColumEntity.setPkName(pkName);
+        postColumEntity.setText(title);
+        postColumEntity.setImgUrl(imgUrl);
+        daoService.insertEntity(postColumEntity);
+    }
+
+    public String processText(String str) {
+//        String result = "";
+//        if (str != null) {
+//            Pattern p = Pattern.compile("(\r?\n(\\s*\r?\n)+)");
+//            Matcher m = p.matcher(str);
+//            result = m.replaceAll("\r\n");
+//        }
+//        return result;
+        return str;
     }
 
 
@@ -114,6 +137,7 @@ public class PostService {
 
     private List<PostImageEntity> getLegalImgUrl(List<String> images,String pkId,String postId) {
         List<PostImageEntity> postImageEntities = new ArrayList<>();
+        if(CollectionUtils.isEmpty(images)){return postImageEntities;}
         images.forEach(img->{
             PostImageEntity postImageEntity = new PostImageEntity();
             postImageEntity.setImgId(IdGenerator.getImageId());
@@ -167,7 +191,7 @@ public class PostService {
 
 
 
-    public Post 查询帖子(String pkId,String postId,String queryUserId) {
+    public Post 查询帖子(String postId) {
 
         PostEntity postEntity = this.查询帖子ById(postId);
         if(ObjectUtils.isEmpty(postEntity)){return null;}
@@ -188,7 +212,12 @@ public class PostService {
         post.setFontColor(postEntity.getFontColor());
         post.setBackUrl(postEntity.getBackUrl());
         post.setPostTimes(postEntity.getPostTimes());
-        post.setPtime(TimeUtils.convertPostTime(postEntity.getTime()));
+        post.setComplains(postEntity.getComplains());
+        post.setComments(postEntity.getComments());
+        post.setLikes(postEntity.getLikes());
+        post.setDislikes(postEntity.getDislikes());
+
+//        post.setPtime(TimeUtils.convertPostTime(postEntity.getTime()));
         post.setPostImages(postEntity.getImgNum()<1?new ArrayList<>():getPostImages(postEntity.getPostId(),postEntity.getPkId()));
         return post;
     }
@@ -264,6 +293,7 @@ public class PostService {
             Map<String,Object> map = new HashMap<>();
             map.put("topPostId","");
             map.put("topPostSetTime",0L);
+            map.put("topPostTimeLength",0L);
             daoService.updateColumById(pkEntity.getClass(),"pkId",pkEntity.getPkId(),map);
 
         }
@@ -275,12 +305,9 @@ public class PostService {
 
     public void 隐藏打卡信息(String postId) {
 
-
-
         Map<String,Object> map = new HashMap<>();
         map.put("statu",PostStatu.隐藏);
         daoService.updateColumById(PostEntity.class,"postId",postId,map);
-
 
 
     }
@@ -288,7 +315,6 @@ public class PostService {
 
     public void 移除隐藏打卡信息(String postId) {
         //删除缓存数据：PKEntity   PostEntity  PostImageEntity 三个缓存
-
 
         Map<String,Object> map = new HashMap<>();
         map.put("statu",PostStatu.显示);
@@ -361,4 +387,19 @@ public class PostService {
         });
 
     }
+
+    public void 添加投诉(String postId, String userId, int type) {
+        PostComplainEntity complainEntity = new PostComplainEntity();
+        complainEntity.setComplainId(IdGenerator.getComplainId());
+        complainEntity.setPostId(postId);
+        complainEntity.setUserId(userId);
+        complainEntity.setComplainType(ComplainType.valueOf(type));
+        complainEntity.setTime(System.currentTimeMillis());
+        daoService.insertEntity(complainEntity);
+        keyService.Post投诉数量加一(postId);
+    }
+
+
+
+
 }

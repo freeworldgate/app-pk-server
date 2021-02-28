@@ -47,4 +47,13 @@ public class Post {
 
     private int leftTime;
 
+    private long complains;
+    private long likes;
+    private long dislikes;
+    private long comments;
+
+    private int statu;
+
+    private int width = 40;
+    private int height = 40;
 }

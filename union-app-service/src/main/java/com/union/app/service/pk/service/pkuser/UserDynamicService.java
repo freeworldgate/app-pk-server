@@ -54,6 +54,7 @@ public class UserDynamicService {
         userDynamic.setMygroups(userDynamicEntity.getMygroups());
         userDynamic.setPk(userDynamicEntity.getPk());
         userDynamic.setPkTimes(userDynamicEntity.getPkTimes());
+        userDynamic.setComments(userDynamicEntity.getComments());
         userDynamic.setPostTimes(userDynamicEntity.getPostTimes());
         userDynamic.setUnLockTimes(userDynamicEntity.getUnLockTimes());
         userDynamic.setFindTimeLength(userDynamicEntity.getFindTimeLength());
@@ -213,5 +214,21 @@ public class UserDynamicService {
 
 
 
+    }
+
+    public void 用户评论加一(String userId) {
+        UserDynamicEntity userDynamicEntity = queryUserDynamicEntity(userId);
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("comments",userDynamicEntity.getComments() + 1);
+        daoService.updateColumById(UserDynamicEntity.class,"userId",userId,map);
+    }
+
+    public void 用户评论减一(String userId) {
+        UserDynamicEntity userDynamicEntity = queryUserDynamicEntity(userId);
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("comments",userDynamicEntity.getComments()>0? userDynamicEntity.getComments()-1:0);
+        daoService.updateColumById(UserDynamicEntity.class,"userId",userId,map);
     }
 }

@@ -43,6 +43,7 @@ public class UserDynamicEntity {
     //收藏个数
     private int collectTimes;
 
+    private long comments;
 
     //用户关注
     private int follow;

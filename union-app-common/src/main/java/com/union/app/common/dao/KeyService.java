@@ -8,6 +8,8 @@ import com.union.app.dao.spi.filter.EntityFilterChain;
 import com.union.app.dao.spi.filter.OrderTag;
 import com.union.app.domain.pk.Post;
 import com.union.app.domain.pk.PostImage;
+import com.union.app.domain.pk.comment.SyncType;
+import com.union.app.domain.pk.comment.TimeSyncType;
 import com.union.app.entity.pk.BackImgEntity;
 import com.union.app.entity.pk.PkEntity;
 import com.union.app.entity.pk.PkTipEntity;
@@ -240,27 +242,18 @@ public class KeyService {
     public void pk图片总量递增(String pkId, int imgNum) {
         if(imgNum == 0){return;}
         redisMapService.valueIncr(KeyType.PK图片总量.getName(),pkId,imgNum);
-        通知同步图片和用户数量(pkId);
+        this.通知同步队列(pkId, TimeSyncType.PK.getScene());
     }
 
     public void pk图片总量递减(String pkId, int imgNum) {
         if(imgNum == 0){return;}
         redisMapService.valueDecr(KeyType.PK图片总量.getName(),pkId,imgNum);
-        通知同步图片和用户数量(pkId);
-    }
-
-    public void 通知同步图片和用户数量(String pkId) {
-        redisTemplate.opsForSet().add(KeyType.卡点待同步队列.getName(),pkId);
+        this.通知同步队列(pkId, TimeSyncType.PK.getScene());
     }
 
 
-    public String 获取待同步图片和用户数量的卡点() { return redisTemplate.opsForSet().pop(KeyType.卡点待同步队列.getName()); }
 
 
-
-    public void 通知同步城市卡点数量(int cityCode) { redisTemplate.opsForSet().add(KeyType.城市卡点数量同步队列.getName(),String.valueOf(cityCode)); }
-
-    public String 获取待同步卡点数量的城市() { return redisTemplate.opsForSet().pop(KeyType.城市卡点数量同步队列.getName()); }
 
 
 
@@ -434,20 +427,47 @@ public class KeyService {
         return cityEntity;
     }
 
-    public long 查询隐藏打卡信息(String pkId) {
-
-        return redisMapService.getlongValue(KeyType.卡点已隐藏打卡数量.getName(),pkId);
-
-    }
-    public void 隐藏数量加1(String pkId) {
-        redisMapService.valueIncr(KeyType.卡点已隐藏打卡数量.getName(),pkId);
-    }
-
-    public void 隐藏数量减1(String pkId) {
-        redisMapService.valueDecr(KeyType.卡点已隐藏打卡数量.getName(),pkId);
-    }
 
     public void 城市PK数量加一(int cityCode) {
         redisMapService.valueIncr(KeyType.城市卡点数量.getName(),String.valueOf(cityCode));
     }
+
+
+    public void Post投诉数量加一(String postId) {
+        redisMapService.valueIncr(KeyType.打卡投诉数量.getName(),postId);
+    }
+
+
+    public void 点赞数量加一(String id) {
+        redisMapService.valueIncr(KeyType.点赞数量.getName(),id);
+    }
+    public void 踩数量加一(String id) { redisMapService.valueIncr(KeyType.踩数量.getName(),id); }
+    public void 点赞数量减一(String id) {
+        redisMapService.valueDecr(KeyType.点赞数量.getName(),id);
+    }
+    public void 踩数量减一(String id) { redisMapService.valueDecr(KeyType.踩数量.getName(),id); }
+
+    public void Post评论数量加一(String postId) {
+        redisMapService.valueIncr(KeyType.打卡评论数量.getName(),postId);
+    }
+    public void Post评论数量减一(String postId) {
+        redisMapService.valueDecr(KeyType.打卡评论数量.getName(),postId);
+    }
+
+    public void comment回复数量加一(String commentId) {redisMapService.valueIncr(KeyType.评论回复数量.getName(),commentId); }
+
+    public void comment回复数量减一(String commentId) {redisMapService.valueDecr(KeyType.评论回复数量.getName(),commentId); }
+
+    public void 通知同步队列(String id,int scene) {
+        SyncType syncType = new SyncType();
+        syncType.setId(id);
+        syncType.setType(scene);
+        redisTemplate.opsForSet().add(KeyType.同步队列.getName(),JSON.toJSONString(syncType));
+    }
+
+    public String 获取同步队列() { return redisTemplate.opsForSet().pop(KeyType.同步队列.getName()); }
+
+
+
+
 }

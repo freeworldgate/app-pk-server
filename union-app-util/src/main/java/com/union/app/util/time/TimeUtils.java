@@ -3,6 +3,7 @@ package com.union.app.util.time;
 import com.union.app.domain.pk.PostTime;
 import org.apache.commons.lang.StringUtils;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -12,7 +13,7 @@ public class TimeUtils {
     private static final long DAY_TIME = 24 * 3600 * 1000L;
     private static final long HOUR_TIME = 3600 * 1000L;
     private static final long MINUTE_TIME = 60 * 1000L;
-
+    private static final long JUST_TIME = 5*1000L;
     public static String convertTime(long time) {
 
         long time_expire = System.currentTimeMillis() - time;
@@ -32,6 +33,11 @@ public class TimeUtils {
         {
             long hours = time_expire/MINUTE_TIME;
             return hours+"分钟前";
+        }
+        else if(time_expire > JUST_TIME)
+        {
+            long hours = time_expire/JUST_TIME;
+            return hours+"秒钟前";
         }
         else if(time_expire > 0)
         {
@@ -208,5 +214,37 @@ public class TimeUtils {
         }
 
 
+    }
+
+    public static String 顶置周期(long topPostTimeLength) {
+
+        if(topPostTimeLength < 60)
+        {
+            return topPostTimeLength+"分钟";
+        }
+        else
+        {
+            double rangeLength = topPostTimeLength/60D;
+            BigDecimal bg = new BigDecimal(rangeLength);
+            double d3 = bg.setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue();
+            String valueStr = String.valueOf(d3);
+            if(valueStr.endsWith("0")){
+                valueStr = valueStr.substring(0,valueStr.length()-2);
+            }
+            return valueStr +"小时";
+        }
+
+
+    }
+
+    public static String 详细时间(long time) {
+        if(time == 0){return null;}
+        if(System.currentTimeMillis() - time < 60 * 1000){
+            return "刚刚";
+        }
+        SimpleDateFormat year = new SimpleDateFormat("yyyy年");
+        String yearStr = year.format(new Date(System.currentTimeMillis()));
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 hh:mm");
+        return simpleDateFormat.format(new Date(time)).replace(yearStr,"");
     }
 }

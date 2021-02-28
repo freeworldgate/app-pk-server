@@ -78,7 +78,6 @@ public class IdGenerator {
 
     public static String getPostId() {return RandomStringUtils.randomAlphanumeric(30); }
 
-    public static String getCommentId() {return UUID.randomUUID().toString(); }
 
     public static String getBackId() {return UUID.randomUUID().toString(); }
 
@@ -94,5 +93,12 @@ public class IdGenerator {
     }
 
     public static String 生成PayId() {return UUID.randomUUID().toString();}
+
+    public static String getComplainId() {return UUID.randomUUID().toString();}
+    public static String getCommentId() {return UUID.randomUUID().toString();}
+    public static String getGreateId() {return UUID.randomUUID().toString();}
+
+    public static String getRestoreId() {return UUID.randomUUID().toString();}
+
 }
 

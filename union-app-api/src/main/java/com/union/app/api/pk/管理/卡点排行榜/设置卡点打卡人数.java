@@ -1,6 +1,7 @@
 package com.union.app.api.pk.管理.卡点排行榜;
 
 import com.union.app.common.dao.KeyService;
+import com.union.app.domain.pk.comment.TimeSyncType;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.AppResponse;
 import com.union.app.plateform.data.resultcode.PageAction;
@@ -63,7 +64,9 @@ public class 设置卡点打卡人数 {
 
         appService.checkManager(userId);
         keyService.setMapKey(pkId, KeyType.卡点人数,value);
-        keyService.通知同步图片和用户数量(pkId);
+
+        keyService.通知同步队列(pkId, TimeSyncType.PK.getScene());
+
 
 
         return AppResponse.buildResponse(PageAction.执行处理器("success",""));

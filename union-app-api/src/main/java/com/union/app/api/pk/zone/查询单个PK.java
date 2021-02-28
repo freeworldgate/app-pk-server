@@ -40,7 +40,7 @@ public class 查询单个PK {
     PkService pkService;
 
     @Autowired
-    ClickService clickService;
+    LikeService likeService;
 
     @Autowired
     RedisStringUtil redisStringUtil;
@@ -101,7 +101,9 @@ public class 查询单个PK {
 
         dataSets.add(new DataSet("pk",pkDetail));
         dataSets.add(new DataSet("inviteStatu",appService.查询收藏状态(pkId,userId)));
+        likeService.查询Post点赞记录(posts,userId);
         dataSets.add(new DataSet("posts",posts));
+
         if(CollectionUtils.isEmpty(posts)){dataSets.add(new DataSet("emptyData",appService.查询背景(4)));}
         dataSets.add(new DataSet("page",1));
         if(userService.isUserExist(userId))
@@ -174,9 +176,7 @@ public class 查询单个PK {
         {
             return AppResponse.buildResponse(PageAction.前端数据更新("nomore",Boolean.TRUE));
         }
-
-        List<DataSet> dataSets = new ArrayList<>();
-        dataSets.add(new DataSet("posts",posts));
+        likeService.查询Post点赞记录(posts,userId);
         return AppResponse.buildResponse(PageAction.执行处理器("success",posts));
 
     }

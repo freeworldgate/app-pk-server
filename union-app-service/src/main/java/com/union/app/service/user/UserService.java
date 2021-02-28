@@ -2,7 +2,6 @@ package com.union.app.service.user;
 
 
 import com.alibaba.fastjson.JSON;
-import com.union.app.common.config.AppConfigService;
 import com.union.app.common.dao.AppDaoService;
 import com.union.app.common.dao.KeyService;
 import com.union.app.common.dao.PkCacheService;
@@ -16,14 +15,12 @@ import com.union.app.domain.pk.客服消息.WxImage;
 import com.union.app.domain.pk.客服消息.WxSendMessage;
 import com.union.app.domain.pk.客服消息.WxText;
 import com.union.app.domain.user.User;
-import com.union.app.domain.工具.RandomUtil;
 import com.union.app.entity.pk.kadian.UserCardApplyEntity;
 import com.union.app.entity.pk.名片.UserCardEntity;
 import com.union.app.entity.pk.名片.UserCardMemberEntity;
 import com.union.app.entity.user.UserDynamicEntity;
 import com.union.app.entity.user.UserEntity;
 import com.union.app.entity.user.support.UserType;
-import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.KeyType;
@@ -68,10 +65,7 @@ public class UserService {
 
 
     public UserEntity queryUserEntity(String userId){
-        if(StringUtils.isBlank(userId)||StringUtils.equalsIgnoreCase("null",userId)||StringUtils.equalsIgnoreCase("undefined",userId)||StringUtils.equalsIgnoreCase("Nan",userId))
-        {
-            return null;
-        }
+
         UserEntity userEntity = keyService.queryUserEntity(userId);
         return userEntity;
     }
@@ -89,11 +83,10 @@ public class UserService {
      */
     public User queryUser(String userId)
     {
-        if(org.apache.commons.lang.StringUtils.isBlank(userId))
+        if(StringUtils.isBlank(userId)||StringUtils.equalsIgnoreCase("null",userId)||StringUtils.equalsIgnoreCase("undefined",userId)||StringUtils.equalsIgnoreCase("Nan",userId))
         {
             return null;
         }
-
 
         UserEntity result  = queryUserEntity(userId);
 //        UserKvEntity kv  = queryUserKvEntity(userId);
@@ -816,4 +809,6 @@ public class UserService {
         return msgUserId;
 
     }
+
+
 }

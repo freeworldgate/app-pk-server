@@ -99,7 +99,7 @@ public class 顶置删除 {
 
 
             pkService.修改首页图册(pkId,postId,value);
-            Post post = postService.查询帖子(pkId,postId,userId);
+            Post post = postService.查询帖子(postId);
 
             return AppResponse.buildResponse(PageAction.执行处理器("success",post));
         }
@@ -163,7 +163,7 @@ public class 顶置删除 {
         {
             postService.隐藏打卡信息(postId);
 //            locationService.打卡次数减一(pkId,userId);
-            keyService.隐藏数量加1(postEntity.getPkId());
+            locationService.隐藏数量加1(postEntity.getPkId());
             return AppResponse.buildResponse(PageAction.执行处理器("success",""));
         }
         else
@@ -189,7 +189,7 @@ public class 顶置删除 {
         {
             postService.移除隐藏打卡信息(postId);
 //            locationService.打卡次数加一(postEntity.getPkId(),userId);
-            keyService.隐藏数量减1(postEntity.getPkId());
+            locationService.隐藏数量减1(postEntity.getPkId());
             return AppResponse.buildResponse(PageAction.执行处理器("success",""));
         }
         else

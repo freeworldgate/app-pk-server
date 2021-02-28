@@ -59,6 +59,7 @@ public class PkEntity {
 
     private long totalImgs;
 
+    private long hiddenPosts;
 
     private boolean rangeSet;
     private boolean citySet;

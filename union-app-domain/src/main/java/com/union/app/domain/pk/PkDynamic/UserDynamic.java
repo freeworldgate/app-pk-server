@@ -41,6 +41,7 @@ public class UserDynamic
     //用户粉丝
     private long fans;
 
+    private long comments;
 
 
 

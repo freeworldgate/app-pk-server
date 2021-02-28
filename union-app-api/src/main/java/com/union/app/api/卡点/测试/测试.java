@@ -8,6 +8,7 @@ import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.service.pk.click.ClickService;
 import com.union.app.service.pk.dynamic.DynamicService;
+import com.union.app.service.pk.dynamic.RedisService;
 import com.union.app.service.pk.service.*;
 import com.union.app.service.pk.service.pkuser.UserDynamicService;
 import com.union.app.service.user.UserService;
@@ -61,6 +62,62 @@ public class 测试 {
     @Autowired
     LockService lockService;
 
+    @Autowired
+    RedisService redisService;
+
+
+    @RequestMapping(path="/redis",method = RequestMethod.GET)
+    public void test111() {
+
+        Map<String, Object> uriVariables = new HashMap<>();
+//
+//        uriVariables.put("userId","ozm2e4r6IgyVMlA6goFt7AbB3wVw");
+//        uriVariables.put("latitude",31.904063313802084D);
+//        uriVariables.put("longitude",118.9038058810764D);
+        for(int i=0;i<50;i++)
+        {
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    for(int i=0;i<100;i++){
+//                        redisService.sendRedisMessage();
+                    }
+                }
+            }).start();
+        }
+
+
+
+    }
+
+    @RequestMapping(path="/test",method = RequestMethod.GET)
+    public void test() {
+
+        Map<String, Object> uriVariables = new HashMap<>();
+//
+//        uriVariables.put("userId","ozm2e4r6IgyVMlA6goFt7AbB3wVw");
+//        uriVariables.put("latitude",31.904063313802084D);
+//        uriVariables.put("longitude",118.9038058810764D);
+        for(int i=0;i<50;i++)
+        {
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    for(int i=0;i<100;i++){
+
+                        RestUtil restUtil = SpringContextUtil.getBean(RestUtil.class);
+                        String res = restUtil.get("https://www.211shopper.com/pk/queryHomePage?userId=ozm2e4r6IgyVMlA6goFt7AbB3wVw&latitude=31.904063313802084&longitude=118.9038058810764",uriVariables);
+                        System.out.println("Thread-"+Thread.currentThread().getName()+" res = " + res);
+                    }
+                }
+            }).start();
+        }
+
+
+
+    }
 
     @RequestMapping(path="/api",method = RequestMethod.GET)
     public void apiTest() {
