@@ -18,10 +18,7 @@ import com.union.app.domain.pk.daka.CreateLocation;
 import com.union.app.domain.user.User;
 import com.union.app.domain.工具.RandomUtil;
 import com.union.app.entity.ImgStatu;
-import com.union.app.entity.pk.PkEntity;
-import com.union.app.entity.pk.PkImageEntity;
-import com.union.app.entity.pk.PostEntity;
-import com.union.app.entity.pk.PostStatu;
+import com.union.app.entity.pk.*;
 import com.union.app.entity.pk.kadian.UserFollowEntity;
 import com.union.app.plateform.constant.ConfigItem;
 import com.union.app.plateform.data.resultcode.AppException;
@@ -239,7 +236,7 @@ public class LocationService {
         PkDynamic pkDynamic = pkDynamicService.queryPkDynamic(pkId);
         pkDetail.setPkDynamic(pkDynamic);
         pkDetail.setTopPostId(pk.getTopPostId());
-        pkDetail.setTopPostId(pk.getTopPostId());
+        pkDetail.setTopPostType(pk.getTopPostType());
         pkDetail.setTopPostSetTime(pk.getTopPostSetTime());
         pkDetail.setTopPostTimeLengthStr(TimeUtils.顶置周期(pk.getTopPostTimeLength()));
         pkDetail.setTopPostTimeLength(pk.getTopPostTimeLength());
@@ -280,6 +277,7 @@ public class LocationService {
         pkDetail.setTime(TimeUtils.convertTime(pk.getTime()));
         pkDetail.setBackUrl(pk.getBackUrl());
         pkDetail.setTopPostId(pk.getTopPostId());
+        pkDetail.setTopPostType(pk.getTopPostType());
         pkDetail.setTopPostSetTime(pk.getTopPostSetTime());
         pkDetail.setTopPostTimeLengthStr(TimeUtils.顶置周期(pk.getTopPostTimeLength()));
         pkDetail.setTopPostTimeLength(pk.getTopPostTimeLength());
@@ -724,7 +722,7 @@ public class LocationService {
             daoService.updateColumById(PkEntity.class,"pkId",pkId,map);
             List<String> imgs = new ArrayList<>();
             imgs.add(pkImageEntity.getImgUrl());
-            postService.打卡(pkId,userService.获取系统消息用户(),"卡点更新背景图片...",imgs,"");
+            postService.图片打卡(pkId,userService.获取系统消息用户(),"卡点更新背景图片...",imgs);
         }
 
 
@@ -753,7 +751,7 @@ public class LocationService {
 
     public void 批量查询Pk顶置内容图片(List<PkDetail> pkDetails) {
         pkDetails.forEach(pkDetail -> {
-            if(StringUtils.isBlank(pkDetail.getTopPostId()) || ((System.currentTimeMillis() - pkDetail.getTopPostSetTime()) >= pkDetail.getTopPostTimeLength() * 60 * 1000L))
+            if((pkDetail.getTopPostType() != PostType.图片.getType() )|| StringUtils.isBlank(pkDetail.getTopPostId()) || ((System.currentTimeMillis() - pkDetail.getTopPostSetTime()) >= pkDetail.getTopPostTimeLength() * 60 * 1000L))
             {
                 pkDetail.setTopPost(keyService.查询顶置图片集合(pkDetail.getPkId()));
             }

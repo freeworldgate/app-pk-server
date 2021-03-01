@@ -61,9 +61,64 @@ public class PostService {
 
     @Autowired
     TextService textService;
+    public String 卡片打卡(String pkId, String userId, String title, String backId) {
+        PostEntity postEntity = 生成打卡消息(pkId,userId,title);
 
-    public String 打卡(String pkId,String userId,String title,List<String> images,String backId) throws IOException, AppException
+        postEntity.setPostType(PostType.卡片);
+
+        TextBack textBack = textService.查询TextBackEntity(backId);
+        postEntity.setBackColor(textBack.getBackColor());
+        postEntity.setFontColor(textBack.getFontColor());
+        postEntity.setBackUrl(textBack.getBackUrl());
+
+        创建打卡消息(postEntity,null);
+        return postEntity.getPostId();
+    }
+    public String 文字打卡(String pkId, String userId, String title) {
+        PostEntity postEntity = 生成打卡消息(pkId,userId,title);
+        postEntity.setPostType(PostType.文字);
+        创建打卡消息(postEntity,null);
+        return postEntity.getPostId();
+    }
+
+    public String 视频打卡(String pkId, String userId, String title, String videoUrl,int width,int height) {
+
+        PostEntity postEntity = 生成打卡消息(pkId,userId,title);
+        postEntity.setPostType(PostType.视频);
+        postEntity.setImgNum(1);
+        //视频算一张图片
+        keyService.pk图片总量递增(pkId,1);
+        postEntity.setWidth(width);
+        postEntity.setHeight(height);
+        postEntity.setVideoUrl(videoUrl);
+        创建打卡消息(postEntity,null);
+        return postEntity.getPostId();
+    }
+
+
+
+
+
+    public String 图片打卡(String pkId,String userId,String title,List<String> images) throws IOException, AppException
     {
+        PostEntity postEntity = 生成打卡消息(pkId,userId,title);
+        postEntity.setPostType(PostType.图片);
+        if(CollectionUtils.isEmpty(images)){throw AppException.buildException(PageAction.信息反馈框("请选择图片","请选择图片!"));}
+        List<PostImageEntity> postImageEntities = getLegalImgUrl(images,pkId,postEntity.getPostId());
+        postEntity.setImgNum(CollectionUtils.isEmpty(postImageEntities)?0:images.size());
+        keyService.pk图片总量递增(pkId,postEntity.getImgNum());
+
+        daoService.insertEntity(postEntity);
+        postImageEntities.forEach(image->{
+            daoService.insertEntity(image);
+        });
+
+        创建打卡消息(postEntity,postImageEntities);
+
+        return postEntity.getPostId();
+    }
+
+    public PostEntity 生成打卡消息(String pkId,String userId,String title){
 
         PkEntity pkEntity = locationService.querySinglePkEntityWithoutCache(pkId);
         String postId = IdGenerator.getPostId();
@@ -73,10 +128,6 @@ public class PostService {
         postEntity.setPostId(postId);
         postEntity.setUserId(userId);
         postEntity.setTopic(noActiveTitle(title)?"...":processText(title));
-        TextBack textBack = textService.查询TextBackEntity(backId);
-        postEntity.setBackColor(textBack.getBackColor());
-        postEntity.setFontColor(textBack.getFontColor());
-        postEntity.setBackUrl(textBack.getBackUrl());
         postEntity.setLikes(0);
         postEntity.setDislikes(0);
         postEntity.setComplains(0);
@@ -84,30 +135,56 @@ public class PostService {
         postEntity.setStatu(PostStatu.显示);
         postEntity.setPostTimes(pkUserDynamicService.计算打卡次数(pkId,userId)+1);
         postEntity.setTime(System.currentTimeMillis());
-        List<PostImageEntity> postImageEntities = getLegalImgUrl(images,pkId,postId);
-        postEntity.setImgNum(CollectionUtils.isEmpty(postImageEntities)?0:images.size());
-        keyService.pk图片总量递增(pkId,postEntity.getImgNum());
-        daoService.insertEntity(postEntity);
-        postImageEntities.forEach(image->{
-            daoService.insertEntity(image);
-        });
-        daoService.insertEntity(postEntity);
-        pkUserDynamicService.记录用户卡点打卡时间(pkId,userId);
-        pkUserDynamicService.卡点用户打卡次数加一(pkId,userId);
-        userDynamicService.用户总打榜次数加一(userId);
-        pkDynamicService.卡点打卡人数更新(pkId,userId);
-        this.记录打卡条目(pkId,pkEntity.getName(),postId,title,CollectionUtils.isEmpty(postImageEntities)?null:postImageEntities.get(0).getImgUrl());
-
-        return postId;
+        return postEntity;
     }
 
-    private void 记录打卡条目(String pkId,String pkName, String postId, String title, String imgUrl) {
+    public void 创建打卡消息(PostEntity postEntity,List<PostImageEntity> postImageEntities){
+        daoService.insertEntity(postEntity);
+        pkUserDynamicService.记录用户卡点打卡时间(postEntity.getPkId(),postEntity.getUserId());
+        pkUserDynamicService.卡点用户打卡次数加一(postEntity.getPkId(),postEntity.getUserId());
+        userDynamicService.用户总打榜次数加一(postEntity.getUserId());
+        pkDynamicService.卡点打卡人数更新(postEntity.getPkId(),postEntity.getUserId());
+        if(postEntity.getPostType() == PostType.视频){
+            this.记录打卡条目(postEntity.getPkId(),postEntity.getPkName(),postEntity.getPostId(),postEntity.getPostType(),postEntity.getTopic(),postEntity.getVideoUrl());
+        }
+        else
+        {
+            this.记录打卡条目(postEntity.getPkId(),postEntity.getPkName(),postEntity.getPostId(),postEntity.getPostType(),postEntity.getTopic(),CollectionUtils.isEmpty(postImageEntities)?null:postImageEntities.get(0).getImgUrl());
+        }
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    private void 记录打卡条目(String pkId,String pkName, String postId,PostType postType, String title, String url) {
         PostColumEntity postColumEntity = new PostColumEntity();
         postColumEntity.setPostId(postId);
+        postColumEntity.setPostType(postType.getType());
         postColumEntity.setPkId(pkId);
         postColumEntity.setPkName(pkName);
         postColumEntity.setText(title);
-        postColumEntity.setImgUrl(imgUrl);
+        postColumEntity.setContentUrl(url);
         daoService.insertEntity(postColumEntity);
     }
 
@@ -203,8 +280,14 @@ public class PostService {
     public Post translate(PostEntity postEntity){
         Post post = new Post();
         post.setPkId(postEntity.getPkId());
-        post.setPkTopic(postEntity.getPkName());
         post.setPostId(postEntity.getPostId());
+        post.setType(postEntity.getPostType().getType());
+        post.setVideoUrl(postEntity.getVideoUrl());
+        if(postEntity.getPostType() == PostType.视频){
+            post.setVideowidth(计算宽度(postEntity));
+            post.setVideoheight(计算高度(postEntity));
+        }
+        post.setPkTopic(postEntity.getPkName());
         post.setTime(TimeUtils.convertTime(postEntity.getTime()));
         post.setCreator(userService.queryUser(postEntity.getUserId()));
         post.setTopic(postEntity.getTopic());
@@ -217,12 +300,42 @@ public class PostService {
         post.setLikes(postEntity.getLikes());
         post.setDislikes(postEntity.getDislikes());
 
-//        post.setPtime(TimeUtils.convertPostTime(postEntity.getTime()));
-        post.setPostImages(postEntity.getImgNum()<1?new ArrayList<>():getPostImages(postEntity.getPostId(),postEntity.getPkId()));
+        post.setPostImages(postEntity.getPostType()!=PostType.图片?new ArrayList<>():getPostImages(postEntity.getPostId(),postEntity.getPkId()));
         return post;
     }
 
+    private float 计算高度(PostEntity postEntity) {
+        if(postEntity.getWidth() > postEntity.getHeight())
+        {
 
+
+            return new Float(76.2 * postEntity.getHeight()/(postEntity.getWidth()*1f));
+        }
+        else
+        {
+            if(postEntity.getHeight()/(postEntity.getWidth()*1F) > 1.2f)
+            {
+                return new Float(76.2 *1.2f);
+
+            }
+            else
+            {
+                return new Float(76.2 * postEntity.getHeight()/(1f*postEntity.getWidth()));
+            }
+
+        }
+    }
+
+    private float 计算宽度(PostEntity postEntity) {
+        if(postEntity.getWidth() > postEntity.getHeight())
+        {
+            return 76.2f;
+        }
+        else
+        {
+            return new Float(76.2 * postEntity.getWidth()/postEntity.getHeight());
+        }
+    }
 
 
     public List<PostImage> getPostImages(String postId,String pkId) {
@@ -375,7 +488,7 @@ public class PostService {
     public void 批量查询POST(List<PkDetail> pkDetails) {
 
         pkDetails.forEach(pkDetail -> {
-            if(org.apache.commons.lang.StringUtils.isNotBlank(pkDetail.getTopPostId()) && ((System.currentTimeMillis() - pkDetail.getTopPostSetTime()) < pkDetail.getTopPostTimeLength() * 60 * 1000L))
+            if((pkDetail.getTopPostType() == PostType.图片.getType()) && org.apache.commons.lang.StringUtils.isNotBlank(pkDetail.getTopPostId()) && ((System.currentTimeMillis() - pkDetail.getTopPostSetTime()) < pkDetail.getTopPostTimeLength() * 60 * 1000L))
             {
                 Collection<PostImage> postImages =  keyService.查询榜帖图片(pkDetail.getPkId(),pkDetail.getTopPostId());
                 List<PostImage> postImagesList = new ArrayList<>();
@@ -398,8 +511,6 @@ public class PostService {
         daoService.insertEntity(complainEntity);
         keyService.Post投诉数量加一(postId);
     }
-
-
 
 
 }

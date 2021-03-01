@@ -22,10 +22,16 @@ public class Post {
 
     private String pkTopic;
 
-
     private User creator;
 
     private String topic;
+
+    private int type;
+
+    private String videoUrl;
+    private float videowidth;
+    private float videoheight;
+
 
     private String backColor;
 
@@ -56,4 +62,6 @@ public class Post {
 
     private int width = 40;
     private int height = 40;
+
+    private  String topPostTimeLengthStr;
 }

@@ -213,7 +213,7 @@ public class KeyService {
             if(redisMapService.getlongValue(KeyType.PK图片总量.getName(),pkId)<1){return postImages;}
             EntityFilterChain filter = EntityFilterChain.newFilterChain(PostImageEntity.class)
                     .compareFilter("pkId",CompareTag.Equal,pkId)
-                    .pageLimitFilter(1,9)
+                    .pageLimitFilter(1,5)
                     .orderByFilter("time", OrderTag.DESC);
             List<PostImageEntity> postImageEntity = daoService.queryEntities(PostImageEntity.class,filter);
             postImageEntity.forEach(img->{

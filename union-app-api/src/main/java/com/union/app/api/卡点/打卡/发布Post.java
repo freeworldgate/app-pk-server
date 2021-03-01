@@ -55,30 +55,45 @@ public class 发布Post {
     @Autowired
     KeyService keyService;
 
-    @RequestMapping(path="/createPost",method = RequestMethod.GET)
+    @RequestMapping(path="/createImgPost",method = RequestMethod.GET)
     @Transactional(rollbackOn = Exception.class)
-    public AppResponse 发布Post(@RequestParam("pkId") String pkId,@RequestParam("title") String title,@RequestParam("userId") String userId,@RequestParam("backId") String backId,@RequestParam("imgUrls") List<String> images) throws AppException, IOException {
-
-
-
-
-        //添加时间限制
-
-        String postId = postService.打卡(pkId,userId,title,images,backId);
-
-
+    public AppResponse 发布Post(@RequestParam("pkId") String pkId,@RequestParam("title") String title,@RequestParam("userId") String userId,@RequestParam("imgUrls") List<String> images) throws AppException, IOException {
+        String postId = postService.图片打卡(pkId,userId,title,images);
         Post post = postService.查询帖子(postId);
-
         post.setLeftTime(AppConfigService.getConfigAsInteger(ConfigItem.发帖的时间间隔));
         //返回帖子  首页第一个要显示
         return AppResponse.buildResponse(PageAction.执行处理器("success",post));
-
-
     }
 
+    @RequestMapping(path="/createVideoPost",method = RequestMethod.GET)
+    @Transactional(rollbackOn = Exception.class)
+    public AppResponse 视频打卡(@RequestParam("pkId") String pkId,@RequestParam("title") String title,@RequestParam("userId") String userId,@RequestParam("videoUrl") String videoUrl,@RequestParam("width") int width,@RequestParam("height") int height) throws AppException, IOException {
+        String postId = postService.视频打卡(pkId,userId,title,videoUrl,width,height);
+        Post post = postService.查询帖子(postId);
+        post.setLeftTime(AppConfigService.getConfigAsInteger(ConfigItem.发帖的时间间隔));
+        //返回帖子  首页第一个要显示
+        return AppResponse.buildResponse(PageAction.执行处理器("success",post));
+    }
 
+    @RequestMapping(path="/createTextPost",method = RequestMethod.GET)
+    @Transactional(rollbackOn = Exception.class)
+    public AppResponse 文字打卡(@RequestParam("pkId") String pkId,@RequestParam("title") String title,@RequestParam("userId") String userId) throws AppException, IOException {
+        String postId = postService.文字打卡(pkId,userId,title);
+        Post post = postService.查询帖子(postId);
+        post.setLeftTime(AppConfigService.getConfigAsInteger(ConfigItem.发帖的时间间隔));
+        //返回帖子  首页第一个要显示
+        return AppResponse.buildResponse(PageAction.执行处理器("success",post));
+    }
 
-
+    @RequestMapping(path="/createCardPost",method = RequestMethod.GET)
+    @Transactional(rollbackOn = Exception.class)
+    public AppResponse 卡片打卡(@RequestParam("pkId") String pkId,@RequestParam("title") String title,@RequestParam("userId") String userId,@RequestParam("backId") String backId) throws AppException, IOException {
+        String postId = postService.卡片打卡(pkId,userId,title,backId);
+        Post post = postService.查询帖子(postId);
+        post.setLeftTime(AppConfigService.getConfigAsInteger(ConfigItem.发帖的时间间隔));
+        //返回帖子  首页第一个要显示
+        return AppResponse.buildResponse(PageAction.执行处理器("success",post));
+    }
 
 
 

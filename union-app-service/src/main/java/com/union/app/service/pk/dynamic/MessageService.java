@@ -52,6 +52,7 @@ public class MessageService {
         if(ObjectUtils.isEmpty(postEntity) || StringUtils.equals(postCommentEntity.getUserId(),postEntity.getUserId())){return;}
         MessageEntity messageEntity = new MessageEntity();
         messageEntity.setPkId(postEntity.getPkId());
+        messageEntity.setNew(true);
         messageEntity.setPostId(postCommentEntity.getPostId());
         messageEntity.setCommentId(postCommentEntity.getCommentId());
         messageEntity.setFromUser(postCommentEntity.getUserId());
@@ -70,6 +71,7 @@ public class MessageService {
         if(ObjectUtils.isEmpty(postCommentEntity)|| ObjectUtils.isEmpty(postEntity)|| StringUtils.equals(postCommentEntity.getUserId(),commentRestoreEntity.getUserId())){return;}
         MessageEntity messageEntity = new MessageEntity();
         messageEntity.setPkId(postEntity.getPkId());
+        messageEntity.setNew(true);
         messageEntity.setPostId(postCommentEntity.getPostId());
         messageEntity.setCommentId(postCommentEntity.getCommentId());
         messageEntity.setRestoreId(commentRestoreEntity.getRestoreId());
@@ -89,7 +91,7 @@ public class MessageService {
     }
     public void 删除回复动态信息(CommentRestoreEntity commentRestoreEntity)
     {
-        MessageEntity messageEntity = this.查询动态评论消息ById(commentRestoreEntity.getRestoreId());
+        MessageEntity messageEntity = this.查询动态回复消息ById(commentRestoreEntity.getRestoreId());
         if(!ObjectUtils.isEmpty(messageEntity)){daoService.deleteEntity(messageEntity);}
 
 
@@ -121,6 +123,7 @@ public class MessageService {
     public Message translate(MessageEntity messageEntity){
         Message message = new Message();
         message.setMessageId(messageEntity.getMsgId());
+        message.setNew(messageEntity.isNew());
         message.setMessage(messageEntity.getMessage());
         message.setFromUser(userService.queryUser(messageEntity.getFromUser()));
         message.setToUser(userService.queryUser(messageEntity.getToUser()));
@@ -183,9 +186,11 @@ public class MessageService {
     }
 
 
+    public void 标记消息已读取(int messageId) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("isNew", false);
+        daoService.updateColumById(MessageEntity.class, "msgId", messageId, map);
 
 
-
-
-
+    }
 }

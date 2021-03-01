@@ -31,7 +31,7 @@ public class Message {
 
     private PostColumEntity postColum;
 
-
+    private boolean isNew;
 
 
 }

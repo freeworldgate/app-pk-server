@@ -310,7 +310,7 @@ public class PkService {
     }
 
     public void 修改首页图册(String pkId, String postId,int value) throws AppException {
-
+        PostEntity postEntity = postService.查询帖子ById(postId);
         PkEntity pkEntity = pkService.querySinglePkEntity(pkId);
 
         if(!StringUtils.isBlank(pkEntity.getTopPostId()) && !是否顶置已经过期(pkEntity.getTopPostSetTime(), pkEntity.getTopPostTimeLength()))
@@ -323,6 +323,7 @@ public class PkService {
         map.put("topPostId",postId);
         map.put("topPostSetTime",System.currentTimeMillis());
         map.put("topPostTimeLength",value*1L);
+        map.put("topPostType",postEntity.getPostType().getType());
         daoService.updateColumById(PkEntity.class,"pkId",pkId,map);
 
 

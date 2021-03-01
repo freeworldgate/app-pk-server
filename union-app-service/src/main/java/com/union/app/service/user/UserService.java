@@ -770,8 +770,13 @@ public class UserService {
     public String 随机选择内置用户() {
         EntityFilterChain filter = EntityFilterChain.newFilterChain(UserEntity.class)
                 .compareFilter("userType",CompareTag.Equal,UserType.重点用户)
-                .orderByRandomFilter();
+                .orderByFilter("selects",OrderTag.ASC);
         UserEntity userEntity = appDaoService.querySingleEntity(UserEntity.class,filter);
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("selects",userEntity.getSelects() + 1);
+        appDaoService.updateColumById(UserEntity.class,"userId",userEntity.getUserId(),map);
+
         return userEntity.getUserId();
     }
 

@@ -42,6 +42,10 @@ public class 查询回复 {
         List<DataSet> dataSets = new ArrayList<>();
         //统计PK请求此次数。
         Comment comment = commentService.查询评论ById(commentId);
+        if(ObjectUtils.isEmpty(comment))
+        {
+            return AppResponse.buildResponse(PageAction.信息反馈框("评论已删除","评论已删除!"));
+        }
         List<Restore> restores = commentService.查询回复(commentId,1);
         likeService.查询回复点赞记录(restores,userId);
         if(!ObjectUtils.isEmpty(comment))

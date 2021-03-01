@@ -52,7 +52,7 @@ public class PkEntity {
 //    顶置贴
     private String topPostId;
     private long topPostSetTime;
-
+    private int topPostType;
     private long topPostTimeLength;
 
     private long totalUsers;

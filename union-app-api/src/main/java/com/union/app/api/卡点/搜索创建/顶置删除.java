@@ -16,6 +16,7 @@ import com.union.app.service.pk.service.PostService;
 import com.union.app.service.pk.service.pkuser.PkUserDynamicService;
 import com.union.app.service.pk.service.pkuser.UserDynamicService;
 import com.union.app.service.user.UserService;
+import com.union.app.util.time.TimeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -100,7 +101,7 @@ public class 顶置删除 {
 
             pkService.修改首页图册(pkId,postId,value);
             Post post = postService.查询帖子(postId);
-
+            post.setTopPostTimeLengthStr(TimeUtils.顶置周期(value));
             return AppResponse.buildResponse(PageAction.执行处理器("success",post));
         }
         else

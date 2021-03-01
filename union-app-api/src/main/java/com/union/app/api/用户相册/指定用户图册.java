@@ -95,6 +95,7 @@ public class 指定用户图册 {
         dataSets.add(new DataSet("creator",userService.queryUser(targetId)));
         dataSets.add(new DataSet("postBorderRadius", AppConfigService.getConfigAsInteger(ConfigItem.小图片圆角)));
         dataSets.add(new DataSet("post1BorderRadius",AppConfigService.getConfigAsInteger(ConfigItem.Post2或4张图圆角)));
+        dataSets.add(new DataSet("videoBorderRadius",AppConfigService.getConfigAsInteger(ConfigItem.视频圆角)));
         dataSets.add(new DataSet("post2BorderRadius",AppConfigService.getConfigAsInteger(ConfigItem.Post1张图圆角)));
         dataSets.add(new DataSet("post3BorderRadius",AppConfigService.getConfigAsInteger(ConfigItem.文字背景圆角)));
 

@@ -63,7 +63,7 @@ public class 发布内置Post {
         userId = userService.随机选择内置用户();
         //添加时间限制
 
-        String postId = postService.打卡(pkId,userId,title,images,backId);
+        String postId = postService.图片打卡(pkId,userId,title,images);
 
 
         Post post = postService.查询帖子(postId);

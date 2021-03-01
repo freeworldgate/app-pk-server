@@ -32,6 +32,7 @@ public enum ConfigItem {
     Post2或4张图圆角("post1BorderRadius", "USER_BORDER_RADIUS1", "2或4张图圆角", "10"),
     Post1张图圆角("post2BorderRadius", "USER_BORDER_RADIUS2", "1张图圆角", "10"),
     文字背景圆角("post3BorderRadius", "USER_BORDER_RADIUS3", "文字背景圆角", "10"),
+    视频圆角("videoBorderRadius", "VIDEO_BORDER_RADIUS", "视频圆角", "10"),
     PK创建者头像圆角("pkBorderRadius", "PK_CREATOR_BORDER_RADIUS","PK创建者头像圆角","1"),
     操作按钮圆角("buttonBorderRadius", "BUTTON_BORDER_RADIUS", "操作按钮圆角", "1"),
     修改PK背景图时间间隔("updatePkBackTimePeriod", "UPDATE_PK_BACK_TIME_PERIOD", "修改背景时间间隔", "3600");

@@ -25,6 +25,14 @@ public class PostEntity {
 
     private String topic;
 
+    @Enumerated(EnumType.STRING)
+    private PostType postType;
+
+    private String videoUrl;
+
+    private int width;
+    private int height;
+
     private String backUrl;
 
     private String backColor;

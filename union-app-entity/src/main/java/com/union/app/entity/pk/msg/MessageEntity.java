@@ -31,6 +31,8 @@ public class MessageEntity {
     @Enumerated(EnumType.STRING)
     private MessageType type;
 
+    private boolean isNew;
+
     private String toUser;
 
     private String fromUser;

@@ -49,6 +49,7 @@ public class PkDetail implements Serializable{
     private String topPostId;
 
     private Post topPost;
+    private int topPostType;
     private long topPostSetTime;
     private long topPostTimeLength;
     private String topPostTimeLengthStr;

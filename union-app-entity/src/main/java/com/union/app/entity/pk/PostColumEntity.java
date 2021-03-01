@@ -17,13 +17,15 @@ public class PostColumEntity {
     @Id
     private String postId;
 
+    private int postType;
+
     private String pkId;
 
     private String pkName;
 
     private String text;
 
-    private String imgUrl;
+    private String contentUrl;
 
 
 

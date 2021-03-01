@@ -37,6 +37,7 @@ public class UserEntity implements Serializable {
 
     private String fromUser;
 
+    private long selects;
 
 
 

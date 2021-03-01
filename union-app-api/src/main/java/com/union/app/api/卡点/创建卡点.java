@@ -70,7 +70,7 @@ public class 创建卡点 {
                 locationService.创建卡点(createLocation);
                 List<String> imgs = new ArrayList<>();
                 imgs.add(createLocation.getBackUrl());
-                postService.打卡(pkId,createLocation.getUserId(),"Hello,打卡君!",imgs,"");
+                postService.图片打卡(pkId,createLocation.getUserId(),"Hello,打卡君!",imgs);
                 PkDetail pkDetail = locationService.搜索卡点(pkId);
                 List<DataSet> dataSets = new ArrayList<>();
                 dataSets.add(new DataSet("pk",pkDetail));
