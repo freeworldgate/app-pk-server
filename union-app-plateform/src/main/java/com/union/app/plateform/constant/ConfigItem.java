@@ -35,7 +35,8 @@ public enum ConfigItem {
     视频圆角("videoBorderRadius", "VIDEO_BORDER_RADIUS", "视频圆角", "10"),
     PK创建者头像圆角("pkBorderRadius", "PK_CREATOR_BORDER_RADIUS","PK创建者头像圆角","1"),
     操作按钮圆角("buttonBorderRadius", "BUTTON_BORDER_RADIUS", "操作按钮圆角", "1"),
-    修改PK背景图时间间隔("updatePkBackTimePeriod", "UPDATE_PK_BACK_TIME_PERIOD", "修改背景时间间隔", "3600");
+    修改PK背景图时间间隔("updatePkBackTimePeriod", "UPDATE_PK_BACK_TIME_PERIOD", "修改背景时间间隔", "3600"),
+    首页封面图片缓存时间间隔("postImgsTimePeriod", "POST_IMGS_TIME_PERIED", "首页封面图片缓存时间间隔", "60");
 
 
 

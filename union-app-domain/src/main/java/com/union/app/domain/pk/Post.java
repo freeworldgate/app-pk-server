@@ -18,6 +18,8 @@ public class Post {
 
     private String postId;
 
+    private long sortId;
+
     private String pkId;
 
     private String pkTopic;

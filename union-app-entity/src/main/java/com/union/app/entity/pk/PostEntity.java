@@ -17,6 +17,8 @@ public class PostEntity {
     @Id
     private String postId;
 
+    private long sortId;
+
     private String pkId;
 
     private String pkName;

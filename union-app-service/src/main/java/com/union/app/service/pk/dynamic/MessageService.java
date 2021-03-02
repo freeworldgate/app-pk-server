@@ -93,8 +93,6 @@ public class MessageService {
     {
         MessageEntity messageEntity = this.查询动态回复消息ById(commentRestoreEntity.getRestoreId());
         if(!ObjectUtils.isEmpty(messageEntity)){daoService.deleteEntity(messageEntity);}
-
-
     }
 
     private MessageEntity 查询动态评论消息ById(String commentId) {
@@ -104,8 +102,6 @@ public class MessageService {
                 .compareFilter("commentId", CompareTag.Equal,commentId);
         MessageEntity messageEntity = daoService.querySingleEntity(MessageEntity.class,filter1);
         return messageEntity;
-
-
     }
     private MessageEntity 查询动态回复消息ById(String restoreId) {
         EntityFilterChain filter1 = EntityFilterChain.newFilterChain(MessageEntity.class)
@@ -115,9 +111,6 @@ public class MessageService {
         MessageEntity messageEntity = daoService.querySingleEntity(MessageEntity.class,filter1);
         return messageEntity;
     }
-
-
-
 
 
     public Message translate(MessageEntity messageEntity){
@@ -190,7 +183,37 @@ public class MessageService {
         Map<String, Object> map = new HashMap<>();
         map.put("isNew", false);
         daoService.updateColumById(MessageEntity.class, "msgId", messageId, map);
+    }
 
+    public boolean hasNewMessages(String userId)
+    {
+
+        EntityFilterChain filter1 = EntityFilterChain.newFilterChain(MessageEntity.class)
+                .compareFilter("toUser", CompareTag.Equal,userId)
+                .andFilter()
+                .compareFilter("isNew", CompareTag.Equal,Boolean.TRUE);
+        MessageEntity messageEntity = daoService.querySingleEntity(MessageEntity.class,filter1);
+        return !ObjectUtils.isEmpty(messageEntity);
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

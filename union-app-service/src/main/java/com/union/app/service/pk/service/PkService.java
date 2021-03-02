@@ -85,6 +85,51 @@ public class PkService {
         return posts;
     }
 
+
+    public List<Post> 查询下一页Post(String pkId,long sortId) throws IOException {
+        List<Post> posts = new ArrayList<>();
+        //统计每分钟请求次数
+
+
+        posts.addAll(查询PostBySortId(pkId, sortId));
+
+
+        return posts;
+    }
+
+    private Collection<? extends Post> 查询PostBySortId(String pkId, long sortId) {
+        List<Post> posts = new LinkedList<>();
+        List<PostEntity> pageList =  pkService.查询下一页签到列表(pkId,sortId);
+        for(PostEntity postEntity:pageList)
+        {
+            Post post = postService.translate(postEntity);
+
+            if(!ObjectUtils.isEmpty(post)) {
+                posts.add(post);
+            }
+        }
+        return posts;
+    }
+
+    private List<PostEntity> 查询下一页签到列表(String pkId, long sortId) {
+
+        List<PostEntity> ids = new ArrayList<>();
+        EntityFilterChain filter = EntityFilterChain.newFilterChain(PostEntity.class)
+                .compareFilter("pkId",CompareTag.Equal,pkId)
+                .andFilter()
+                .compareFilter("statu",CompareTag.NotEqual,PostStatu.隐藏)
+                .andFilter()
+                .compareFilter("sortId",CompareTag.Small,sortId)
+                .pageLimitFilter(1,AppConfigService.getConfigAsInteger(ConfigItem.单个PK页面的帖子数))
+                .orderByFilter("sortId",OrderTag.DESC);
+
+        List<PostEntity> entities = daoService.queryEntities(PostEntity.class,filter);
+        if(!CollectionUtils.isEmpty(entities)){ids.addAll(entities);}
+        return ids;
+
+    }
+
+
     private void saveRequestEntity(String pkId, int page, List<Post> posts) {
 
 
@@ -134,7 +179,7 @@ public class PkService {
                 .andFilter()
                 .compareFilter("statu",CompareTag.NotEqual,PostStatu.隐藏)
                 .pageLimitFilter(page,AppConfigService.getConfigAsInteger(ConfigItem.单个PK页面的帖子数))
-                .orderByFilter("time",OrderTag.DESC);
+                .orderByFilter("sortId",OrderTag.DESC);
 
         List<PostEntity> entities = daoService.queryEntities(PostEntity.class,filter);
         if(!CollectionUtils.isEmpty(entities)){ids.addAll(entities);}

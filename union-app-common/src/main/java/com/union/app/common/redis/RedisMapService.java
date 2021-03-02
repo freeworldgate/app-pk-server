@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.union.app.common.config.AppConfigService;
 import com.union.app.plateform.constant.ConfigItem;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.support.atomic.RedisAtomicLong;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -61,7 +62,8 @@ public class RedisMapService implements IRedisService {
         return res;
     }
 
-    public long valueIncr(String key,String mapKey){
+    public long valueIncr(String key,String mapKey)
+    {
         long value = redisTemplate.opsForHash().increment(key,mapKey,1L);
         return value;
     }

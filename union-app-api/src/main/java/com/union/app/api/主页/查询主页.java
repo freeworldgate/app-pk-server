@@ -12,6 +12,7 @@ import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.service.pk.click.ClickService;
 import com.union.app.service.pk.dynamic.DynamicService;
+import com.union.app.service.pk.dynamic.MessageService;
 import com.union.app.service.pk.service.*;
 import com.union.app.service.user.UserService;
 import org.apache.commons.collections4.CollectionUtils;
@@ -49,7 +50,7 @@ public class 查询主页 {
 
 
     @Autowired
-    DynamicService dynamicService;
+    MessageService messageService;
 
     @Autowired
     LocationService locationService;
@@ -96,6 +97,7 @@ public class 查询主页 {
         if(!ObjectUtils.isEmpty(user))
         {
             dataSets.add(new DataSet("user",user));
+            dataSets.add(new DataSet("hasNewMessages",messageService.hasNewMessages(userId)));
         }
         dataSets.add(new DataSet("appBack",appService.查询背景(11)));
 

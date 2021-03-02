@@ -30,6 +30,7 @@ import org.springframework.util.ObjectUtils;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -156,6 +157,8 @@ public class KeyService {
 
     public void 保存顶置POST图片(String pkId, List<PostImage> postImages) {
         redisMapService.setStringValue(KeyType.顶置图片.getName(),pkId,JSON.toJSONString(postImages));
+
+        this.setMapKey(pkId,KeyType.顶置图片更新时间,System.currentTimeMillis());
     }
 
 
@@ -206,29 +209,48 @@ public class KeyService {
     }
 
     private List<PostImage> 查询PostImgsByPk(String pkId) {
+        if((System.currentTimeMillis() - this.queryKey(pkId,KeyType.顶置图片更新时间)) > AppConfigService.getConfigAsInteger(ConfigItem.首页封面图片缓存时间间隔) * 1000)
+        {
+            redisMapService.removeMapKey(KeyType.顶置图片.getName(),pkId);
+        }
         List<PostImage> postImages = new ArrayList<>();
         String postImgs = redisMapService.getStringValue(KeyType.顶置图片.getName(),pkId);
+
         if(StringUtils.isBlank(postImgs)|| StringUtils.equalsIgnoreCase("null",postImgs))
         {
-            if(redisMapService.getlongValue(KeyType.PK图片总量.getName(),pkId)<1){return postImages;}
-            EntityFilterChain filter = EntityFilterChain.newFilterChain(PostImageEntity.class)
-                    .compareFilter("pkId",CompareTag.Equal,pkId)
-                    .pageLimitFilter(1,5)
-                    .orderByFilter("time", OrderTag.DESC);
-            List<PostImageEntity> postImageEntity = daoService.queryEntities(PostImageEntity.class,filter);
-            postImageEntity.forEach(img->{
-                PostImage postImage = new PostImage();
-                postImage.setImgUrl(img.getImgUrl());
-                postImage.setImageId(img.getImgId());
-                postImage.setPkId(img.getPkId());
-                postImage.setPostId(img.getPostId());
-                postImage.setTime(TimeUtils.convertTime(img.getTime()));
-                postImages.add(postImage);
-            });
-            if(!CollectionUtils.isEmpty(postImages))
-            {
-                this.保存顶置POST图片(pkId,postImages);
+            if (redisMapService.getlongValue(KeyType.PK图片总量.getName(), pkId) < 1) {
+                return postImages;
             }
+
+            synchronized (pkId) {
+                postImgs = redisMapService.getStringValue(KeyType.顶置图片.getName(),pkId);
+                if(StringUtils.isBlank(postImgs)|| StringUtils.equalsIgnoreCase("null",postImgs))
+                {
+                    EntityFilterChain filter = EntityFilterChain.newFilterChain(PostImageEntity.class)
+                            .compareFilter("pkId", CompareTag.Equal, pkId)
+                            .pageLimitFilter(1, 5)
+                            .orderByFilter("time", OrderTag.DESC);
+                    List<PostImageEntity> postImageEntity = daoService.queryEntities(PostImageEntity.class, filter);
+                    postImageEntity.forEach(img -> {
+                        PostImage postImage = new PostImage();
+                        postImage.setImgUrl(img.getImgUrl());
+                        postImage.setImageId(img.getImgId());
+                        postImage.setPkId(img.getPkId());
+                        postImage.setPostId(img.getPostId());
+                        postImage.setTime(TimeUtils.convertTime(img.getTime()));
+                        postImages.add(postImage);
+                    });
+
+                    if(!CollectionUtils.isEmpty(postImages))
+                    {
+                        this.保存顶置POST图片(pkId,postImages);
+                    }
+                }
+
+            }
+
+
+
         }
         else
         {
@@ -468,6 +490,6 @@ public class KeyService {
     public String 获取同步队列() { return redisTemplate.opsForSet().pop(KeyType.同步队列.getName()); }
 
 
-
-
+    public long 测试值加一(String test_key1) {
+        return redisMapService.valueIncr(KeyType.测试HASH.getName(),test_key1); }
 }

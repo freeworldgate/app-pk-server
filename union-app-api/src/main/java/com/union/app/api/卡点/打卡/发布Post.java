@@ -60,6 +60,7 @@ public class 发布Post {
     public AppResponse 发布Post(@RequestParam("pkId") String pkId,@RequestParam("title") String title,@RequestParam("userId") String userId,@RequestParam("imgUrls") List<String> images) throws AppException, IOException {
         String postId = postService.图片打卡(pkId,userId,title,images);
         Post post = postService.查询帖子(postId);
+
         post.setLeftTime(AppConfigService.getConfigAsInteger(ConfigItem.发帖的时间间隔));
         //返回帖子  首页第一个要显示
         return AppResponse.buildResponse(PageAction.执行处理器("success",post));

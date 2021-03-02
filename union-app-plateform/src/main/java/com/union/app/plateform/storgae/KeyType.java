@@ -46,7 +46,9 @@ public enum  KeyType {
     城市卡点数量同步队列("CITY_PK_NUM_SYNC"),
 
     同步队列("SYNC_SET"),
-    评论回复数量("COMMENT_RESTORE_NUMS");
+    评论回复数量("COMMENT_RESTORE_NUMS"),
+    测试HASH("TEST_HASH_KEY"),
+    顶置图片更新时间("PK_TOP_LAST_UPDATE_TIME");
 
 
 

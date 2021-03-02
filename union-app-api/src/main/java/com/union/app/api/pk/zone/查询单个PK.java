@@ -143,6 +143,7 @@ public class 查询单个PK {
         dataSets.add(new DataSet("buttonBorderRadius",AppConfigService.getConfigAsInteger(ConfigItem.操作按钮圆角)));
 
         dataSets.add(new DataSet("pageTag",true));
+        dataSets.add(new DataSet("nomore",false));
         return AppResponse.buildResponse(PageAction.前端多条数据更新(dataSets));
 
     }
@@ -164,14 +165,14 @@ public class 查询单个PK {
     }
 
     @RequestMapping(path="/nextPage",method = RequestMethod.GET)
-    public AppResponse 查询单个PK(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId,@RequestParam("page") int page) throws AppException, IOException {
+    public AppResponse 查询单个PK(@RequestParam("pkId") String pkId,@RequestParam("userId") String userId,@RequestParam("sortId") long sortId) throws AppException, IOException {
 
 
         PkEntity pkEntity = locationService.querySinglePkEntity(pkId);
 
 
         //页数不断递增，但是只有一百页。
-        List<Post> posts = pkService.queryPkPost(pkId,page+1);
+        List<Post> posts = pkService.查询下一页Post(pkId,sortId);
         去除顶置POST(posts,pkEntity.getTopPostId());
         if(CollectionUtils.isEmpty(posts))
         {

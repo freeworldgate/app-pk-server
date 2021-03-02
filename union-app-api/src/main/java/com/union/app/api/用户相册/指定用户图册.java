@@ -16,6 +16,7 @@ import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
 import com.union.app.service.pk.click.ClickService;
 import com.union.app.service.pk.dynamic.DynamicService;
+import com.union.app.service.pk.dynamic.MessageService;
 import com.union.app.service.pk.service.*;
 import com.union.app.service.pk.service.pkuser.UserDynamicService;
 import com.union.app.service.user.UserService;
@@ -54,7 +55,7 @@ public class 指定用户图册 {
     UserService userService;
 
     @Autowired
-    DynamicService dynamicService;
+    MessageService messageService;
 
     @Autowired
     LikeService likeService;
@@ -83,6 +84,7 @@ public class 指定用户图册 {
         UserCard userCard = userService.查询UserCard(targetId);
 
 
+        dataSets.add(new DataSet("hasNewMessages",messageService.hasNewMessages(targetId)));
         dataSets.add(new DataSet("userDynamic",userDynamic));
         dataSets.add(new DataSet("userCard",userCard));
 

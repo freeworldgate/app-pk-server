@@ -15,8 +15,10 @@ import com.union.app.domain.pk.文字背景.TextBack;
 import com.union.app.entity.pk.*;
 import com.union.app.entity.pk.post.*;
 import com.union.app.plateform.data.resultcode.AppException;
+import com.union.app.plateform.data.resultcode.Level;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.KeyType;
+import com.union.app.service.pk.IdGen.IdService;
 import com.union.app.service.pk.service.pkuser.PkDynamicService;
 import com.union.app.service.pk.service.pkuser.PkUserDynamicService;
 import com.union.app.service.pk.service.pkuser.UserDynamicService;
@@ -60,6 +62,9 @@ public class PostService {
     KeyService keyService;
 
     @Autowired
+    IdService idService;
+
+    @Autowired
     TextService textService;
     public String 卡片打卡(String pkId, String userId, String title, String backId) {
         PostEntity postEntity = 生成打卡消息(pkId,userId,title);
@@ -74,7 +79,8 @@ public class PostService {
         创建打卡消息(postEntity,null);
         return postEntity.getPostId();
     }
-    public String 文字打卡(String pkId, String userId, String title) {
+    public String 文字打卡(String pkId, String userId, String title) throws AppException {
+        if(org.apache.commons.lang.StringUtils.isBlank(title)){throw AppException.buildException(PageAction.消息级别提示框(Level.正常消息,"内容为空"));}
         PostEntity postEntity = 生成打卡消息(pkId,userId,title);
         postEntity.setPostType(PostType.文字);
         创建打卡消息(postEntity,null);
@@ -124,10 +130,11 @@ public class PostService {
         String postId = IdGenerator.getPostId();
         PostEntity postEntity = new PostEntity();
         postEntity.setPkId(pkId);
+        postEntity.setSortId(idService.gennerateSortId());
         postEntity.setPkName(pkEntity.getName());
         postEntity.setPostId(postId);
         postEntity.setUserId(userId);
-        postEntity.setTopic(noActiveTitle(title)?"...":processText(title));
+        postEntity.setTopic(noActiveTitle(title)?"":processText(title));
         postEntity.setLikes(0);
         postEntity.setDislikes(0);
         postEntity.setComplains(0);
@@ -281,11 +288,12 @@ public class PostService {
         Post post = new Post();
         post.setPkId(postEntity.getPkId());
         post.setPostId(postEntity.getPostId());
+        post.setSortId(postEntity.getSortId());
         post.setType(postEntity.getPostType().getType());
         post.setVideoUrl(postEntity.getVideoUrl());
         if(postEntity.getPostType() == PostType.视频){
-            post.setVideowidth(计算宽度(postEntity));
-            post.setVideoheight(计算高度(postEntity));
+            post.setVideowidth(postEntity.getWidth());
+            post.setVideoheight(postEntity.getHeight());
         }
         post.setPkTopic(postEntity.getPkName());
         post.setTime(TimeUtils.convertTime(postEntity.getTime()));

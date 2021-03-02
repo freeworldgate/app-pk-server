@@ -1,17 +1,20 @@
 package com.union.app.api.卡点.测试;
 
 import com.union.app.common.dao.AppDaoService;
+import com.union.app.common.dao.KeyService;
 import com.union.app.common.spring.context.SpringContextUtil;
 import com.union.app.entity.user.UserDynamicEntity;
 import com.union.app.plateform.data.resultcode.AppException;
 import com.union.app.plateform.data.resultcode.PageAction;
 import com.union.app.plateform.storgae.redis.RedisStringUtil;
+import com.union.app.service.pk.IdGen.IdService;
 import com.union.app.service.pk.click.ClickService;
 import com.union.app.service.pk.dynamic.DynamicService;
 import com.union.app.service.pk.dynamic.RedisService;
 import com.union.app.service.pk.service.*;
 import com.union.app.service.pk.service.pkuser.UserDynamicService;
 import com.union.app.service.user.UserService;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,6 +25,7 @@ import javax.transaction.Transactional;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
+import java.util.concurrent.ConcurrentHashMap;
 
 @RestController
 @RequestMapping(path="/pk")
@@ -63,26 +67,28 @@ public class 测试 {
     LockService lockService;
 
     @Autowired
-    RedisService redisService;
+    IdService idService;
+
 
 
     @RequestMapping(path="/redis",method = RequestMethod.GET)
     public void test111() {
 
-        Map<String, Object> uriVariables = new HashMap<>();
-//
-//        uriVariables.put("userId","ozm2e4r6IgyVMlA6goFt7AbB3wVw");
-//        uriVariables.put("latitude",31.904063313802084D);
-//        uriVariables.put("longitude",118.9038058810764D);
-        for(int i=0;i<50;i++)
+        Map<String,String> map = new ConcurrentHashMap<>();
+        for(int i=0;i<1000;i++)
         {
 
             new Thread(new Runnable() {
+                @SneakyThrows
                 @Override
                 public void run() {
-                    for(int i=0;i<100;i++){
-//                        redisService.sendRedisMessage();
+                    for(int i=0;i<1000;i++){
+                        long value = idService.gennerateSortId();
+                        map.put(String.valueOf(value),"AAA");
+                        System.out.println("测试值value = " + value);
                     }
+                    Thread.sleep(5000);
+                    System.out.println("map大小:"+map.size());
                 }
             }).start();
         }
