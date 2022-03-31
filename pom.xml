@@ -21,7 +21,7 @@
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-        <boot.version>2.0.6.RELEASE</boot.version>
+        <boot.version>2.5.12</boot.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <!--设置所有模块输出目录-->
